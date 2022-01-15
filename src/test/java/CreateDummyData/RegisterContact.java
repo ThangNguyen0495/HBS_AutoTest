@@ -1,3 +1,5 @@
+package CreateDummyData;
+
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.apache.commons.lang.RandomStringUtils;
 import org.openqa.selenium.By;
@@ -7,21 +9,21 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.interactions.Actions;
 import org.testng.annotations.Test;
-
 import static java.lang.Thread.sleep;
+import static Variable.Variable.*;
 
-public class Contact {
+public class RegisterContact {
     @Test
     public void main() throws InterruptedException {
         WebDriverManager.chromedriver().setup();
         ChromeOptions options = new ChromeOptions();
         options.setHeadless(true);
-        String baseURL = "https://test.app.cmrb.jp/contacts/register";
+        String baseURL = url + register_contact_path;
         WebDriver driver = new ChromeDriver(options);
         driver.manage().window().maximize();
         driver.get(baseURL);
-        driver.findElement(By.id("username")).sendKeys("master@codun.site");
-        driver.findElement(By.id("password")).sendKeys("12345678a");
+        driver.findElement(By.id("username")).sendKeys(master_email);
+        driver.findElement(By.id("password")).sendKeys(master_password);
         driver.findElement(By.cssSelector("button.ant-btn.ant-btn-primary.LoginForm-button-3lInS")).click();
         sleep(1000);
 
