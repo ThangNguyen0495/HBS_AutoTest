@@ -13,24 +13,27 @@ import static Variable.Variable.*;
 public class RegisterPartner {
     @Test
     public void main() {
+
+        //Config Webdriver
         WebDriverManager.chromedriver().setup();
         ChromeOptions options = new ChromeOptions();
         options.setHeadless(true);
-        String baseURL = url + register_partner_path;
         WebDriver driver = new ChromeDriver(options);
-        driver.manage().window().maximize();
-        driver.get(baseURL);
+
+        //Login
+        driver.get(url + register_partner_path);
         driver.findElement(By.id("username")).sendKeys(master_email);
         driver.findElement(By.id("password")).sendKeys(master_password);
         driver.findElement(By.cssSelector("button.ant-btn.ant-btn-primary.LoginForm-button-3lInS")).click();
         driver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
 
+        //Loop for dummy data
         for (int i = 1; i < 100; i++) {
             String company = RandomStringUtils.randomAlphabetic(8);
             driver.findElement(By.id("name")).sendKeys(company);
             driver.findElement(By.cssSelector("[value='prospective']")).click();
             driver.findElement(By.cssSelector("button.ant-btn.ant-btn-primary.EditForm-button-3IRWY")).click();
-            driver.get(baseURL);
+            driver.get(url + register_partner_path);
 
         }
     }
