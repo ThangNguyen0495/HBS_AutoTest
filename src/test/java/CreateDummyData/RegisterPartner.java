@@ -28,7 +28,7 @@ public class RegisterPartner {
         driver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
 
         //Loop for dummy data
-        for (int i = 1; i < 100; i++) {
+        for (int i = 0; i < 50; i++) {
             String company = RandomStringUtils.randomAlphabetic(8);
             driver.findElement(By.id("name")).sendKeys(company);
             driver.findElement(By.cssSelector("[value='prospective']")).click();

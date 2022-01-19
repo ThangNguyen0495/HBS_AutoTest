@@ -25,7 +25,7 @@ public class DeliveryEmailReservation {
         //Config Webdriver
         WebDriverManager.chromedriver().setup();
         ChromeOptions options = new ChromeOptions();
-        options.setHeadless(false);
+        options.setHeadless(true);
         String baseURL = url + delivery_email_reservation_path;
         WebDriver driver = new ChromeDriver(options);
         driver.manage().window().maximize();
@@ -37,32 +37,36 @@ public class DeliveryEmailReservation {
         driver.findElement(By.cssSelector("button.ant-btn.ant-btn-primary.LoginForm-button-3lInS")).click();
         sleep(3000);
 
-        String subject = RandomStringUtils.randomAlphabetic(8);
-        String insertion = RandomStringUtils.randomAlphabetic(50);
-        driver.findElement(By.cssSelector("input[type='text']")).sendKeys(subject);
-        driver.findElement(By.cssSelector("textarea[id='text']")).sendKeys(insertion);
-        driver.findElement(By.xpath("//div[@class='ant-col ant-col-6']//div//button[@class='ant-btn ant-btn-primary']")).click();
+        for (int i = 1; i < 100; i++) {
+            String subject = RandomStringUtils.randomAlphabetic(8);
+            String insertion = RandomStringUtils.randomAlphabetic(50);
+            driver.findElement(By.cssSelector("input[type='text']")).sendKeys(subject);
+            driver.findElement(By.cssSelector("textarea[id='text']")).sendKeys(insertion);
+            driver.findElement(By.xpath("//div[@class='ant-col ant-col-6']//div//button[@class='ant-btn ant-btn-primary']")).click();
 
-        sleep(1000);
-        driver.findElement(By.xpath("//div[@class='ant-col ant-col-6']//div//button[@class='ant-btn ant-btn-primary']")).click();
+//        sleep(1000);
+//        driver.findElement(By.xpath("//div[@class='ant-col ant-col-6']//div//button[@class='ant-btn ant-btn-primary']")).click();
+//
+//        sleep(1000);
+//        driver.findElement(By.cssSelector("#searchtype> label:nth-child(3) > span.ant-radio > input")).click();
+//        driver.findElement(By.cssSelector("div.ant-col.ant-col-12>div>button[type='submit']")).click();
+//        driver.findElement(By.cssSelector("div.ant-table-selection>*>*>input")).click();
+//        driver.findElement(By.xpath("//div[@class='ant-col ant-col-6']//div//button[@class='ant-btn ant-btn-primary']")).click();
 
-        sleep(1000);
-        driver.findElement(By.cssSelector("#searchtype> label:nth-child(3) > span.ant-radio > input")).click();
-        driver.findElement(By.cssSelector("div.ant-col.ant-col-12>div>button[type='submit']")).click();
-        driver.findElement(By.cssSelector("div.ant-table-selection>*>*>input")).click();
-        driver.findElement(By.xpath("//div[@class='ant-col ant-col-6']//div//button[@class='ant-btn ant-btn-primary']")).click();
-
-        sleep(1000);
-        driver.findElement(By.cssSelector("div.ant-col.ant-col-24>div>div:nth-child(4)>div>button")).click();
-        WebElement date = driver.findElement(By.cssSelector("div.ant-col>div:nth-child(1)>div>div>div:nth-child(1)>div>div>input"));
-        ((JavascriptExecutor) driver).executeScript ("arguments[0].removeAttribute('readonly',0);", date); // Enables the from date box
-
-        date.sendKeys("2022-01-31");
-        Actions select_calendar = new Actions(driver);
-        select_calendar.sendKeys(Keys.ENTER).perform();
-        driver.findElement(By.cssSelector("div.ant-modal-footer>button")).click();
-        sleep(1000);
-        driver.findElement(By.cssSelector("div.ant-modal-confirm-btns>button.ant-btn.ant-btn-primary")).click();
+            driver.get("https://test.app.cmrb.jp/scheduledMails");
+            driver.get(url + delivery_email_reservation_path);
+        }
+//        sleep(1000);
+//        driver.findElement(By.cssSelector("div.ant-col.ant-col-24>div>div:nth-child(4)>div>button")).click();
+//        WebElement date = driver.findElement(By.cssSelector("div.ant-col>div:nth-child(1)>div>div>div:nth-child(1)>div>div>input"));
+//        ((JavascriptExecutor) driver).executeScript ("arguments[0].removeAttribute('readonly',0);", date); // Enables the from date box
+//
+//        date.sendKeys("2022-01-31");
+//        Actions select_calendar = new Actions(driver);
+//        select_calendar.sendKeys(Keys.ENTER).perform();
+//        driver.findElement(By.cssSelector("div.ant-modal-footer>button")).click();
+//        sleep(1000);
+//        driver.findElement(By.cssSelector("div.ant-modal-confirm-btns>button.ant-btn.ant-btn-primary")).click();
 
     }
 }
