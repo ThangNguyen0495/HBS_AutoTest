@@ -403,7 +403,7 @@ public class CreateMail {
         WebDriverManager.chromedriver().setup();
         ChromeOptions options = new ChromeOptions();
         options.setHeadless(false);
-        String baseURL = "https://test.app.cmrb.jp/scheduledMails/6b5b498d-de9c-4c31-b128-cd48d696d53a";
+        String baseURL = "https://test.app.cmrb.jp/scheduledMails/a0c75caa-6471-4cab-8f4e-fd2403c993cd";
         WebDriver driver = new ChromeDriver(options);
         driver.manage().window().maximize();
 
@@ -437,29 +437,105 @@ public class CreateMail {
         WebElement time = driver.findElement(By.cssSelector("div:nth-child(1) > div > div > div:nth-child(2) > div > div > input"));
         ((JavascriptExecutor) driver).executeScript("arguments[0].removeAttribute('readonly',0);", time);
 
-        LocalDate d = LocalDate.now();
-        String text = "前後5分以内に配信予定のメールが登録されています。配信時刻を変更してください。";
-        do {
-            date.sendKeys(d.toString());
-            Actions key = new Actions(driver);
-            key.sendKeys(Keys.ENTER).perform();
-            time.click();
-            sleep(100);
-            key.sendKeys(Keys.BACK_SPACE).perform();
-            sleep(100);
-            key.sendKeys(Keys.BACK_SPACE).perform();
-            sleep(100);
-            key.sendKeys(Keys.BACK_SPACE).perform();
-            sleep(100);
-            key.sendKeys(Keys.BACK_SPACE).perform();
-            sleep(100);
-            key.sendKeys(Keys.BACK_SPACE).perform();
-            int hour = LocalTime.now().getHour();
-            int min = LocalTime.now().getMinute();
-            System.out.println(Integer.toString(min));
+        LocalDate ymd = LocalDate.now();
 
-            time.sendKeys( "08:" + Integer.toString(min));
-            driver.findElement(By.cssSelector("li.ant-picker-ok")).click();
+        // message
+        String text;
+
+        int date_increase;
+
+        // select day
+        date.sendKeys(ymd.toString());
+        Actions key = new Actions(driver);
+        key.sendKeys(Keys.ENTER).sendKeys(Keys.ENTER).perform();
+        sleep(500);
+
+        // true: day is not available
+
+
+        int hour = LocalTime.now().getHour();
+        int min = LocalTime.now().getMinute();
+        int new_min = min;
+        int new_hour = hour;
+        date_increase = 0;
+        LocalDate nymd;
+
+        do {
+
+            sleep(200);
+            // true: day is not available, day = next day
+            System.out.println(driver.findElement(By.cssSelector("div.ant-picker-header > div")).isDisplayed());
+            while (driver.findElement(By.cssSelector("div.ant-picker-header > div")).isDisplayed() == true) {
+                date_increase += 1;
+                nymd = LocalDate.from(LocalDate.now().plusDays(date_increase));
+                for (int i = 0; i < 10; i++) {
+                    key.sendKeys(Keys.BACK_SPACE).perform();
+                }
+                date.sendKeys(nymd.toString());
+                key.sendKeys(Keys.ENTER).perform();
+            }
+
+
+
+            // next hour
+            if (new_min > 59) {
+                new_min = new_min - 60;
+                new_hour += 1;
+            }
+
+            // time 8:00 - 19:00
+            if (new_hour < 8) {
+                new_hour = 8;
+                new_min = 0;
+            }
+            else if (new_hour > 19) {
+                new_hour = 8;
+                new_min = 0;
+                date_increase += 1;
+                nymd = LocalDate.from(LocalDate.now().plusDays(date_increase));
+                date.sendKeys(nymd.toString());
+                for (int i = 0; i < 20; i++) {
+                    sleep(100);
+                    key.sendKeys(Keys.BACK_SPACE).perform();
+                }
+                key.sendKeys(Keys.ENTER).sendKeys(Keys.ENTER).perform();
+
+                while (driver.findElement(By.cssSelector("div.ant-picker-header > div")).isDisplayed() == true) {
+                    System.out.println("loop");
+                    date_increase += 1;
+                    nymd = LocalDate.from(LocalDate.now().plusDays(date_increase));
+                    for (int i = 0; i < 10; i++) {
+                        sleep(500);
+                        key.sendKeys(Keys.BACK_SPACE).perform();
+                    }
+                    date.sendKeys(nymd.toString());
+                    key.sendKeys(Keys.ENTER).perform();
+                }
+            }
+
+            String min_str;
+            String hour_str;
+            if (new_min < 10) {
+                min_str = "0" + Integer.toString(new_min);
+            } else {
+                min_str = Integer.toString(new_min);
+            }
+            if (new_hour < 10) {
+                hour_str = "0" + Integer.toString(new_hour);
+            } else {
+                hour_str = Integer.toString(new_hour);
+            }
+
+            time.click();
+            for (int i = 0; i < 10; i++) {
+                sleep(100);
+                key.sendKeys(Keys.BACK_SPACE).perform();
+            }
+
+            time.sendKeys(hour_str + ":" + min_str); //Integer.toString(min)
+
+            sleep(1000);
+            driver.findElement(By.cssSelector("li.ant-picker-ok>button")).click();
 
             sleep(1000);
             driver.findElement(By.cssSelector("div.ant-modal-footer>button")).click();
@@ -467,10 +543,18 @@ public class CreateMail {
             sleep(1000);
             driver.findElement(By.cssSelector("div.ant-modal-confirm-btns>button:nth-child(2)")).click();
 
-            text  = new WebDriverWait(driver, Duration.ofSeconds(10))
-                    .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div:nth-child(9) > div > div > div > div > div > span:nth-child(2)"))).getText();
+            text = new WebDriverWait(driver, Duration.ofSeconds(10))
+                    .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div.ant-message-custom-content > span:nth-child(2)"))).getText();
 
-        } while (text.contains("前後5分以内に配信予定のメールが登録されています。配信時刻を変更してください。"));
+            System.out.println(text);
+
+            new_min += 5;
+
+            System.out.println("new_min: " + Integer.toString(new_min) + ", new_how: " + Integer.toString(new_hour) + ", date:" + LocalDate.from(LocalDate.now().plusDays(date_increase)).toString());
+
+        } while ((text.contains("前後5分以内に配信予定のメールが登録されています。配信時刻を変更してください。"))
+                || (text.contains("配信可能時刻は、08:00:00 〜 19:00:00 です。配信時刻を変更してください。"))
+                || text.contains("土日祝に配信予定のメールが登録されています。配信時刻を変更してください"));
 
     }
 }
