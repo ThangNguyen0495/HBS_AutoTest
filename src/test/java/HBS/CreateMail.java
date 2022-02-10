@@ -403,7 +403,7 @@ public class CreateMail {
         WebDriverManager.chromedriver().setup();
         ChromeOptions options = new ChromeOptions();
         options.setHeadless(false);
-        String baseURL = "https://test.app.cmrb.jp/scheduledMails/a7d2081f-b89a-4cad-a3ba-d888bb00d05c";
+        String baseURL = "https://test.app.cmrb.jp/scheduledMails/6b5b498d-de9c-4c31-b128-cd48d696d53a";
         WebDriver driver = new ChromeDriver(options);
         driver.manage().window().maximize();
 
@@ -434,46 +434,43 @@ public class CreateMail {
         WebElement date = driver.findElement(By.cssSelector("div.ant-col>div:nth-child(1)>div>div>div:nth-child(1)>div>div>input"));
         ((JavascriptExecutor) driver).executeScript("arguments[0].removeAttribute('readonly',0);", date);
 
-        LocalDate d = LocalDate.now();
-
-        date.sendKeys(d.toString());
-        Actions key = new Actions(driver);
-        key.sendKeys(Keys.ENTER).perform();
-
         WebElement time = driver.findElement(By.cssSelector("div:nth-child(1) > div > div > div:nth-child(2) > div > div > input"));
         ((JavascriptExecutor) driver).executeScript("arguments[0].removeAttribute('readonly',0);", time);
-        time.click();
-        sleep(100);
-        key.sendKeys(Keys.BACK_SPACE).perform();
-        sleep(100);
-        key.sendKeys(Keys.BACK_SPACE).perform();
-        sleep(100);
-        key.sendKeys(Keys.BACK_SPACE).perform();
-        sleep(100);
-        key.sendKeys(Keys.BACK_SPACE).perform();
-        sleep(100);
-        key.sendKeys(Keys.BACK_SPACE).perform();
-        int hour = LocalTime.now().getHour();
-        int min = LocalTime.now().getMinute();
-        System.out.println(Integer.toString(min));
 
-        time.sendKeys("10:00");
-        driver.findElement(By.cssSelector("li.ant-picker-ok")).click();
+        LocalDate d = LocalDate.now();
+        String text = "前後5分以内に配信予定のメールが登録されています。配信時刻を変更してください。";
+        do {
+            date.sendKeys(d.toString());
+            Actions key = new Actions(driver);
+            key.sendKeys(Keys.ENTER).perform();
+            time.click();
+            sleep(100);
+            key.sendKeys(Keys.BACK_SPACE).perform();
+            sleep(100);
+            key.sendKeys(Keys.BACK_SPACE).perform();
+            sleep(100);
+            key.sendKeys(Keys.BACK_SPACE).perform();
+            sleep(100);
+            key.sendKeys(Keys.BACK_SPACE).perform();
+            sleep(100);
+            key.sendKeys(Keys.BACK_SPACE).perform();
+            int hour = LocalTime.now().getHour();
+            int min = LocalTime.now().getMinute();
+            System.out.println(Integer.toString(min));
 
-        sleep(1000);
-        driver.findElement(By.cssSelector("div.ant-modal-footer>button")).click();
+            time.sendKeys( "08:" + Integer.toString(min));
+            driver.findElement(By.cssSelector("li.ant-picker-ok")).click();
 
-        sleep(1000);
-        driver.findElement(By.cssSelector("body > div:nth-child(13) > div > div.ant-modal-wrap > div > div.ant-modal-content > div > div > div.ant-modal-confirm-btns > button.ant-btn.ant-btn-primary")).click();
+            sleep(1000);
+            driver.findElement(By.cssSelector("div.ant-modal-footer>button")).click();
 
-        String text  = new WebDriverWait(driver, Duration.ofSeconds(10))
-                .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div:nth-child(9) > div > div > div > div > div > span:nth-child(2)"))).getText();
-        System.out.println(text);
-        System.out.println(text.contains("前後5分以内に配信予定のメールが登録されています。配信時刻を変更してください。"));
+            sleep(1000);
+            driver.findElement(By.cssSelector("div.ant-modal-confirm-btns>button:nth-child(2)")).click();
 
+            text  = new WebDriverWait(driver, Duration.ofSeconds(10))
+                    .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div:nth-child(9) > div > div > div > div > div > span:nth-child(2)"))).getText();
 
-
-
+        } while (text.contains("前後5分以内に配信予定のメールが登録されています。配信時刻を変更してください。"));
 
     }
 }
