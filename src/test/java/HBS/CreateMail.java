@@ -1,7 +1,7 @@
 package HBS;
 
-import CreateDummyData.findDate;
 import io.github.bonigarcia.wdm.WebDriverManager;
+import model.deliveryMail.findDate;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.math.RandomUtils;
 import org.openqa.selenium.*;
@@ -65,12 +65,12 @@ public class CreateMail {
         // random distributor in range 1-20
         int distributor_id = RandomUtils.nextInt(20) + 1;
         driver.findElement(By.cssSelector("div.ant-form-item-control-input-content>div>div>div>div.ant-select-selector")).click();
-        sleep(5000);
+        sleep(3000);
         Actions key = new Actions(driver);
         for (int i = 0; i < distributor_id; i++) {
             key.sendKeys(Keys.DOWN).perform();
         }
-        sleep(5000);
+        sleep(1000);
         key.sendKeys(Keys.ENTER).perform();
 
         // Subject
@@ -121,7 +121,7 @@ public class CreateMail {
         //** Delivery information **//
         //** Delivery type **//
         // 1: Deliver the matter, 2: Deliver personnel, 3: Deliver information
-        int delivery_type = 3;//RandomUtils.nextInt(3) + 1;
+        int delivery_type = RandomUtils.nextInt(3) + 1;
         driver.findElement(By.cssSelector("#searchtype > label:nth-child(" + Integer.toString(delivery_type) + ") > span > input")).click();
 
         // Search destination selection by delivery type
@@ -204,7 +204,7 @@ public class CreateMail {
 
             //** Delivery occupation **//
             // 1: Development, 2:Infrastructure, 3: Others
-            int delivery_occupation = 3;//RandomUtils.nextInt(3) + 1;
+            int delivery_occupation = RandomUtils.nextInt(3) + 1;
 
             // select delivery occupation from 1 to delivery_occupation
             for (int i = 1; i <= delivery_occupation; i++) {
@@ -267,54 +267,54 @@ public class CreateMail {
                     for (int j = 1; j <= detail_of_delivery_occupation; j++) {
                         driver.findElement(By.cssSelector("div.ant-form-item-control-input-content>label:nth-child(" + Integer.toString(j) + ")>span>input[id^='personneltype_other']")).click();
                     }
-
-                    //** Delivery employment form **//
-                    // 1:Proper , 2:Freelance
-                    int delivery_employment_form = RandomUtils.nextInt(2) + 1;
-                    driver.findElement(By.cssSelector("#job_koyou > label:nth-child(" + Integer.toString(delivery_employment_form) + ") > span > input")).click();
-
-                    //** Delivery commercial distribution **//
-                    // 1:Company affiliation , 2:1 company affiliation, 3:2 company affiliation, 4:Affiliation/unknown for 3 or more companies
-                    int delivery_commercial_distribution = RandomUtils.nextInt(4) + 1;
-                    driver.findElement(By.cssSelector("#personnel_syouryu > label:nth-child(" + Integer.toString(delivery_commercial_distribution) + ") > span > input")).click();
                 }
+
+                //** Delivery employment form **//
+                // 1:Proper , 2:Freelance
+                int delivery_employment_form = RandomUtils.nextInt(2) + 1;
+                driver.findElement(By.cssSelector("#job_koyou > label:nth-child(" + Integer.toString(delivery_employment_form) + ") > span > input")).click();
+
+                //** Delivery commercial distribution **//
+                // 1:Company affiliation , 2:1 company affiliation, 3:2 company affiliation, 4:Affiliation/unknown for 3 or more companies
+                int delivery_commercial_distribution = RandomUtils.nextInt(4) + 1;
+                driver.findElement(By.cssSelector("#personnel_syouryu > label:nth-child(" + Integer.toString(delivery_commercial_distribution) + ") > span > input")).click();
             }
         }
 
         //** Commitment **//
         // Account status
         // 0: Do not search by Account status, 1: add Account status conditions
-//        int account_status = RandomUtils.nextInt(2);
-//        if (account_status == 1) {
-//            // add Account status conditions
-//            driver.findElement(By.cssSelector("div:nth-child(2) > div.ant-col.ant-col-19.ant-form-item-control > div > div > div > div > button")).click();
-//            // 1: Prospect, 2:Approached, 3:Information exchanged, 4:Contract record available
-//            int account_status_condition = RandomUtils.nextInt(4) + 1;
-//            // select Account status conditions
-//            for (int i = 1; i <= account_status_condition; i++) {
-//                driver.findElement(By.cssSelector("label:nth-child(" + Integer.toString(i) + ")>span>input[id^='contact__org']")).click();
-//            }
-//        }
-//
-//        // In-house person in charge
-//        // 0: Do not search by In-house person in charge, 1: add In-house person in charge condition
-//        int in_house_person_in_charge = RandomUtils.nextInt(2);
-//        if (in_house_person_in_charge == 1) {
-//            // add In-house person in charge condition
-//            driver.findElement(By.cssSelector("div:nth-child(3) > div > div > div > div > div > div > button")).click();
-//            sleep(3000); // Wait dropdown has been loaded
-//            driver.findElement(By.cssSelector("#contact__staff")).click(); // Open In-house person in charge dropdown
-//            int id = RandomUtils.nextInt(20);
-//            for (int i = 0; i <= id; i++) {
-//                key.sendKeys(Keys.DOWN).perform();
-//            }
-//            // Wait and select In-house person in charge
-//            sleep(1000);
-//            key.sendKeys(Keys.ENTER).perform();
-//        }
-//
-//        // Compatibility
-//        // 0: Do not search by Compatibility, 1: add Compatibility condition
+        int account_status = RandomUtils.nextInt(2);
+        if (account_status == 1) {
+            // add Account status conditions
+            driver.findElement(By.cssSelector("div:nth-child(2) > div.ant-col.ant-col-19.ant-form-item-control > div > div > div > div > button")).click();
+            // 1: Prospect, 2:Approached, 3:Information exchanged, 4:Contract record available
+            int account_status_condition = RandomUtils.nextInt(4) + 1;
+            // select Account status conditions
+            for (int i = 1; i <= account_status_condition; i++) {
+                driver.findElement(By.cssSelector("label:nth-child(" + Integer.toString(i) + ")>span>input[id^='contact__org']")).click();
+            }
+        }
+
+        // In-house person in charge
+        // 0: Do not search by In-house person in charge, 1: add In-house person in charge condition
+        int in_house_person_in_charge = RandomUtils.nextInt(2);
+        if (in_house_person_in_charge == 1) {
+            // add In-house person in charge condition
+            driver.findElement(By.cssSelector("div:nth-child(3) > div > div > div > div > div > div > button")).click();
+            sleep(3000); // Wait dropdown has been loaded
+            driver.findElement(By.cssSelector("#contact__staff")).click(); // Open In-house person in charge dropdown
+            int id = RandomUtils.nextInt(20);
+            for (int i = 0; i <= id; i++) {
+                key.sendKeys(Keys.DOWN).perform();
+            }
+            // Wait and select In-house person in charge
+            sleep(1000);
+            key.sendKeys(Keys.ENTER).perform();
+        }
+
+        // Compatibility
+        // 0: Do not search by Compatibility, 1: add Compatibility condition
 //        int compatibility = RandomUtils.nextInt(2);
 //        if (compatibility == 1) {
 //            // add Compatibility condition
@@ -338,32 +338,32 @@ public class CreateMail {
 //            }
 //            key.sendKeys(Keys.ENTER).perform();
 //        }
-//
-//        // Tag
-//        // 0: Do not search by Tag, 1: add Tag condition
-//        int tag = RandomUtils.nextInt(2);
-//        if (tag == 1) {
-//            // add Tag condition
-//            driver.findElement(By.cssSelector("div:nth-child(5) > div > div > div > div > div > div > button")).click();
-//            // wait Tag dropdown has been loaded
-//            sleep(3000);
-//            // number of tags has been selected in range 1-5
-//            int number_of_tags = RandomUtils.nextInt(5) + 1;
-//            // Open Tag dropdown
-//            driver.findElement(By.cssSelector("div.ant-col.ant-col-12 > div > div > div > div > div")).click();
-//            for (int i = 0; i < number_of_tags; i++) {
-//                key.sendKeys(Keys.DOWN).perform();
-//                key.sendKeys(Keys.ENTER).perform();
-//            }
-//
-//            // 0: AND, 1: OR
-//            int tag_condition_2 = RandomUtils.nextInt(2);
-//            driver.findElement(By.cssSelector("div.ant-col.ant-col-2 > div > div > span.ant-select-selection-item")).click();
-//            for (int i = 0; i <= tag_condition_2; i++) {
-//                key.sendKeys(Keys.DOWN).perform();
-//            }
-//            key.sendKeys(Keys.ENTER).perform();
-//        }
+
+        // Tag
+        // 0: Do not search by Tag, 1: add Tag condition
+        int tag = RandomUtils.nextInt(2);
+        if (tag == 1) {
+            // add Tag condition
+            driver.findElement(By.cssSelector("div:nth-child(5) > div > div > div > div > div > div > button")).click();
+            // wait Tag dropdown has been loaded
+            sleep(3000);
+            // number of tags has been selected in range 1-5
+            int number_of_tags = RandomUtils.nextInt(5) + 1;
+            // Open Tag dropdown
+            driver.findElement(By.cssSelector("div.ant-col.ant-col-12 > div > div > div > div > div")).click();
+            for (int i = 0; i < number_of_tags; i++) {
+                key.sendKeys(Keys.DOWN).perform();
+                key.sendKeys(Keys.ENTER).perform();
+            }
+
+            // 0: AND, 1: OR
+            int tag_condition_2 = RandomUtils.nextInt(2);
+            driver.findElement(By.cssSelector("div.ant-col.ant-col-2 > div > div > span.ant-select-selection-item")).click();
+            for (int i = 0; i <= tag_condition_2; i++) {
+                key.sendKeys(Keys.DOWN).perform();
+            }
+            key.sendKeys(Keys.ENTER).perform();
+        }
 
         // Search
         driver.findElement(By.cssSelector("div:nth-child(6) > div > div > div:nth-child(1) > div > button")).click();
@@ -388,20 +388,14 @@ public class CreateMail {
         sleep(1000);
         driver.findElement(By.cssSelector("div.ant-col.ant-col-24>div>div:nth-child(4)>div>button")).click();
 
-        // Select date
-        new WebDriverWait(driver, Duration.ofSeconds(10))
-                .until(ExpectedConditions.elementToBeClickable(By.cssSelector("div.ant-col>div:nth-child(1)>div>div>div:nth-child(1)>div>div>input")))
-                .click();
-
+        // Date
+        sleep(1000);
+        driver.findElement(By.cssSelector("div.ant-col>div:nth-child(1)>div>div>div:nth-child(1)>div>div>input")).click();
         sleep(200);
-
         findDate findDate = new findDate();
-
         driver.findElement(By.cssSelector(findDate.date_element(driver))).click();
-        //-------------------------------------------------------------------------------------------------------
 
-        String text;
-
+        // Time
         WebElement time = driver.findElement(By.cssSelector("div:nth-child(1) > div > div > div:nth-child(2) > div > div > input"));
         ((JavascriptExecutor) driver).executeScript("arguments[0].removeAttribute('readonly',0);", time);
         int hour = LocalTime.now().getHour();
@@ -409,75 +403,44 @@ public class CreateMail {
         int new_min = min;
         int new_hour = hour;
 
-        // Select time
         // If time incorrect, add 10 minutes and select again
-        do {
-
+        while (!findDate.check_time(driver)) {
             // Update time after add 10 minutes
             if (new_min > 59) {
-                new_min = min - 60;
+                new_min = new_min - 60;
                 new_hour++;
             }
-
-            // Verify time 8:00 - 19:00
-            if (new_hour < 8) {
-                new_hour = 8;
-                new_min = 0;
-            } else if (new_hour > 19) {
-                new_hour = 8;
-                new_min = 0;
-
-                // If hour > 19:00, select next day.
-                new WebDriverWait(driver, Duration.ofSeconds(10))
-                        .until(ExpectedConditions.elementToBeClickable(By.cssSelector("div.ant-col>div:nth-child(1)>div>div>div:nth-child(1)>div>div>input")))
-                        .click();
-
+            // if hour > 19, select next day
+            if (findDate.add_day(new_min, new_hour)) {
+                sleep(1000);
+                driver.findElement(By.cssSelector("div.ant-col>div:nth-child(1)>div>div>div:nth-child(1)>div>div>input")).click();
                 new WebDriverWait(driver, Duration.ofSeconds(10))
                         .until(ExpectedConditions.elementToBeClickable(By.cssSelector(findDate.next_date_element(driver)))).click();
-            }
-
-            String min_str;
-            String hour_str;
-            if (new_min < 10) {
-                min_str = "0" + Integer.toString(new_min);
-            } else {
-                min_str = Integer.toString(new_min);
-            }
-            if (new_hour < 10) {
-                hour_str = "0" + Integer.toString(new_hour);
-            } else {
-                hour_str = Integer.toString(new_hour);
             }
             time.click();
             for (int i = 0; i < 10; i++) {
                 sleep(100);
                 key.sendKeys(Keys.BACK_SPACE).perform();
             }
-
             // Select time
-            time.sendKeys(hour_str + ":" + min_str);
-
+            time.sendKeys(findDate.time_str(new_min, new_hour));
             // Click 決 定 button
             new WebDriverWait(driver, Duration.ofSeconds(10))
                     .until(ExpectedConditions.elementToBeClickable(By.cssSelector("li.ant-picker-ok>button"))).click();
 
+            //** 配信時刻設定 Popup **//
+            // Click OK button
             new WebDriverWait(driver, Duration.ofSeconds(10))
                     .until(ExpectedConditions.elementToBeClickable(By.cssSelector("div.ant-modal-footer>button"))).click();
 
-            sleep(1000);
+            //** この配信メールを配信メール予約登録しますか？ Popup **//
+            // Click OK button
+            sleep(100);
             new WebDriverWait(driver, Duration.ofSeconds(10))
                     .until(ExpectedConditions.elementToBeClickable(By.cssSelector("div.ant-modal-confirm-btns>button:nth-child(2)"))).click();
 
-            text = new WebDriverWait(driver, Duration.ofSeconds(10))
-                    .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div.ant-message-custom-content > span:nth-child(2)"))).getText();
-
-            System.out.println(text);
-
             new_min += 10;
 
-        } while ((text.contains("前後5分以内に配信予定のメールが登録されています。配信時刻を変更してください。"))
-                || (text.contains("配信可能時刻は、08:00:00 〜 19:00:00 です。配信時刻を変更してください。"))
-                || text.contains("土日祝に配信予定のメールが登録されています。配信時刻を変更してください")
-                || text.contains("入力内容に誤りがあります。各フィールドに表示されたエラー内容を確認し、再入力してください。"));
+        }
     }
 }
