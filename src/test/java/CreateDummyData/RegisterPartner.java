@@ -4,6 +4,7 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.math.RandomUtils;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -16,6 +17,7 @@ import org.testng.annotations.Test;
 import java.time.Duration;
 
 import static Variable.Variable.*;
+import static java.lang.Thread.sleep;
 
 public class RegisterPartner {
     @Test
@@ -60,7 +62,7 @@ public class RegisterPartner {
         // Account status
         // 1:Prospect, 2:Approached, 3:Information exchanged, 4:Contract record available
         int account_status = RandomUtils.nextInt(4) + 1;
-        driver.findElement(By.cssSelector("#category > label:nth-child(" + Integer.toString(account_status) + ") > span > input"));
+        driver.findElement(By.cssSelector("#category > label:nth-child(" + Integer.toString(account_status) + ") > span > input")).click();
 
         // Customer evaluation
         // 1: one star, 2: two stars, 3: three stars, 4: four stars, 5: five stars
@@ -174,5 +176,104 @@ public class RegisterPartner {
         // 1: None, 2: Can be
         int worker_dispatch_business = RandomUtils.nextInt(2) + 1;
         driver.findElement(By.cssSelector("#has_haken > label:nth-child(" + Integer.toString(worker_dispatch_business) + ") > span > input")).click();
+
+        // Comment
+        // lenght of comment in range 0-1000
+        int lenght_of_comment = RandomUtils.nextInt(1001);
+        String comment = RandomStringUtils.randomAlphabetic(lenght_of_comment);
+        driver.findElement(By.cssSelector("textarea[id='comment.content']")).sendKeys(comment);
+
+        // Fixed comment
+        // 0: Do not fixed comment, 1: Fixed comment
+        int fixed_comment = RandomUtils.nextInt(2);
+        if (fixed_comment == 1) {
+            driver.findElement(By.cssSelector("div:nth-child(3) > div > div > div > button:nth-child(1)")).click();
+        }
+
+        //*** 取引先支店情報 ***//
+        // Business partner branch information
+        // scroll up and switch to Business partner branch information tab
+        ((JavascriptExecutor) driver).executeScript("scroll(0, -250);");
+        driver.findElement(By.cssSelector("#rc-tabs-0-tab-2")).click();
+
+        // Click 支店を登録する button
+        driver.findElement(By.cssSelector("div.ant-result-extra > button")).click();
+
+        // Branch name
+        // length of branch name in range 1-100
+        int length_of_branch_name = RandomUtils.nextInt(100) + 1;
+        String branch_name = RandomStringUtils.randomAlphabetic(length_of_branch_name);
+        driver.findElement(By.cssSelector("#branches_0_name")).sendKeys(branch_name);
+
+        // Address
+        // total length of branch address and branch building in range 2-100
+        int length_of_branch_address = RandomUtils.nextInt(99) + 1;
+        int length_of_branch_building = RandomUtils.nextInt(100 - length_of_branch_address) + 1;
+        String branch_address = RandomStringUtils.randomAlphabetic(length_of_branch_address);
+        String branch_building = RandomStringUtils.randomAlphabetic(length_of_branch_building);
+        driver.findElement(By.cssSelector("#branches_0_address")).sendKeys(branch_address);
+        driver.findElement(By.cssSelector("#branches_0_building")).sendKeys(branch_building);
+
+        // TEL
+        // total length of branch tel1, branch tel2, branch tel3 in range 3-15
+        int length_of_branch_tel1 = RandomUtils.nextInt(13);
+        int length_of_branch_tel2 = RandomUtils.nextInt(14 - length_of_branch_tel1);
+        int length_of_branch_tel3 = RandomUtils.nextInt(15 - length_of_branch_tel1 - length_of_branch_tel2);
+
+        long branch_tel1 = (long) (Math.random() * (Math.pow(10, length_of_branch_tel1)));
+        long branch_tel2 = (long) (Math.random() * (Math.pow(10, length_of_branch_tel2)));
+        long branch_tel3 = (long) (Math.random() * (Math.pow(10, length_of_branch_tel3)));
+
+        driver.findElement(By.cssSelector("#branches_0_tel1")).sendKeys(Long.toString(branch_tel1));
+        driver.findElement(By.cssSelector("#branches_0_tel2")).sendKeys(Long.toString(branch_tel2));
+        driver.findElement(By.cssSelector("#branches_0_tel3")).sendKeys(Long.toString(branch_tel3));
+
+        // FAX
+        // total length of branch fax1, branch fax2, branch fax3 in range 3-15
+        int length_of_branch_fax1 = RandomUtils.nextInt(13);
+        int length_of_branch_fax2 = RandomUtils.nextInt(14 - length_of_branch_fax1);
+        int length_of_branch_fax3 = RandomUtils.nextInt(15 - length_of_branch_fax1 - length_of_branch_fax2);
+
+        long branch_fax1 = (long) (Math.random() * (Math.pow(10, length_of_branch_fax1)));
+        long branch_fax2 = (long) (Math.random() * (Math.pow(10, length_of_branch_fax2)));
+        long branch_fax3 = (long) (Math.random() * (Math.pow(10, length_of_branch_fax3)));
+        driver.findElement(By.cssSelector("#branches_0_fax1")).sendKeys(Long.toString(branch_fax1));
+        driver.findElement(By.cssSelector("#branches_0_fax2")).sendKeys(Long.toString(branch_fax2));
+        driver.findElement(By.cssSelector("#branches_0_fax3")).sendKeys(Long.toString(branch_fax3));
+
+        //*** 取引条件 ***//
+        // Transaction terms
+        driver.findElement(By.cssSelector("#rc-tabs-0-tab-3")).click();
+
+        // Number of years required for transactions in range 1-999
+        int number_of_years_required_for_transactions = (int) (Math.random()*998 + 1);
+        driver.findElement(By.cssSelector("#establishment_year"))
+                .sendKeys(Integer.toString(number_of_years_required_for_transactions));
+
+        // Capital required for transactions in range 0 - 9999999999999
+        long capital_required_for_transactions = (long) (Math.random()*9999999999999L);
+        driver.findElement(By.cssSelector("#capital_man_yen_required_for_transactions"))
+                .sendKeys(Long.toString(capital_required_for_transactions));
+
+        // Qualifications required for transactions
+        // 1: P mark/ISMS , 2: Invoice registration company, 3: Worker dispatch business
+        int qualifications_required_for_transactions = 3;//RandomUtils.nextInt(3) + 1;
+        for (int i = 0; i < qualifications_required_for_transactions; i++) {
+            if (i == 0) {
+                driver.findElement(By.cssSelector("#p_mark_or_isms")).click();
+            }
+            else if (i == 1) {
+                driver.findElement(By.cssSelector("#invoice_system")).click();
+            }
+            else {
+                driver.findElement(By.cssSelector("#haken")).click();
+            }
+        }
+
+        // Click 登 録 button
+        driver.findElement(By.cssSelector("button.ant-btn.ant-btn-primary.EditForm-button-3IRWY")).click();
+
+//        driver.close();
+
     }
 }
