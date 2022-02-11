@@ -1,5 +1,6 @@
 package HBS;
 
+import CreateDummyData.findDate;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.math.RandomUtils;
@@ -14,7 +15,6 @@ import org.testng.annotations.Test;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.time.Duration;
-import java.time.LocalDate;
 import java.time.LocalTime;
 
 import static Variable.Variable.*;
@@ -384,133 +384,56 @@ public class CreateMail {
         // Next to 最終確認_step
         driver.findElement(By.cssSelector("div:nth-child(4) > div > button")).click();
 
+        // Wait and click Time selection button
         sleep(1000);
         driver.findElement(By.cssSelector("div.ant-col.ant-col-24>div>div:nth-child(4)>div>button")).click();
-        WebElement date = driver.findElement(By.cssSelector("div.ant-col>div:nth-child(1)>div>div>div:nth-child(1)>div>div>input"));
-        ((JavascriptExecutor) driver).executeScript("arguments[0].removeAttribute('readonly',0);", date); // Enables the from date box
 
-        date.sendKeys("2022-02-14");
-        key.sendKeys(Keys.ENTER).perform();
-        driver.findElement(By.cssSelector("div.ant-modal-footer>button")).click();
-        sleep(1000);
-        driver.findElement(By.cssSelector("div.ant-modal-confirm-btns>button.ant-btn.ant-btn-primary")).click();
+        // Select date
+        new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.elementToBeClickable(By.cssSelector("div.ant-col>div:nth-child(1)>div>div>div:nth-child(1)>div>div>input")))
+                .click();
 
-    }
+        sleep(200);
 
-    @Test
-    public void test() throws InterruptedException {
-        //Config Webdriver
-        WebDriverManager.chromedriver().setup();
-        ChromeOptions options = new ChromeOptions();
-        options.setHeadless(false);
-        String baseURL = "https://test.app.cmrb.jp/scheduledMails/a0c75caa-6471-4cab-8f4e-fd2403c993cd";
-        WebDriver driver = new ChromeDriver(options);
-        driver.manage().window().maximize();
+        findDate findDate = new findDate();
 
-        //Login
-        driver.get(baseURL);
-        driver.findElement(By.cssSelector("#username")).sendKeys(master_email);
-        driver.findElement(By.cssSelector("#password")).sendKeys(master_password);
-        driver.findElement(By.cssSelector("button.ant-btn.ant-btn-primary.LoginForm-button-3lInS")).click();
-        sleep(3000);
+        driver.findElement(By.cssSelector(findDate.date_element(driver))).click();
+        //-------------------------------------------------------------------------------------------------------
 
-        // Next to 添付ファイル_Step
-        driver.findElement(By.cssSelector("div:nth-child(4)>div>button")).click();
-
-        sleep(1000);
-
-        // Next to 添付ファイル_Step
-        driver.findElement(By.cssSelector("div:nth-child(4)>div>button")).click();
-
-        sleep(1000);
-
-        // Next to 最終確認_step
-        driver.findElement(By.cssSelector("div:nth-child(4) > div > button")).click();
-
-        sleep(1000);
-
-        driver.findElement(By.cssSelector("div.ant-col.ant-col-24>div>div:nth-child(4)>div>button")).click();
-
-        WebElement date = driver.findElement(By.cssSelector("div.ant-col>div:nth-child(1)>div>div>div:nth-child(1)>div>div>input"));
-        ((JavascriptExecutor) driver).executeScript("arguments[0].removeAttribute('readonly',0);", date);
+        String text;
 
         WebElement time = driver.findElement(By.cssSelector("div:nth-child(1) > div > div > div:nth-child(2) > div > div > input"));
         ((JavascriptExecutor) driver).executeScript("arguments[0].removeAttribute('readonly',0);", time);
-
-        LocalDate ymd = LocalDate.now();
-
-        // message
-        String text;
-
-        int date_increase;
-
-        // select day
-        date.sendKeys(ymd.toString());
-        Actions key = new Actions(driver);
-        key.sendKeys(Keys.ENTER).sendKeys(Keys.ENTER).perform();
-        sleep(500);
-
-        // true: day is not available
-
-
         int hour = LocalTime.now().getHour();
         int min = LocalTime.now().getMinute();
         int new_min = min;
         int new_hour = hour;
-        date_increase = 0;
-        LocalDate nymd;
 
+        // Select time
+        // If time incorrect, add 10 minutes and select again
         do {
 
-            sleep(200);
-            // true: day is not available, day = next day
-            System.out.println(driver.findElement(By.cssSelector("div.ant-picker-header > div")).isDisplayed());
-            while (driver.findElement(By.cssSelector("div.ant-picker-header > div")).isDisplayed() == true) {
-                date_increase += 1;
-                nymd = LocalDate.from(LocalDate.now().plusDays(date_increase));
-                for (int i = 0; i < 10; i++) {
-                    key.sendKeys(Keys.BACK_SPACE).perform();
-                }
-                date.sendKeys(nymd.toString());
-                key.sendKeys(Keys.ENTER).perform();
-            }
-
-
-
-            // next hour
+            // Update time after add 10 minutes
             if (new_min > 59) {
-                new_min = new_min - 60;
-                new_hour += 1;
+                new_min = min - 60;
+                new_hour++;
             }
 
-            // time 8:00 - 19:00
+            // Verify time 8:00 - 19:00
             if (new_hour < 8) {
                 new_hour = 8;
                 new_min = 0;
-            }
-            else if (new_hour > 19) {
+            } else if (new_hour > 19) {
                 new_hour = 8;
                 new_min = 0;
-                date_increase += 1;
-                nymd = LocalDate.from(LocalDate.now().plusDays(date_increase));
-                date.sendKeys(nymd.toString());
-                for (int i = 0; i < 20; i++) {
-                    sleep(100);
-                    key.sendKeys(Keys.BACK_SPACE).perform();
-                }
-                key.sendKeys(Keys.ENTER).sendKeys(Keys.ENTER).perform();
 
-                while (driver.findElement(By.cssSelector("div.ant-picker-header > div")).isDisplayed() == true) {
-                    System.out.println("loop");
-                    date_increase += 1;
-                    nymd = LocalDate.from(LocalDate.now().plusDays(date_increase));
-                    for (int i = 0; i < 10; i++) {
-                        sleep(500);
-                        key.sendKeys(Keys.BACK_SPACE).perform();
-                    }
-                    date.sendKeys(nymd.toString());
-                    key.sendKeys(Keys.ENTER).perform();
-                }
+                // If hour > 19:00, select next day.
+                new WebDriverWait(driver, Duration.ofSeconds(10))
+                        .until(ExpectedConditions.elementToBeClickable(By.cssSelector("div.ant-col>div:nth-child(1)>div>div>div:nth-child(1)>div>div>input")))
+                        .click();
+
+                new WebDriverWait(driver, Duration.ofSeconds(10))
+                        .until(ExpectedConditions.elementToBeClickable(By.cssSelector(findDate.next_date_element(driver)))).click();
             }
 
             String min_str;
@@ -525,36 +448,36 @@ public class CreateMail {
             } else {
                 hour_str = Integer.toString(new_hour);
             }
-
             time.click();
             for (int i = 0; i < 10; i++) {
                 sleep(100);
                 key.sendKeys(Keys.BACK_SPACE).perform();
             }
 
-            time.sendKeys(hour_str + ":" + min_str); //Integer.toString(min)
+            // Select time
+            time.sendKeys(hour_str + ":" + min_str);
+
+            // Click 決 定 button
+            new WebDriverWait(driver, Duration.ofSeconds(10))
+                    .until(ExpectedConditions.elementToBeClickable(By.cssSelector("li.ant-picker-ok>button"))).click();
+
+            new WebDriverWait(driver, Duration.ofSeconds(10))
+                    .until(ExpectedConditions.elementToBeClickable(By.cssSelector("div.ant-modal-footer>button"))).click();
 
             sleep(1000);
-            driver.findElement(By.cssSelector("li.ant-picker-ok>button")).click();
-
-            sleep(1000);
-            driver.findElement(By.cssSelector("div.ant-modal-footer>button")).click();
-
-            sleep(1000);
-            driver.findElement(By.cssSelector("div.ant-modal-confirm-btns>button:nth-child(2)")).click();
+            new WebDriverWait(driver, Duration.ofSeconds(10))
+                    .until(ExpectedConditions.elementToBeClickable(By.cssSelector("div.ant-modal-confirm-btns>button:nth-child(2)"))).click();
 
             text = new WebDriverWait(driver, Duration.ofSeconds(10))
                     .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div.ant-message-custom-content > span:nth-child(2)"))).getText();
 
             System.out.println(text);
 
-            new_min += 5;
-
-            System.out.println("new_min: " + Integer.toString(new_min) + ", new_how: " + Integer.toString(new_hour) + ", date:" + LocalDate.from(LocalDate.now().plusDays(date_increase)).toString());
+            new_min += 10;
 
         } while ((text.contains("前後5分以内に配信予定のメールが登録されています。配信時刻を変更してください。"))
                 || (text.contains("配信可能時刻は、08:00:00 〜 19:00:00 です。配信時刻を変更してください。"))
-                || text.contains("土日祝に配信予定のメールが登録されています。配信時刻を変更してください"));
-
+                || text.contains("土日祝に配信予定のメールが登録されています。配信時刻を変更してください")
+                || text.contains("入力内容に誤りがあります。各フィールドに表示されたエラー内容を確認し、再入力してください。"));
     }
 }
