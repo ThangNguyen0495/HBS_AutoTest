@@ -2,8 +2,8 @@ package BasePage.createPartner;
 
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.math.RandomUtils;
-import org.checkerframework.checker.units.qual.A;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
@@ -102,23 +102,21 @@ public class Business_partner_information {
         driver.findElement(By.cssSelector("#building")).sendKeys(building);
     }
 
-    public void bsi_tel(WebDriver driver) {
+    public void bpi_tel(WebDriver driver) {
         // TEL
         // total length of tel1, tel2, tel3 in range 3-15
         int length_of_tel1 = RandomUtils.nextInt(13);
         int length_of_tel2 = RandomUtils.nextInt(14 - length_of_tel1);
         int length_of_tel3 = RandomUtils.nextInt(15 - length_of_tel1 - length_of_tel2);
-
         long tel1 = (long) (Math.random() * (Math.pow(10, length_of_tel1)));
         long tel2 = (long) (Math.random() * (Math.pow(10, length_of_tel2)));
         long tel3 = (long) (Math.random() * (Math.pow(10, length_of_tel3)));
-
         driver.findElement(By.cssSelector("#tel1")).sendKeys(Long.toString(tel1));
         driver.findElement(By.cssSelector("#tel2")).sendKeys(Long.toString(tel2));
         driver.findElement(By.cssSelector("#tel3")).sendKeys(Long.toString(tel3));
     }
 
-    public void bsi_fax (WebDriver driver) {
+    public void bpi_fax (WebDriver driver) {
         // FAX
         // total length of fax1, fax2, fax3 in range 3-15
         int length_of_fax1 = RandomUtils.nextInt(13);
@@ -190,5 +188,29 @@ public class Business_partner_information {
         // 1: None, 2: Can be
         int worker_dispatch_business = RandomUtils.nextInt(2) + 1;
         driver.findElement(By.cssSelector("#has_haken > label:nth-child(" + Integer.toString(worker_dispatch_business) + ") > span > input")).click();
+    }
+    
+    public void comment(WebDriver driver) {
+        // Comment
+        // lenght of comment in range 0-1000
+        int lenght_of_comment = RandomUtils.nextInt(1001);
+        String comment = RandomStringUtils.randomAlphabetic(lenght_of_comment);
+        driver.findElement(By.cssSelector("textarea[id='comment.content']")).sendKeys(comment);
+    }
+    
+    public void fixed_comment(WebDriver driver) {
+        // Fixed comment
+        // 0: Do not fixed comment, 1: Fixed comment
+        int fixed_comment = RandomUtils.nextInt(2);
+        if (fixed_comment == 1) {
+            driver.findElement(By.cssSelector("div:nth-child(3) > div > div > div > button:nth-child(1)")).click();
+        }
+    }
+
+    public void scroll_up_and_switch_to_Business_partner_branch_information_tab(WebDriver driver) {
+        // Scroll up
+        ((JavascriptExecutor) driver).executeScript("scroll(0, -250);");
+        // Switch to Business partner branch information tab
+        driver.findElement(By.cssSelector("#rc-tabs-0-tab-2")).click();
     }
 }
