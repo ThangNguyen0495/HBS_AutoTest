@@ -1,5 +1,6 @@
 package CreateDummyData;
 
+import BasePage.createPartner.Business_partner_information;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.math.RandomUtils;
@@ -17,7 +18,6 @@ import org.testng.annotations.Test;
 import java.time.Duration;
 
 import static Variable.Variable.*;
-import static java.lang.Thread.sleep;
 
 public class RegisterPartner {
     @Test
@@ -43,21 +43,25 @@ public class RegisterPartner {
         //** Fill in Business partner information form **//
         // Block list
         // 0: Do not block, 1: Block
-        int block_list = RandomUtils.nextInt(2);
-        if (block_list == 1){
-            driver.findElement(By.cssSelector("#is_blacklisted")).click();
-        }
+        Business_partner_information bsi = new Business_partner_information();
+        bsi.block_list(driver);
+//        int block_list = RandomUtils.nextInt(2);
+//        if (block_list == 1){
+//            driver.findElement(By.cssSelector("#is_blacklisted")).click();
+//        }
 
         // Corporate number
         // Corporate number in range 0 - 9999999999999
-        long corporate_number = (long) (Math.random()*9999999999999L);
-        driver.findElement(By.cssSelector("#corporate_number")).sendKeys(Long.toString(corporate_number));
+//        long corporate_number = (long) (Math.random()*9999999999999L);
+//        driver.findElement(By.cssSelector("#corporate_number")).sendKeys(Long.toString(corporate_number));
+        bsi.corporate_number(driver);
 
         // Customer name
         // length of customer name in range 1-100
-        int length_of_customer_name = RandomUtils.nextInt(100) + 1;
-        String customer_name = RandomStringUtils.randomAlphabetic(length_of_customer_name);
-        driver.findElement(By.cssSelector("#name")).sendKeys(customer_name);
+//        int length_of_customer_name = RandomUtils.nextInt(100) + 1;
+//        String customer_name = RandomStringUtils.randomAlphabetic(length_of_customer_name);
+//        driver.findElement(By.cssSelector("#name")).sendKeys(customer_name);
+        bsi.customer_name(driver);
 
         // Account status
         // 1:Prospect, 2:Approached, 3:Information exchanged, 4:Contract record available
