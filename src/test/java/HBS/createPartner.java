@@ -20,7 +20,7 @@ public class createPartner {
         WebDriver driver = cm.setupWebdriver();
 
         //Login
-        cm.login(driver,url + register_partner_path, master_email, master_password);
+        cm.login(driver, url + register_partner_path, master_email, master_password);
 
         //*** 取引先情報 ***//
         // Business partner information

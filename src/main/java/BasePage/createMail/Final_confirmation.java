@@ -79,7 +79,7 @@ public class Final_confirmation {
         }
     }
 
-    public String time_str(int min, int hour){
+    public String time_str(int min, int hour) {
         String min_str;
         String hour_str;
         if (min < 10) {

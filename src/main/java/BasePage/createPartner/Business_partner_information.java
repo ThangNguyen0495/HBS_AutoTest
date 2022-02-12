@@ -18,7 +18,7 @@ public class Business_partner_information {
         // Block list
         // 0: Do not block, 1: Block
         int block_list = RandomUtils.nextInt(2);
-        if (block_list == 1){
+        if (block_list == 1) {
             driver.findElement(By.cssSelector("#is_blacklisted"))
                     .click();
         }
@@ -27,7 +27,7 @@ public class Business_partner_information {
     public void corporate_number(WebDriver driver) {
         // Corporate number
         // Corporate number in range 0 - 9999999999999
-        long corporate_number = (long) (Math.random()*9999999999999L);
+        long corporate_number = (long) (Math.random() * 9999999999999L);
         driver.findElement(By.cssSelector("#corporate_number"))
                 .sendKeys(Long.toString(corporate_number));
     }
@@ -66,12 +66,11 @@ public class Business_partner_information {
     public void establishment_date(WebDriver driver) {
         // generate establishment date with YYYY-MM format
         int month = RandomUtils.nextInt(12) + 1; // month in range 01-12
-        int year = (int)(Math.random()*223 + 1800); // year in range 1800-2022
+        int year = (int) (Math.random() * 223 + 1800); // year in range 1800-2022
         String establishment_date;
-        if (month < 10){
+        if (month < 10) {
             establishment_date = Integer.toString(year) + "-0" + Integer.toString(month);
-        }
-        else {
+        } else {
             establishment_date = Integer.toString(year) + "-" + Integer.toString(month);
         }
         new WebDriverWait(driver, Duration.ofSeconds(10))
@@ -86,7 +85,7 @@ public class Business_partner_information {
         // 1: Jan, 2: Feb, 3: Mar, 4: Apr, 5: May, 6: Jun, 7: Jul, 8: Aug, 9: Sept, 10: Oct, 11: Nov, 12: Dec
         int fiscal_year = RandomUtils.nextInt(12) + 1;
         driver.findElement(By.cssSelector("#settlement_month")).click();
-        for (int i = 0; i < fiscal_year ; i++){
+        for (int i = 0; i < fiscal_year; i++) {
             key.sendKeys(Keys.DOWN).perform();
         }
         key.sendKeys(Keys.ENTER).perform();
@@ -116,7 +115,7 @@ public class Business_partner_information {
         driver.findElement(By.cssSelector("#tel3")).sendKeys(Long.toString(tel3));
     }
 
-    public void bpi_fax (WebDriver driver) {
+    public void bpi_fax(WebDriver driver) {
         // FAX
         // total length of fax1, fax2, fax3 in range 3-15
         int length_of_fax1 = RandomUtils.nextInt(13);
@@ -189,7 +188,7 @@ public class Business_partner_information {
         int worker_dispatch_business = RandomUtils.nextInt(2) + 1;
         driver.findElement(By.cssSelector("#has_haken > label:nth-child(" + Integer.toString(worker_dispatch_business) + ") > span > input")).click();
     }
-    
+
     public void comment(WebDriver driver) {
         // Comment
         // lenght of comment in range 0-1000
@@ -197,7 +196,7 @@ public class Business_partner_information {
         String comment = RandomStringUtils.randomAlphabetic(lenght_of_comment);
         driver.findElement(By.cssSelector("textarea[id='comment.content']")).sendKeys(comment);
     }
-    
+
     public void fixed_comment(WebDriver driver) {
         // Fixed comment
         // 0: Do not fixed comment, 1: Fixed comment
