@@ -156,5 +156,8 @@ public class CreateTenant {
 
         // Complete tenant registration
         pi.complete_tenant_registration(driver);
+
+        // Close browser
+        cm.closeBrowser(driver);
     }
 }
