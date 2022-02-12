@@ -17,7 +17,7 @@ public class Business_partner_information {
     public void block_list(WebDriver driver) {
         // Block list
         // 0: Do not block, 1: Block
-        int block_list = 1;//RandomUtils.nextInt(2);
+        int block_list = RandomUtils.nextInt(2);
         if (block_list == 1){
             driver.findElement(By.cssSelector("#is_blacklisted"))
                     .click();

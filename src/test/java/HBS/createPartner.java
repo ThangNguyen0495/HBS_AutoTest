@@ -1,4 +1,4 @@
-package CreateDummyData;
+package HBS;
 
 import BasePage.createPartner.Business_partner_branch_information;
 import BasePage.createPartner.Business_partner_information;
@@ -9,8 +9,8 @@ import org.testng.annotations.Test;
 
 import static Variable.Variable.*;
 
-public class RegisterPartner {
-    @Test
+public class createPartner {
+    @Test()
     public void main() throws InterruptedException {
 
         // Init Common function
@@ -136,6 +136,5 @@ public class RegisterPartner {
 
         // Close browser
         cm.closeBrowser(driver);
-
     }
 }
