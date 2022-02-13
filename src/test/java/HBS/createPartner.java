@@ -138,6 +138,9 @@ public class createPartner {
         // Click 登 録 button
         tt.finish_register_partner(driver, role, cm);
 
+        // Check unauthorized
+        cm.unauthorized(driver,role, 5);
+
         // Close browser
         cm.closeBrowser(driver);
     }

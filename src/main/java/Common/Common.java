@@ -32,16 +32,12 @@ public class Common {
     }
 
     public Boolean authorized(String role, List<String> role_list) {
-        if (role_list.contains(role)) {
-            return true;
-        } else {
-            return false;
-        }
+        return role_list.contains(role);
     }
 
     public List<String> role_list(int number_of_role) {
 
-        List<String> role_list = new ArrayList<String>();
+        List<String> role_list = new ArrayList<>();
         for (int i = 1; i <= number_of_role; i++) {
             // add Master role
             if (i == 1) {
@@ -74,5 +70,15 @@ public class Common {
     public void closeBrowser(WebDriver driver) {
         // Close browser
         driver.close();
+    }
+
+    public void unauthorized(WebDriver driver, String role, int number_of_role) {
+        // Check unauthorized
+        if (!authorized(role, role_list(number_of_role))) {
+            if ((driver.findElement(By.cssSelector("div.ant-result-title")).getText().equals("ページが見つかりません"))
+                    && driver.findElement(By.cssSelector("div.ant-result-subtitle")).getText().equals("ご指定のURLに対応するページが見つかりませんでした。")) {
+                System.out.println("You are not authorized to access to this web !!!");
+            }
+        }
     }
 }
