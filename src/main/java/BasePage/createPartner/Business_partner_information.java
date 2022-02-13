@@ -104,9 +104,9 @@ public class Business_partner_information {
     public void bpi_tel(WebDriver driver) {
         // TEL
         // total length of tel1, tel2, tel3 in range 3-15
-        int length_of_tel1 = RandomUtils.nextInt(13);
-        int length_of_tel2 = RandomUtils.nextInt(14 - length_of_tel1);
-        int length_of_tel3 = RandomUtils.nextInt(15 - length_of_tel1 - length_of_tel2);
+        int length_of_tel1 = RandomUtils.nextInt(13) + 1;
+        int length_of_tel2 = RandomUtils.nextInt(14 - length_of_tel1) + 1;
+        int length_of_tel3 = RandomUtils.nextInt(15 - length_of_tel1 - length_of_tel2) + 1;
         long tel1 = (long) (Math.random() * (Math.pow(10, length_of_tel1)));
         long tel2 = (long) (Math.random() * (Math.pow(10, length_of_tel2)));
         long tel3 = (long) (Math.random() * (Math.pow(10, length_of_tel3)));
@@ -118,9 +118,9 @@ public class Business_partner_information {
     public void bpi_fax(WebDriver driver) {
         // FAX
         // total length of fax1, fax2, fax3 in range 3-15
-        int length_of_fax1 = RandomUtils.nextInt(13);
-        int length_of_fax2 = RandomUtils.nextInt(14 - length_of_fax1);
-        int length_of_fax3 = RandomUtils.nextInt(15 - length_of_fax1 - length_of_fax2);
+        int length_of_fax1 = RandomUtils.nextInt(13) + 1;
+        int length_of_fax2 = RandomUtils.nextInt(14 - length_of_fax1) + 1;
+        int length_of_fax3 = RandomUtils.nextInt(15 - length_of_fax1 - length_of_fax2) + 1;
 
         long fax1 = (long) (Math.random() * (Math.pow(10, length_of_fax1)));
         long fax2 = (long) (Math.random() * (Math.pow(10, length_of_fax2)));

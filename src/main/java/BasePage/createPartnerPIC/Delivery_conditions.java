@@ -13,7 +13,7 @@ public class Delivery_conditions {
     public void proposal_delivery(WebDriver driver) {
         // Proposal delivery
         // 0: OFF, 1: ON
-        int proposal_delivery = 1;//RandomUtils.nextInt(2);
+        int proposal_delivery = RandomUtils.nextInt(2);
         proposal_delivery_check = proposal_delivery;
         if (proposal_delivery == 1) {
             // Proposal delivery: ON
@@ -70,7 +70,7 @@ public class Delivery_conditions {
     public void personnel_delivery(WebDriver driver) {
         // Personnel delivery
         // 0: OFF, 1: ON
-        int personnel_delivery = 1;//RandomUtils.nextInt(2);
+        int personnel_delivery = RandomUtils.nextInt(2);
         personnel_delivery_check = personnel_delivery;
         if (personnel_delivery == 1) {
             // Personnel delivery: ON

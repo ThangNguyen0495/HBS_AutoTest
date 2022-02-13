@@ -3,6 +3,7 @@ package BasePage.createPartnerPIC;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.math.RandomUtils;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
@@ -56,9 +57,9 @@ public class Contact_information {
     public void tel(WebDriver driver) {
         // TEL
         // total length of tel1, tel2, tel3 in range 3-15
-        int length_of_tel1 = RandomUtils.nextInt(13);
-        int length_of_tel2 = RandomUtils.nextInt(14 - length_of_tel1);
-        int length_of_tel3 = RandomUtils.nextInt(15 - length_of_tel1 - length_of_tel2);
+        int length_of_tel1 = RandomUtils.nextInt(13) + 1;
+        int length_of_tel2 = RandomUtils.nextInt(14 - length_of_tel1) + 1;
+        int length_of_tel3 = RandomUtils.nextInt(15 - length_of_tel1 - length_of_tel2) + 1;
         long tel1 = (long) (Math.random() * (Math.pow(10, length_of_tel1)));
         long tel2 = (long) (Math.random() * (Math.pow(10, length_of_tel2)));
         long tel3 = (long) (Math.random() * (Math.pow(10, length_of_tel3)));
@@ -70,7 +71,7 @@ public class Contact_information {
     public void position(WebDriver driver) {
         // Position
         // length of position in range 1-50
-        int length_of_position = RandomUtils.nextInt(50);
+        int length_of_position = RandomUtils.nextInt(50) + 1;
         String position = RandomStringUtils.randomAlphabetic(length_of_position);
         driver.findElement(By.cssSelector("#position")).sendKeys(position);
     }
@@ -78,7 +79,7 @@ public class Contact_information {
     public void department(WebDriver driver) throws InterruptedException {
         // Department
         // length of department in range 1-50
-        int length_of_department = RandomUtils.nextInt(50);
+        int length_of_department = RandomUtils.nextInt(50) + 1;
         String department = RandomStringUtils.randomAlphabetic(length_of_department);
         driver.findElement(By.cssSelector("#department")).sendKeys(department);
         sleep(1000);
@@ -87,7 +88,7 @@ public class Contact_information {
     public void in_house_person_in_charge(WebDriver driver, Actions key) throws InterruptedException {
         // In-house person in charge
         driver.findElement(By.cssSelector("#staff")).click();
-        int in_house_person_in_charge = RandomUtils.nextInt(20);
+        int in_house_person_in_charge = RandomUtils.nextInt(20) + 1;
         for (int i = 0; i <= in_house_person_in_charge; i++) {
             key.sendKeys(Keys.DOWN).perform();
         }
@@ -145,7 +146,8 @@ public class Contact_information {
     }
 
     public void switch_to_delivery_conditions_tab(WebDriver driver) {
-        // Switch to Delivery conditions tab
+        // Scroll up and switch to Delivery conditions tab
+        ((JavascriptExecutor) driver).executeScript("scroll(0, -250);");
         driver.findElement(By.cssSelector("#rc-tabs-0-tab-2")).click();
     }
 

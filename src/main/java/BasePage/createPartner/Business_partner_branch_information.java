@@ -34,9 +34,9 @@ public class Business_partner_branch_information {
     public void branch_tel(WebDriver driver) {
         // TEL
         // total length of branch tel1, branch tel2, branch tel3 in range 3-15
-        int length_of_branch_tel1 = RandomUtils.nextInt(13);
-        int length_of_branch_tel2 = RandomUtils.nextInt(14 - length_of_branch_tel1);
-        int length_of_branch_tel3 = RandomUtils.nextInt(15 - length_of_branch_tel1 - length_of_branch_tel2);
+        int length_of_branch_tel1 = RandomUtils.nextInt(13) + 1;
+        int length_of_branch_tel2 = RandomUtils.nextInt(14 - length_of_branch_tel1) + 1;
+        int length_of_branch_tel3 = RandomUtils.nextInt(15 - length_of_branch_tel1 - length_of_branch_tel2) + 1;
         long branch_tel1 = (long) (Math.random() * (Math.pow(10, length_of_branch_tel1)));
         long branch_tel2 = (long) (Math.random() * (Math.pow(10, length_of_branch_tel2)));
         long branch_tel3 = (long) (Math.random() * (Math.pow(10, length_of_branch_tel3)));
@@ -48,9 +48,9 @@ public class Business_partner_branch_information {
     public void branch_fax(WebDriver driver) {
         // FAX
         // total length of branch fax1, branch fax2, branch fax3 in range 3-15
-        int length_of_branch_fax1 = RandomUtils.nextInt(13);
-        int length_of_branch_fax2 = RandomUtils.nextInt(14 - length_of_branch_fax1);
-        int length_of_branch_fax3 = RandomUtils.nextInt(15 - length_of_branch_fax1 - length_of_branch_fax2);
+        int length_of_branch_fax1 = RandomUtils.nextInt(13) + 1;
+        int length_of_branch_fax2 = RandomUtils.nextInt(14 - length_of_branch_fax1) + 1;
+        int length_of_branch_fax3 = RandomUtils.nextInt(15 - length_of_branch_fax1 - length_of_branch_fax2) + 1;
         long branch_fax1 = (long) (Math.random() * (Math.pow(10, length_of_branch_fax1)));
         long branch_fax2 = (long) (Math.random() * (Math.pow(10, length_of_branch_fax2)));
         long branch_fax3 = (long) (Math.random() * (Math.pow(10, length_of_branch_fax3)));

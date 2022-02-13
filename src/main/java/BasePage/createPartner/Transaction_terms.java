@@ -1,5 +1,6 @@
 package BasePage.createPartner;
 
+import org.apache.commons.lang.math.RandomUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
@@ -21,7 +22,7 @@ public class Transaction_terms {
     public void qualifications_required_for_transactions(WebDriver driver) {
         // Qualifications required for transactions
         // 1: P mark/ISMS , 2: Invoice registration company, 3: Worker dispatch business
-        int qualifications_required_for_transactions = 3;//RandomUtils.nextInt(3) + 1;
+        int qualifications_required_for_transactions = RandomUtils.nextInt(3) + 1;
         for (int i = 0; i < qualifications_required_for_transactions; i++) {
             if (i == 0) {
                 driver.findElement(By.cssSelector("#p_mark_or_isms")).click();
