@@ -11,7 +11,7 @@ import static Variable.Variable.*;
 
 public class createPartnerPIC {
     @Test
-    public void main() throws InterruptedException {
+    public void 取引先担当者登録() throws InterruptedException {
         //Init Common function
         Common cm = new Common();
 
@@ -30,46 +30,46 @@ public class createPartnerPIC {
         Contact_information ci = new Contact_information();
 
         // Contact name
-        ci.contact_name(driver);
+        ci.contact_name(driver, role, cm);
 
         // Affiliated business partner
-        ci.affiliated_business_partner(driver, key);
+        ci.affiliated_business_partner(driver, key, role, cm);
 
         // TO
-        ci.TO(driver);
+        ci.TO(driver, role, cm);
 
         // CC
-        ci.CC(driver);
+        ci.CC(driver, role, cm);
 
         // TEL
-        ci.tel(driver);
+        ci.tel(driver, role, cm);
 
         // Position
-        ci.position(driver);
+        ci.position(driver, role, cm);
 
         // Department
-        ci.department(driver);
+        ci.department(driver, role, cm);
 
         // In-house person in charge
-        ci.in_house_person_in_charge(driver, key);
+        ci.in_house_person_in_charge(driver, key, role, cm);
 
         // Last visit date
-        ci.last_visit_date(driver, key);
+        ci.last_visit_date(driver, key, role, cm);
 
         // Tag
-        ci.tag(driver, key);
+        ci.tag(driver, key, role, cm);
 
         // Compatibility
-        ci.compatibility(driver);
+        ci.compatibility(driver, role, cm);
 
         // Comment
-        ci.comment(driver);
+        ci.comment(driver, role, cm);
 
         // Fixed Comment
-        ci.fixed_comment(driver);
+        ci.fixed_comment(driver, role, cm);
 
         // Switch to Delivery conditions tab
-        ci.switch_to_delivery_conditions_tab(driver);
+        ci.switch_to_delivery_conditions_tab(driver, role, cm);
 
         //****** 取引先担当者情報 ****** //
         // Delivery conditions
@@ -77,16 +77,16 @@ public class createPartnerPIC {
         Delivery_conditions dc = new Delivery_conditions();
 
         // Proposal delivery
-        dc.proposal_delivery(driver);
+        dc.proposal_delivery(driver, role, cm);
 
         // Personnel delivery
-        dc.personnel_delivery(driver);
+        dc.personnel_delivery(driver, role, cm);
 
         // Desired area
-        dc.desired_area(driver);
+        dc.desired_area(driver, role, cm);
 
         // Click Register button
-        dc.complete_create_partner_pic(driver);
+        dc.complete_create_partner_pic(driver, role, cm);
 
         // Close browser
         cm.closeBrowser(driver);

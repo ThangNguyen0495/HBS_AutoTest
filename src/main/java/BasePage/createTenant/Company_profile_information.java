@@ -25,9 +25,9 @@ public class Company_profile_information {
         // generate establish date by YYYY-MM format
         String establishment_date;
         if (month < 10) {
-            establishment_date = Integer.toString(year) + "-0" + Integer.toString(month);
+            establishment_date = year + "-0" + month;
         } else {
-            establishment_date = Integer.toString(year) + "-" + Integer.toString(month);
+            establishment_date = year + "-" + month;
         }
         // Establishment date
         driver.findElement(By.cssSelector("#establishment_date")).sendKeys(establishment_date);
@@ -58,7 +58,7 @@ public class Company_profile_information {
         // Commercial distribution
         // 1: Can't come out, 2: Exit
         int commercial_distribution = RandomUtils.nextInt(2) + 1;
-        driver.findElement(By.cssSelector("#has_distribution>label:nth-child(" + Integer.toString(commercial_distribution) + ")>span>input")).click();
+        driver.findElement(By.cssSelector("#has_distribution>label:nth-child(" + commercial_distribution + ")>span>input")).click();
     }
 
     public void capital(WebDriver driver) {
@@ -74,21 +74,21 @@ public class Company_profile_information {
         // P mark / ISMS
         // 1: None, 2: Can be
         int P_mark_or_ISMS = RandomUtils.nextInt(2) + 1;
-        driver.findElement(By.cssSelector("#has_p_mark_or_isms>label:nth-child(" + Integer.toString(P_mark_or_ISMS) + ")>span>input")).click();
+        driver.findElement(By.cssSelector("#has_p_mark_or_isms>label:nth-child(" + P_mark_or_ISMS + ")>span>input")).click();
     }
 
     public void invoice_registration_company(WebDriver driver) {
         // Invoice registration company
         // 1: None, 2: Can be
         int invoice_registration_company = RandomUtils.nextInt(2) + 1;
-        driver.findElement(By.cssSelector("#has_invoice_system>label:nth-child(" + Integer.toString(invoice_registration_company) + ")>span>input")).click();
+        driver.findElement(By.cssSelector("#has_invoice_system>label:nth-child(" + invoice_registration_company + ")>span>input")).click();
     }
 
     public void worker_dispatch_business(WebDriver driver) {
         // Worker dispatch business
         // 1: None, 2: Can be
         int worker_dispatch_business = RandomUtils.nextInt(2) + 1;
-        driver.findElement(By.cssSelector("#has_haken>label:nth-child(" + Integer.toString(worker_dispatch_business) + ")>span>input")).click();
+        driver.findElement(By.cssSelector("#has_haken>label:nth-child(" + worker_dispatch_business + ")>span>input")).click();
     }
 
     public void next_to_personal_profile_information(WebDriver driver) throws InterruptedException {

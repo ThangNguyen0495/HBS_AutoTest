@@ -25,8 +25,8 @@ public class Payment_information {
         }
         driver.get("https://pay.jp/docs/testcard");
         // Get card number by id
-        card_number_register = driver.findElement(By.cssSelector("table:nth-child(4)>tbody>tr:nth-child(" + Integer.toString(id_register) + ")>td:nth-child(1)")).getText();
-        card_number_update = driver.findElement(By.cssSelector("table:nth-child(4)>tbody>tr:nth-child(" + Integer.toString(id_update) + ")>td:nth-child(1)")).getText();
+        card_number_register = driver.findElement(By.cssSelector("table:nth-child(4)>tbody>tr:nth-child(" + id_register + ")>td:nth-child(1)")).getText();
+        card_number_update = driver.findElement(By.cssSelector("table:nth-child(4)>tbody>tr:nth-child(" + id_update + ")>td:nth-child(1)")).getText();
     }
 
     public void back_to_payment_information(WebDriver driver) throws InterruptedException {
@@ -71,9 +71,9 @@ public class Payment_information {
         // generate date of expiry with MM/YY format
         String date_of_expiry;
         if (month < 10) {
-            date_of_expiry = "0" + Integer.toString(month) + Integer.toString(year);
+            date_of_expiry = "0" + month + year;
         } else {
-            date_of_expiry = Integer.toString(month) + Integer.toString(year);
+            date_of_expiry = Integer.toString(month) + year;
         }
         //Date of Expiry
         driver.switchTo().defaultContent();
@@ -88,13 +88,13 @@ public class Payment_information {
         int cvc = RandomUtils.nextInt(10000);
         String CVC;
         if (cvc < 10) {
-            CVC = "000" + Integer.toString(cvc);
+            CVC = "000" + cvc;
         } else if (cvc < 99) {
-            CVC = "00" + Integer.toString(cvc);
+            CVC = "00" + cvc;
         } else if (cvc < 999) {
-            CVC = "0" + Integer.toString(cvc);
+            CVC = "0" + cvc;
         } else {
-            CVC = "0" + Integer.toString(cvc);
+            CVC = "0" + cvc;
         }
         //CVC
         driver.switchTo().defaultContent();

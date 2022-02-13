@@ -14,8 +14,8 @@ import java.io.IOException;
 import static Variable.Variable.*;
 
 public class CreateMail {
-    @Test(invocationCount = 10)
 
+    @Test
     public void 配信メール予約() throws InterruptedException, IOException {
 
         // Init Common function
@@ -36,23 +36,23 @@ public class CreateMail {
         Basic_information bi = new Basic_information();
 
         // Format
-        bi.format(driver);
+        bi.format(driver, role, cm);
 
         // Distributor
         // random distributor in range 1-20
-        bi.distributor(driver, key);
+        bi.distributor(driver, key, role, cm);
 
         // Subject
-        bi.subject(driver);
+        bi.subject(driver, role, cm);
 
         // Insertion
-        bi.insertion(driver);
+        bi.insertion(driver, role, cm);
 
         // Send a copy to the distributor
-        bi.send_a_copy_to_the_distributor(driver);
+        bi.send_a_copy_to_the_distributor(driver, role, cm);
 
         // Next to 添付ファイル_Step
-        bi.next_to_attachment_step(driver);
+        bi.next_to_attachment_step(driver, role, cm);
 
         //****** 添付ファイル ****** //
         // Attachment
@@ -64,29 +64,29 @@ public class CreateMail {
         a.generate_test_file(2);
 
         // Upload file
-        a.upload_file(driver);
+        a.upload_file(driver, role, cm);
 
         // Next to 宛先選択_Step
-        a.next_to_destination_selection_step(driver);
+        a.next_to_destination_selection_step(driver, role, cm);
 
         //****** 宛先選択 ****** //
         // Init Destination selection function
         Destination_selection ds = new Destination_selection();
 
         // Delivery information
-        ds.delivery_information(driver);
+        ds.delivery_information(driver, role, cm);
 
         // Commitment
-        ds.commitment(driver, key);
+        ds.commitment(driver, key, role, cm);
 
         // Search
-        ds.search_contact_by_condition(driver);
+        ds.search_contact_by_condition(driver, role, cm);
 
         // Select contact
-        ds.select_contact(driver);
+        ds.select_contact(driver, role, cm);
 
         // Next to 最終確認_step
-        ds.next_to_final_confirmation(driver);
+        ds.next_to_final_confirmation(driver, role, cm);
 
         //****** 最終確認 ****** //
         // Final confirmation
@@ -94,13 +94,13 @@ public class CreateMail {
         Final_confirmation fc = new Final_confirmation();
 
         // Open delivery time setting popup
-        fc.open_delivery_time_setting_popup(driver);
+        fc.open_delivery_time_setting_popup(driver, role, cm);
 
         // Select date
-        fc.select_date(driver);
+        fc.select_date(driver, role, cm);
 
         // Select time and select again when time incorrect
-        fc.select_time_and_select_again_when_time_incorrect(driver, key);
+        fc.select_time_and_select_again_when_time_incorrect(driver, key, role, cm);
 
         // Close browser
         cm.closeBrowser(driver);
