@@ -136,7 +136,7 @@ public class Contact_information {
         }
     }
 
-    public void tag(WebDriver driver, Actions key, String role, Common cm) throws InterruptedException {
+    public void tag(WebDriver driver, Actions key, String role, Common cm) {
         // Master, Administrator, Responsible person, Leader, Member
         if (cm.authorized(role, cm.role_list(5))) {
             // Tag
@@ -157,7 +157,7 @@ public class Contact_information {
             // Compatibility
             // 1: Good, 2: Bad
             int compatibility = RandomUtils.nextInt(2) + 1;
-            driver.findElement(By.cssSelector("button.ant-btn.ant-btn-link.ant-btn-sm.ant-btn-icon-only.ContactForm-button-1pNJJ:nth-child(" + Integer.toString(compatibility) + ")"))
+            driver.findElement(By.cssSelector("button.ant-btn.ant-btn-link.ant-btn-sm.ant-btn-icon-only.ContactForm-button-1pNJJ:nth-child(" + compatibility + ")"))
                     .click();
         }
     }

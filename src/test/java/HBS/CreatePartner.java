@@ -10,9 +10,9 @@ import org.testng.annotations.Test;
 
 import static Variable.Variable.*;
 
-public class createPartner {
+public class CreatePartner {
     @Test()
-    public void 取引先登録() throws InterruptedException {
+    public void createPartner() throws InterruptedException {
 
         // Init Common function
         Common cm = new Common();
@@ -137,6 +137,9 @@ public class createPartner {
 
         // Click 登 録 button
         tt.finish_register_partner(driver, role, cm);
+
+        // Check unauthorized
+        cm.unauthorized(driver,role, 5);
 
         // Close browser
         cm.closeBrowser(driver);

@@ -31,7 +31,7 @@ public class Payment_information {
 
     public void back_to_payment_information(WebDriver driver) throws InterruptedException {
         Member_information url = new Member_information();
-        driver.get(url.url_in_コモレビへ新規登録_mail(driver));
+        driver.get(url.url_in_New_registration_to_Komorebi_mail(driver));
         sleep(3000);
     }
 

@@ -69,7 +69,7 @@ public class Member_information {
         sleep(10000);
     }
 
-    public String url_in_コモレビへ新規登録_mail(WebDriver driver) {
+    public String url_in_New_registration_to_Komorebi_mail(WebDriver driver) {
         // Link to register mail
         driver.get("https://generator.email/" + email_address + "@bedul.net");
 
@@ -86,7 +86,7 @@ public class Member_information {
 
     public void next_to_company_profile_information(WebDriver driver) throws InterruptedException {
         // Next to Company profile information step
-        driver.get(url_in_コモレビへ新規登録_mail(driver));
+        driver.get(url_in_New_registration_to_Komorebi_mail(driver));
         sleep(1000);
     }
 }

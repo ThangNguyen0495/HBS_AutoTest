@@ -9,9 +9,9 @@ import org.testng.annotations.Test;
 
 import static Variable.Variable.*;
 
-public class createPartnerPIC {
+public class CreatePartnerPIC {
     @Test
-    public void 取引先担当者登録() throws InterruptedException {
+    public void createPartnerPIC() throws InterruptedException {
         //Init Common function
         Common cm = new Common();
 

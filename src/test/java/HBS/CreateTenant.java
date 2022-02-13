@@ -13,9 +13,9 @@ import static Variable.Variable.url;
 
 public class CreateTenant {
 
-    @Test(priority = 0)
+    @Test
     // Member information
-    public void テナント作成() throws InterruptedException {
+    public void createTenant() throws InterruptedException {
 
         // Init Common function
         Common cm = new Common();

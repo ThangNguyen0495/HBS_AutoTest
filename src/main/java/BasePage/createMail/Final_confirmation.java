@@ -53,7 +53,8 @@ public class Final_confirmation {
         return "table.ant-picker-content>tbody>tr:nth-child(" + row + ")>td:nth-child(" + col + ")";
     }
 
-    public Boolean check_time(WebDriver driver) {
+    public Boolean check_time(WebDriver driver) throws InterruptedException {
+        sleep(1000);
         return driver.getCurrentUrl().equals("https://test.app.cmrb.jp/scheduledMails");
     }
 
@@ -78,17 +79,22 @@ public class Final_confirmation {
         if (cm.authorized(role, cm.role_list(5))) {
             // Click Time selection button
             driver.findElement(By.cssSelector("div.ant-col.ant-col-24>div>div:nth-child(4)>div>button")).click();
-            sleep(1000);
+            sleep(3000);
         }
     }
 
-    public void select_date(WebDriver driver, String role, Common cm) throws InterruptedException {
+    public void select_date(WebDriver driver, String role, Common cm, String element) throws InterruptedException {
         // Master, Administrator, Responsible person, Leader, Member
         if (cm.authorized(role, cm.role_list(5))) {
             // Date
+            sleep(1000);
             driver.findElement(By.cssSelector("div.ant-col>div:nth-child(1)>div>div>div:nth-child(1)>div>div>input")).click();
             sleep(200);
-            driver.findElement(By.cssSelector(date_element(driver))).click();
+            if (element.equals("")) {
+                driver.findElement(By.cssSelector(date_element(driver))).click();
+            } else {
+                driver.findElement(By.cssSelector(element)).click();
+            }
         }
     }
 
@@ -98,10 +104,8 @@ public class Final_confirmation {
             // Time
             WebElement time = driver.findElement(By.cssSelector("div:nth-child(1) > div > div > div:nth-child(2) > div > div > input"));
             ((JavascriptExecutor) driver).executeScript("arguments[0].removeAttribute('readonly',0);", time);
-            int hour = LocalTime.now().getHour();
-            int min = LocalTime.now().getMinute();
-            int new_min = min;
-            int new_hour = hour;
+            int new_min = LocalTime.now().getMinute();
+            int new_hour = LocalTime.now().getHour();
 
             // If time incorrect, add 10 minutes and select again
             while (!check_time(driver)) {
@@ -115,18 +119,14 @@ public class Final_confirmation {
                 if (new_hour < 8) {
                     new_hour = 8;
                     new_min = 0;
-                }
-                else if (new_hour > 19) {
+                } else if (new_hour > 19) {
                     new_hour = 8;
                     new_min = 0;
-                    sleep(1000);
-                    driver.findElement(By.cssSelector("div.ant-col>div:nth-child(1)>div>div>div:nth-child(1)>div>div>input")).click();
-                    new WebDriverWait(driver, Duration.ofSeconds(10))
-                            .until(ExpectedConditions.elementToBeClickable(By.cssSelector(next_date_element(driver)))).click();
+                    select_date(driver, role, cm, next_date_element(driver));
                 }
                 time.click();
                 for (int i = 0; i < 10; i++) {
-                    sleep(100);
+//                    sleep(100);
                     key.sendKeys(Keys.BACK_SPACE).perform();
                 }
                 // Select time
@@ -142,11 +142,10 @@ public class Final_confirmation {
 
                 //** この配信メールを配信メール予約登録しますか？ Popup **//
                 // Click OK button
-                sleep(100);
+//                sleep(100);
                 new WebDriverWait(driver, Duration.ofSeconds(10))
                         .until(ExpectedConditions.elementToBeClickable(By.cssSelector("div.ant-modal-confirm-btns>button:nth-child(2)"))).click();
 
-                sleep(1000);
                 new_min += 10;
 
             }

@@ -16,7 +16,7 @@ import static Variable.Variable.*;
 public class CreateMail {
 
     @Test
-    public void 配信メール予約() throws InterruptedException, IOException {
+    public void createMail() throws InterruptedException, IOException {
 
         // Init Common function
         Common cm = new Common();
@@ -97,7 +97,7 @@ public class CreateMail {
         fc.open_delivery_time_setting_popup(driver, role, cm);
 
         // Select date
-        fc.select_date(driver, role, cm);
+        fc.select_date(driver, role, cm, "");
 
         // Select time and select again when time incorrect
         fc.select_time_and_select_again_when_time_incorrect(driver, key, role, cm);
