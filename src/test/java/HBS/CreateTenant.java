@@ -6,6 +6,8 @@ import BasePage.createTenant.Payment_information;
 import BasePage.createTenant.Personal_profile_information;
 import Common.Common;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.interactions.Actions;
+import org.testng.Reporter;
 import org.testng.annotations.Test;
 
 import static Variable.Variable.create_tenant_path;
@@ -159,5 +161,21 @@ public class CreateTenant {
 
         // Close browser
         cm.closeBrowser(driver);
+    }
+
+    @Test
+    public void leave_all_blank() throws InterruptedException {
+        //
+        Common cm = new Common();
+        WebDriver driver = cm.setupWebdriver();
+        Actions key = new Actions(driver);
+        driver.get("https://test.app.cmrb.jp/tenant");
+        Validation.createTenant.Member_information mi = new Validation.createTenant.Member_information();
+        mi.leave_email_blank(driver, key);
+        mi.leave_password_blank(driver, key);
+        mi.leave_confirm_password_blank(driver, key);
+        mi.register_member_information_should_be_disable(driver);
+        cm.closeBrowser(driver);
+        System.out.println("Case 1: Leave all blank (Passed)");
     }
 }
