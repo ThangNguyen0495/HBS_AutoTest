@@ -26,20 +26,17 @@ public class Personal_profile_information {
         int length_of_tel2 = RandomUtils.nextInt(14 - length_of_tel1) + 1;
         int length_of_tel3 = RandomUtils.nextInt(15 - length_of_tel1 - length_of_tel2) + 1;
         //Generate TEL1, TEL2, TEL3 by random number
-        long TEL1 = (long) (Math.random() * (Math.pow(10, length_of_tel1)));
-        long TEL2 = (long) (Math.random() * (Math.pow(10, length_of_tel2)));
-        long TEL3 = (long) (Math.random() * (Math.pow(10, length_of_tel3)));
-        driver.findElement(By.cssSelector("#tel1")).sendKeys(Long.toString(TEL1));
-        driver.findElement(By.cssSelector("#tel2")).sendKeys(Long.toString(TEL2));
-        driver.findElement(By.cssSelector("#tel3")).sendKeys(Long.toString(TEL3));
+        driver.findElement(By.cssSelector("#tel1")).sendKeys(RandomStringUtils.random(length_of_tel1, false, true));
+        driver.findElement(By.cssSelector("#tel2")).sendKeys(RandomStringUtils.random(length_of_tel2,false,true));
+        driver.findElement(By.cssSelector("#tel3")).sendKeys(RandomStringUtils.random(length_of_tel3, false, true));
     }
 
     public void password(WebDriver driver) {
         // length of password in range 8-50
         // password include both letters and numbers
-        int length_of_password = (int) ((Math.random() * (43) + 8));
+        int length_of_password = (int) ((Math.random() * (42) + 8));
         // generate password by random text
-        String password = RandomStringUtils.randomAlphanumeric(length_of_password);
+        String password = RandomStringUtils.randomAlphanumeric(length_of_password) + "@";
         // Password
         driver.findElement(By.cssSelector("#password")).sendKeys(password);
     }
@@ -55,7 +52,7 @@ public class Personal_profile_information {
 
     public void next_to_payment_information(WebDriver driver) throws InterruptedException {
         // Go to お支払い情報_Step
-        driver.findElement(By.cssSelector("div.ant-col.ant-col-24>div>button")).click();
+        driver.findElement(By.cssSelector("button[type = 'submit']")).click();
         sleep(1000);
     }
 }

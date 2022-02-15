@@ -2,9 +2,7 @@ package BasePage.createTenant;
 
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.math.RandomUtils;
-import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 
@@ -20,11 +18,14 @@ public class Company_profile_information {
         driver.findElement(By.cssSelector("#name")).sendKeys(company_name);
     }
 
-    public void establishment_date(WebDriver driver) {
+    public void establishment_date(WebDriver driver, Actions key) {
+        driver.findElement(By.cssSelector("span.anticon-close-circle")).click();
+        WebElement time = driver.findElement(By.cssSelector("#establishment_date"));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].removeAttribute('readonly',0);", time);
         // month in range 1-12
         int month = RandomUtils.nextInt(12) + 1;
         // generate year from 1800-2022
-        int year = 1800 + RandomUtils.nextInt(223);
+        int year = 1800 + RandomUtils.nextInt(222);
         // generate establish date by YYYY-MM format
         String establishment_date;
         if (month < 10) {
@@ -34,6 +35,7 @@ public class Company_profile_information {
         }
         // Establishment date
         driver.findElement(By.cssSelector("#establishment_date")).sendKeys(establishment_date);
+        key.sendKeys(Keys.ENTER).perform();
     }
 
     public void address(WebDriver driver) {
@@ -65,11 +67,9 @@ public class Company_profile_information {
     }
 
     public void capital(WebDriver driver) {
-        // capital in range 100-9999999999999
-        // generate capital by random number
-        long capital = (long) (Math.random() * (9999999999900L) + 100L);
         // Capital
-        driver.findElement(By.cssSelector("#capital_man_yen")).sendKeys(Long.toString(capital));
+        int length_of_capital = RandomUtils.nextInt(9) + 1;
+        driver.findElement(By.cssSelector("#capital_man_yen")).sendKeys(RandomStringUtils.random(length_of_capital, false, true));
     }
 
     // Qualifications
@@ -97,7 +97,7 @@ public class Company_profile_information {
     public void next_to_personal_profile_information(WebDriver driver) throws InterruptedException {
         // Click Register your company profile button
         // Go to 個人プロフィール情報_Step
-        driver.findElement(By.cssSelector("div.ant-col.ant-col-24>div>div>button")).click();
+        driver.findElement(By.cssSelector("button[type = 'submit']")).click();
         sleep(3000);
     }
 
