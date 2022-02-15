@@ -87,8 +87,5 @@ public class CreatePartnerPIC {
 
         // Click Register button
         dc.complete_create_partner_pic(driver, role, cm);
-
-        // Close browser
-        cm.closeBrowser(driver);
     }
 }

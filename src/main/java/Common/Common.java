@@ -68,11 +68,6 @@ public class Common {
         return role_list;
     }
 
-    public void closeBrowser(WebDriver driver) {
-        // Close browser
-        driver.close();
-    }
-
     public void unauthorized(WebDriver driver, String role, int number_of_role) {
         // Check unauthorized
         if (!authorized(role, role_list(number_of_role))) {

@@ -9,6 +9,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 
+import static BasePage.createTenant.Member_information.url_in_mail;
 import static java.lang.Thread.sleep;
 
 public class Payment_information {
@@ -30,8 +31,7 @@ public class Payment_information {
     }
 
     public void back_to_payment_information(WebDriver driver) throws InterruptedException {
-        Member_information url = new Member_information();
-        driver.get(url.url_in_New_registration_to_Komorebi_mail(driver));
+        driver.get(url_in_mail);
         sleep(3000);
     }
 
@@ -67,7 +67,7 @@ public class Payment_information {
         // month in range 01-12
         int month = RandomUtils.nextInt(12) + 1;
         // year in range 23-99
-        int year = (int) (Math.random() * 87 + 23);
+        int year = (int) (Math.random() * 76 + 23);
         // generate date of expiry with MM/YY format
         String date_of_expiry;
         if (month < 10) {

@@ -140,8 +140,5 @@ public class CreatePartner {
 
         // Check unauthorized
         cm.unauthorized(driver,role, 5);
-
-        // Close browser
-        cm.closeBrowser(driver);
     }
 }

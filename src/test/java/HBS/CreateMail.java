@@ -101,8 +101,5 @@ public class CreateMail {
 
         // Select time and select again when time incorrect
         fc.select_time_and_select_again_when_time_incorrect(driver, key, role, cm);
-
-        // Close browser
-        cm.closeBrowser(driver);
     }
 }
