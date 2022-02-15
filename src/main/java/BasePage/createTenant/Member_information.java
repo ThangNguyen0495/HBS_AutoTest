@@ -118,7 +118,7 @@ public class Member_information {
         Assert.assertEquals(text, "メールアドレスを入力してください", "[Email] Message do not match");
     }
 
-    public void email_exceed_100_characters(WebDriver driver) throws InterruptedException {
+    public void email_exceed_100_characters(WebDriver driver) {
         driver.findElement(By.cssSelector("#email")).sendKeys(RandomStringUtils.randomAlphabetic(101));
         String text = new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(ExpectedConditions.elementToBeClickable(By.cssSelector("div:nth-child(1)>div>div>div[role='alert']"))).getText();
@@ -132,43 +132,60 @@ public class Member_information {
             key.sendKeys(Keys.BACK_SPACE).perform();
         }
         sleep(1000);
-        String text = new WebDriverWait(driver, Duration.ofSeconds(10))
-                .until(ExpectedConditions.elementToBeClickable(By.cssSelector("div:nth-child(2)>div>div>div[role='alert']"))).getText();
+        String text = driver.findElement(By.cssSelector("form> div:nth-child(2) > div > div.ant-form-item-explain > div")).getText();
         Assert.assertEquals(text, "パスワードを入力してください", "[Password] Message do not match");
     }
 
-    public void password_less_than_10_characters(WebDriver driver) {
+    public void password_less_than_10_characters(WebDriver driver) throws InterruptedException {
         driver.findElement(By.cssSelector("#password")).sendKeys(RandomStringUtils.randomAlphabetic(9));
-        String text = new WebDriverWait(driver, Duration.ofSeconds(10))
-                .until(ExpectedConditions.elementToBeClickable(By.cssSelector("div:nth-child(1)>div>div>div[role='alert']"))).getText();
-        Assert.assertEquals(text, "大小英数字記号混在で8-50桁で入力してください。", "[Password] Message do not match");
+        sleep(1000);
+        String text = driver.findElement(By.cssSelector("form> div:nth-child(2) > div > div.ant-form-item-explain > div")).getText();
+        Assert.assertEquals(text, "大小英数字記号混在で10-50桁で入力してください。", "[Password] Message do not match");
     }
 
+    /**
+     * Input: password exceed 50 characters (Umail - Characters limit sheet)
+     * Output: show error message "大小英数字記号混在で10-50桁で入力してください。"
+     **/
     public void password_exceed_50_characters(WebDriver driver) throws InterruptedException {
-        sleep(1000);
         driver.findElement(By.cssSelector("#password")).sendKeys(RandomStringUtils.randomAlphabetic(51));
-        String text = driver.findElement(By.cssSelector("div:nth-child(1)>div>div>div[role='alert']")).getText();
-        Assert.assertEquals(text, "大小英数字記号混在で8-50桁で入力してください。", "[Password] Message do not match");
+        sleep(1000);
+        String text = driver.findElement(By.cssSelector("form> div:nth-child(2) > div > div.ant-form-item-explain > div")).getText();
+        Assert.assertEquals(text, "大小英数字記号混在で10-50桁で入力してください。", "[Password] Message do not match");
     }
 
+    /**
+     * Input: password and confirm password does not mactch
+     * Output: show error message "パスワードが一致しません"
+     **/
     public void password_and_confirm_password_does_not_match(WebDriver driver) throws InterruptedException {
-        sleep(1000);
         driver.findElement(By.cssSelector("#password")).sendKeys(RandomStringUtils.randomAlphabetic(8));
         driver.findElement(By.cssSelector("#password_confirm")).sendKeys(RandomStringUtils.randomAlphabetic(9));
         sleep(1000);
-        String text = driver.findElement(By.cssSelector("div.ant-form-item-explain-error")).getText();
-        Assert.assertEquals(text, "パスワードが一致しません。", "[Password] Message do not match");
+        String text = driver.findElement(By.cssSelector("form> div:nth-child(3) > div > div.ant-form-item-explain > div:nth-child(2)")).getText();
+        Assert.assertEquals(text, "パスワードが一致しません", "Message do not match");
     }
 
-    // pending
-    public void password_and_confirm_password_does_not_mixed_alphanumerical_characters(WebDriver driver) throws InterruptedException {
+    /**
+     * Input: password and confirm password does not mix alphanumerical character.
+     * Output: show error message "大小英数字記号混在で10-50桁で入力してください。" at each form
+     **/
+    public void password_and_confirm_password_does_not_mix_alphanumerical_characters(WebDriver driver) throws InterruptedException {
         sleep(1000);
-        String password = RandomStringUtils.random(8,true,false);
+        String password = RandomStringUtils.random(10,true,false);
         driver.findElement(By.cssSelector("#password")).sendKeys(password);
         driver.findElement(By.cssSelector("#password_confirm")).sendKeys(password);
+        sleep(1000);
+        String text1 = driver.findElement(By.cssSelector("form> div:nth-child(2) > div > div.ant-form-item-explain > div")).getText();
+        Assert.assertEquals(text1, "大小英数字記号混在で10-50桁で入力してください。", "[Password] Message do not match");
+        String text2 = driver.findElement(By.cssSelector("form> div:nth-child(3) > div > div.ant-form-item-explain > div")).getText();
+        Assert.assertEquals(text2, "大小英数字記号混在で10-50桁で入力してください。", "[Confirm password] Message do not match");
     }
 
-    // Confirm password
+    /**
+     * Input: leave confirm password blank
+     * Output: show error message "パスワード確認を入力してください"
+     **/
     public void leave_confirm_password_blank(WebDriver driver, Actions key) throws InterruptedException {
         driver.findElement(By.cssSelector("#password_confirm")).sendKeys("leave_blank");
         for (int i = 0; i < 11; i++) {
@@ -176,22 +193,22 @@ public class Member_information {
         }
         sleep(1000);
         String text = new WebDriverWait(driver, Duration.ofSeconds(10))
-                .until(ExpectedConditions.elementToBeClickable(By.cssSelector("div:nth-child(3)>div>div>div[role='alert']"))).getText();
+                .until(ExpectedConditions.elementToBeClickable(By.cssSelector("form> div:nth-child(3) > div > div.ant-form-item-explain > div:nth-child(1)"))).getText();
         Assert.assertEquals(text, "パスワード確認を入力してください", "[Confirm password] Message do not match");
     }
 
     public void confirm_password_less_than_10_characters(WebDriver driver) throws InterruptedException {
-        sleep(1000);
         driver.findElement(By.cssSelector("#password_confirm")).sendKeys(RandomStringUtils.randomAlphabetic(9));
-        String text = driver.findElement(By.cssSelector("div:nth-child(2)>div>div>div[role='alert']")).getText();
-        Assert.assertEquals(text, "大小英数字記号混在で8-50桁で入力してください。", "[Password] Message do not match");
+        sleep(1000);
+        String text = driver.findElement(By.cssSelector("form> div:nth-child(3) > div > div.ant-form-item-explain > div:nth-child(1)")).getText();
+        Assert.assertEquals(text, "大小英数字記号混在で10-50桁で入力してください。", "[Confirm password] Message do not match");
     }
 
     public void confirm_password_exceed_50_characters(WebDriver driver) throws InterruptedException {
-        sleep(1000);
         driver.findElement(By.cssSelector("#password_confirm")).sendKeys(RandomStringUtils.randomAlphabetic(51));
-        String text = driver.findElement(By.cssSelector("div:nth-child(2)>div>div>div[role='alert']")).getText();
-        Assert.assertEquals(text, "大小英数字記号混在で8-50桁で入力してください。", "[Password] Message do not match");
+        sleep(1000);
+        String text = driver.findElement(By.cssSelector("form> div:nth-child(3) > div > div.ant-form-item-explain > div:nth-child(1)")).getText();
+        Assert.assertEquals(text, "大小英数字記号混在で10-50桁で入力してください。", "[Confirm password] Message do not match");
     }
 
     //Register member information

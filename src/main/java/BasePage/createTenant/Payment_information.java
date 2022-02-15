@@ -107,7 +107,7 @@ public class Payment_information {
         // length of card name in range 1-100
         int length_of_card_name = RandomUtils.nextInt(100) + 1;
         // generate card name by random text
-        String card_name = RandomStringUtils.random(length_of_card_name);
+        String card_name = RandomStringUtils.randomAlphabetic(length_of_card_name);
         //Card Name
         driver.switchTo().defaultContent();
         new WebDriverWait(driver, Duration.ofSeconds(10))

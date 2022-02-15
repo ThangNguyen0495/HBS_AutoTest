@@ -25,7 +25,7 @@ public class Company_profile_information {
         // month in range 1-12
         int month = RandomUtils.nextInt(12) + 1;
         // generate year from 1800-2022
-        int year = 1800 + RandomUtils.nextInt(222);
+        int year = 2000 + RandomUtils.nextInt(22);
         // generate establish date by YYYY-MM format
         String establishment_date;
         if (month < 10) {

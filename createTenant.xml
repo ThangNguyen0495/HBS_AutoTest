@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Create tenant (Process + Validation)">
+    <test verbose="2"
+          name="C:/Users/Admin/IdeaProjects/HBS_AutoTest/src/test/java/HBS/CreateTenant.java">
+        <classes>
+            <class name="HBS.CreateTenant">
+                <methods>
+                    <parameter name="url" value="https://test.app.cmrb.jp/tenant"/>
+<!--                    <include name="createTenant"/>-->
+<!--                    <include name="leave_all_blank_member_information"/>-->
+<!--                    <include name="email_exceed_100_characters"/>-->
+<!--                    <include name="password_and_confirm_password_less_than_10_characters"/>-->
+<!--                    <include name="password_and_confirm_password_exceed_50_characters"/>-->
+<!--                    <include name="password_and_confirm_password_does_not_match"/>-->
+<!--                    <include name="password_and_confirm_password_does_not_mix_alphanumerical_characters"/>-->
+
+                    <parameter name="url_cpi"
+                               value="https://test.app.cmrb.jp/tenant?auth_token=ImIyMzU5NDIzLTg0MzktNGQ3MC1iYTIxLWFlNDhjNTE2MDA2YyI:1nK0BV:0EgREoSouhVRyza-1Cb1XlsUHzk"/>
+                    <include name="leave_all_blank_company_profile_information"/>
+<!--                    <include name="company_name_exceed_100_characters"/>-->
+<!--                    <include name="address_exceed_100_characters"/>-->
+<!--                    <include name="url_exceed_50_characters"/>-->
+<!--                    <include name="capital_exceed_13_characters"/>-->
+                </methods>
+            </class>
+        </classes>
+    </test>
+</suite>
