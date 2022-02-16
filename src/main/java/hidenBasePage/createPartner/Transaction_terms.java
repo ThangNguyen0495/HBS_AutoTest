@@ -1,4 +1,4 @@
-package BasePage.createPartner;
+package hidenBasePage.createPartner;
 
 import Common.Common;
 import org.apache.commons.lang.math.RandomUtils;

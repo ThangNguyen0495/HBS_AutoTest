@@ -1,8 +1,8 @@
-package HBS;
+package hidenTest;
 
-import BasePage.createPartner.Business_partner_branch_information;
-import BasePage.createPartner.Business_partner_information;
-import BasePage.createPartner.Transaction_terms;
+import hidenBasePage.createPartner.Business_partner_branch_information;
+import hidenBasePage.createPartner.Business_partner_information;
+import hidenBasePage.createPartner.Transaction_terms;
 import Common.Common;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;

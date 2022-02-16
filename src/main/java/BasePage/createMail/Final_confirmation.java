@@ -53,9 +53,9 @@ public class Final_confirmation {
         return "table.ant-picker-content>tbody>tr:nth-child(" + row + ")>td:nth-child(" + col + ")";
     }
 
-    public Boolean check_time(WebDriver driver) throws InterruptedException {
+    public Boolean check_time(WebDriver driver, String url_mail_list) throws InterruptedException {
         sleep(1000);
-        return driver.getCurrentUrl().equals("https://test.app.cmrb.jp/scheduledMails");
+        return driver.getCurrentUrl().equals(url_mail_list);
     }
 
     public String time_str(int min, int hour) {
@@ -98,7 +98,7 @@ public class Final_confirmation {
         }
     }
 
-    public void select_time_and_select_again_when_time_incorrect(WebDriver driver, Actions key, String role, Common cm) throws InterruptedException {
+    public void select_time_and_select_again_when_time_incorrect(WebDriver driver, Actions key, String role, Common cm, String url_mail_list) throws InterruptedException {
         // Master, Administrator, Responsible person, Leader, Member
         if (cm.authorized(role, cm.role_list(5))) {
             // Time
@@ -108,7 +108,7 @@ public class Final_confirmation {
             int new_hour = LocalTime.now().getHour();
 
             // If time incorrect, add 10 minutes and select again
-            while (!check_time(driver)) {
+            while (!check_time(driver, url_mail_list)) {
                 // Update time after add 10 minutes
                 if (new_min > 59) {
                     new_min = new_min - 60;

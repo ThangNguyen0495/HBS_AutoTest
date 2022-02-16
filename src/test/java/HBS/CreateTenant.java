@@ -11,8 +11,6 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
-import static java.lang.Thread.sleep;
-
 public class CreateTenant {
     Common cm;
     WebDriver driver;
@@ -188,8 +186,6 @@ public class CreateTenant {
         // Leave password blank and verify message
         mi.leave_password_blank(driver, key);
 
-        sleep(1000);
-
         // Leave confirm password blank and verify message
         mi.leave_confirm_password_blank(driver, key);
 
@@ -202,28 +198,31 @@ public class CreateTenant {
 
     @Test(priority = 2)
     @Parameters("url")
-    public void TC03_email_exceed_100_characters(String url) {
+    public void TC03_email_password_and_confirm_password_contains_full_width_characters(String url) throws InterruptedException {
         // Link to Create tenant - Member information tab
         driver.get(url);
 
-        // Input email exceed 100 characters and verify message
-        mi.email_exceed_100_characters(driver);
+        // Input email contains full width characters and verify message
+        mi.email_contains_full_width_characters(driver);
+
+        // Input password contains full width characters and verify message
+        mi.password_contains_full_width_characters(driver);
+
+        // Input confirm password contains full width characters and verify message
+        mi.confirm_password_contains_full_width_characters(driver);
 
         // Close browser
         driver.close();
     }
 
-    @Test(priority = 3)
+    @Test(priority = 2)
     @Parameters("url")
-    public void TC04_password_and_confirm_password_less_than_10_characters(String url) throws InterruptedException {
+    public void TC04_email_contains_space_characters(String url) throws InterruptedException {
         // Link to Create tenant - Member information tab
         driver.get(url);
 
-        // Input password less than 8 characters and verify message
-        mi.password_less_than_10_characters(driver);
-
-        // Input confirm password less than 8 characters and verify message
-        mi.confirm_password_less_than_10_characters(driver);
+        // Input email contains space characters and verify message
+        mi.email_contains_space_characters(driver);
 
         // Close browser
         driver.close();
@@ -231,15 +230,12 @@ public class CreateTenant {
 
     @Test(priority = 4)
     @Parameters("url")
-    public void TC05_password_and_confirm_password_exceed_50_characters(String url) throws InterruptedException {
+    public void TC05_email_exceed_100_half_width_characters(String url) throws InterruptedException {
         // Link to Create tenant - Member information tab
         driver.get(url);
 
-        // Input password exceed 50 characters and verify message
-        mi.password_exceed_50_characters(driver);
-
-        // Input confirm password exceed 50 characters and verify message
-        mi.confirm_password_exceed_50_characters(driver);
+        // Input email exceed 100 half width characters and verify message
+        mi.email_exceed_100_half_width_characters(driver);
 
         // Close browser
         driver.close();
@@ -247,7 +243,39 @@ public class CreateTenant {
 
     @Test(priority = 5)
     @Parameters("url")
-    public void TC06_password_and_confirm_password_does_not_match(String url) throws InterruptedException {
+    public void TC06_password_and_confirm_password_less_than_10_half_width_characters(String url) throws InterruptedException {
+        // Link to Create tenant - Member information tab
+        driver.get(url);
+
+        // Input password less than 8 half width characters and verify message
+        mi.password_less_than_10_half_width_characters(driver);
+
+        // Input confirm password less than 8 half width characters and verify message
+        mi.confirm_password_less_than_10_half_width_characters(driver);
+
+        // Close browser
+        driver.close();
+    }
+
+    @Test(priority = 6)
+    @Parameters("url")
+    public void TC07_password_and_confirm_password_exceed_50_half_width_characters(String url) throws InterruptedException {
+        // Link to Create tenant - Member information tab
+        driver.get(url);
+
+        // Input password exceed 50 half width characters and verify message
+        mi.password_exceed_50_half_width_characters(driver);
+
+        // Input confirm password exceed 50 half width characters and verify message
+        mi.confirm_password_exceed_50_half_width_characters(driver);
+
+        // Close browser
+        driver.close();
+    }
+
+    @Test(priority = 7)
+    @Parameters("url")
+    public void TC08_password_and_confirm_password_does_not_match(String url) throws InterruptedException {
         // Link to Create tenant - Member information tab
         driver.get(url);
 
@@ -258,13 +286,13 @@ public class CreateTenant {
         driver.close();
     }
 
-    @Test(priority = 6)
+    @Test(priority = 8)
     @Parameters("url")
-    public void TC07_password_and_confirm_password_does_not_mix_alphanumerical_characters(String url) throws InterruptedException {
+    public void TC09_password_and_confirm_password_does_not_mix_alphanumerical_characters(String url) throws InterruptedException {
         // Link to Create tenant - Member information tab
         driver.get(url);
 
-        // Input password, confirm password not mix alphanumerical characters and verify message
+        // Input password, confirm password not mix alphanumerical half width characters and verify message
         mi.password_and_confirm_password_does_not_mix_alphanumerical_characters(driver);
 
         // Close browser
@@ -272,9 +300,9 @@ public class CreateTenant {
     }
 
 
-    @Test(priority = 7)
+    @Test(priority = 9)
     @Parameters("url_cpi")
-    public void TC08_leave_all_blank_company_profile_information(String url_cpi) throws InterruptedException {
+    public void TC10_leave_all_blank_company_profile_information(String url_cpi) throws InterruptedException {
         // Link to Create tenant - Company profile information tab
         driver.get(url_cpi);
 
@@ -282,7 +310,7 @@ public class CreateTenant {
         cpi.leave_company_name_blank(driver, key);
 
         // Leave date of establishment blank and verify message
-        cpi.leave_date_of_establishment_blank(driver, key);
+        cpi.leave_date_of_establishment_blank(driver);
 
         // Leave address blank and verify message
         cpi.leave_address_blank(driver, key);
@@ -297,40 +325,14 @@ public class CreateTenant {
         driver.close();
     }
 
-    @Test(priority = 8)
-    @Parameters("url_cpi")
-    public void TC09_company_name_exceed_100_characters(String url_cpi) throws InterruptedException {
-        // Link to Create tenant - Company profile information tab
-        driver.get(url_cpi);
-
-        // Input company name exceed 100 characters and verify message
-        cpi.company_name_exceed_100_characters(driver);
-
-        // Close browser
-        driver.close();
-    }
-
-    @Test(priority = 9)
-    @Parameters("url_cpi")
-    public void TC10_address_exceed_100_characters(String url_cpi) throws InterruptedException {
-        // Link to Create tenant - Company profile information tab
-        driver.get(url_cpi);
-
-        // Input address exceed 100 characters and verify message
-        cpi.address_exceed_100_characters(driver);
-
-        // Close browser
-        driver.close();
-    }
-
     @Test(priority = 10)
     @Parameters("url_cpi")
-    public void TC11_url_exceed_50_characters(String url_cpi) throws InterruptedException {
+    public void TC11_company_name_exceed_100_half_width_characters(String url_cpi) throws InterruptedException {
         // Link to Create tenant - Company profile information tab
         driver.get(url_cpi);
 
-        // Input URL exceed 50 characters and verify message
-        cpi.url_exceed_50_characters(driver);
+        // Input company name exceed 100 half width characters and verify message
+        cpi.company_name_exceed_100_half_width_characters(driver);
 
         // Close browser
         driver.close();
@@ -338,20 +340,124 @@ public class CreateTenant {
 
     @Test(priority = 11)
     @Parameters("url_cpi")
-    public void TC12_capital_exceed_13_characters(String url_cpi) throws InterruptedException {
+    public void TC12_company_name_exceed_100_full_width_characters(String url_cpi) throws InterruptedException {
         // Link to Create tenant - Company profile information tab
         driver.get(url_cpi);
 
-        // Input company name exceed 100 characters and verify message
-        cpi.capital_exceed_13_characters(driver);
+        // Input company name exceed 100 full width characters and verify message
+        cpi.company_name_exceed_100_full_width_characters(driver);
 
         // Close browser
         driver.close();
     }
 
     @Test(priority = 12)
+    @Parameters("url_cpi")
+    public void TC13_company_name_exceed_mix_100_half_and_full_width_characters(String url_cpi) throws InterruptedException {
+        // Link to Create tenant - Company profile information tab
+        driver.get(url_cpi);
+
+        // Input company name exceed mix 100 half, full width characters and verify message
+        cpi.company_name_exceed_mix_100_half_and_full_width_characters(driver);
+
+        // Close browser
+        driver.close();
+    }
+
+    @Test(priority = 13)
+    @Parameters("url_cpi")
+    public void TC14_address_exceed_100_half_width_characters(String url_cpi) throws InterruptedException {
+        // Link to Create tenant - Company profile information tab
+        driver.get(url_cpi);
+
+        // Input address exceed 100 half width characters and verify message
+        cpi.address_exceed_100_half_width_characters(driver);
+
+        // Close browser
+        driver.close();
+    }
+
+    @Test(priority = 14)
+    @Parameters("url_cpi")
+    public void TC15_address_exceed_100_full_width_characters(String url_cpi) throws InterruptedException {
+        // Link to Create tenant - Company profile information tab
+        driver.get(url_cpi);
+
+        // Input address exceed 100 full width characters and verify message
+        cpi.address_exceed_100_full_width_characters(driver);
+
+        // Close browser
+        driver.close();
+    }
+
+    @Test(priority = 15)
+    @Parameters("url_cpi")
+    public void TC16_address_exceed_mix_100_half_and_and_full_width_characters(String url_cpi) throws InterruptedException {
+        // Link to Create tenant - Company profile information tab
+        driver.get(url_cpi);
+
+        // Input address exceed 100 mix half, full width characters and verify message
+        cpi.address_exceed_mix_100_half_and_and_full_width_characters(driver);
+
+        // Close browser
+        driver.close();
+    }
+
+    @Test(priority = 16)
+    @Parameters("url_cpi")
+    public void TC17_url_exceed_50_half_width_characters(String url_cpi) throws InterruptedException {
+        // Link to Create tenant - Company profile information tab
+        driver.get(url_cpi);
+
+        // Input URL exceed 50 half width characters and verify message
+        cpi.url_exceed_50_half_width_characters(driver);
+
+        // Close browser
+        driver.close();
+    }
+
+    @Test(priority = 17)
+    @Parameters("url_cpi")
+    public void TC18_url_exceed_50_full_width_characters(String url_cpi) throws InterruptedException {
+        // Link to Create tenant - Company profile information tab
+        driver.get(url_cpi);
+
+        // Input URL exceed 50 full width characters and verify message
+        cpi.url_exceed_50_full_width_characters(driver);
+
+        // Close browser
+        driver.close();
+    }
+
+    @Test(priority = 18)
+    @Parameters("url_cpi")
+    public void TC19_url_exceed_mix_50_half_and_full_width_characters(String url_cpi) throws InterruptedException {
+        // Link to Create tenant - Company profile information tab
+        driver.get(url_cpi);
+
+        // Input URL exceed mix 50 half, full width characters and verify message
+        cpi.url_exceed_mix_50_half_and_full_width_characters(driver);
+
+        // Close browser
+        driver.close();
+    }
+    
+    @Test(priority = 19)
+    @Parameters("url_cpi")
+    public void TC20_capital_exceed_13_half_width_characters(String url_cpi) throws InterruptedException {
+        // Link to Create tenant - Company profile information tab
+        driver.get(url_cpi);
+
+        // Input company name exceed 100 half width characters and verify message
+        cpi.capital_exceed_13_half_width_characters(driver);
+
+        // Close browser
+        driver.close();
+    }
+
+    @Test(priority = 20)
     @Parameters("url_ppi")
-    public void TC13_leave_username_blank_personal_profile_information(String url_ppi) throws InterruptedException {
+    public void TC21_leave_username_blank_personal_profile_information(String url_ppi) throws InterruptedException {
         // Link to Create tenant - Personal profile information tab
         driver.get(url_ppi);
 
@@ -362,35 +468,61 @@ public class CreateTenant {
         driver.close();
     }
 
-    @Test(priority = 13)
+    @Test(priority = 21)
     @Parameters("url_ppi")
-    public void TC14_username_exceed_50_characters(String url_ppi) throws InterruptedException {
+    public void TC22_username_exceed_50_half_width_characters(String url_ppi) throws InterruptedException {
         // Link to Create tenant - Personal profile information tab
         driver.get(url_ppi);
 
-        // Input username exceed 50 characters and verify message
-        ppi.username_exceed_50_characters(driver);
+        // Input username exceed 50 half width characters and verify message
+        ppi.username_exceed_50_half_width_characters(driver);
 
         // Close browser
         driver.close();
     }
 
-    @Test(priority = 14)
+    @Test(priority = 22)
     @Parameters("url_ppi")
-    public void TC15_username_contains_space_characters(String url_ppi) throws InterruptedException {
+    public void TC23_username_exceed_50_full_width_characters(String url_ppi) throws InterruptedException {
         // Link to Create tenant - Personal profile information tab
         driver.get(url_ppi);
 
-        // Input username contains space characters and verify message
+        // Input username exceed 50 full width characters and verify message
+        ppi.username_exceed_50_full_width_characters(driver);
+
+        // Close browser
+        driver.close();
+    }
+
+    @Test(priority = 23)
+    @Parameters("url_ppi")
+    public void TC24_username_exceed_mix_50_half_and_full_width_characters(String url_ppi) throws InterruptedException {
+        // Link to Create tenant - Personal profile information tab
+        driver.get(url_ppi);
+
+        // Input username exceed mix 50 half and full width characters and verify message
+        ppi.username_exceed_mix_50_half_and_full_width_characters(driver);
+
+        // Close browser
+        driver.close();
+    }
+
+    @Test(priority = 24)
+    @Parameters("url_ppi")
+    public void TC25_username_contains_space_characters(String url_ppi) throws InterruptedException {
+        // Link to Create tenant - Personal profile information tab
+        driver.get(url_ppi);
+
+        // Input username contains space half width characters and verify message
         ppi.username_contains_space_characters(driver);
 
         // Close browser
         driver.close();
     }
 
-    @Test(priority = 15)
+    @Test(priority = 25)
     @Parameters("url_ppi")
-    public void TC16_do_not_fill_in_all_tel_fields(String url_ppi) throws InterruptedException {
+    public void TC26_do_not_fill_in_all_tel_fields(String url_ppi) throws InterruptedException {
         // Link to Create tenant - Personal profile information tab
         driver.get(url_ppi);
 
@@ -401,92 +533,132 @@ public class CreateTenant {
         driver.close();
     }
 
-    @Test(priority = 16)
+    @Test(priority = 26)
     @Parameters("url_ppi")
-    public void TC17_tel_exceed_15_characters(String url_ppi) throws InterruptedException {
+    public void TC27_tel_exceed_15_half_width_characters(String url_ppi) throws InterruptedException {
         // Link to Create tenant - Personal profile information tab
         driver.get(url_ppi);
 
-        // Input TEL exceed 50 characters and verify message
-        ppi.tel_exceed_15_characters(driver);
+        // Input TEL exceed 50 half width characters and verify message
+        ppi.tel_exceed_15_half_width_characters(driver);
 
         // Close browser
         driver.close();
     }
 
-    @Test(priority = 17)
+    @Test(priority = 27)
     @Parameters("url_ppi")
-    public void TC18_tel_contains_full_width_characters(String url_ppi) throws InterruptedException {
+    public void TC28_tel_contains_full_width_characters(String url_ppi) throws InterruptedException {
         // Link to Create tenant - Personal profile information tab
         driver.get(url_ppi);
 
-        // Input TEL contains full width characters and verify message
+        // Input TEL contains full width half width characters and verify message
         ppi.tel_contains_full_width_characters(driver);
 
         // Close browser
         driver.close();
     }
 
-    @Test(priority = 18)
+    @Test(priority = 28)
     @Parameters("url_ppi")
-    public void TC19_tel_contains_letter_characters(String url_ppi) throws InterruptedException {
+    public void TC29_tel_contains_letter_characters(String url_ppi) throws InterruptedException {
         // Link to Create tenant - Personal profile information tab
         driver.get(url_ppi);
 
-        // Input TEL contains letters characters and verify message
+        // Input TEL contains letters half width characters and verify message
         ppi.tel_contains_letter_characters(driver);
 
         // Close browser
         driver.close();
     }
 
-    @Test(priority = 19)
+    @Test(priority = 29)
     @Parameters("url_ppi")
-    public void TC20_password_less_than_10_characters(String url_ppi) throws InterruptedException {
+    public void TC30_password_less_than_10_half_width_characters(String url_ppi) throws InterruptedException {
         // Link to Create tenant - Personal profile information tab
         driver.get(url_ppi);
 
-        // Input password less than 10 characters and verify message
-        ppi.password_less_than_10_characters(driver);
+        // Input password less than 10 half width characters and verify message
+        ppi.password_less_than_10_half_width_characters(driver);
 
         // Close browser
         driver.close();
     }
 
-    @Test(priority = 20)
+    @Test(priority = 30)
     @Parameters("url_ppi")
-    public void TC21_password_exceed_50_characters(String url_ppi) throws InterruptedException {
+    public void TC31_password_exceed_50_half_width_characters(String url_ppi) throws InterruptedException {
         // Link to Create tenant - Personal profile information tab
         driver.get(url_ppi);
 
-        // Input password exceed 50 characters and verify message
-        ppi.password_exceed_50_characters(driver);
+        // Input password exceed 50 half width characters and verify message
+        ppi.password_exceed_50_half_width_characters(driver);
 
         // Close browser
         driver.close();
     }
 
-    @Test(priority = 21)
+    @Test(priority = 31)
     @Parameters("url_ppi")
-    public void TC22_password_do_not_mix_alphanumerical_characters(String url_ppi) throws InterruptedException {
+    public void TC32_password_do_not_mix_alphanumerical_characters(String url_ppi) throws InterruptedException {
         // Link to Create tenant - Personal profile information tab
         driver.get(url_ppi);
 
-        // Input password not mix alphanumerical characters and verify message
+        // Input password not mix alphanumerical half width characters and verify message
         ppi.password_do_not_mix_alphanumerical_characters(driver);
 
         // Close browser
         driver.close();
     }
 
-    @Test(priority = 22)
+    @Test(priority = 32)
     @Parameters("url_ppi")
-    public void TC23_email_signature_exceed_1000_characters(String url_ppi) throws InterruptedException {
+    public void TC33_password_contains_full_width_characters(String url_ppi) throws InterruptedException {
         // Link to Create tenant - Personal profile information tab
         driver.get(url_ppi);
 
-        // Input email signature exceed 1000 characters and verify message
-        ppi.email_signature_exceed_1000_characters(driver);
+        // Input password not mix alphanumerical half width characters and verify message
+        ppi.password_contains_full_width_characters(driver);
+
+        // Close browser
+        driver.close();
+    }
+
+    @Test(priority = 33)
+    @Parameters("url_ppi")
+    public void TC34_email_signature_exceed_1000_half_width_characters(String url_ppi) throws InterruptedException {
+        // Link to Create tenant - Personal profile information tab
+        driver.get(url_ppi);
+
+        // Input email signature exceed 1000 half width characters and verify message
+        ppi.email_signature_exceed_1000_half_width_characters(driver);
+
+        // Close browser
+        driver.close();
+    }
+
+    @Test(priority = 34)
+    @Parameters("url_ppi")
+    public void TC35_email_signature_exceed_1000_full_width_characters(String url_ppi) throws InterruptedException {
+        // Link to Create tenant - Personal profile information tab
+        driver.get(url_ppi);
+
+        // Input email signature exceed 1000 full width characters and verify message
+        ppi.email_signature_exceed_1000_full_width_characters(driver);
+
+        // Close browser
+        driver.close();
+    }
+
+
+    @Test(priority = 35)
+    @Parameters("url_ppi")
+    public void TC36_email_signature_exceed_1000_half_width_characters(String url_ppi) throws InterruptedException {
+        // Link to Create tenant - Personal profile information tab
+        driver.get(url_ppi);
+
+        // Input email signature exceed mix 1000 half and full width characters and verify message
+        ppi.email_signature_exceed_mix_1000_half_and_full_width_characters(driver);
 
         // Close browser
         driver.close();

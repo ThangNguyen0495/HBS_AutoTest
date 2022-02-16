@@ -11,9 +11,9 @@ import static java.lang.Thread.sleep;
 public class Company_profile_information {
     public void company_name(WebDriver driver) {
         // Length of company name in range 1-100
-        int leghth_of_company_name = RandomUtils.nextInt(100) + 1;
+        int length_of_company_name = RandomUtils.nextInt(100) + 1;
         // generate company name by random text
-        String company_name = RandomStringUtils.randomAlphabetic(leghth_of_company_name);
+        String company_name = RandomStringUtils.randomAlphabetic(length_of_company_name);
         // Company name
         driver.findElement(By.cssSelector("#name")).sendKeys(company_name);
     }
@@ -40,10 +40,10 @@ public class Company_profile_information {
 
     public void address(WebDriver driver) {
         // total length of address and building in range 2-100
-        int leghth_of_address = RandomUtils.nextInt(99) + 1;
-        int length_of_building = RandomUtils.nextInt(100 - leghth_of_address) + 1;
+        int length_of_address = RandomUtils.nextInt(99) + 1;
+        int length_of_building = RandomUtils.nextInt(100 - length_of_address) + 1;
         // generate address and building by random text
-        String address = RandomStringUtils.randomAlphabetic(leghth_of_address);
+        String address = RandomStringUtils.randomAlphabetic(length_of_address);
         String building = RandomStringUtils.randomAlphabetic(length_of_building);
         // Address
         driver.findElement(By.cssSelector("#address")).sendKeys(address);
@@ -117,8 +117,25 @@ public class Company_profile_information {
         Assert.assertEquals(text, "自社名を入力してください", "[Company name] Message do not match");
     }
 
-    public void company_name_exceed_100_characters(WebDriver driver) throws InterruptedException {
+    public void company_name_exceed_100_half_width_characters(WebDriver driver) throws InterruptedException {
         driver.findElement(By.cssSelector("#name")).sendKeys(RandomStringUtils.randomAlphanumeric(101));
+        sleep(2000);
+        String text = driver.findElement(By.cssSelector("form > div:nth-child(1) > div > div> div.ant-form-item-explain-error")).getText();
+        Assert.assertEquals(text, "100文字以内で入力してください。", "[Company name] Message do not match");
+    }
+
+    public void company_name_exceed_100_full_width_characters(WebDriver driver) throws InterruptedException {
+        driver.findElement(By.cssSelector("#name")).sendKeys(RandomStringUtils.random(101, 0x4e00, 0x4f80, true, false));
+        sleep(2000);
+        String text = driver.findElement(By.cssSelector("form > div:nth-child(1) > div > div> div.ant-form-item-explain-error")).getText();
+        Assert.assertEquals(text, "100文字以内で入力してください。", "[Company name] Message do not match");
+    }
+
+    public void company_name_exceed_mix_100_half_and_full_width_characters(WebDriver driver) throws InterruptedException {
+        int length_of_half_width = RandomUtils.nextInt(100) + 1;
+        String company_name = RandomStringUtils.randomAlphabetic(length_of_half_width)
+                + RandomStringUtils.random(101 - length_of_half_width, 0x4e00, 0x4f80, true, false);
+        driver.findElement(By.cssSelector("#name")).sendKeys(company_name);
         sleep(2000);
         String text = driver.findElement(By.cssSelector("form > div:nth-child(1) > div > div> div.ant-form-item-explain-error")).getText();
         Assert.assertEquals(text, "100文字以内で入力してください。", "[Company name] Message do not match");
@@ -126,9 +143,7 @@ public class Company_profile_information {
 
 
     // Establishment date
-    public void leave_date_of_establishment_blank(WebDriver driver, Actions key) throws InterruptedException {
-        driver.findElement(By.cssSelector("#establishment_date")).sendKeys("2022-01");
-        key.sendKeys(Keys.ENTER).perform();
+    public void leave_date_of_establishment_blank(WebDriver driver) throws InterruptedException {
         driver.findElement(By.cssSelector("span.anticon-close-circle")).click();
         sleep(2000);
         String text = driver.findElement(By.cssSelector("form > div:nth-child(2) > div > div> div.ant-form-item-explain-error")).getText();
@@ -144,24 +159,44 @@ public class Company_profile_information {
         sleep(2000);
         String text1 = driver.findElement(By.cssSelector("span > div:nth-child(1) > div > div.ant-form-item-explain > div")).getText();
         Assert.assertEquals(text1, "市区町村・町名・番地を入力してください", "[Address] Message do not match");
+   }
 
-//        driver.findElement(By.cssSelector("#building")).sendKeys("leave_blank");
-//        for (int i = 0; i < 11; i++) {
-//            key.sendKeys(Keys.BACK_SPACE).perform();
-//        }
-//        sleep(2000);
-//        String text2 = driver.findElement(By.cssSelector("span > div:nth-child(2) > div > div.ant-form-item-explain > div")).getText();
-//        Assert.assertEquals(text2, "建物名を入力してください", "[Building] Message do not match");
-    }
-
-    public void address_exceed_100_characters(WebDriver driver) throws InterruptedException {
+    public void address_exceed_100_half_width_characters(WebDriver driver) throws InterruptedException {
         // total length of address and building in range 2-101
-        int leghth_of_address = RandomUtils.nextInt(100) + 1;
-        int length_of_building = 101 - leghth_of_address;
+        int length_of_address = RandomUtils.nextInt(100) + 1;
+        int length_of_building = 101 - length_of_address;
         // Address
-        driver.findElement(By.cssSelector("#address")).sendKeys(RandomStringUtils.randomAlphanumeric(leghth_of_address));
+        driver.findElement(By.cssSelector("#address")).sendKeys(RandomStringUtils.randomAlphanumeric(length_of_address));
         driver.findElement(By.cssSelector("#building")).sendKeys(RandomStringUtils.randomAlphanumeric(length_of_building));
         sleep(2000);
+        String text = driver.findElement(By.cssSelector("span > div:nth-child(2) > div > div.ant-form-item-explain > div")).getText();
+        Assert.assertEquals(text, "建物名を合わせて100文字以内で入力してください。", "[Address] Message do not match");
+    }
+
+    public void address_exceed_100_full_width_characters(WebDriver driver) throws InterruptedException {
+        // total length of address and building in range 2-101
+        int length_of_address = RandomUtils.nextInt(100) + 1;
+        int length_of_building = 101 - length_of_address;
+        // Address
+        driver.findElement(By.cssSelector("#address")).sendKeys(RandomStringUtils.random(length_of_address, 0x4e00, 0x4f80, true, false));
+        driver.findElement(By.cssSelector("#building")).sendKeys(RandomStringUtils.random(length_of_building, 0x4e00, 0x4f80, true, false));
+        sleep(2000);
+        String text = driver.findElement(By.cssSelector("span > div:nth-child(2) > div > div.ant-form-item-explain > div")).getText();
+        Assert.assertEquals(text, "建物名を合わせて100文字以内で入力してください。", "[Address] Message do not match");
+    }
+
+    public void address_exceed_mix_100_half_and_and_full_width_characters(WebDriver driver) throws InterruptedException {
+        // total length of address and building in range 2-101
+        int length_of_address_half = RandomUtils.nextInt(98) + 1;
+        int length_of_address_full = RandomUtils.nextInt(99 - length_of_address_half) + 1;
+        int length_of_building_half = RandomUtils.nextInt(100 -  length_of_address_half - length_of_address_full) + 1;
+        int length_of_building_full = 101 - length_of_building_half - length_of_address_half - length_of_address_full;
+        String address = RandomStringUtils.randomAlphabetic(length_of_address_half) + RandomStringUtils.random(length_of_address_full, 0x4e00, 0x4f80, true, false);
+        String building = RandomStringUtils.randomAlphabetic(length_of_address_half) + RandomStringUtils.random(length_of_building_full, 0x4e00, 0x4f80, true, false);
+        // Address
+        driver.findElement(By.cssSelector("#address")).sendKeys(address);
+        driver.findElement(By.cssSelector("#building")).sendKeys(building);
+        sleep(3000);
         String text = driver.findElement(By.cssSelector("span > div:nth-child(2) > div > div.ant-form-item-explain > div")).getText();
         Assert.assertEquals(text, "建物名を合わせて100文字以内で入力してください。", "[Address] Message do not match");
     }
@@ -177,11 +212,31 @@ public class Company_profile_information {
         Assert.assertEquals(text, "URLを入力してください", "[URL] Message do not match");
     }
 
-    public void url_exceed_50_characters(WebDriver driver) throws InterruptedException {
+    public void url_exceed_50_half_width_characters(WebDriver driver) throws InterruptedException {
         driver.findElement(By.cssSelector("#domain_name")).sendKeys(RandomStringUtils.randomAlphanumeric(51));
         sleep(2000);
         String text = driver.findElement(By.cssSelector("form > div:nth-child(4) > div > div.ant-form-item-explain > div")).getText();
         Assert.assertEquals(text, "50文字以内で入力してください。", "[URL] Message do not match");
+    }
+
+    public void url_exceed_50_full_width_characters(WebDriver driver) throws InterruptedException {
+        driver.findElement(By.cssSelector("#domain_name")).sendKeys(RandomStringUtils.random(51, 0x4e00, 0x4f80, true, false));
+        sleep(2000);
+        String text1 = driver.findElement(By.cssSelector("form > div:nth-child(4) > div > div.ant-form-item-explain > div:nth-child(1)")).getText();
+        Assert.assertEquals(text1, "半角英数記号で入力してください。", "[URL] Message do not match");
+        String text2 = driver.findElement(By.cssSelector("form > div:nth-child(4) > div > div.ant-form-item-explain > div:nth-child(2)")).getText();
+        Assert.assertEquals(text2, "50文字以内で入力してください。", "[URL] Message do not match");
+    }
+
+    public void url_exceed_mix_50_half_and_full_width_characters(WebDriver driver) throws InterruptedException {
+        int length_of_half = RandomUtils.nextInt(50) + 1;
+        String url = RandomStringUtils.randomAlphabetic(length_of_half) + RandomStringUtils.random(51 - length_of_half, 0x4e00, 0x4f80, true, false);
+        driver.findElement(By.cssSelector("#domain_name")).sendKeys(url);
+        sleep(2000);
+        String text1 = driver.findElement(By.cssSelector("form > div:nth-child(4) > div > div.ant-form-item-explain > div:nth-child(1)")).getText();
+        Assert.assertEquals(text1, "半角英数記号で入力してください。", "[URL] Message do not match");
+        String text2 = driver.findElement(By.cssSelector("form > div:nth-child(4) > div > div.ant-form-item-explain > div:nth-child(2)")).getText();
+        Assert.assertEquals(text2, "50文字以内で入力してください。", "[URL] Message do not match");
     }
 
     // Capital
@@ -193,7 +248,7 @@ public class Company_profile_information {
         Assert.assertEquals(text, "資本金を入力してください", "[Capital] Message do not match");
     }
 
-    public void capital_exceed_13_characters(WebDriver driver) throws InterruptedException {
+    public void capital_exceed_13_half_width_characters(WebDriver driver) throws InterruptedException {
         driver.findElement(By.cssSelector("#capital_man_yen")).sendKeys(RandomStringUtils.random(14, false, true));
         sleep(2000);
         String text = driver.findElement(By.cssSelector("form > div:nth-child(6) > div > div.ant-form-item-explain > div")).getText();

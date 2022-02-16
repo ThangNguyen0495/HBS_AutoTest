@@ -1,7 +1,7 @@
-package HBS;
+package hidenTest;
 
-import BasePage.createPartnerPIC.Contact_information;
-import BasePage.createPartnerPIC.Delivery_conditions;
+import hidenBasePage.createPartnerPIC.Contact_information;
+import hidenBasePage.createPartnerPIC.Delivery_conditions;
 import Common.Common;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;

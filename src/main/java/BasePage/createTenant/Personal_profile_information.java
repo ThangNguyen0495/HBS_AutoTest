@@ -13,10 +13,10 @@ import static java.lang.Thread.sleep;
 public class Personal_profile_information {
     public void username(WebDriver driver) {
         // total length of first name and last name in range 2-50
-        int leghth_of_last_name = RandomUtils.nextInt(19) + 1;
-        int length_of_first_name = RandomUtils.nextInt(20 - leghth_of_last_name) + 1;
+        int length_of_last_name = RandomUtils.nextInt(19) + 1;
+        int length_of_first_name = RandomUtils.nextInt(20 - length_of_last_name) + 1;
         // generate first name and last name by random text
-        String last_name = RandomStringUtils.randomAlphabetic(leghth_of_last_name);
+        String last_name = RandomStringUtils.randomAlphabetic(length_of_last_name);
         String first_name = RandomStringUtils.randomAlphabetic(length_of_first_name);
         // Username
         driver.findElement(By.cssSelector("#last_name")).sendKeys(last_name);
@@ -70,11 +70,33 @@ public class Personal_profile_information {
         Assert.assertEquals(text, "必須項目です", "[Username] Message do not match");
     }
 
-    public void username_exceed_50_characters(WebDriver driver) throws InterruptedException {
+    public void username_exceed_50_half_width_characters(WebDriver driver) throws InterruptedException {
         int length_of_lastname = RandomUtils.nextInt(50) + 1;
         int length_of_firstname = 51 - length_of_lastname;
         driver.findElement(By.cssSelector("#last_name")).sendKeys(RandomStringUtils.randomAlphabetic(length_of_lastname));
         driver.findElement(By.cssSelector("#first_name")).sendKeys(RandomStringUtils.randomAlphabetic(length_of_firstname));
+        sleep(2000);
+        String text = driver.findElement(By.cssSelector("form > div:nth-child(1) > div > div.ant-form-item-explain > div")).getText();
+        Assert.assertEquals(text, "50文字以内で入力してください。", "[Username] Message do not match");
+    }
+
+    public void username_exceed_50_full_width_characters(WebDriver driver) throws InterruptedException {
+        int length_of_lastname = RandomUtils.nextInt(50) + 1;
+        int length_of_firstname = 51 - length_of_lastname;
+        driver.findElement(By.cssSelector("#last_name"))
+                .sendKeys(RandomStringUtils.random(length_of_lastname,0x4e00, 0x4f80, true, false));
+        driver.findElement(By.cssSelector("#first_name"))
+                .sendKeys(RandomStringUtils.random(length_of_firstname,0x4e00, 0x4f80, true, false));
+        sleep(2000);
+        String text = driver.findElement(By.cssSelector("form > div:nth-child(1) > div > div.ant-form-item-explain > div")).getText();
+        Assert.assertEquals(text, "50文字以内で入力してください。", "[Username] Message do not match");
+    }
+
+    public void username_exceed_mix_50_half_and_full_width_characters(WebDriver driver) throws InterruptedException {
+        int length_of_lastname = RandomUtils.nextInt(50) + 1;
+        int length_of_firstname = 51 - length_of_lastname;
+        driver.findElement(By.cssSelector("#last_name")).sendKeys(RandomStringUtils.randomAlphabetic(length_of_lastname));
+        driver.findElement(By.cssSelector("#first_name")).sendKeys(RandomStringUtils.random(length_of_firstname,0x4e00, 0x4f80, true, false));
         sleep(2000);
         String text = driver.findElement(By.cssSelector("form > div:nth-child(1) > div > div.ant-form-item-explain > div")).getText();
         Assert.assertEquals(text, "50文字以内で入力してください。", "[Username] Message do not match");
@@ -96,7 +118,7 @@ public class Personal_profile_information {
         Assert.assertEquals(text, "TELの欄は全て入力してください", "[TEL] Message do not match");
     }
 
-    public void tel_exceed_15_characters(WebDriver driver) throws InterruptedException {
+    public void tel_exceed_15_half_width_characters(WebDriver driver) throws InterruptedException {
         int number_of_tel1 = RandomUtils.nextInt(14) + 1;
         int number_of_tel2 = RandomUtils.nextInt(15 - number_of_tel1) + 1;
         int number_of_tel3 = 16 - number_of_tel1 - number_of_tel2;
@@ -123,15 +145,22 @@ public class Personal_profile_information {
     }
 
     // Password
-    public void password_less_than_10_characters(WebDriver driver) throws InterruptedException {
+    public void password_less_than_10_half_width_characters(WebDriver driver) throws InterruptedException {
         driver.findElement(By.cssSelector("#password")).sendKeys(RandomStringUtils.randomAlphabetic(9));
         sleep(2000);
         String text = driver.findElement(By.cssSelector("form > div:nth-child(5) > div > div.ant-form-item-explain > div")).getText();
         Assert.assertEquals(text, "大小英数字記号混在で10-50桁で入力してください。", "[Password] Message do not match");
     }
 
-    public void password_exceed_50_characters(WebDriver driver) throws InterruptedException {
+    public void password_exceed_50_half_width_characters(WebDriver driver) throws InterruptedException {
         driver.findElement(By.cssSelector("#password")).sendKeys(RandomStringUtils.randomAlphabetic(51));
+        sleep(2000);
+        String text = driver.findElement(By.cssSelector("form > div:nth-child(5) > div > div.ant-form-item-explain > div")).getText();
+        Assert.assertEquals(text, "大小英数字記号混在で10-50桁で入力してください。", "[Password] Message do not match");
+    }
+
+    public void password_contains_full_width_characters(WebDriver driver) throws InterruptedException {
+        driver.findElement(By.cssSelector("#password")).sendKeys(RandomStringUtils.random(10,0x4e00, 0x4f80, true, false));
         sleep(2000);
         String text = driver.findElement(By.cssSelector("form > div:nth-child(5) > div > div.ant-form-item-explain > div")).getText();
         Assert.assertEquals(text, "大小英数字記号混在で10-50桁で入力してください。", "[Password] Message do not match");
@@ -145,8 +174,26 @@ public class Personal_profile_information {
     }
 
     // Email signature
-    public void email_signature_exceed_1000_characters(WebDriver driver) throws InterruptedException {
+    public void email_signature_exceed_1000_half_width_characters(WebDriver driver) throws InterruptedException {
         driver.findElement(By.cssSelector("#email_signature")).sendKeys(RandomStringUtils.randomAlphabetic(1001));
+        sleep(2000);
+        String text = driver.findElement(By.cssSelector("form > div:nth-child(6) > div > div.ant-form-item-explain > div")).getText();
+        Assert.assertEquals(text, "1000文字以内で入力してください。", "[Email signature] Message do not match");
+    }
+
+    public void email_signature_exceed_1000_full_width_characters(WebDriver driver) throws InterruptedException {
+        driver.findElement(By.cssSelector("#email_signature"))
+                .sendKeys(RandomStringUtils.random(1001,0x4e00, 0x4f80, true, false));
+        sleep(2000);
+        String text = driver.findElement(By.cssSelector("form > div:nth-child(6) > div > div.ant-form-item-explain > div")).getText();
+        Assert.assertEquals(text, "1000文字以内で入力してください。", "[Email signature] Message do not match");
+    }
+
+    public void email_signature_exceed_mix_1000_half_and_full_width_characters(WebDriver driver) throws InterruptedException {
+        int length_of_half = RandomUtils.nextInt(1000) + 1;
+        String email_signature = RandomStringUtils.randomAlphabetic(length_of_half)
+                + RandomStringUtils.random(1001 - length_of_half,0x4e00, 0x4f80, true, false);
+        driver.findElement(By.cssSelector("#email_signature")).sendKeys(email_signature);
         sleep(2000);
         String text = driver.findElement(By.cssSelector("form > div:nth-child(6) > div > div.ant-form-item-explain > div")).getText();
         Assert.assertEquals(text, "1000文字以内で入力してください。", "[Email signature] Message do not match");

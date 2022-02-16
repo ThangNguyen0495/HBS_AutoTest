@@ -1,4 +1,4 @@
-package BasePage.createPartnerPIC;
+package hidenBasePage.createPartnerPIC;
 
 import Common.Common;
 import org.apache.commons.lang.RandomStringUtils;

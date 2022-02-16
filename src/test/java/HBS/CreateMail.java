@@ -7,36 +7,55 @@ import BasePage.createMail.Final_confirmation;
 import Common.Common;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
 
-import static Variable.Variable.*;
-
 public class CreateMail {
 
-    @Test
-    @Parameters("headless")
-    public void createMail(Boolean headless) throws InterruptedException, IOException {
+    Common cm;
+    WebDriver driver;
+    Actions key;
+    Basic_information bi;
+    Attachment a;
+    Destination_selection ds;
+    Final_confirmation fc;
 
+    @BeforeMethod
+    @Parameters({"headless", "email", "password", "url"})
+    public void init(Boolean headless, String email, String password, String url) throws InterruptedException {
         // Init Common function
-        Common cm = new Common();
+        cm = new Common();
 
         // Config Webdriver
-        WebDriver driver = cm.setupWebdriver(headless);
+        driver = cm.setupWebdriver(headless);
 
         // Init Actions
-        Actions key = new Actions(driver);
+        key = new Actions(driver);
 
         //Login
-        cm.login(driver, url + delivery_email_reservation_path, master_email, master_password);
+        cm.login(driver, url, email, password);
 
+        // Init Basic information function
+        bi = new Basic_information();
+
+        // Init Attachment function
+        a = new Attachment();
+
+        // Init Destination selection function
+        ds = new Destination_selection();
+
+        // Init Final confirmation function
+        fc = new Final_confirmation();
+    }
+
+    @Test
+    @Parameters({"role", "url_mail_list"})
+    public void TC01_process_create_mail(String role, String url_mail_list) throws InterruptedException, IOException {
         //****** 基本情報 ****** //
         // Basic information
-        // Init Basic information function
-        Basic_information bi = new Basic_information();
-
         // Format
         bi.format(driver, role, cm);
 
@@ -58,9 +77,6 @@ public class CreateMail {
 
         //****** 添付ファイル ****** //
         // Attachment
-        // Init Attachment function
-        Attachment a = new Attachment();
-
         // Generate test file
         // Capacity: MB
         a.generate_test_file(2);
@@ -72,9 +88,6 @@ public class CreateMail {
         a.next_to_destination_selection_step(driver, role, cm);
 
         //****** 宛先選択 ****** //
-        // Init Destination selection function
-        Destination_selection ds = new Destination_selection();
-
         // Delivery information
         ds.delivery_information(driver, role, cm);
 
@@ -92,9 +105,6 @@ public class CreateMail {
 
         //****** 最終確認 ****** //
         // Final confirmation
-        // Init Final confirmation function
-        Final_confirmation fc = new Final_confirmation();
-
         // Open delivery time setting popup
         fc.open_delivery_time_setting_popup(driver, role, cm);
 
@@ -102,6 +112,55 @@ public class CreateMail {
         fc.select_date(driver, role, cm, "");
 
         // Select time and select again when time incorrect
-        fc.select_time_and_select_again_when_time_incorrect(driver, key, role, cm);
+        fc.select_time_and_select_again_when_time_incorrect(driver, key, role, cm, url_mail_list);
+
+        // Close browser
+        driver.close();
     }
+
+    @Test(priority = 1)
+    public void TC_02_leave_all_blank_basic_information() throws InterruptedException {
+        bi.leave_distributor_blank(driver);
+        bi.leave_subject_blank(driver, key);
+        bi.leave_insertion_blank(driver, key);
+        driver.close();
+    }
+
+    @Test(priority = 2)
+    public void TC_03_subject_exceed_100_half_width_characters() throws InterruptedException {
+        bi.subject_exceed_100_half_width_characters(driver);
+        driver.close();
+    }
+
+    @Test(priority = 3)
+    public void TC_04_subject_exceed_100_full_width_characters() throws InterruptedException {
+        bi.subject_exceed_100_full_width_characters(driver);
+        driver.close();
+    }
+
+    @Test(priority = 4)
+    public void TC_05_subject_exceed_100_mix_half_and_full_width_characters() throws InterruptedException {
+        bi.subject_exceed_100_mix_half_and_full_width_characters(driver);
+        driver.close();
+    }
+
+
+    @Test(priority = 5)
+    public void TC_06_insertion_exceed_10000_half_width_characters() throws InterruptedException {
+        bi.insertion_exceed_10000_half_width_characters(driver);
+        driver.close();
+    }
+
+    @Test(priority = 6)
+    public void TC_07_insertion_exceed_5000_full_width_characters() throws InterruptedException {
+        bi.insertion_exceed_5000_full_width_characters(driver);
+        driver.close();
+    }
+
+    @Test(priority = 7)
+    public void TC_08_insertion_exceed_5000_mix_half_and_full_width_characters() throws InterruptedException {
+        bi.insertion_exceed_5000_mix_half_and_full_width_characters(driver);
+        driver.close();
+    }
+
 }
