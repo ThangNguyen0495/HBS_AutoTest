@@ -6,19 +6,21 @@ import BasePage.createPartner.Transaction_terms;
 import Common.Common;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
+import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
 import static Variable.Variable.*;
 
 public class CreatePartner {
     @Test()
-    public void createPartner() throws InterruptedException {
+    @Parameters("headless")
+    public void createPartner(Boolean headless) throws InterruptedException {
 
         // Init Common function
         Common cm = new Common();
 
         // Setup Webdriver
-        WebDriver driver = cm.setupWebdriver();
+        WebDriver driver = cm.setupWebdriver(headless);
 
         // Init Actions
         Actions key = new Actions(driver);

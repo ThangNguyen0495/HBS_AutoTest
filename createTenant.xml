@@ -6,22 +6,58 @@
         <classes>
             <class name="HBS.CreateTenant">
                 <methods>
-                    <parameter name="url" value="https://test.app.cmrb.jp/tenant"/>
-<!--                    <include name="createTenant"/>-->
-<!--                    <include name="leave_all_blank_member_information"/>-->
-<!--                    <include name="email_exceed_100_characters"/>-->
-<!--                    <include name="password_and_confirm_password_less_than_10_characters"/>-->
-<!--                    <include name="password_and_confirm_password_exceed_50_characters"/>-->
-<!--                    <include name="password_and_confirm_password_does_not_match"/>-->
-<!--                    <include name="password_and_confirm_password_does_not_mix_alphanumerical_characters"/>-->
+                    <!-- Descriptions: headless
+                    Headless is "test run" mode,
+                    headless = "true": Run test with non UI mode (Browser will not be opened),
+                    headless = "false": Run test with UI mode (Browser will be opened).
+                    -->
+                    <parameter name="headless" value="false"/>
 
+                    <!-- Descriptions: url
+                    Url is your create tenant link.
+                    -->
+                    <parameter name="url" value="https://test.app.cmrb.jp/tenant"/>
+
+                    <!-- Create tenant process -->
+                    <include name="TC01_process_create_tenant"/>
+
+                    <!-- Validation of Member information tab -->
+                    <include name="TC02_leave_all_blank_member_information"/>
+                    <include name="TC03_email_exceed_100_characters"/>
+                    <include name="TC04_password_and_confirm_password_less_than_10_characters"/>
+                    <include name="TC05_password_and_confirm_password_exceed_50_characters"/>
+                    <include name="TC06_password_and_confirm_password_does_not_match"/>
+                    <include name="TC07_password_and_confirm_password_does_not_mix_alphanumerical_characters"/>
+
+                    <!-- Validation of Company profile information tab -->
+                    <!-- Descriptions: url_cpi
+                    url_cpi is your company profile information tab link.
+                    -->
                     <parameter name="url_cpi"
                                value="https://test.app.cmrb.jp/tenant?auth_token=ImIyMzU5NDIzLTg0MzktNGQ3MC1iYTIxLWFlNDhjNTE2MDA2YyI:1nK0BV:0EgREoSouhVRyza-1Cb1XlsUHzk"/>
-                    <include name="leave_all_blank_company_profile_information"/>
-<!--                    <include name="company_name_exceed_100_characters"/>-->
-<!--                    <include name="address_exceed_100_characters"/>-->
-<!--                    <include name="url_exceed_50_characters"/>-->
-<!--                    <include name="capital_exceed_13_characters"/>-->
+                    <include name="TC08_leave_all_blank_company_profile_information"/>
+                    <include name="TC09_company_name_exceed_100_characters"/>
+                    <include name="TC10_address_exceed_100_characters"/>
+                    <include name="TC11_url_exceed_50_characters"/>
+                    <include name="TC12_capital_exceed_13_characters"/>
+
+                    <!-- Validation of Personal profile information tab -->
+                    <!-- Descriptions: url_ppi
+                    url_ppi is your personal profile information tab link.
+                    -->
+                    <parameter name="url_ppi"
+                               value="https://test.app.cmrb.jp/tenant?auth_token=IjYzNDc4MDk4LWZlMWQtNDA4NS1hNDNiLWU1MmY5MDA4MThhNCI:1nK9oU:-mORO68To099FMll9BgkPt_htLE"/>
+                    <include name="TC13_leave_username_blank_personal_profile_information"/>
+                    <include name="TC14_username_exceed_50_characters"/>
+                    <include name="TC15_username_contains_space_characters"/>
+                    <include name="TC16_do_not_fill_in_all_tel_fields"/>
+                    <include name="TC17_tel_exceed_15_characters"/>
+                    <include name="TC18_tel_contains_full_width_characters"/>
+                    <include name="TC19_tel_contains_letter_characters"/>
+                    <include name="TC20_password_less_than_10_characters"/>
+                    <include name="TC21_password_exceed_50_characters"/>
+                    <include name="TC22_password_do_not_mix_alphanumerical_characters"/>
+                    <include name="TC23_email_signature_exceed_1000_characters"/>
                 </methods>
             </class>
         </classes>

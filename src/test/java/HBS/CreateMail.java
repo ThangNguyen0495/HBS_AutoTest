@@ -7,6 +7,7 @@ import BasePage.createMail.Final_confirmation;
 import Common.Common;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
+import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
@@ -16,13 +17,14 @@ import static Variable.Variable.*;
 public class CreateMail {
 
     @Test
-    public void createMail() throws InterruptedException, IOException {
+    @Parameters("headless")
+    public void createMail(Boolean headless) throws InterruptedException, IOException {
 
         // Init Common function
         Common cm = new Common();
 
         // Config Webdriver
-        WebDriver driver = cm.setupWebdriver();
+        WebDriver driver = cm.setupWebdriver(headless);
 
         // Init Actions
         Actions key = new Actions(driver);

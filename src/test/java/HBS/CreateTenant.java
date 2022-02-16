@@ -7,7 +7,9 @@ import BasePage.createTenant.Personal_profile_information;
 import Common.Common;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
-import org.testng.annotations.*;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Parameters;
+import org.testng.annotations.Test;
 
 import static java.lang.Thread.sleep;
 
@@ -21,12 +23,13 @@ public class CreateTenant {
     Actions key;
 
     @BeforeMethod()
-    public void init() {
+    @Parameters("headless")
+    public void init(Boolean headless) {
         // Init Common function
         cm = new Common();
 
         // Config Webdriver
-        driver = cm.setupWebdriver();
+        driver = cm.setupWebdriver(headless);
 
         // Init Actions
         key = new Actions(driver);
@@ -43,10 +46,10 @@ public class CreateTenant {
         // Init Payment information function
         pi = new Payment_information();
     }
-    
+
     @Test
-    @Parameters ("url")
-    public void createTenant(String url) throws InterruptedException {
+    @Parameters("url")
+    public void TC01_process_create_tenant(String url) throws InterruptedException {
         //****** 会員情報 ****** //
         // Member information
         // Link to Create tenant - Member information tab
@@ -169,16 +172,15 @@ public class CreateTenant {
         // Complete tenant registration
         pi.complete_tenant_registration(driver);
 
-//        driver.close();
+        // Close browser
+        driver.close();
     }
 
     @Test(priority = 1)
-    @Parameters ("url")
-    public void leave_all_blank_member_information(String url) throws InterruptedException {
+    @Parameters("url")
+    public void TC02_leave_all_blank_member_information(String url) throws InterruptedException {
         // Link to Create tenant - Member information tab
         driver.get(url);
-
-        sleep(2000);
 
         // Leave email blank and verify message
         mi.leave_email_blank(driver, key);
@@ -199,8 +201,8 @@ public class CreateTenant {
     }
 
     @Test(priority = 2)
-    @Parameters ("url")
-    public void email_exceed_100_characters(String url) {
+    @Parameters("url")
+    public void TC03_email_exceed_100_characters(String url) {
         // Link to Create tenant - Member information tab
         driver.get(url);
 
@@ -212,8 +214,8 @@ public class CreateTenant {
     }
 
     @Test(priority = 3)
-    @Parameters ("url")
-    public void password_and_confirm_password_less_than_10_characters(String url) throws InterruptedException {
+    @Parameters("url")
+    public void TC04_password_and_confirm_password_less_than_10_characters(String url) throws InterruptedException {
         // Link to Create tenant - Member information tab
         driver.get(url);
 
@@ -228,8 +230,8 @@ public class CreateTenant {
     }
 
     @Test(priority = 4)
-    @Parameters ("url")
-    public void password_and_confirm_password_exceed_50_characters(String url) throws InterruptedException {
+    @Parameters("url")
+    public void TC05_password_and_confirm_password_exceed_50_characters(String url) throws InterruptedException {
         // Link to Create tenant - Member information tab
         driver.get(url);
 
@@ -244,8 +246,8 @@ public class CreateTenant {
     }
 
     @Test(priority = 5)
-    @Parameters ("url")
-    public void password_and_confirm_password_does_not_match(String url) throws InterruptedException {
+    @Parameters("url")
+    public void TC06_password_and_confirm_password_does_not_match(String url) throws InterruptedException {
         // Link to Create tenant - Member information tab
         driver.get(url);
 
@@ -257,22 +259,22 @@ public class CreateTenant {
     }
 
     @Test(priority = 6)
-    @Parameters ("url")
-    public void password_and_confirm_password_does_not_mix_alphanumerical_characters(String url) throws InterruptedException {
+    @Parameters("url")
+    public void TC07_password_and_confirm_password_does_not_mix_alphanumerical_characters(String url) throws InterruptedException {
         // Link to Create tenant - Member information tab
         driver.get(url);
 
-        // Input password, confirm password does not mix alphanumerical characters and verify message
+        // Input password, confirm password not mix alphanumerical characters and verify message
         mi.password_and_confirm_password_does_not_mix_alphanumerical_characters(driver);
 
         // Close browser
         driver.close();
     }
 
-    
+
     @Test(priority = 7)
     @Parameters("url_cpi")
-    public void leave_all_blank_company_profile_information(String url_cpi) throws InterruptedException {
+    public void TC08_leave_all_blank_company_profile_information(String url_cpi) throws InterruptedException {
         // Link to Create tenant - Company profile information tab
         driver.get(url_cpi);
 
@@ -280,7 +282,7 @@ public class CreateTenant {
         cpi.leave_company_name_blank(driver, key);
 
         // Leave date of establishment blank and verify message
-        cpi.leave_date_of_establishment_blank(driver,key);
+        cpi.leave_date_of_establishment_blank(driver, key);
 
         // Leave address blank and verify message
         cpi.leave_address_blank(driver, key);
@@ -297,7 +299,7 @@ public class CreateTenant {
 
     @Test(priority = 8)
     @Parameters("url_cpi")
-    public void company_name_exceed_100_characters(String url_cpi) throws InterruptedException {
+    public void TC09_company_name_exceed_100_characters(String url_cpi) throws InterruptedException {
         // Link to Create tenant - Company profile information tab
         driver.get(url_cpi);
 
@@ -310,7 +312,7 @@ public class CreateTenant {
 
     @Test(priority = 9)
     @Parameters("url_cpi")
-    public void address_exceed_100_characters(String url_cpi) throws InterruptedException {
+    public void TC10_address_exceed_100_characters(String url_cpi) throws InterruptedException {
         // Link to Create tenant - Company profile information tab
         driver.get(url_cpi);
 
@@ -323,7 +325,7 @@ public class CreateTenant {
 
     @Test(priority = 10)
     @Parameters("url_cpi")
-    public void url_exceed_50_characters(String url_cpi) throws InterruptedException {
+    public void TC11_url_exceed_50_characters(String url_cpi) throws InterruptedException {
         // Link to Create tenant - Company profile information tab
         driver.get(url_cpi);
 
@@ -336,12 +338,155 @@ public class CreateTenant {
 
     @Test(priority = 11)
     @Parameters("url_cpi")
-    public void capital_exceed_13_characters(String url_cpi) throws InterruptedException {
+    public void TC12_capital_exceed_13_characters(String url_cpi) throws InterruptedException {
         // Link to Create tenant - Company profile information tab
         driver.get(url_cpi);
 
         // Input company name exceed 100 characters and verify message
         cpi.capital_exceed_13_characters(driver);
+
+        // Close browser
+        driver.close();
+    }
+
+    @Test(priority = 12)
+    @Parameters("url_ppi")
+    public void TC13_leave_username_blank_personal_profile_information(String url_ppi) throws InterruptedException {
+        // Link to Create tenant - Personal profile information tab
+        driver.get(url_ppi);
+
+        // Leave username blank and verify message
+        ppi.leave_username_blank(driver, key);
+
+        // Close browser
+        driver.close();
+    }
+
+    @Test(priority = 13)
+    @Parameters("url_ppi")
+    public void TC14_username_exceed_50_characters(String url_ppi) throws InterruptedException {
+        // Link to Create tenant - Personal profile information tab
+        driver.get(url_ppi);
+
+        // Input username exceed 50 characters and verify message
+        ppi.username_exceed_50_characters(driver);
+
+        // Close browser
+        driver.close();
+    }
+
+    @Test(priority = 14)
+    @Parameters("url_ppi")
+    public void TC15_username_contains_space_characters(String url_ppi) throws InterruptedException {
+        // Link to Create tenant - Personal profile information tab
+        driver.get(url_ppi);
+
+        // Input username contains space characters and verify message
+        ppi.username_contains_space_characters(driver);
+
+        // Close browser
+        driver.close();
+    }
+
+    @Test(priority = 15)
+    @Parameters("url_ppi")
+    public void TC16_do_not_fill_in_all_tel_fields(String url_ppi) throws InterruptedException {
+        // Link to Create tenant - Personal profile information tab
+        driver.get(url_ppi);
+
+        // Do not fill in all tel fields and verify message
+        ppi.do_not_fill_in_all_tel_fields(driver);
+
+        // Close browser
+        driver.close();
+    }
+
+    @Test(priority = 16)
+    @Parameters("url_ppi")
+    public void TC17_tel_exceed_15_characters(String url_ppi) throws InterruptedException {
+        // Link to Create tenant - Personal profile information tab
+        driver.get(url_ppi);
+
+        // Input TEL exceed 50 characters and verify message
+        ppi.tel_exceed_15_characters(driver);
+
+        // Close browser
+        driver.close();
+    }
+
+    @Test(priority = 17)
+    @Parameters("url_ppi")
+    public void TC18_tel_contains_full_width_characters(String url_ppi) throws InterruptedException {
+        // Link to Create tenant - Personal profile information tab
+        driver.get(url_ppi);
+
+        // Input TEL contains full width characters and verify message
+        ppi.tel_contains_full_width_characters(driver);
+
+        // Close browser
+        driver.close();
+    }
+
+    @Test(priority = 18)
+    @Parameters("url_ppi")
+    public void TC19_tel_contains_letter_characters(String url_ppi) throws InterruptedException {
+        // Link to Create tenant - Personal profile information tab
+        driver.get(url_ppi);
+
+        // Input TEL contains letters characters and verify message
+        ppi.tel_contains_letter_characters(driver);
+
+        // Close browser
+        driver.close();
+    }
+
+    @Test(priority = 19)
+    @Parameters("url_ppi")
+    public void TC20_password_less_than_10_characters(String url_ppi) throws InterruptedException {
+        // Link to Create tenant - Personal profile information tab
+        driver.get(url_ppi);
+
+        // Input password less than 10 characters and verify message
+        ppi.password_less_than_10_characters(driver);
+
+        // Close browser
+        driver.close();
+    }
+
+    @Test(priority = 20)
+    @Parameters("url_ppi")
+    public void TC21_password_exceed_50_characters(String url_ppi) throws InterruptedException {
+        // Link to Create tenant - Personal profile information tab
+        driver.get(url_ppi);
+
+        // Input password exceed 50 characters and verify message
+        ppi.password_exceed_50_characters(driver);
+
+        // Close browser
+        driver.close();
+    }
+
+    @Test(priority = 21)
+    @Parameters("url_ppi")
+    public void TC22_password_do_not_mix_alphanumerical_characters(String url_ppi) throws InterruptedException {
+        // Link to Create tenant - Personal profile information tab
+        driver.get(url_ppi);
+
+        // Input password not mix alphanumerical characters and verify message
+        ppi.password_do_not_mix_alphanumerical_characters(driver);
+
+        // Close browser
+        driver.close();
+    }
+
+    @Test(priority = 22)
+    @Parameters("url_ppi")
+    public void TC23_email_signature_exceed_1000_characters(String url_ppi) throws InterruptedException {
+        // Link to Create tenant - Personal profile information tab
+        driver.get(url_ppi);
+
+        // Input email signature exceed 1000 characters and verify message
+        ppi.email_signature_exceed_1000_characters(driver);
 
         // Close browser
         driver.close();

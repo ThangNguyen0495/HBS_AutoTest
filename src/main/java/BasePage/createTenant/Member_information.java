@@ -47,7 +47,7 @@ public class Member_information {
         // Confirm password
         driver.findElement(By.cssSelector("#password_confirm")).sendKeys(password + "@");
         // Wait captcha
-        sleep(1000);
+        sleep(2000);
     }
 
     public void recaptcha_checkbox(WebDriver driver) throws InterruptedException {
@@ -72,7 +72,7 @@ public class Member_information {
 
     public void click_register_member_information_button(WebDriver driver) throws InterruptedException {
         // Wait and click Register member information button
-        sleep(1000);
+        sleep(2000);
         driver.findElement(By.cssSelector("button.ant-btn.ant-btn-primary")).click();
         // Wait [コモレビ]コモレビへ新規登録 mail has been sent
         sleep(10000);
@@ -98,7 +98,7 @@ public class Member_information {
         url_in_New_registration_to_Komorebi_mail(driver);
         // Next to Company profile information step
         driver.get(url_in_mail);
-        sleep(1000);
+        sleep(2000);
     }
 
     /*** Validation function
@@ -131,14 +131,14 @@ public class Member_information {
         for (int i = 0; i < 11; i++) {
             key.sendKeys(Keys.BACK_SPACE).perform();
         }
-        sleep(1000);
+        sleep(2000);
         String text = driver.findElement(By.cssSelector("form> div:nth-child(2) > div > div.ant-form-item-explain > div")).getText();
         Assert.assertEquals(text, "パスワードを入力してください", "[Password] Message do not match");
     }
 
     public void password_less_than_10_characters(WebDriver driver) throws InterruptedException {
         driver.findElement(By.cssSelector("#password")).sendKeys(RandomStringUtils.randomAlphabetic(9));
-        sleep(1000);
+        sleep(2000);
         String text = driver.findElement(By.cssSelector("form> div:nth-child(2) > div > div.ant-form-item-explain > div")).getText();
         Assert.assertEquals(text, "大小英数字記号混在で10-50桁で入力してください。", "[Password] Message do not match");
     }
@@ -149,7 +149,7 @@ public class Member_information {
      **/
     public void password_exceed_50_characters(WebDriver driver) throws InterruptedException {
         driver.findElement(By.cssSelector("#password")).sendKeys(RandomStringUtils.randomAlphabetic(51));
-        sleep(1000);
+        sleep(2000);
         String text = driver.findElement(By.cssSelector("form> div:nth-child(2) > div > div.ant-form-item-explain > div")).getText();
         Assert.assertEquals(text, "大小英数字記号混在で10-50桁で入力してください。", "[Password] Message do not match");
     }
@@ -161,7 +161,7 @@ public class Member_information {
     public void password_and_confirm_password_does_not_match(WebDriver driver) throws InterruptedException {
         driver.findElement(By.cssSelector("#password")).sendKeys(RandomStringUtils.randomAlphabetic(8));
         driver.findElement(By.cssSelector("#password_confirm")).sendKeys(RandomStringUtils.randomAlphabetic(9));
-        sleep(1000);
+        sleep(2000);
         String text = driver.findElement(By.cssSelector("form> div:nth-child(3) > div > div.ant-form-item-explain > div:nth-child(2)")).getText();
         Assert.assertEquals(text, "パスワードが一致しません", "Message do not match");
     }
@@ -171,11 +171,10 @@ public class Member_information {
      * Output: show error message "大小英数字記号混在で10-50桁で入力してください。" at each form
      **/
     public void password_and_confirm_password_does_not_mix_alphanumerical_characters(WebDriver driver) throws InterruptedException {
-        sleep(1000);
         String password = RandomStringUtils.random(10,true,false);
         driver.findElement(By.cssSelector("#password")).sendKeys(password);
         driver.findElement(By.cssSelector("#password_confirm")).sendKeys(password);
-        sleep(1000);
+        sleep(2000);
         String text1 = driver.findElement(By.cssSelector("form> div:nth-child(2) > div > div.ant-form-item-explain > div")).getText();
         Assert.assertEquals(text1, "大小英数字記号混在で10-50桁で入力してください。", "[Password] Message do not match");
         String text2 = driver.findElement(By.cssSelector("form> div:nth-child(3) > div > div.ant-form-item-explain > div")).getText();
@@ -191,7 +190,7 @@ public class Member_information {
         for (int i = 0; i < 11; i++) {
             key.sendKeys(Keys.BACK_SPACE).perform();
         }
-        sleep(1000);
+        sleep(2000);
         String text = new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(ExpectedConditions.elementToBeClickable(By.cssSelector("form> div:nth-child(3) > div > div.ant-form-item-explain > div:nth-child(1)"))).getText();
         Assert.assertEquals(text, "パスワード確認を入力してください", "[Confirm password] Message do not match");
@@ -199,21 +198,21 @@ public class Member_information {
 
     public void confirm_password_less_than_10_characters(WebDriver driver) throws InterruptedException {
         driver.findElement(By.cssSelector("#password_confirm")).sendKeys(RandomStringUtils.randomAlphabetic(9));
-        sleep(1000);
+        sleep(2000);
         String text = driver.findElement(By.cssSelector("form> div:nth-child(3) > div > div.ant-form-item-explain > div:nth-child(1)")).getText();
         Assert.assertEquals(text, "大小英数字記号混在で10-50桁で入力してください。", "[Confirm password] Message do not match");
     }
 
     public void confirm_password_exceed_50_characters(WebDriver driver) throws InterruptedException {
         driver.findElement(By.cssSelector("#password_confirm")).sendKeys(RandomStringUtils.randomAlphabetic(51));
-        sleep(1000);
+        sleep(2000);
         String text = driver.findElement(By.cssSelector("form> div:nth-child(3) > div > div.ant-form-item-explain > div:nth-child(1)")).getText();
         Assert.assertEquals(text, "大小英数字記号混在で10-50桁で入力してください。", "[Confirm password] Message do not match");
     }
 
     //Register member information
     public void register_member_information_should_be_disable(WebDriver driver) throws InterruptedException {
-        sleep(1000);
+        sleep(2000);
         boolean button_is_enable = driver.findElement(By.cssSelector("button[type='submit']")).isEnabled();
         Assert.assertFalse(button_is_enable, "[Register member information] Button is not getting disable.");
     }

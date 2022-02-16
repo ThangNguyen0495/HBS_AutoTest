@@ -14,11 +14,11 @@ import static java.lang.Thread.sleep;
 
 
 public class Common {
-    public WebDriver setupWebdriver() {
+    public WebDriver setupWebdriver(Boolean headless) {
         //Config Webdriver
         WebDriverManager.chromedriver().setup();
         ChromeOptions options = new ChromeOptions();
-        options.setHeadless(false);
+        options.setHeadless(headless);
         WebDriver driver = new ChromeDriver(options);
         driver.manage().window().maximize();
         return driver;

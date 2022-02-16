@@ -5,18 +5,20 @@ import BasePage.createPartnerPIC.Delivery_conditions;
 import Common.Common;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
+import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
 import static Variable.Variable.*;
 
 public class CreatePartnerPIC {
     @Test
-    public void createPartnerPIC() throws InterruptedException {
+    @Parameters("headless")
+    public void createPartnerPIC(Boolean headless) throws InterruptedException {
         //Init Common function
         Common cm = new Common();
 
         // Config Webdriver
-        WebDriver driver = cm.setupWebdriver();
+        WebDriver driver = cm.setupWebdriver(headless);
 
         // Init Actions
         Actions key = new Actions(driver);
