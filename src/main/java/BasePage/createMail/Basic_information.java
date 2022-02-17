@@ -56,7 +56,7 @@ public class Basic_information {
         // Master, Administrator, Responsible person, Leader, Member
         if (cm.authorized(role, cm.role_list(5))) {
             // length of insertion in range 1-5000
-            int length_of_insertion = RandomUtils.nextInt(5000) + 1;
+            int length_of_insertion = RandomUtils.nextInt(50) + 1;
             String insertion = RandomStringUtils.randomAlphabetic(length_of_insertion);
             driver.findElement(By.cssSelector("textarea[id='text']")).sendKeys(insertion);
         }
@@ -180,6 +180,46 @@ public class Basic_information {
         sleep(2000);
         String text = driver.findElement(By.cssSelector("form > div:nth-child(4) > div > div.ant-form-item-explain > div")).getText();
         Assert.assertEquals(text, "全角5000文字または半角10000文字以内で入力してください。", "[Insertion] Message do not match");
+    }
+
+    // Delete button
+    public void delete_button_should_be_disable(WebDriver driver) {
+        Assert.assertFalse(driver.findElement(By.cssSelector("button.ant-btn-danger")).isEnabled(), "[Delete] button is not getting dissable.");
+    }
+
+    public void do_you_want_to_delete_this_delivered_email_OK(WebDriver driver, String url_mail_list) throws InterruptedException {
+        // Click delete button
+        driver.findElement(By.cssSelector("button.ant-btn-danger")).click();
+        sleep(1000);
+
+        // Click OK button
+        driver.findElement(By.cssSelector("div.ant-modal-confirm-btns > button.ant-btn-primary")).click();
+        Assert.assertEquals(driver.getCurrentUrl(), url_mail_list, "[Failed] Can not delete delivered email");
+    }
+
+    public void do_you_want_to_delete_this_delivered_email_Cancel(WebDriver driver, String url) throws InterruptedException {
+        // Click delete button
+        driver.findElement(By.cssSelector("button.ant-btn-danger")).click();
+        sleep(1000);
+
+        // Click delete button
+        driver.findElement(By.cssSelector("div.ant-modal-confirm-btns > button.ant-btn-default")).click();
+        Assert.assertEquals(driver.getCurrentUrl(), url, "[Failed] Can not cancel delete delivered email");
+    }
+
+    public void make_a_copy(WebDriver driver, String url_mail_list) throws InterruptedException {
+        // Click make a copy button
+        driver.findElement(By.cssSelector("div:nth-child(1)>button.ant-btn-sm")).click();
+        sleep(1000);
+
+        Assert.assertEquals(driver.getCurrentUrl(),url_mail_list, "[Failed] Can not make a copy of delivered email.");
+    }
+
+    public void save_as_draft(WebDriver driver, String url_mail_list) throws InterruptedException {
+        // Click save as draft button
+        driver.findElement(By.cssSelector("div:nth-child(2)>button.ant-btn-sm")).click();
+        sleep(1000);
+        Assert.assertEquals(driver.getCurrentUrl(),url_mail_list, "[Failed] Can not save delivered as draft.");
     }
 
 }

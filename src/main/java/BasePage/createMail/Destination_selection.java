@@ -7,6 +7,7 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
+import org.testng.Assert;
 
 import static java.lang.Thread.sleep;
 
@@ -319,4 +320,396 @@ public class Destination_selection {
             sleep(3000);
         }
     }
+
+    public void deliver_the_matter_do_not_select_condition(WebDriver driver) throws InterruptedException {
+        // Delivery type: Deliver the matter
+        driver.findElement(By.cssSelector("#searchtype > label:nth-child(1) > span > input")).click();
+
+        // Click Search button
+        driver.findElement(By.cssSelector("div:nth-child(6) > div > div > div:nth-child(1) > div > button")).click();
+        sleep(2000);
+
+        //Delivery area
+        String text1 = driver.findElement(By.cssSelector("form > div:nth-child(3) > div > div > div.ant-form-item-explain > div")).getText();
+        Assert.assertEquals(text1, "必ず1つ選択してください", "[Delivery area] Message do not match");
+
+        // Delivery occupation
+        String text2 = driver.findElement(By.cssSelector("form > div:nth-child(4) > div:nth-child(1)> div > div.ant-form-item-explain > div")).getText();
+        Assert.assertEquals(text2, "必ず1つ選択してください", "[Delivery occupation] Message do not match");
+
+        // Delivery commercial distribution
+        String text3 = driver.findElement(By.cssSelector("form > div:nth-child(4) > div:nth-child(5)> div > div.ant-form-item-explain > div")).getText();
+        Assert.assertEquals(text3, "必ず1つ選択してください", "[Delivery commercial distribution] Message do not match");
+    }
+
+    public void deliver_the_matter_only_select_delivery_occupation_development(WebDriver driver) throws InterruptedException {
+        // Delivery type: Deliver the matter
+        driver.findElement(By.cssSelector("#searchtype > label:nth-child(1) > span > input")).click();
+
+        // Delivery occupation: Development
+        driver.findElement(By.cssSelector("#jobtype > label:nth-child(1)>span:nth-child(1)")).click();
+
+        // Click Search button
+        driver.findElement(By.cssSelector("div:nth-child(6) > div > div > div:nth-child(1) > div > button")).click();
+
+        sleep(2000);
+
+        //Delivery area
+        String text1 = driver.findElement(By.cssSelector("form > div:nth-child(3) > div > div > div.ant-form-item-explain > div")).getText();
+        Assert.assertEquals(text1, "必ず1つ選択してください", "[Delivery area] Message do not match");
+
+        // Delivery occupation/Development/Delivery job details
+        String text2 = driver.findElement(By.cssSelector("form > div:nth-child(4) > div:nth-child(2) > div:nth-child(1) > div > div.ant-form-item-explain > div"))
+                .getText();
+        Assert.assertEquals(text2, "必ず1つ選択してください", "[Delivery occupation/Development/Delivery job details] Message do not match");
+
+        // Delivery occupation/Development/Delivery skill details
+        String text3 = driver.findElement(By.cssSelector("form > div:nth-child(4) > div:nth-child(2) > div:nth-child(2) > div > div.ant-form-item-explain > div"))
+                .getText();
+        Assert.assertEquals(text3, "必ず1つ選択してください", "[Delivery occupation/Development/Delivery skill details] Message do not match");
+
+        // Delivery commercial distribution
+        String text4 = driver.findElement(By.cssSelector("form > div:nth-child(4) > div:nth-child(5)> div > div.ant-form-item-explain > div")).getText();
+        Assert.assertEquals(text4, "必ず1つ選択してください", "[Delivery commercial distribution] Message do not match");
+    }
+
+    public void deliver_the_matter_only_select_delivery_occupation_infrastructure(WebDriver driver) throws InterruptedException {
+        // Delivery type: Deliver the matter
+        driver.findElement(By.cssSelector("#searchtype > label:nth-child(1) > span > input")).click();
+
+        // Delivery occupation: Infrastructure
+        driver.findElement(By.cssSelector("#jobtype > label:nth-child(2)>span:nth-child(1)")).click();
+
+        // Click Search button
+        driver.findElement(By.cssSelector("div:nth-child(6) > div > div > div:nth-child(1) > div > button")).click();
+
+        sleep(2000);
+
+        //Delivery area
+        String text1 = driver.findElement(By.cssSelector("form > div:nth-child(3) > div > div > div.ant-form-item-explain > div")).getText();
+        Assert.assertEquals(text1, "必ず1つ選択してください", "[Delivery area] Message do not match");
+
+        // Delivery occupation/Infrastructure/Delivery job details
+        String text2 = driver.findElement(By.cssSelector("form > div:nth-child(4) > div:nth-child(3) > div:nth-child(1) > div > div.ant-form-item-explain > div"))
+                .getText();
+        Assert.assertEquals(text2, "必ず1つ選択してください", "[Delivery occupation/Infrastructure/Delivery job details] Message do not match");
+
+        // Delivery occupation/Infrastructure/Delivery skill details
+        String text3 = driver.findElement(By.cssSelector("form > div:nth-child(4) > div:nth-child(3) > div:nth-child(2) > div > div.ant-form-item-explain > div"))
+                .getText();
+        Assert.assertEquals(text3, "必ず1つ選択してください", "[Delivery occupation/Infrastructure/Delivery skill details] Message do not match");
+
+        // Delivery commercial distribution
+        String text4 = driver.findElement(By.cssSelector("form > div:nth-child(4) > div:nth-child(5)> div > div.ant-form-item-explain > div")).getText();
+        Assert.assertEquals(text4, "必ず1つ選択してください", "[Delivery commercial distribution] Message do not match");
+    }
+
+    public void deliver_the_matter_only_select_delivery_occupation_others(WebDriver driver) throws InterruptedException {
+        // Delivery type: Deliver the matter
+        driver.findElement(By.cssSelector("#searchtype > label:nth-child(1) > span > input")).click();
+
+        // Delivery occupation: Others
+        driver.findElement(By.cssSelector("#jobtype > label:nth-child(3)>span:nth-child(1)")).click();
+
+        // Click Search button
+        driver.findElement(By.cssSelector("div:nth-child(6) > div > div > div:nth-child(1) > div > button")).click();
+
+        sleep(2000);
+
+        //Delivery area
+        String text1 = driver.findElement(By.cssSelector("form > div:nth-child(3) > div > div > div.ant-form-item-explain > div")).getText();
+        Assert.assertEquals(text1, "必ず1つ選択してください", "[Delivery area] Message do not match");
+
+        // Delivery occupation/Others/Delivery job details
+        String text2 = driver.findElement(By.cssSelector("form > div:nth-child(4) > div:nth-child(4) > div > div > div.ant-form-item-explain > div"))
+                .getText();
+        Assert.assertEquals(text2, "必ず1つ選択してください", "[Delivery occupation/Others/Delivery job details] Message do not match");
+
+        // Delivery commercial distribution
+        String text3 = driver.findElement(By.cssSelector("form > div:nth-child(4) > div:nth-child(5)> div > div.ant-form-item-explain > div")).getText();
+        Assert.assertEquals(text3, "必ず1つ選択してください", "[Delivery commercial distribution] Message do not match");
+    }
+
+    /**
+     *
+
+     */
+    public void deliver_the_personnel_do_not_select_condition(WebDriver driver) throws InterruptedException {
+        // Delivery type: Deliver the personnel
+        driver.findElement(By.cssSelector("#searchtype > label:nth-child(2) > span > input")).click();
+
+        // Click Search button
+        driver.findElement(By.cssSelector("div:nth-child(6) > div > div > div:nth-child(1) > div > button")).click();
+        sleep(2000);
+
+        //Delivery area
+        String text1 = driver.findElement(By.cssSelector("form > div:nth-child(3) > div > div > div.ant-form-item-explain > div")).getText();
+        Assert.assertEquals(text1, "必ず1つ選択してください", "[Delivery area] Message do not match");
+
+        // Delivery occupation
+        String text2 = driver.findElement(By.cssSelector("form > div:nth-child(5) > div:nth-child(1) > div > div.ant-form-item-explain > div")).getText();
+        Assert.assertEquals(text2, "必ず1つ選択してください", "[Delivery occupation] Message do not match");
+
+        // Delivery employment form
+        String text3 = driver.findElement(By.cssSelector("form > div:nth-child(5) > div:nth-child(2) > div > div.ant-form-item-explain > div")).getText();
+        Assert.assertEquals(text3, "必ず1つ選択してください", "[Delivery employment form] Message do not match");
+
+        // Delivery commercial distribution
+        String text4 = driver.findElement(By.cssSelector("form > div:nth-child(5) > div:nth-child(3) > div > div.ant-form-item-explain > div")).getText();
+        Assert.assertEquals(text4, "必ず1つ選択してください", "[Delivery commercial distribution] Message do not match");
+    }
+
+    public void deliver_the_personnel_only_select_delivery_occupation_development(WebDriver driver) throws InterruptedException {
+        // Delivery type: Deliver the personnel
+        driver.findElement(By.cssSelector("#searchtype > label:nth-child(2) > span > input")).click();
+
+        // Delivery occupation: Development
+        driver.findElement(By.cssSelector("#personneltype_dev")).click();
+
+        // Click Search button
+        driver.findElement(By.cssSelector("div:nth-child(6) > div > div > div:nth-child(1) > div > button")).click();
+
+        sleep(2000);
+
+        //Delivery area
+        String text1 = driver.findElement(By.cssSelector("form > div:nth-child(3) > div > div > div.ant-form-item-explain > div")).getText();
+        Assert.assertEquals(text1, "必ず1つ選択してください", "[Delivery area] Message do not match");
+
+        // Delivery occupation/Development/Delivery job details
+        String text2 = driver.findElement(By.cssSelector("form > div:nth-child(5) > div > div > div > div > div > div:nth-child(1) > div> div.ant-form-item-explain > div"))
+                .getText();
+        Assert.assertEquals(text2, "必ず1つ選択してください", "[Delivery occupation/Development/Delivery job details] Message do not match");
+
+        // Delivery occupation/Development/Delivery skill details
+        String text3 = driver.findElement(By.cssSelector("form > div:nth-child(5) > div > div > div > div > div > div:nth-child(2) > div> div.ant-form-item-explain > div"))
+                .getText();
+        Assert.assertEquals(text3, "必ず1つ選択してください", "[Delivery occupation/Development/Delivery skill details] Message do not match");
+
+        // Delivery employment form
+        String text4 = driver.findElement(By.cssSelector("form > div:nth-child(5) > div:nth-child(2) > div > div.ant-form-item-explain > div")).getText();
+        Assert.assertEquals(text4, "必ず1つ選択してください", "[Delivery employment form] Message do not match");
+
+        // Delivery commercial distribution
+        String text5 = driver.findElement(By.cssSelector("form > div:nth-child(5) > div:nth-child(3) > div > div.ant-form-item-explain> div")).getText();
+        Assert.assertEquals(text5, "必ず1つ選択してください", "[Delivery commercial distribution] Message do not match");
+    }
+
+    public void deliver_the_personnel_only_select_delivery_occupation_infrastructure(WebDriver driver) throws InterruptedException {
+        // Delivery type: Deliver the personnel
+        driver.findElement(By.cssSelector("#searchtype > label:nth-child(2) > span > input")).click();
+
+        // Delivery occupation: Infrastructure
+        driver.findElement(By.cssSelector("#personneltype_infra")).click();
+
+        // Click Search button
+        driver.findElement(By.cssSelector("div:nth-child(6) > div > div > div:nth-child(1) > div > button")).click();
+
+        sleep(2000);
+
+        //Delivery area
+        String text1 = driver.findElement(By.cssSelector("form > div:nth-child(3) > div > div > div.ant-form-item-explain > div")).getText();
+        Assert.assertEquals(text1, "必ず1つ選択してください", "[Delivery area] Message do not match");
+
+        // Delivery occupation/Infrastructure/Delivery job details
+        String text2 = driver.findElement(By.cssSelector("form > div:nth-child(5) > div > div > div > div > div > div:nth-child(1) > div > div.ant-form-item-explain > div"))
+                .getText();
+        Assert.assertEquals(text2, "必ず1つ選択してください", "[Delivery occupation/Infrastructure/Delivery job details] Message do not match");
+
+        // Delivery occupation/Infrastructure/Delivery skill details
+        String text3 = driver.findElement(By.cssSelector("form > div:nth-child(5) > div > div > div > div > div > div:nth-child(2) > div > div.ant-form-item-explain > div"))
+                .getText();
+        Assert.assertEquals(text3, "必ず1つ選択してください", "[Delivery occupation/Infrastructure/Delivery skill details] Message do not match");
+
+        // Delivery employment form
+        String text4 = driver.findElement(By.cssSelector("form > div:nth-child(5) > div:nth-child(2) > div > div.ant-form-item-explain > div")).getText();
+        Assert.assertEquals(text4, "必ず1つ選択してください", "[Delivery employment form] Message do not match");
+
+        // Delivery commercial distribution
+        String text5 = driver.findElement(By.cssSelector("form > div:nth-child(5) > div:nth-child(3) > div > div.ant-form-item-explain> div")).getText();
+        Assert.assertEquals(text5, "必ず1つ選択してください", "[Delivery commercial distribution] Message do not match");
+    }
+
+    public void deliver_the_personnel_only_select_delivery_occupation_others(WebDriver driver) throws InterruptedException {
+        // Delivery type: Deliver the personnel
+        driver.findElement(By.cssSelector("#searchtype > label:nth-child(2) > span > input")).click();
+
+        // Delivery occupation: Others
+        driver.findElement(By.cssSelector("#personneltype_other")).click();
+
+        // Click Search button
+        driver.findElement(By.cssSelector("div:nth-child(6) > div > div > div:nth-child(1) > div > button")).click();
+
+        sleep(2000);
+
+        //Delivery area
+        String text1 = driver.findElement(By.cssSelector("form > div:nth-child(3) > div > div > div.ant-form-item-explain > div")).getText();
+        Assert.assertEquals(text1, "必ず1つ選択してください", "[Delivery area] Message do not match");
+
+        // Delivery occupation/Others/Delivery job details
+        String text2 = driver.findElement(By.cssSelector("form > div:nth-child(5) > div > div > div > div > div > div > div > div.ant-form-item-explain > div"))
+                .getText();
+        Assert.assertEquals(text2, "必ず1つ選択してください", "[Delivery occupation/Others/Delivery job details] Message do not match");
+
+        // Delivery employment form
+        String text3 = driver.findElement(By.cssSelector("form > div:nth-child(5) > div:nth-child(2) > div > div.ant-form-item-explain > div")).getText();
+        Assert.assertEquals(text3, "必ず1つ選択してください", "[Delivery employment form] Message do not match");
+
+        // Delivery commercial distribution
+        String text4 = driver.findElement(By.cssSelector("form > div:nth-child(5) > div:nth-child(3) > div > div.ant-form-item-explain> div")).getText();
+        Assert.assertEquals(text4, "必ず1つ選択してください", "[Delivery commercial distribution] Message do not match");
+    }
+
+    public void deliver_the_personnel_select_delivery_occupation_development_infrastructure_and_others(WebDriver driver) throws InterruptedException {
+        // Delivery type: Deliver the personnel
+        driver.findElement(By.cssSelector("#searchtype > label:nth-child(2) > span > input")).click();
+
+        // Delivery occupation: Development
+        driver.findElement(By.cssSelector("#personneltype_dev")).click();
+
+        // Delivery occupation: Infrastructure
+        driver.findElement(By.cssSelector("#personneltype_infra")).click();
+
+        // Delivery occupation: Others
+        driver.findElement(By.cssSelector("#personneltype_other")).click();
+
+        // Click Search button
+        driver.findElement(By.cssSelector("div:nth-child(6) > div > div > div:nth-child(1) > div > button")).click();
+
+        sleep(2000);
+
+        //Delivery area
+        String text1 = driver.findElement(By.cssSelector("form > div:nth-child(3) > div > div > div.ant-form-item-explain > div")).getText();
+        Assert.assertEquals(text1, "必ず1つ選択してください", "[Delivery area] Message do not match");
+
+        // Delivery occupation/Development/Delivery job details
+        String text2 = driver.findElement(By.cssSelector("form > div:nth-child(5) > div > div > div > div > div > div:nth-child(1) > div> div.ant-form-item-explain > div"))
+                .getText();
+        Assert.assertEquals(text2, "必ず1つ選択してください", "[Delivery occupation/Development/Delivery job details] Message do not match");
+
+        // Delivery occupation/Development/Delivery skill details
+        String text3 = driver.findElement(By.cssSelector("form > div:nth-child(5) > div > div > div > div > div > div:nth-child(2) > div> div.ant-form-item-explain > div"))
+                .getText();
+        Assert.assertEquals(text3, "必ず1つ選択してください", "[Delivery occupation/Development/Delivery skill details] Message do not match");
+
+        // Delivery occupation/Infrastructure/Delivery job details
+        String text4 = driver.findElement(By.cssSelector("form > div:nth-child(5) > div > div > div > div > div > div:nth-child(1) > div > div.ant-form-item-explain > div"))
+                .getText();
+        Assert.assertEquals(text4, "必ず1つ選択してください", "[Delivery occupation/Infrastructure/Delivery job details] Message do not match");
+
+        // Delivery occupation/Infrastructure/Delivery skill details
+        String text5 = driver.findElement(By.cssSelector("form > div:nth-child(5) > div > div > div > div > div > div:nth-child(2) > div > div.ant-form-item-explain > div"))
+                .getText();
+        Assert.assertEquals(text5, "必ず1つ選択してください", "[Delivery occupation/Infrastructure/Delivery skill details] Message do not match");
+
+        // Delivery occupation/Others/Delivery job details
+        String text6 = driver.findElement(By.cssSelector("form > div:nth-child(5) > div > div > div > div > div > div > div > div.ant-form-item-explain > div"))
+                .getText();
+        Assert.assertEquals(text6, "必ず1つ選択してください", "[Delivery occupation/Others/Delivery job details] Message do not match");
+
+        // Delivery employment form
+        String text7 = driver.findElement(By.cssSelector("form > div:nth-child(5) > div:nth-child(2) > div > div.ant-form-item-explain > div")).getText();
+        Assert.assertEquals(text7, "必ず1つ選択してください", "[Delivery employment form] Message do not match");
+
+        // Delivery commercial distribution
+        String text8 = driver.findElement(By.cssSelector("form > div:nth-child(5) > div:nth-child(3) > div > div.ant-form-item-explain> div")).getText();
+        Assert.assertEquals(text8, "必ず1つ選択してください", "[Delivery commercial distribution] Message do not match");
+
+    }
+
+    public void do_not_select_account_status(WebDriver driver, String role, Common cm) throws InterruptedException {
+        // Select delivery information
+        delivery_information(driver, role, cm);
+
+        // Account status: ON
+        driver.findElement(By.cssSelector("div:nth-child(2) > div.ant-col.ant-col-19.ant-form-item-control > div > div > div > div > button")).click();
+
+        // Click Search button
+        driver.findElement(By.cssSelector("div:nth-child(6) > div > div > div:nth-child(1) > div > button")).click();
+
+        sleep(2000);
+
+        // Account status
+        String text = driver.findElement(By.cssSelector("form > div:nth-child(6) > div:nth-child(2) > div > div.ant-form-item-explain > div > div")).getText();
+        Assert.assertEquals(text, "必ず1つ選択してください", "[Account status] Message do not match");
+    }
+
+    public void do_not_select_in_house_person_in_charge(WebDriver driver, String role, Common cm) throws InterruptedException {
+        // Select delivery information
+        delivery_information(driver, role, cm);
+
+        // In-house person in charge: ON
+        driver.findElement(By.cssSelector("div:nth-child(3) > div > div > div > div > div > div > button")).click();
+
+        sleep(3000);
+
+        // Click Search button
+        driver.findElement(By.cssSelector("div:nth-child(6) > div > div > div:nth-child(1) > div > button")).click();
+
+        sleep(2000);
+
+        // In-house person in charge
+        String text = driver.findElement(By.cssSelector("form > div:nth-child(6) > div:nth-child(3) > div > div.ant-form-item-explain > div > div")).getText();
+        Assert.assertEquals(text, "必ず選択してください", "[In-house person in charge] Message do not match");
+    }
+
+    public void do_not_select_compatibility(WebDriver driver, String role, Common cm) throws InterruptedException {
+        // Select delivery information
+        delivery_information(driver, role, cm);
+
+        // Compatibility: ON
+        driver.findElement(By.cssSelector("div:nth-child(4) > div > div > div > div > div > button")).click();
+
+        // Click Search button
+        driver.findElement(By.cssSelector("div:nth-child(6) > div > div > div:nth-child(1) > div > button")).click();
+
+        sleep(2000);
+
+        // Compatibility
+        String text = driver.findElement(By.cssSelector("form > div:nth-child(6) > div:nth-child(4) > div > div.ant-form-item-explain > div > div")).getText();
+        Assert.assertEquals(text, "必ず選択してください", "[Compatibility] Message do not match");
+    }
+
+    public void do_not_select_tag(WebDriver driver, String role, Common cm) throws InterruptedException {
+        // Select delivery information
+        delivery_information(driver, role, cm);
+
+        // Tag: ON
+        driver.findElement(By.cssSelector("div:nth-child(5) > div > div > div > div > div > div > button")).click();
+
+        // Click Search button
+        driver.findElement(By.cssSelector("div:nth-child(6) > div > div > div:nth-child(1) > div > button")).click();
+
+        sleep(2000);
+
+        // Tag
+        String text = driver.findElement(By.cssSelector("form > div:nth-child(6) > div:nth-child(5) > div > div.ant-form-item-explain > div > div")).getText();
+        Assert.assertEquals(text, "必ず1つ選択してください", "[Tag] Message do not match");
+    }
+
+    public void select_exceeds_5_tags(WebDriver driver, String role, Common cm, Actions key) throws InterruptedException {
+        // Select delivery information
+        delivery_information(driver, role, cm);
+
+        // Tag: ON
+        driver.findElement(By.cssSelector("div:nth-child(5) > div > div > div > div > div > div > button")).click();
+
+        sleep(3000);
+
+        // Select 6 tags
+        driver.findElement(By.cssSelector("div.ant-col.ant-col-12 > div > div > div > div > div")).click();
+        for (int i = 0; i < 6; i++) {
+            key.sendKeys(Keys.DOWN).perform();
+            key.sendKeys(Keys.ENTER).perform();
+        }
+
+        // Click Search button
+//        driver.findElement(By.cssSelector("div:nth-child(6) > div > div > div:nth-child(1) > div > button")).click();
+
+        sleep(2000);
+
+        // Tag
+        String text = driver.findElement(By.cssSelector("form > div:nth-child(6) > div.ant-form-item-has-error > div > div.ant-form-item-explain > div")).getText();
+        Assert.assertEquals(text, "これ以上選択できません", "[Tag] Message do not match");
+    }
+
 }
