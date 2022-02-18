@@ -185,28 +185,33 @@ public class Final_confirmation {
         Assert.assertFalse(check, "[Failed] Can not close delete delivered email popup");
     }
 
-    public void make_a_copy(WebDriver driver, String url_mail_list) throws InterruptedException {
+    public void make_a_copy(WebDriver driver, Actions key, String url_mail_list) throws InterruptedException {
         // Click make a copy button
-        sleep(3000);
-        driver.findElement(By.cssSelector("div:nth-child(1)>button.ant-btn-sm")).click();
+        sleep(2000);
+        WebElement make_a_copy = driver.findElement(By.cssSelector("div:nth-child(1)>button.ant-btn-sm"));
+        key.moveToElement(make_a_copy).click().build().perform();
         sleep(1000);
         Assert.assertEquals(driver.getCurrentUrl(), url_mail_list, "[Failed] Can not make a copy of delivered email.");
     }
 
-    public void would_you_like_to_change_this_delivery_email_to_Draft_status_OK(WebDriver driver, String url_mail_list) throws InterruptedException {
+    public void would_you_like_to_change_this_delivery_email_to_Draft_status_OK(WebDriver driver, Actions key, String url_mail_list) throws InterruptedException {
         // Click save as draft button
+        sleep(2000);
+        WebElement save_as_draft = driver.findElement(By.cssSelector("div:nth-child(2)>button.ant-btn-sm"));
+        key.moveToElement(save_as_draft).build().perform();
         sleep(3000);
-        driver.findElement(By.cssSelector("div:nth-child(2)>button.ant-btn-sm")).click();
-        sleep(1000);
+
+        // click OK button
         driver.findElement(By.cssSelector("div.ant-modal-confirm-btns>button:nth-child(2)")).click();
         sleep(1000);
         Assert.assertEquals(driver.getCurrentUrl(), url_mail_list, "[Failed] Can not save delivered as draft.");
     }
 
-    public void would_you_like_to_change_this_delivery_email_to_Draft_status_Cancel(WebDriver driver) throws InterruptedException {
+    public void would_you_like_to_change_this_delivery_email_to_Draft_status_Cancel(WebDriver driver, Actions key) throws InterruptedException {
         // Click save as draft button
         sleep(3000);
-        driver.findElement(By.cssSelector("div:nth-child(2)>button.ant-btn-sm")).click();
+        new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div:nth-child(2)>button.ant-btn-sm"))).click();
         sleep(1000);
         driver.findElement(By.cssSelector("div.ant-modal-confirm-btns>button:nth-child(1)")).click();
         sleep(1000);
@@ -220,13 +225,13 @@ public class Final_confirmation {
         Assert.assertFalse(check, "[Failed] Can not close save delivered as draft popup.");
     }
 
-    public void back_to_destination_selection_step(WebDriver driver, String role, Common cm) throws InterruptedException {
+    public void back_to_destination_selection_step(WebDriver driver, Actions key, String role, Common cm) throws InterruptedException {
         // Master, Administrator, Responsible person, Leader, Member
         if (cm.authorized(role, cm.role_list(5))) {
-
-            sleep(2000);
+            sleep(3000);
             // Back to Destination selection step
-            driver.findElement(By.cssSelector("div:nth-child(1)>div.ant-col.ant-col-24 > div > div:nth-child(1) > div > button")).click();
+            new WebDriverWait(driver, Duration.ofSeconds(10))
+                    .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div:nth-child(1)>div.ant-col.ant-col-24 > div > div:nth-child(1) > div > button"))).click();
 
             // Check current tab
             boolean check = driver.findElement(By.cssSelector("div:nth-child(3)>div>div.ant-steps-item-icon")).isEnabled();
@@ -246,7 +251,7 @@ public class Final_confirmation {
         }
     }
 
-    public void back_to_attachment_step(WebDriver driver, String role, Common cm) throws InterruptedException {
+    public void back_to_attachment_step(WebDriver driver, Actions key, String role, Common cm) throws InterruptedException {
         // Master, Administrator, Responsible person, Leader, Member
         if (cm.authorized(role, cm.role_list(5))) {
 
@@ -260,7 +265,7 @@ public class Final_confirmation {
         }
     }
 
-    public void back_to_basic_information_step(WebDriver driver, String role, Common cm) throws InterruptedException {
+    public void back_to_basic_information_step(WebDriver driver, Actions key, String role, Common cm) throws InterruptedException {
         // Master, Administrator, Responsible person, Leader, Member
         if (cm.authorized(role, cm.role_list(5))) {
 

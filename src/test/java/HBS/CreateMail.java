@@ -466,7 +466,7 @@ public class CreateMail {
 
     @Test(priority = 37)
     @Parameters("role")
-    public void TC_37_do_not_select_tag(String role) throws InterruptedException {
+    public void TC_37_select_exceeds_5_tags(String role) throws InterruptedException {
         bi.subject(driver, role, cm);
         bi.insertion(driver, role, cm);
         bi.next_to_attachment_step(driver, role, cm);
@@ -789,7 +789,7 @@ public class CreateMail {
 
         // Next to Final confirmation step
         ds.next_to_final_confirmation(driver, role, cm);
-        fc.make_a_copy(driver, url_mail_list);
+        fc.make_a_copy(driver, key,url_mail_list);
         driver.close();
     }
 
@@ -814,7 +814,7 @@ public class CreateMail {
 
         // Next to Final confirmation step
         ds.next_to_final_confirmation(driver, role, cm);
-        fc.would_you_like_to_change_this_delivery_email_to_Draft_status_OK(driver, url_mail_list);
+        fc.would_you_like_to_change_this_delivery_email_to_Draft_status_OK(driver, key,url_mail_list);
         driver.close();
     }
 
@@ -839,7 +839,7 @@ public class CreateMail {
 
         // Next to Final confirmation step
         ds.next_to_final_confirmation(driver, role, cm);
-        fc.would_you_like_to_change_this_delivery_email_to_Draft_status_Cancel(driver);
+        fc.would_you_like_to_change_this_delivery_email_to_Draft_status_Cancel(driver, key);
         driver.close();
     }
 
@@ -864,7 +864,7 @@ public class CreateMail {
 
         // Next to Final confirmation step
         ds.next_to_final_confirmation(driver, role, cm);
-        fc.back_to_destination_selection_step(driver, role, cm);
+        fc.back_to_destination_selection_step(driver, key,role, cm);
         driver.close();
     }
 
@@ -889,7 +889,7 @@ public class CreateMail {
 
         // Next to Final confirmation step
         ds.next_to_final_confirmation(driver, role, cm);
-        fc.back_to_attachment_step(driver, role, cm);
+        fc.back_to_attachment_step(driver,key, role, cm);
         driver.close();
     }
 
@@ -914,7 +914,7 @@ public class CreateMail {
 
         // Next to Final confirmation step
         ds.next_to_final_confirmation(driver, role, cm);
-        fc.back_to_basic_information_step(driver, role, cm);
+        fc.back_to_basic_information_step(driver, key,role, cm);
         driver.close();
     }
 }

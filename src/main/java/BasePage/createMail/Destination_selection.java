@@ -5,7 +5,11 @@ import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.math.RandomUtils;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
+
+import java.time.Duration;
 
 import static java.lang.Thread.sleep;
 
@@ -327,10 +331,10 @@ public class Destination_selection {
         if (cm.authorized(role, cm.role_list(5))) {
             // Next to 最終確認_step
             driver.findElement(By.cssSelector("div:nth-child(4) > div > button")).click();
-            sleep(3000);
 
             // Check current tab
-            String text = driver.findElement(By.cssSelector("div.ant-message-custom-content>span:nth-child(2)")).getText();
+            String text = new WebDriverWait(driver, Duration.ofSeconds(10))
+                    .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div.ant-message-custom-content>span:nth-child(2)"))).getText();
             Assert.assertEquals(text, "アイテムが更新されました","[Failed] Can not next to Final confirmation from Destination selection.");
         }
     }
@@ -800,6 +804,12 @@ public class Destination_selection {
             // Check current tab
             boolean check = driver.findElement(By.cssSelector("div:nth-child(2)>div>div.ant-steps-item-icon")).isEnabled();
             Assert.assertTrue(check,"[Failed] Can not back to Attachment from Destination selection.");
+
+            sleep(1000);
+
+            // Back to Destination selection step
+            driver.findElement(By.cssSelector("div:nth-child(4)>div>button")).click();
+            sleep(1000);
 
             // Back to Attachment step
             driver.findElement(By.cssSelector("div:nth-child(2)>div>div.ant-steps-item-icon")).click();
