@@ -1,19 +1,17 @@
 package hidenTest;
 
+import Common.Common;
 import hidenBasePage.createPartnerPIC.Contact_information;
 import hidenBasePage.createPartnerPIC.Delivery_conditions;
-import Common.Common;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
-import static Variable.Variable.*;
-
 public class CreatePartnerPIC {
     @Test
     @Parameters("headless")
-    public void createPartnerPIC(Boolean headless) throws InterruptedException {
+    public void createPartnerPIC(Boolean headless, String url, String email, String password, String role) throws InterruptedException {
         //Init Common function
         Common cm = new Common();
 
@@ -24,7 +22,7 @@ public class CreatePartnerPIC {
         Actions key = new Actions(driver);
 
         //Login
-        cm.login(driver, url + register_contact_path, master_email, master_password);
+        cm.login(driver, url, email, password);
 
         //****** 取引先担当者情報 ****** //
         // Contact information

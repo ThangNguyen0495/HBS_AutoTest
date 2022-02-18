@@ -3,10 +3,7 @@ package BasePage.createMail;
 import Common.Common;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.math.RandomUtils;
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 
@@ -74,11 +71,17 @@ public class Basic_information {
         }
     }
 
-    public void next_to_attachment_step(WebDriver driver, String role, Common cm) {
+    public void next_to_attachment_step(WebDriver driver, String role, Common cm) throws InterruptedException {
         // Master, Administrator, Responsible person, Leader, Member
         if (cm.authorized(role, cm.role_list(5))) {
             // Next to 添付ファイル_Step
             driver.findElement(By.cssSelector("div:nth-child(4)>div>button")).click();
+
+            sleep(1000);
+
+            // Check current tab
+            boolean check = driver.findElement(By.cssSelector("div:nth-child(2)>div>div.ant-steps-item-icon")).isEnabled();
+            Assert.assertTrue(check,"[Failed] Can not next to Attachment from Basic information.");
         }
     }
 
@@ -193,35 +196,63 @@ public class Basic_information {
         sleep(1000);
 
         // Click OK button
-        driver.findElement(By.cssSelector("div.ant-modal-confirm-btns > button.ant-btn-primary")).click();
+        driver.findElement(By.cssSelector("div.ant-modal-confirm-btns > button:nth-child(2)")).click();
+        sleep(1000);
         Assert.assertEquals(driver.getCurrentUrl(), url_mail_list, "[Failed] Can not delete delivered email");
     }
 
-    public void do_you_want_to_delete_this_delivered_email_Cancel(WebDriver driver, String url) throws InterruptedException {
+    public void do_you_want_to_delete_this_delivered_email_Cancel(WebDriver driver) throws InterruptedException {
         // Click delete button
         driver.findElement(By.cssSelector("button.ant-btn-danger")).click();
         sleep(1000);
 
         // Click delete button
-        driver.findElement(By.cssSelector("div.ant-modal-confirm-btns > button.ant-btn-default")).click();
-        Assert.assertEquals(driver.getCurrentUrl(), url, "[Failed] Can not cancel delete delivered email");
+        driver.findElement(By.cssSelector("div.ant-modal-confirm-btns > button:nth-child(1)")).click();
+        sleep(1000);
+
+        boolean check = true;
+        try {
+            driver.findElement(By.cssSelector("div.ant-modal-confirm-btns > button:nth-child(1)")).click();
+        } catch (NoSuchElementException ex) {
+            check = false;
+        }
+        Assert.assertFalse(check, "[Failed] Can not close delete delivered email popup");
     }
 
     public void make_a_copy(WebDriver driver, String url_mail_list) throws InterruptedException {
         // Click make a copy button
         driver.findElement(By.cssSelector("div:nth-child(1)>button.ant-btn-sm")).click();
         sleep(1000);
-
         Assert.assertEquals(driver.getCurrentUrl(),url_mail_list, "[Failed] Can not make a copy of delivered email.");
     }
 
-    public void save_as_draft(WebDriver driver, String url_mail_list) throws InterruptedException {
+    public void would_you_like_to_change_this_delivery_email_to_Draft_status_OK(WebDriver driver, String url_mail_list) throws InterruptedException {
         // Click save as draft button
         driver.findElement(By.cssSelector("div:nth-child(2)>button.ant-btn-sm")).click();
+        sleep(1000);
+        driver.findElement(By.cssSelector("div.ant-modal-confirm-btns>button:nth-child(2)")).click();
         sleep(1000);
         Assert.assertEquals(driver.getCurrentUrl(),url_mail_list, "[Failed] Can not save delivered as draft.");
     }
 
+    public void would_you_like_to_change_this_delivery_email_to_Draft_status_Cancel(WebDriver driver) throws InterruptedException {
+        // Click save as draft button
+        driver.findElement(By.cssSelector("div:nth-child(2)>button.ant-btn-sm")).click();
+        sleep(1000);
+
+        // Click cancel button
+        driver.findElement(By.cssSelector("div.ant-modal-confirm-btns>button:nth-child(1)")).click();
+        sleep(1000);
+
+        // Check popup close
+        boolean check = true;
+        try {
+            driver.findElement(By.cssSelector("div.ant-modal-confirm-btns>button:nth-child(1)")).click();
+        } catch (NoSuchElementException ex) {
+            check = false;
+        }
+        Assert.assertFalse(check, "[Failed] Can not close save delivered as draft popup.");
+    }
 }
 
 

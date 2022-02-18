@@ -1,20 +1,18 @@
 package hidenTest;
 
+import Common.Common;
 import hidenBasePage.createPartner.Business_partner_branch_information;
 import hidenBasePage.createPartner.Business_partner_information;
 import hidenBasePage.createPartner.Transaction_terms;
-import Common.Common;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
-import static Variable.Variable.*;
-
 public class CreatePartner {
     @Test()
     @Parameters("headless")
-    public void createPartner(Boolean headless) throws InterruptedException {
+    public void createPartner(Boolean headless, String url, String email, String password, String role) throws InterruptedException {
 
         // Init Common function
         Common cm = new Common();
@@ -26,7 +24,7 @@ public class CreatePartner {
         Actions key = new Actions(driver);
 
         //Login
-        cm.login(driver, url + register_partner_path, master_email, master_password);
+        cm.login(driver, url, email, password);
 
         //*** 取引先情報 ***//
         // Business partner information
@@ -55,7 +53,7 @@ public class CreatePartner {
         bpi.establishment_date(driver, role, cm);
 
         // Fiscal year
-        bpi.fiscal_year(driver, key,role, cm);
+        bpi.fiscal_year(driver, key, role, cm);
 
         // Address
         bpi.address(driver, role, cm);
@@ -141,6 +139,6 @@ public class CreatePartner {
         tt.finish_register_partner(driver, role, cm);
 
         // Check unauthorized
-        cm.unauthorized(driver,role, 5);
+        cm.unauthorized(driver, role, 5);
     }
 }
