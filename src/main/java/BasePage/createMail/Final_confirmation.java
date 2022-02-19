@@ -91,8 +91,7 @@ public class Final_confirmation {
             new WebDriverWait(driver, Duration.ofSeconds(10))
                     .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div.ant-col>div:nth-child(1)>div>div>div:nth-child(1)>div>div>input")))
                             .click();
-//            driver.findElement(By.cssSelector("")).click();
-//            sleep(200);
+
             if (element.equals("")) {
                 driver.findElement(By.cssSelector(date_element(driver))).click();
             } else {
@@ -129,7 +128,6 @@ public class Final_confirmation {
                 }
                 time.click();
                 for (int i = 0; i < 10; i++) {
-//                    sleep(100);
                     key.sendKeys(Keys.BACK_SPACE).perform();
                 }
                 // Select time
