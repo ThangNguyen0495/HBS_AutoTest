@@ -6,17 +6,18 @@
         <classes>
             <class name="HBS.CreateMail">
                 <methods>
-                    <parameter name="headless" value="false"/>
+                    <parameter name="headless" value="true"/>
 <!--                    <parameter name="email" value="gordy31@isueir.com"/>-->
-                    <parameter name="email" value="master@codun.site"/>
-<!--                    <parameter name="email" value="yPJWDUoMNQSZoJises@bedul.net"/>-->
-                    <parameter name="password" value="12345678a"/>
-<!--                    <parameter name="password" value="lc1SHiPupKndwD@"/>-->
+<!--                    <parameter name="email" value="master@codun.site"/>-->
+                    <parameter name="email" value="yPJWDUoMNQSZoJises@bedul.net"/>
+<!--                    <parameter name="password" value="12345678a"/>-->
+                    <parameter name="password" value="lc1SHiPupKndwD@"/>
                     <parameter name="role" value="Master"/>
-                    <parameter name="url" value="https://test.app.cmrb.jp/scheduledMails/register"/>
-                    <parameter name="url_mail_list" value="https://test.app.cmrb.jp/scheduledMails"/>
+                    <parameter name="url" value="https://dev.app.cmrb.jp/scheduledMails/register"/>
+                    <parameter name="url_mail_list" value="https://dev.app.cmrb.jp/scheduledMails"/>
+                    <parameter name="partnerPIC_url" value="https://dev.app.cmrb.jp/contacts/"/>
 
-<!--                    <include name="TC01_process_create_mail"/>-->
+                    <include name="TC01_process_create_mail"/>
 
 
 <!--                    <include name="TC_02_leave_all_blank_basic_information"/>-->
@@ -35,7 +36,7 @@
 <!--                    <include name="TC_14_would_you_like_to_change_this_delivery_email_to_Draft_status_Cancel_basic_information"/>-->
 
 
-<!--                    <parameter name="capacity" value="2"/>-->
+                    <parameter name="capacity" value="2"/>
 <!--                    <include name="TC_15_upload_maximum_capacity_1_file"/>-->
 <!--                    <include name="TC_16_upload_maximum_capacity_multi_file"/>-->
 <!--                    <include name="TC_17_upload_exceed_maximum_capacity_1_file"/>-->
@@ -79,13 +80,14 @@
 <!--                    <include name="TC_53_delete_search_template_OK" />-->
 <!--                    <include name="TC_54_delete_search_template_Cancel" />-->
 <!--                    <include name="TC_55_reset_search_criteria" />-->
-<!--                    <parameter name="partnerPIC_url" value="https://test.app.cmrb.jp/contacts/"/>-->
 <!--                    <include name="TC_56_link_to_partner_PIC_edit_from_destination_selection" />-->
 <!--                    <include name="TC_57_pagination_destination_selection" />-->
+
+
 <!--                    <include name="TC_58_do_you_want_to_delete_this_delivered_email_OK_final_confirmation" />-->
 <!--                    <include name="TC_59_do_you_want_to_delete_this_delivered_email_Cancel_final_confirmation" />-->
 <!--                    <include name="TC_60_make_a_copy_final_confirmation" />-->
-                    <include name="TC_61_would_you_like_to_change_this_delivery_email_to_Draft_status_OK_final_confirmation" />
+<!--                    <include name="TC_61_would_you_like_to_change_this_delivery_email_to_Draft_status_OK_final_confirmation" />-->
 <!--                    <include name="TC_62_would_you_like_to_change_this_delivery_email_to_Draft_status_Cancel_final_confirmation" />-->
 <!--                    <include name="TC_63_back_to_destination_selection_from_final_confirmation" />-->
 <!--                    <include name="TC_64_back_to_attachment_from_final_confirmation" />-->

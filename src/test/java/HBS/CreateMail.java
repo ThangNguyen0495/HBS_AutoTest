@@ -94,7 +94,7 @@ public class CreateMail {
         ds.delivery_information(driver, role, cm);
 
         // Commitment
-        ds.commitment(driver, key, role, cm);
+//        ds.commitment(driver, key, role, cm);
 
         // Search
         ds.search_contact_by_condition(driver, role, cm);
@@ -129,38 +129,38 @@ public class CreateMail {
     }
 
     @Test(priority = 3)
-    public void TC_03_subject_exceed_100_half_width_characters() throws InterruptedException {
+    public void TC_03_subject_exceed_100_half_width_characters() {
         bi.subject_exceed_100_half_width_characters(driver);
         driver.close();
     }
 
     @Test(priority = 4)
-    public void TC_04_subject_exceed_100_full_width_characters() throws InterruptedException {
+    public void TC_04_subject_exceed_100_full_width_characters() {
         bi.subject_exceed_100_full_width_characters(driver);
         driver.close();
     }
 
     @Test(priority = 5)
-    public void TC_05_subject_exceed_100_mix_half_and_full_width_characters() throws InterruptedException {
+    public void TC_05_subject_exceed_100_mix_half_and_full_width_characters() {
         bi.subject_exceed_100_mix_half_and_full_width_characters(driver);
         driver.close();
     }
 
 
     @Test(priority = 6)
-    public void TC_06_insertion_exceed_10000_half_width_characters() throws InterruptedException {
+    public void TC_06_insertion_exceed_10000_half_width_characters() {
         bi.insertion_exceed_10000_half_width_characters(driver);
         driver.close();
     }
 
     @Test(priority = 7)
-    public void TC_07_insertion_exceed_5000_full_width_characters() throws InterruptedException {
+    public void TC_07_insertion_exceed_5000_full_width_characters() {
         bi.insertion_exceed_5000_full_width_characters(driver);
         driver.close();
     }
 
     @Test(priority = 8)
-    public void TC_08_insertion_exceed_5000_mix_half_and_full_width_characters() throws InterruptedException {
+    public void TC_08_insertion_exceed_5000_mix_half_and_full_width_characters() {
         bi.insertion_exceed_5000_mix_half_and_full_width_characters(driver);
         driver.close();
     }
@@ -548,7 +548,7 @@ public class CreateMail {
         bi.insertion(driver, role, cm);
         bi.next_to_attachment_step(driver, role, cm);
         a.next_to_destination_selection_step(driver, role, cm);
-        ds.back_to_attachment_step(driver, role, cm);
+        ds.back_to_attachment_step(driver, key,role, cm);
         driver.close();
     }
 
@@ -684,7 +684,7 @@ public class CreateMail {
         ds.delivery_information(driver, role, cm);
 
         // Commitment
-        ds.commitment(driver, key, role, cm);
+//        ds.commitment(driver, key, role, cm);
 
         // Search
         ds.search_contact_by_condition(driver, role, cm);
@@ -706,7 +706,7 @@ public class CreateMail {
         ds.delivery_information(driver, role, cm);
 
         // Commitment
-        ds.commitment(driver, key, role, cm);
+//        ds.commitment(driver, key, role, cm);
 
         // Search
         ds.search_contact_by_condition(driver, role, cm);
@@ -728,7 +728,7 @@ public class CreateMail {
         ds.delivery_information(driver, role, cm);
 
         // Commitment
-        ds.commitment(driver, key, role, cm);
+//        ds.commitment(driver, key, role, cm);
 
         // Search
         ds.search_contact_by_condition(driver, role, cm);
@@ -754,7 +754,7 @@ public class CreateMail {
         ds.delivery_information(driver, role, cm);
 
         // Commitment
-        ds.commitment(driver, key, role, cm);
+//        ds.commitment(driver, key, role, cm);
 
         // Search
         ds.search_contact_by_condition(driver, role, cm);
@@ -779,7 +779,7 @@ public class CreateMail {
         ds.delivery_information(driver, role, cm);
 
         // Commitment
-        ds.commitment(driver, key, role, cm);
+//        ds.commitment(driver, key, role, cm);
 
         // Search
         ds.search_contact_by_condition(driver, role, cm);
@@ -804,7 +804,7 @@ public class CreateMail {
         ds.delivery_information(driver, role, cm);
 
         // Commitment
-        ds.commitment(driver, key, role, cm);
+//        ds.commitment(driver, key, role, cm);
 
         // Search
         ds.search_contact_by_condition(driver, role, cm);
@@ -829,7 +829,7 @@ public class CreateMail {
         ds.delivery_information(driver, role, cm);
 
         // Commitment
-        ds.commitment(driver, key, role, cm);
+//        ds.commitment(driver, key, role, cm);
 
         // Search
         ds.search_contact_by_condition(driver, role, cm);
@@ -854,7 +854,7 @@ public class CreateMail {
         ds.delivery_information(driver, role, cm);
 
         // Commitment
-        ds.commitment(driver, key, role, cm);
+//        ds.commitment(driver, key, role, cm);
 
         // Search
         ds.search_contact_by_condition(driver, role, cm);
@@ -865,7 +865,7 @@ public class CreateMail {
         // Next to Final confirmation step
         ds.next_to_final_confirmation(driver, role, cm);
         fc.back_to_destination_selection_step(driver, key,role, cm);
-        driver.close();
+//        driver.close();
     }
 
     @Test(priority = 64)
@@ -879,7 +879,7 @@ public class CreateMail {
         ds.delivery_information(driver, role, cm);
 
         // Commitment
-        ds.commitment(driver, key, role, cm);
+//        ds.commitment(driver, key, role, cm);
 
         // Search
         ds.search_contact_by_condition(driver, role, cm);
@@ -904,7 +904,7 @@ public class CreateMail {
         ds.delivery_information(driver, role, cm);
 
         // Commitment
-        ds.commitment(driver, key, role, cm);
+//        ds.commitment(driver, key, role, cm);
 
         // Search
         ds.search_contact_by_condition(driver, role, cm);

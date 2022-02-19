@@ -55,6 +55,7 @@ public class Final_confirmation {
     }
 
     public Boolean check_time(WebDriver driver, String url_mail_list) throws InterruptedException {
+        // Waiting for loading mail list page
         sleep(1000);
         return driver.getCurrentUrl().equals(url_mail_list);
     }
@@ -75,22 +76,23 @@ public class Final_confirmation {
         return hour_str + ":" + min_str;
     }
 
-    public void open_delivery_time_setting_popup(WebDriver driver, String role, Common cm) throws InterruptedException {
+    public void open_delivery_time_setting_popup(WebDriver driver, String role, Common cm) {
         // Master, Administrator, Responsible person, Leader, Member
         if (cm.authorized(role, cm.role_list(5))) {
             // Click Time selection button
             driver.findElement(By.cssSelector("div.ant-col.ant-col-24>div>div:nth-child(4)>div>button")).click();
-            sleep(3000);
         }
     }
 
-    public void select_date(WebDriver driver, String role, Common cm, String element) throws InterruptedException {
+    public void select_date(WebDriver driver, String role, Common cm, String element) {
         // Master, Administrator, Responsible person, Leader, Member
         if (cm.authorized(role, cm.role_list(5))) {
             // Date
-            sleep(1000);
-            driver.findElement(By.cssSelector("div.ant-col>div:nth-child(1)>div>div>div:nth-child(1)>div>div>input")).click();
-            sleep(200);
+            new WebDriverWait(driver, Duration.ofSeconds(10))
+                    .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div.ant-col>div:nth-child(1)>div>div>div:nth-child(1)>div>div>input")))
+                            .click();
+//            driver.findElement(By.cssSelector("")).click();
+//            sleep(200);
             if (element.equals("")) {
                 driver.findElement(By.cssSelector(date_element(driver))).click();
             } else {
@@ -143,7 +145,6 @@ public class Final_confirmation {
 
                 //** この配信メールを配信メール予約登録しますか？ Popup **//
                 // Click OK button
-//                sleep(100);
                 new WebDriverWait(driver, Duration.ofSeconds(10))
                         .until(ExpectedConditions.elementToBeClickable(By.cssSelector("div.ant-modal-confirm-btns>button:nth-child(2)"))).click();
 
@@ -155,25 +156,29 @@ public class Final_confirmation {
 
     public void do_you_want_to_delete_this_delivered_email_OK(WebDriver driver, String url_mail_list) throws InterruptedException {
         // Click delete button
-        sleep(3000);
         driver.findElement(By.cssSelector("button.ant-btn-danger")).click();
-        sleep(1000);
 
         // Click OK button
-        driver.findElement(By.cssSelector("div.ant-modal-confirm-btns > button:nth-child(2)")).click();
+        new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.elementToBeClickable(By.cssSelector("div.ant-modal-confirm-btns > button:nth-child(2)")))
+                        .click();
+
+        // Waiting for loading mail list page
         sleep(1000);
         Assert.assertEquals(driver.getCurrentUrl(), url_mail_list, "[Failed] Can not delete delivered email");
     }
 
     public void do_you_want_to_delete_this_delivered_email_Cancel(WebDriver driver) throws InterruptedException {
         // Click delete button
-        sleep(3000);
         driver.findElement(By.cssSelector("button.ant-btn-danger")).click();
-        sleep(1000);
 
         // Click delete button
-        driver.findElement(By.cssSelector("div.ant-modal-confirm-btns > button:nth-child(1)")).click();
-        sleep(1000);
+        new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.elementToBeClickable(By.cssSelector("div.ant-modal-confirm-btns > button:nth-child(1)")))
+                        .click();
+
+        // Waiting for close popup
+        sleep(500);
 
         // Check popup close
         boolean check = true;
@@ -187,34 +192,41 @@ public class Final_confirmation {
 
     public void make_a_copy(WebDriver driver, Actions key, String url_mail_list) throws InterruptedException {
         // Click make a copy button
-        sleep(2000);
         WebElement make_a_copy = driver.findElement(By.cssSelector("div:nth-child(1)>button.ant-btn-sm"));
         key.moveToElement(make_a_copy).click().build().perform();
+
+        // Waiting for loading mail list page
         sleep(1000);
         Assert.assertEquals(driver.getCurrentUrl(), url_mail_list, "[Failed] Can not make a copy of delivered email.");
     }
 
     public void would_you_like_to_change_this_delivery_email_to_Draft_status_OK(WebDriver driver, Actions key, String url_mail_list) throws InterruptedException {
         // Click save as draft button
-        sleep(2000);
-        WebElement save_as_draft = driver.findElement(By.cssSelector("div:nth-child(2)>button.ant-btn-sm"));
-        key.moveToElement(save_as_draft).build().perform();
-        sleep(3000);
+        WebElement save_as_draft = driver.findElement(By.cssSelector("div.ant-col:nth-child(2)>button.ant-btn-sm"));
+        key.moveToElement(save_as_draft).click().build().perform();
 
         // click OK button
-        driver.findElement(By.cssSelector("div.ant-modal-confirm-btns>button:nth-child(2)")).click();
+        new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.elementToBeClickable(By.cssSelector("div.ant-modal-confirm-btns>button:nth-child(2)"))).click();
+
+        // Waiting for loading mail list page
         sleep(1000);
         Assert.assertEquals(driver.getCurrentUrl(), url_mail_list, "[Failed] Can not save delivered as draft.");
     }
 
     public void would_you_like_to_change_this_delivery_email_to_Draft_status_Cancel(WebDriver driver, Actions key) throws InterruptedException {
         // Click save as draft button
-        sleep(3000);
+        WebElement save_as_draft = driver.findElement(By.cssSelector("div.ant-col:nth-child(2)>button.ant-btn-sm"));
+        key.moveToElement(save_as_draft).click().build().perform();
+
+        // Click cancel button
         new WebDriverWait(driver, Duration.ofSeconds(10))
-                .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div:nth-child(2)>button.ant-btn-sm"))).click();
-        sleep(1000);
-        driver.findElement(By.cssSelector("div.ant-modal-confirm-btns>button:nth-child(1)")).click();
-        sleep(1000);
+                .until(ExpectedConditions.elementToBeClickable(By.cssSelector("div.ant-modal-confirm-btns>button:nth-child(1)")))
+                        .click();
+
+        // Waiting for close popup
+        sleep(500);
+
         // Check popup close
         boolean check = true;
         try {
@@ -228,10 +240,12 @@ public class Final_confirmation {
     public void back_to_destination_selection_step(WebDriver driver, Actions key, String role, Common cm) throws InterruptedException {
         // Master, Administrator, Responsible person, Leader, Member
         if (cm.authorized(role, cm.role_list(5))) {
-            sleep(3000);
             // Back to Destination selection step
             new WebDriverWait(driver, Duration.ofSeconds(10))
-                    .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div:nth-child(1)>div.ant-col.ant-col-24 > div > div:nth-child(1) > div > button"))).click();
+                    .until(ExpectedConditions.elementToBeClickable(By.cssSelector("div:nth-child(1)>div.ant-col.ant-col-24 > div > div:nth-child(1) > div > button")))
+                    .click();
+
+            sleep(500);
 
             // Check current tab
             boolean check = driver.findElement(By.cssSelector("div:nth-child(3)>div>div.ant-steps-item-icon")).isEnabled();
@@ -239,10 +253,12 @@ public class Final_confirmation {
 
             // back to Final confirmation from Destination selection
             driver.findElement(By.cssSelector("div:nth-child(4) > div > button")).click();
-            sleep(3000);
+            sleep(500);
 
             // back to Destination selection from Final confirmation
-            driver.findElement(By.cssSelector("div:nth-child(3)>div>div.ant-steps-item-icon")).click();
+            WebElement back_to_destination_selection = driver.findElement(By.cssSelector("div:nth-child(3)>div>div.ant-steps-item-icon"));
+            key.moveToElement(back_to_destination_selection).click().build().perform();
+            sleep(500);
 
             // Check current tab
             boolean check1 = driver.findElement(By.cssSelector("div:nth-child(3)>div>div.ant-steps-item-icon")).isEnabled();
@@ -254,11 +270,11 @@ public class Final_confirmation {
     public void back_to_attachment_step(WebDriver driver, Actions key, String role, Common cm) throws InterruptedException {
         // Master, Administrator, Responsible person, Leader, Member
         if (cm.authorized(role, cm.role_list(5))) {
-
-            sleep(2000);
             // Back to Attachment step
-            driver.findElement(By.cssSelector("div:nth-child(2)>div>div.ant-steps-item-icon")).click();
+            WebElement back_to_attachment = driver.findElement(By.cssSelector("div:nth-child(2)>div>div.ant-steps-item-icon"));
+            key.moveToElement(back_to_attachment).click().build().perform();
 
+            sleep(500);
             // Check current tab
             boolean check = driver.findElement(By.cssSelector("div:nth-child(2)>div>div.ant-steps-item-icon")).isEnabled();
             Assert.assertTrue(check,"[Failed] Can not back to Attachment from Final confirmation.");
@@ -268,11 +284,11 @@ public class Final_confirmation {
     public void back_to_basic_information_step(WebDriver driver, Actions key, String role, Common cm) throws InterruptedException {
         // Master, Administrator, Responsible person, Leader, Member
         if (cm.authorized(role, cm.role_list(5))) {
-
-            sleep(2000);
             // Back to Basic information step
-            driver.findElement(By.cssSelector("div:nth-child(1)>div>div.ant-steps-item-icon")).click();
+            WebElement back_to_basic_information = driver.findElement(By.cssSelector("div:nth-child(1)>div>div.ant-steps-item-icon"));
+            key.moveToElement(back_to_basic_information).click().build().perform();
 
+            sleep(500);
             // Check current tab
             boolean check = driver.findElement(By.cssSelector("div:nth-child(1)>div>div.ant-steps-item-icon")).isEnabled();
             Assert.assertTrue(check,"[Failed] Can not back to Basic information from Final confirmation.");

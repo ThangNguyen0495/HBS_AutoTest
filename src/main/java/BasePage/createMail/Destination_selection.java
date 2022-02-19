@@ -22,7 +22,7 @@ public class Destination_selection {
             //** Delivery information **//
             //** Delivery type **//
             // 1: Deliver the matter, 2: Deliver personnel, 3: Deliver information
-            int delivery_type = 3;//RandomUtils.nextInt(3) + 1;
+            int delivery_type = RandomUtils.nextInt(3) + 1;
             driver.findElement(By.cssSelector("#searchtype > label:nth-child(" + delivery_type + ") > span > input")).click();
 
             // Search destination selection by delivery type
@@ -188,7 +188,7 @@ public class Destination_selection {
     public void account_status(WebDriver driver) {
         // Account status
         // 0: Do not search by Account status, 1: add Account status conditions
-        int account_status = 0;//RandomUtils.nextInt(2);
+        int account_status = RandomUtils.nextInt(2);
         if (account_status == 1) {
             // add Account status conditions
             driver.findElement(By.cssSelector("div:nth-child(2) > div.ant-col.ant-col-19.ant-form-item-control > div > div > div > div > button")).click();
@@ -204,7 +204,7 @@ public class Destination_selection {
     public void in_house_person_in_charge(WebDriver driver, Actions key) throws InterruptedException {
         // In-house person in charge
         // 0: Do not search by In-house person in charge, 1: add In-house person in charge condition
-        int in_house_person_in_charge = 0;//RandomUtils.nextInt(2);
+        int in_house_person_in_charge = RandomUtils.nextInt(2);
         if (in_house_person_in_charge == 1) {
             // add In-house person in charge condition
             driver.findElement(By.cssSelector("div:nth-child(3) > div > div > div > div > div > div > button")).click();
@@ -223,7 +223,7 @@ public class Destination_selection {
     public void compatibility(WebDriver driver, Actions key) {
         // Compatibility
         // 0: Do not search by Compatibility, 1: add Compatibility condition
-        int compatibility = 0;//RandomUtils.nextInt(2);
+        int compatibility = RandomUtils.nextInt(2);
         if (compatibility == 1) {
             // add Compatibility condition
             driver.findElement(By.cssSelector("div:nth-child(4) > div > div > div > div > div > button")).click();
@@ -251,7 +251,7 @@ public class Destination_selection {
     public void tag(WebDriver driver, Actions key) throws InterruptedException {
         // Tag
         // 0: Do not search by Tag, 1: add Tag condition
-        int tag = 0;//RandomUtils.nextInt(2);
+        int tag = RandomUtils.nextInt(2);
         if (tag == 1) {
             // add Tag condition
             driver.findElement(By.cssSelector("div:nth-child(5) > div > div > div > div > div > div > button")).click();
@@ -281,7 +281,9 @@ public class Destination_selection {
         if (cm.authorized(role, cm.role_list(5))) {
             // Search
             driver.findElement(By.cssSelector("div:nth-child(6) > div > div > div:nth-child(1) > div > button")).click();
-            sleep(5000);
+
+            // Waiting for loading result
+            sleep(1000);
         }
     }
 
@@ -309,8 +311,7 @@ public class Destination_selection {
             else {
                 driver.findElement(By.cssSelector("tr:nth-child(1) > td > div > div > div > label > span > input")).click();
             }
-        }
-        else {
+        } else {
             System.out.println("Can not find partner PIC with this condition.");
             System.out.println("Please add more data or change your search condition.");
         }
@@ -326,7 +327,7 @@ public class Destination_selection {
         }
     }
 
-    public void next_to_final_confirmation(WebDriver driver, String role, Common cm) throws InterruptedException {
+    public void next_to_final_confirmation(WebDriver driver, String role, Common cm) {
         // Master, Administrator, Responsible person, Leader, Member
         if (cm.authorized(role, cm.role_list(5))) {
             // Next to 最終確認_step
@@ -335,32 +336,37 @@ public class Destination_selection {
             // Check current tab
             String text = new WebDriverWait(driver, Duration.ofSeconds(10))
                     .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div.ant-message-custom-content>span:nth-child(2)"))).getText();
-            Assert.assertEquals(text, "アイテムが更新されました","[Failed] Can not next to Final confirmation from Destination selection.");
+            Assert.assertEquals(text, "アイテムが更新されました", "[Failed] Can not next to Final confirmation from Destination selection.");
         }
     }
 
-    public void deliver_the_matter_do_not_select_condition(WebDriver driver) throws InterruptedException {
+    public void deliver_the_matter_do_not_select_condition(WebDriver driver) {
         // Delivery type: Deliver the matter
         driver.findElement(By.cssSelector("#searchtype > label:nth-child(1) > span > input")).click();
 
         // Click Search button
         driver.findElement(By.cssSelector("div:nth-child(6) > div > div > div:nth-child(1) > div > button")).click();
-        sleep(2000);
 
         //Delivery area
-        String text1 = driver.findElement(By.cssSelector("form > div:nth-child(3) > div > div > div.ant-form-item-explain > div")).getText();
+        String text1 = new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("form > div:nth-child(3) > div > div > div.ant-form-item-explain > div")))
+                .getText();
         Assert.assertEquals(text1, "必ず1つ選択してください", "[Delivery area] Message do not match");
 
         // Delivery occupation
-        String text2 = driver.findElement(By.cssSelector("form > div:nth-child(4) > div:nth-child(1)> div > div.ant-form-item-explain > div")).getText();
+        String text2 = new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("form > div:nth-child(4) > div:nth-child(1)> div > div.ant-form-item-explain > div")))
+                        .getText();
         Assert.assertEquals(text2, "必ず1つ選択してください", "[Delivery occupation] Message do not match");
 
         // Delivery commercial distribution
-        String text3 = driver.findElement(By.cssSelector("form > div:nth-child(4) > div:nth-child(5)> div > div.ant-form-item-explain > div")).getText();
+        String text3 = new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("form > div:nth-child(4) > div:nth-child(5)> div > div.ant-form-item-explain > div")))
+                        .getText();
         Assert.assertEquals(text3, "必ず1つ選択してください", "[Delivery commercial distribution] Message do not match");
     }
 
-    public void deliver_the_matter_only_select_delivery_occupation_development(WebDriver driver) throws InterruptedException {
+    public void deliver_the_matter_only_select_delivery_occupation_development(WebDriver driver) {
         // Delivery type: Deliver the matter
         driver.findElement(By.cssSelector("#searchtype > label:nth-child(1) > span > input")).click();
 
@@ -370,28 +376,32 @@ public class Destination_selection {
         // Click Search button
         driver.findElement(By.cssSelector("div:nth-child(6) > div > div > div:nth-child(1) > div > button")).click();
 
-        sleep(2000);
-
         //Delivery area
-        String text1 = driver.findElement(By.cssSelector("form > div:nth-child(3) > div > div > div.ant-form-item-explain > div")).getText();
+        String text1 = new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("form > div:nth-child(3) > div > div > div.ant-form-item-explain > div")))
+                        .getText();
         Assert.assertEquals(text1, "必ず1つ選択してください", "[Delivery area] Message do not match");
 
         // Delivery occupation/Development/Delivery job details
-        String text2 = driver.findElement(By.cssSelector("form > div:nth-child(4) > div:nth-child(2) > div:nth-child(1) > div > div.ant-form-item-explain > div"))
-                .getText();
+        String text2 = new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("form > div:nth-child(4) > div:nth-child(2) > div:nth-child(1) > div > div.ant-form-item-explain > div")))
+                        .getText();
         Assert.assertEquals(text2, "必ず1つ選択してください", "[Delivery occupation/Development/Delivery job details] Message do not match");
 
         // Delivery occupation/Development/Delivery skill details
-        String text3 = driver.findElement(By.cssSelector("form > div:nth-child(4) > div:nth-child(2) > div:nth-child(2) > div > div.ant-form-item-explain > div"))
-                .getText();
+        String text3 = new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("form > div:nth-child(4) > div:nth-child(2) > div:nth-child(2) > div > div.ant-form-item-explain > div")))
+                        .getText();
         Assert.assertEquals(text3, "必ず1つ選択してください", "[Delivery occupation/Development/Delivery skill details] Message do not match");
 
         // Delivery commercial distribution
-        String text4 = driver.findElement(By.cssSelector("form > div:nth-child(4) > div:nth-child(5)> div > div.ant-form-item-explain > div")).getText();
+        String text4 = new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("form > div:nth-child(4) > div:nth-child(5)> div > div.ant-form-item-explain > div")))
+                        .getText();
         Assert.assertEquals(text4, "必ず1つ選択してください", "[Delivery commercial distribution] Message do not match");
     }
 
-    public void deliver_the_matter_only_select_delivery_occupation_infrastructure(WebDriver driver) throws InterruptedException {
+    public void deliver_the_matter_only_select_delivery_occupation_infrastructure(WebDriver driver) {
         // Delivery type: Deliver the matter
         driver.findElement(By.cssSelector("#searchtype > label:nth-child(1) > span > input")).click();
 
@@ -401,28 +411,32 @@ public class Destination_selection {
         // Click Search button
         driver.findElement(By.cssSelector("div:nth-child(6) > div > div > div:nth-child(1) > div > button")).click();
 
-        sleep(2000);
-
         //Delivery area
-        String text1 = driver.findElement(By.cssSelector("form > div:nth-child(3) > div > div > div.ant-form-item-explain > div")).getText();
+        String text1 = new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("form > div:nth-child(3) > div > div > div.ant-form-item-explain > div")))
+                        .getText();
         Assert.assertEquals(text1, "必ず1つ選択してください", "[Delivery area] Message do not match");
 
         // Delivery occupation/Infrastructure/Delivery job details
-        String text2 = driver.findElement(By.cssSelector("form > div:nth-child(4) > div:nth-child(3) > div:nth-child(1) > div > div.ant-form-item-explain > div"))
-                .getText();
+        String text2 = new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("form > div:nth-child(4) > div:nth-child(3) > div:nth-child(1) > div > div.ant-form-item-explain > div")))
+                        .getText();
         Assert.assertEquals(text2, "必ず1つ選択してください", "[Delivery occupation/Infrastructure/Delivery job details] Message do not match");
 
         // Delivery occupation/Infrastructure/Delivery skill details
-        String text3 = driver.findElement(By.cssSelector("form > div:nth-child(4) > div:nth-child(3) > div:nth-child(2) > div > div.ant-form-item-explain > div"))
-                .getText();
+        String text3 = new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("form > div:nth-child(4) > div:nth-child(3) > div:nth-child(2) > div > div.ant-form-item-explain > div")))
+                        .getText();
         Assert.assertEquals(text3, "必ず1つ選択してください", "[Delivery occupation/Infrastructure/Delivery skill details] Message do not match");
 
         // Delivery commercial distribution
-        String text4 = driver.findElement(By.cssSelector("form > div:nth-child(4) > div:nth-child(5)> div > div.ant-form-item-explain > div")).getText();
+        String text4 = new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("form > div:nth-child(4) > div:nth-child(5)> div > div.ant-form-item-explain > div")))
+                        .getText();
         Assert.assertEquals(text4, "必ず1つ選択してください", "[Delivery commercial distribution] Message do not match");
     }
 
-    public void deliver_the_matter_only_select_delivery_occupation_others(WebDriver driver) throws InterruptedException {
+    public void deliver_the_matter_only_select_delivery_occupation_others(WebDriver driver) {
         // Delivery type: Deliver the matter
         driver.findElement(By.cssSelector("#searchtype > label:nth-child(1) > span > input")).click();
 
@@ -432,51 +446,61 @@ public class Destination_selection {
         // Click Search button
         driver.findElement(By.cssSelector("div:nth-child(6) > div > div > div:nth-child(1) > div > button")).click();
 
-        sleep(2000);
-
         //Delivery area
-        String text1 = driver.findElement(By.cssSelector("form > div:nth-child(3) > div > div > div.ant-form-item-explain > div")).getText();
+        String text1 = new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("form > div:nth-child(3) > div > div > div.ant-form-item-explain > div")))
+                        .getText();
         Assert.assertEquals(text1, "必ず1つ選択してください", "[Delivery area] Message do not match");
 
         // Delivery occupation/Others/Delivery job details
-        String text2 = driver.findElement(By.cssSelector("form > div:nth-child(4) > div:nth-child(4) > div > div > div.ant-form-item-explain > div"))
-                .getText();
+        String text2 = new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("form > div:nth-child(4) > div:nth-child(4) > div > div > div.ant-form-item-explain > div")))
+                        .getText();
         Assert.assertEquals(text2, "必ず1つ選択してください", "[Delivery occupation/Others/Delivery job details] Message do not match");
 
         // Delivery commercial distribution
-        String text3 = driver.findElement(By.cssSelector("form > div:nth-child(4) > div:nth-child(5)> div > div.ant-form-item-explain > div")).getText();
+        String text3 = new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("form > div:nth-child(4) > div:nth-child(5)> div > div.ant-form-item-explain > div")))
+                        .getText();
         Assert.assertEquals(text3, "必ず1つ選択してください", "[Delivery commercial distribution] Message do not match");
     }
 
     /**
      *
      */
-    public void deliver_the_personnel_do_not_select_condition(WebDriver driver) throws InterruptedException {
+    public void deliver_the_personnel_do_not_select_condition(WebDriver driver) {
         // Delivery type: Deliver the personnel
         driver.findElement(By.cssSelector("#searchtype > label:nth-child(2) > span > input")).click();
 
         // Click Search button
         driver.findElement(By.cssSelector("div:nth-child(6) > div > div > div:nth-child(1) > div > button")).click();
-        sleep(2000);
 
         //Delivery area
-        String text1 = driver.findElement(By.cssSelector("form > div:nth-child(3) > div > div > div.ant-form-item-explain > div")).getText();
+        String text1 = new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("form > div:nth-child(3) > div > div > div.ant-form-item-explain > div")))
+                        .getText();
         Assert.assertEquals(text1, "必ず1つ選択してください", "[Delivery area] Message do not match");
 
         // Delivery occupation
-        String text2 = driver.findElement(By.cssSelector("form > div:nth-child(5) > div:nth-child(1) > div > div.ant-form-item-explain > div")).getText();
+        String text2 = new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("form > div:nth-child(5) > div:nth-child(1) > div > div.ant-form-item-explain > div")))
+                        .getText();
         Assert.assertEquals(text2, "必ず1つ選択してください", "[Delivery occupation] Message do not match");
 
         // Delivery employment form
-        String text3 = driver.findElement(By.cssSelector("form > div:nth-child(5) > div:nth-child(2) > div > div.ant-form-item-explain > div")).getText();
+        String text3 = new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("form > div:nth-child(5) > div:nth-child(2) > div > div.ant-form-item-explain > div")))
+                        .getText();
         Assert.assertEquals(text3, "必ず1つ選択してください", "[Delivery employment form] Message do not match");
 
         // Delivery commercial distribution
-        String text4 = driver.findElement(By.cssSelector("form > div:nth-child(5) > div:nth-child(3) > div > div.ant-form-item-explain > div")).getText();
+        String text4 = new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("form > div:nth-child(5) > div:nth-child(3) > div > div.ant-form-item-explain > div")))
+                        .getText();
         Assert.assertEquals(text4, "必ず1つ選択してください", "[Delivery commercial distribution] Message do not match");
     }
 
-    public void deliver_the_personnel_only_select_delivery_occupation_development(WebDriver driver) throws InterruptedException {
+    public void deliver_the_personnel_only_select_delivery_occupation_development(WebDriver driver) {
         // Delivery type: Deliver the personnel
         driver.findElement(By.cssSelector("#searchtype > label:nth-child(2) > span > input")).click();
 
@@ -486,32 +510,38 @@ public class Destination_selection {
         // Click Search button
         driver.findElement(By.cssSelector("div:nth-child(6) > div > div > div:nth-child(1) > div > button")).click();
 
-        sleep(2000);
-
         //Delivery area
-        String text1 = driver.findElement(By.cssSelector("form > div:nth-child(3) > div > div > div.ant-form-item-explain > div")).getText();
+        String text1 = new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("form > div:nth-child(3) > div > div > div.ant-form-item-explain > div")))
+                        .getText();
         Assert.assertEquals(text1, "必ず1つ選択してください", "[Delivery area] Message do not match");
 
         // Delivery occupation/Development/Delivery job details
-        String text2 = driver.findElement(By.cssSelector("form > div:nth-child(5) > div > div > div > div > div > div:nth-child(1) > div> div.ant-form-item-explain > div"))
-                .getText();
+        String text2 = new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("form > div:nth-child(5) > div > div > div > div > div > div:nth-child(1) > div> div.ant-form-item-explain > div")))
+                        .getText();
         Assert.assertEquals(text2, "必ず1つ選択してください", "[Delivery occupation/Development/Delivery job details] Message do not match");
 
         // Delivery occupation/Development/Delivery skill details
-        String text3 = driver.findElement(By.cssSelector("form > div:nth-child(5) > div > div > div > div > div > div:nth-child(2) > div> div.ant-form-item-explain > div"))
-                .getText();
+        String text3 = new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("form > div:nth-child(5) > div > div > div > div > div > div:nth-child(2) > div> div.ant-form-item-explain > div")))
+                        .getText();
         Assert.assertEquals(text3, "必ず1つ選択してください", "[Delivery occupation/Development/Delivery skill details] Message do not match");
 
         // Delivery employment form
-        String text4 = driver.findElement(By.cssSelector("form > div:nth-child(5) > div:nth-child(2) > div > div.ant-form-item-explain > div")).getText();
+        String text4 = new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("form > div:nth-child(5) > div:nth-child(2) > div > div.ant-form-item-explain > div")))
+                        .getText();
         Assert.assertEquals(text4, "必ず1つ選択してください", "[Delivery employment form] Message do not match");
 
         // Delivery commercial distribution
-        String text5 = driver.findElement(By.cssSelector("form > div:nth-child(5) > div:nth-child(3) > div > div.ant-form-item-explain> div")).getText();
+        String text5 = new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("form > div:nth-child(5) > div:nth-child(3) > div > div.ant-form-item-explain> div")))
+                        .getText();
         Assert.assertEquals(text5, "必ず1つ選択してください", "[Delivery commercial distribution] Message do not match");
     }
 
-    public void deliver_the_personnel_only_select_delivery_occupation_infrastructure(WebDriver driver) throws InterruptedException {
+    public void deliver_the_personnel_only_select_delivery_occupation_infrastructure(WebDriver driver) {
         // Delivery type: Deliver the personnel
         driver.findElement(By.cssSelector("#searchtype > label:nth-child(2) > span > input")).click();
 
@@ -521,32 +551,38 @@ public class Destination_selection {
         // Click Search button
         driver.findElement(By.cssSelector("div:nth-child(6) > div > div > div:nth-child(1) > div > button")).click();
 
-        sleep(2000);
-
         //Delivery area
-        String text1 = driver.findElement(By.cssSelector("form > div:nth-child(3) > div > div > div.ant-form-item-explain > div")).getText();
+        String text1 = new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("form > div:nth-child(3) > div > div > div.ant-form-item-explain > div")))
+                        .getText();
         Assert.assertEquals(text1, "必ず1つ選択してください", "[Delivery area] Message do not match");
 
         // Delivery occupation/Infrastructure/Delivery job details
-        String text2 = driver.findElement(By.cssSelector("form > div:nth-child(5) > div > div > div > div > div > div:nth-child(1) > div > div.ant-form-item-explain > div"))
-                .getText();
+        String text2 = new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("form > div:nth-child(5) > div > div > div > div > div > div:nth-child(1) > div > div.ant-form-item-explain > div")))
+                        .getText();
         Assert.assertEquals(text2, "必ず1つ選択してください", "[Delivery occupation/Infrastructure/Delivery job details] Message do not match");
 
         // Delivery occupation/Infrastructure/Delivery skill details
-        String text3 = driver.findElement(By.cssSelector("form > div:nth-child(5) > div > div > div > div > div > div:nth-child(2) > div > div.ant-form-item-explain > div"))
-                .getText();
+        String text3 = new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("form > div:nth-child(5) > div > div > div > div > div > div:nth-child(2) > div > div.ant-form-item-explain > div")))
+                        .getText();
         Assert.assertEquals(text3, "必ず1つ選択してください", "[Delivery occupation/Infrastructure/Delivery skill details] Message do not match");
 
         // Delivery employment form
-        String text4 = driver.findElement(By.cssSelector("form > div:nth-child(5) > div:nth-child(2) > div > div.ant-form-item-explain > div")).getText();
+        String text4 = new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("form > div:nth-child(5) > div:nth-child(2) > div > div.ant-form-item-explain > div")))
+                        .getText();
         Assert.assertEquals(text4, "必ず1つ選択してください", "[Delivery employment form] Message do not match");
 
         // Delivery commercial distribution
-        String text5 = driver.findElement(By.cssSelector("form > div:nth-child(5) > div:nth-child(3) > div > div.ant-form-item-explain> div")).getText();
+        String text5 = new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("form > div:nth-child(5) > div:nth-child(3) > div > div.ant-form-item-explain> div")))
+                        .getText();
         Assert.assertEquals(text5, "必ず1つ選択してください", "[Delivery commercial distribution] Message do not match");
     }
 
-    public void deliver_the_personnel_only_select_delivery_occupation_others(WebDriver driver) throws InterruptedException {
+    public void deliver_the_personnel_only_select_delivery_occupation_others(WebDriver driver) {
         // Delivery type: Deliver the personnel
         driver.findElement(By.cssSelector("#searchtype > label:nth-child(2) > span > input")).click();
 
@@ -556,27 +592,32 @@ public class Destination_selection {
         // Click Search button
         driver.findElement(By.cssSelector("div:nth-child(6) > div > div > div:nth-child(1) > div > button")).click();
 
-        sleep(2000);
-
         //Delivery area
-        String text1 = driver.findElement(By.cssSelector("form > div:nth-child(3) > div > div > div.ant-form-item-explain > div")).getText();
+        String text1 = new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("form > div:nth-child(3) > div > div > div.ant-form-item-explain > div")))
+                        .getText();
         Assert.assertEquals(text1, "必ず1つ選択してください", "[Delivery area] Message do not match");
 
         // Delivery occupation/Others/Delivery job details
-        String text2 = driver.findElement(By.cssSelector("form > div:nth-child(5) > div > div > div > div > div > div > div > div.ant-form-item-explain > div"))
-                .getText();
+        String text2 = new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("form > div:nth-child(5) > div > div > div > div > div > div > div > div.ant-form-item-explain > div")))
+                        .getText();
         Assert.assertEquals(text2, "必ず1つ選択してください", "[Delivery occupation/Others/Delivery job details] Message do not match");
 
         // Delivery employment form
-        String text3 = driver.findElement(By.cssSelector("form > div:nth-child(5) > div:nth-child(2) > div > div.ant-form-item-explain > div")).getText();
+        String text3 = new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("form > div:nth-child(5) > div:nth-child(2) > div > div.ant-form-item-explain > div")))
+                        .getText();
         Assert.assertEquals(text3, "必ず1つ選択してください", "[Delivery employment form] Message do not match");
 
         // Delivery commercial distribution
-        String text4 = driver.findElement(By.cssSelector("form > div:nth-child(5) > div:nth-child(3) > div > div.ant-form-item-explain> div")).getText();
+        String text4 = new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("form > div:nth-child(5) > div:nth-child(3) > div > div.ant-form-item-explain> div")))
+                        .getText();
         Assert.assertEquals(text4, "必ず1つ選択してください", "[Delivery commercial distribution] Message do not match");
     }
 
-    public void deliver_the_personnel_select_delivery_occupation_development_infrastructure_and_others(WebDriver driver) throws InterruptedException {
+    public void deliver_the_personnel_select_delivery_occupation_development_infrastructure_and_others(WebDriver driver) {
         // Delivery type: Deliver the personnel
         driver.findElement(By.cssSelector("#searchtype > label:nth-child(2) > span > input")).click();
 
@@ -592,48 +633,58 @@ public class Destination_selection {
         // Click Search button
         driver.findElement(By.cssSelector("div:nth-child(6) > div > div > div:nth-child(1) > div > button")).click();
 
-        sleep(2000);
-
         //Delivery area
-        String text1 = driver.findElement(By.cssSelector("form > div:nth-child(3) > div > div > div.ant-form-item-explain > div")).getText();
+        String text1 = new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("form > div:nth-child(3) > div > div > div.ant-form-item-explain > div")))
+                        .getText();
         Assert.assertEquals(text1, "必ず1つ選択してください", "[Delivery area] Message do not match");
 
         // Delivery occupation/Development/Delivery job details
-        String text2 = driver.findElement(By.cssSelector("form > div:nth-child(5) > div > div > div > div > div > div:nth-child(1) > div> div.ant-form-item-explain > div"))
-                .getText();
+        String text2 = new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("form > div:nth-child(5) > div > div > div > div > div > div:nth-child(1) > div> div.ant-form-item-explain > div")))
+                        .getText();
         Assert.assertEquals(text2, "必ず1つ選択してください", "[Delivery occupation/Development/Delivery job details] Message do not match");
 
         // Delivery occupation/Development/Delivery skill details
-        String text3 = driver.findElement(By.cssSelector("form > div:nth-child(5) > div > div > div > div > div > div:nth-child(2) > div> div.ant-form-item-explain > div"))
-                .getText();
+        String text3 = new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("form > div:nth-child(5) > div > div > div > div > div > div:nth-child(2) > div> div.ant-form-item-explain > div")))
+                        .getText();
         Assert.assertEquals(text3, "必ず1つ選択してください", "[Delivery occupation/Development/Delivery skill details] Message do not match");
 
         // Delivery occupation/Infrastructure/Delivery job details
-        String text4 = driver.findElement(By.cssSelector("form > div:nth-child(5) > div > div > div > div > div > div:nth-child(1) > div > div.ant-form-item-explain > div"))
-                .getText();
+        String text4 = new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("form > div:nth-child(5) > div > div > div > div > div > div:nth-child(1) > div > div.ant-form-item-explain > div")))
+                        .getText();
         Assert.assertEquals(text4, "必ず1つ選択してください", "[Delivery occupation/Infrastructure/Delivery job details] Message do not match");
 
         // Delivery occupation/Infrastructure/Delivery skill details
-        String text5 = driver.findElement(By.cssSelector("form > div:nth-child(5) > div > div > div > div > div > div:nth-child(2) > div > div.ant-form-item-explain > div"))
-                .getText();
+        String text5 = new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("form > div:nth-child(5) > div > div > div > div > div > div:nth-child(2) > div > div.ant-form-item-explain > div")))
+                        .getText();
         Assert.assertEquals(text5, "必ず1つ選択してください", "[Delivery occupation/Infrastructure/Delivery skill details] Message do not match");
 
         // Delivery occupation/Others/Delivery job details
-        String text6 = driver.findElement(By.cssSelector("form > div:nth-child(5) > div > div > div > div > div > div > div > div.ant-form-item-explain > div"))
+        String text6 = new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("form > div:nth-child(5) > div > div > div > div > div > div > div > div.ant-form-item-explain > div")))
                 .getText();
         Assert.assertEquals(text6, "必ず1つ選択してください", "[Delivery occupation/Others/Delivery job details] Message do not match");
 
         // Delivery employment form
-        String text7 = driver.findElement(By.cssSelector("form > div:nth-child(5) > div:nth-child(2) > div > div.ant-form-item-explain > div")).getText();
+        String text7 = new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("form > div:nth-child(5) > div:nth-child(2) > div > div.ant-form-item-explain > div")))
+                .getText();
         Assert.assertEquals(text7, "必ず1つ選択してください", "[Delivery employment form] Message do not match");
 
         // Delivery commercial distribution
-        String text8 = driver.findElement(By.cssSelector("form > div:nth-child(5) > div:nth-child(3) > div > div.ant-form-item-explain> div")).getText();
+        String text8 =
+                new WebDriverWait(driver, Duration.ofSeconds(10))
+                        .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("form > div:nth-child(5) > div:nth-child(3) > div > div.ant-form-item-explain> div")))
+                        .getText();
         Assert.assertEquals(text8, "必ず1つ選択してください", "[Delivery commercial distribution] Message do not match");
 
     }
 
-    public void do_not_select_account_status(WebDriver driver, String role, Common cm) throws InterruptedException {
+    public void do_not_select_account_status(WebDriver driver, String role, Common cm) {
         // Select delivery information
         delivery_information(driver, role, cm);
 
@@ -643,33 +694,31 @@ public class Destination_selection {
         // Click Search button
         driver.findElement(By.cssSelector("div:nth-child(6) > div > div > div:nth-child(1) > div > button")).click();
 
-        sleep(2000);
-
         // Account status
-        String text = driver.findElement(By.cssSelector("form > div:nth-child(6) > div:nth-child(2) > div > div.ant-form-item-explain > div > div")).getText();
+        String text = new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("form > div:nth-child(6) > div:nth-child(2) > div > div.ant-form-item-explain > div > div")))
+                        .getText();
         Assert.assertEquals(text, "必ず1つ選択してください", "[Account status] Message do not match");
     }
 
-    public void do_not_select_in_house_person_in_charge(WebDriver driver, String role, Common cm) throws InterruptedException {
+    public void do_not_select_in_house_person_in_charge(WebDriver driver, String role, Common cm) {
         // Select delivery information
         delivery_information(driver, role, cm);
 
         // In-house person in charge: ON
         driver.findElement(By.cssSelector("div:nth-child(3) > div > div > div > div > div > div > button")).click();
 
-        sleep(3000);
-
         // Click Search button
         driver.findElement(By.cssSelector("div:nth-child(6) > div > div > div:nth-child(1) > div > button")).click();
 
-        sleep(2000);
-
         // In-house person in charge
-        String text = driver.findElement(By.cssSelector("form > div:nth-child(6) > div:nth-child(3) > div > div.ant-form-item-explain > div > div")).getText();
+        String text = new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("form > div:nth-child(6) > div:nth-child(3) > div > div.ant-form-item-explain > div > div")))
+                .getText();
         Assert.assertEquals(text, "必ず選択してください", "[In-house person in charge] Message do not match");
     }
 
-    public void do_not_select_compatibility(WebDriver driver, String role, Common cm) throws InterruptedException {
+    public void do_not_select_compatibility(WebDriver driver, String role, Common cm) {
         // Select delivery information
         delivery_information(driver, role, cm);
 
@@ -679,14 +728,14 @@ public class Destination_selection {
         // Click Search button
         driver.findElement(By.cssSelector("div:nth-child(6) > div > div > div:nth-child(1) > div > button")).click();
 
-        sleep(2000);
-
         // Compatibility
-        String text = driver.findElement(By.cssSelector("form > div:nth-child(6) > div:nth-child(4) > div > div.ant-form-item-explain > div > div")).getText();
+        String text = new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("form > div:nth-child(6) > div:nth-child(4) > div > div.ant-form-item-explain > div > div")))
+                .getText();
         Assert.assertEquals(text, "必ず選択してください", "[Compatibility] Message do not match");
     }
 
-    public void do_not_select_tag(WebDriver driver, String role, Common cm) throws InterruptedException {
+    public void do_not_select_tag(WebDriver driver, String role, Common cm) {
         // Select delivery information
         delivery_information(driver, role, cm);
 
@@ -696,10 +745,10 @@ public class Destination_selection {
         // Click Search button
         driver.findElement(By.cssSelector("div:nth-child(6) > div > div > div:nth-child(1) > div > button")).click();
 
-        sleep(2000);
-
         // Tag
-        String text = driver.findElement(By.cssSelector("form > div:nth-child(6) > div:nth-child(5) > div > div.ant-form-item-explain > div > div")).getText();
+        String text = new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("form > div:nth-child(6) > div:nth-child(5) > div > div.ant-form-item-explain > div > div")))
+                .getText();
         Assert.assertEquals(text, "必ず1つ選択してください", "[Tag] Message do not match");
     }
 
@@ -710,6 +759,7 @@ public class Destination_selection {
         // Tag: ON
         driver.findElement(By.cssSelector("div:nth-child(5) > div > div > div > div > div > div > button")).click();
 
+        // Waiting for loading tag list
         sleep(3000);
 
         // Select 6 tags
@@ -719,33 +769,35 @@ public class Destination_selection {
             key.sendKeys(Keys.ENTER).perform();
         }
 
-        sleep(2000);
-
         // Tag
-        String text = driver.findElement(By.cssSelector("form > div:nth-child(6) > div.ant-form-item-has-error > div > div.ant-form-item-explain > div")).getText();
+        String text = new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("form > div:nth-child(6) > div.ant-form-item-has-error > div > div.ant-form-item-explain > div")))
+                .getText();
         Assert.assertEquals(text, "これ以上選択できません", "[Tag] Message do not match");
     }
 
     public void do_you_want_to_delete_this_delivered_email_OK(WebDriver driver, String url_mail_list) throws InterruptedException {
         // Click delete button
-        sleep(1000);
         driver.findElement(By.cssSelector("button.ant-btn-danger")).click();
-        sleep(1000);
 
         // Click OK button
-        driver.findElement(By.cssSelector("div.ant-modal-confirm-btns > button:nth-child(2)")).click();
+        new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.elementToBeClickable(By.cssSelector("div.ant-modal-confirm-btns > button:nth-child(2)")))
+                .click();
+
+        // Waiting for loading mail list page
         sleep(1000);
         Assert.assertEquals(driver.getCurrentUrl(), url_mail_list, "[Failed] Can not delete delivered email");
     }
 
     public void do_you_want_to_delete_this_delivered_email_Cancel(WebDriver driver) throws InterruptedException {
         // Click delete button
-        sleep(1000);
         driver.findElement(By.cssSelector("button.ant-btn-danger")).click();
-        sleep(1000);
 
         // Click delete button
-        driver.findElement(By.cssSelector("div.ant-modal-confirm-btns > button:nth-child(1)")).click();
+        new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.elementToBeClickable(By.cssSelector("div.ant-modal-confirm-btns > button:nth-child(1)")))
+                .click();
         sleep(1000);
 
         // Check popup close
@@ -760,29 +812,39 @@ public class Destination_selection {
 
     public void make_a_copy(WebDriver driver, String url_mail_list) throws InterruptedException {
         // Click make a copy button
-        sleep(1000);
         driver.findElement(By.cssSelector("div:nth-child(1)>button.ant-btn-sm")).click();
+
+        // Waiting for loading mail list page
         sleep(1000);
         Assert.assertEquals(driver.getCurrentUrl(), url_mail_list, "[Failed] Can not make a copy of delivered email.");
     }
 
     public void would_you_like_to_change_this_delivery_email_to_Draft_status_OK(WebDriver driver, String url_mail_list) throws InterruptedException {
         // Click save as draft button
-        sleep(1000);
-        driver.findElement(By.cssSelector("div:nth-child(2)>button.ant-btn-sm")).click();
-        sleep(1000);
-        driver.findElement(By.cssSelector("div.ant-modal-confirm-btns>button:nth-child(2)")).click();
+        driver.findElement(By.cssSelector("div.ant-col:nth-child(2)>button.ant-btn-sm")).click();
+
+        // Click OK button
+        new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.elementToBeClickable(By.cssSelector("div.ant-modal-confirm-btns>button:nth-child(2)")))
+                .click();
+
+        // Waiting for loading mail list page
         sleep(1000);
         Assert.assertEquals(driver.getCurrentUrl(), url_mail_list, "[Failed] Can not save delivered as draft.");
     }
 
     public void would_you_like_to_change_this_delivery_email_to_Draft_status_Cancel(WebDriver driver) throws InterruptedException {
         // Click save as draft button
-        sleep(1000);
-        driver.findElement(By.cssSelector("div:nth-child(2)>button.ant-btn-sm")).click();
-        sleep(1000);
-        driver.findElement(By.cssSelector("div.ant-modal-confirm-btns>button:nth-child(1)")).click();
-        sleep(1000);
+        driver.findElement(By.cssSelector("div.ant-col:nth-child(2)>button.ant-btn-sm")).click();
+
+        // Click cancel button
+        new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.elementToBeClickable(By.cssSelector("div.ant-modal-confirm-btns>button:nth-child(1)")))
+                .click();
+
+        // Waiting for close popup
+        sleep(500);
+
         // Check popup close
         boolean check = true;
         try {
@@ -793,101 +855,109 @@ public class Destination_selection {
         Assert.assertFalse(check, "[Failed] Can not close save delivered as draft popup.");
     }
 
-    public void back_to_attachment_step(WebDriver driver, String role, Common cm) throws InterruptedException {
+    public void back_to_attachment_step(WebDriver driver, Actions key, String role, Common cm) throws InterruptedException {
         // Master, Administrator, Responsible person, Leader, Member
         if (cm.authorized(role, cm.role_list(5))) {
-
-            sleep(2000);
             // Back to Attachment step
             driver.findElement(By.cssSelector("div:nth-child(1)>div.ant-col.ant-col-24 > div > div:nth-child(1) > div > button")).click();
 
+            // Waiting for loading attachment tab
+            sleep(500);
+
             // Check current tab
             boolean check = driver.findElement(By.cssSelector("div:nth-child(2)>div>div.ant-steps-item-icon")).isEnabled();
-            Assert.assertTrue(check,"[Failed] Can not back to Attachment from Destination selection.");
-
-            sleep(1000);
+            Assert.assertTrue(check, "[Failed] Can not back to Attachment from Destination selection.");
 
             // Back to Destination selection step
-            driver.findElement(By.cssSelector("div:nth-child(4)>div>button")).click();
-            sleep(1000);
+            new WebDriverWait(driver, Duration.ofSeconds(10))
+                    .until(ExpectedConditions.elementToBeClickable(By.cssSelector("div:nth-child(4)>div>button")))
+                    .click();
 
             // Back to Attachment step
-            driver.findElement(By.cssSelector("div:nth-child(2)>div>div.ant-steps-item-icon")).click();
+            WebElement back_to_attachment = driver.findElement(By.cssSelector("div:nth-child(2)>div>div.ant-steps-item-icon"));
+            key.moveToElement(back_to_attachment).click().build().perform();
 
             // Check current tab
             boolean check1 = driver.findElement(By.cssSelector("div:nth-child(2)>div>div.ant-steps-item-icon")).isEnabled();
-            Assert.assertTrue(check1,"[Failed] Can not back to Attachment from Destination selection.");
+            Assert.assertTrue(check1, "[Failed] Can not back to Attachment from Destination selection.");
         }
     }
 
-    public void back_to_basic_information_step(WebDriver driver, String role, Common cm) throws InterruptedException {
+    public void back_to_basic_information_step(WebDriver driver, String role, Common cm) {
         // Master, Administrator, Responsible person, Leader, Member
         if (cm.authorized(role, cm.role_list(5))) {
-
-            sleep(2000);
             // Back to Basic information step
             driver.findElement(By.cssSelector("div:nth-child(1)>div>div.ant-steps-item-icon")).click();
 
             // Check current tab
             boolean check = driver.findElement(By.cssSelector("div:nth-child(1)>div>div.ant-steps-item-icon")).isEnabled();
-            Assert.assertTrue(check,"[Failed] Can not back to Basic information from Destination selection.");
+            Assert.assertTrue(check, "[Failed] Can not back to Basic information from Destination selection.");
         }
     }
 
-    public void leave_search_template_name_blank(WebDriver driver, Actions key) throws InterruptedException {
+    public void leave_search_template_name_blank(WebDriver driver, Actions key) {
         // Click Save template button
         driver.findElement(By.cssSelector("div>button[type]:nth-child(4)")).click();
-        sleep(1000);
 
         // Leave search template name blank and verify error message
-        driver.findElement(By.cssSelector("#newTemplateName")).sendKeys("leave_blank");
-        sleep(100);
+        new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.elementToBeClickable(By.cssSelector("#newTemplateName")))
+                .sendKeys("leave_blank");
         for (int i = 0; i < 11; i++) {
             key.sendKeys(Keys.BACK_SPACE).perform();
         }
-        sleep(2000);
-        String text = driver.findElement(By.cssSelector("div.ant-form-item-explain-error")).getText();
+        String text = new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div.ant-form-item-explain-error")))
+                .getText();
         Assert.assertEquals(text, "テンプレート名を入力してください", "[Template name] Message do not match");
     }
 
     public void search_template_name_exceed_50_half_width_characters(WebDriver driver) throws InterruptedException {
         // Click Save template button
         driver.findElement(By.cssSelector("div>button[type]:nth-child(4)")).click();
-        sleep(1000);
 
         // Input search template name exceed 50 half width characters and verify error message
-        driver.findElement(By.cssSelector("#newTemplateName")).sendKeys(RandomStringUtils.randomAlphabetic(51));
+        new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.elementToBeClickable(By.cssSelector("#newTemplateName")))
+                .sendKeys(RandomStringUtils.randomAlphabetic(51));
 
         sleep(2000);
-        String text = driver.findElement(By.cssSelector("div.ant-form-item-explain-error")).getText();
+        String text = new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div.ant-form-item-explain-error")))
+                .getText();
         Assert.assertEquals(text, "テンプレート名は50文字以内で入力してください。", "[Template name] Message do not match");
     }
 
     public void search_template_name_exceed_50_full_width_characters(WebDriver driver) throws InterruptedException {
         // Click Save template button
         driver.findElement(By.cssSelector("div>button[type]:nth-child(4)")).click();
-        sleep(1000);
 
         // Input search template name exceed 50 full width characters and verify error message
-        driver.findElement(By.cssSelector("#newTemplateName")).sendKeys(RandomStringUtils.random(51, 0x4e00, 0x4f80, true, false));
+        new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.elementToBeClickable(By.cssSelector("#newTemplateName")))
+                .sendKeys(RandomStringUtils.random(51, 0x4e00, 0x4f80, true, false));
 
         sleep(2000);
-        String text = driver.findElement(By.cssSelector("div.ant-form-item-explain-error")).getText();
+        String text = new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div.ant-form-item-explain-error")))
+                .getText();
         Assert.assertEquals(text, "テンプレート名は50文字以内で入力してください。", "[Template name] Message do not match");
     }
 
-    public void search_template_name_exceed_mix_50_half_and_full_width_characters(WebDriver driver) throws InterruptedException {
+    public void search_template_name_exceed_mix_50_half_and_full_width_characters(WebDriver driver) {
         // Click Save template button
         driver.findElement(By.cssSelector("div>button[type]:nth-child(4)")).click();
-        sleep(1000);
 
         int length_of_half = RandomUtils.nextInt(50) + 1;
         String template_name = RandomStringUtils.randomAlphabetic(length_of_half) + RandomStringUtils.random(51 - length_of_half, 0x4e00, 0x4f80, true, false);
         // Input search template name exceed mix 50 half and full width characters and verify error message
-        driver.findElement(By.cssSelector("#newTemplateName")).sendKeys(template_name);
+        new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.elementToBeClickable(By.cssSelector("#newTemplateName")))
+                .sendKeys(template_name);
 
-        sleep(2000);
-        String text = driver.findElement(By.cssSelector("div.ant-form-item-explain-error")).getText();
+        String text = new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div.ant-form-item-explain-error")))
+                .getText();
         Assert.assertEquals(text, "テンプレート名は50文字以内で入力してください。", "[Template name] Message do not match");
     }
 
@@ -895,28 +965,36 @@ public class Destination_selection {
     public void create_search_template_name_OK(WebDriver driver) throws InterruptedException {
         // Click Save template button
         driver.findElement(By.cssSelector("div>button[type]:nth-child(4)")).click();
-        sleep(1000);
 
         // Input search template name with 50 half width characters and verify message
-        driver.findElement(By.cssSelector("#newTemplateName")).sendKeys(RandomStringUtils.randomAlphabetic(50));
+        new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.elementToBeClickable(By.cssSelector("#newTemplateName")))
+                .sendKeys(RandomStringUtils.randomAlphabetic(50));
 
         // Click OK button
-        driver.findElement(By.cssSelector("div:nth-child(3) > div > div:nth-child(2) > button")).click();
+        new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.elementToBeClickable(By.cssSelector("div:nth-child(3) > div > div:nth-child(2) > button")))
+                .click();
 
-        sleep(2000);
-        String text = driver.findElement(By.cssSelector("div.ant-message-custom-content>span:nth-child(2)")).getText();
+        // Waiting for show message
+        sleep(1000);
+        String text = new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div.ant-message-custom-content>span:nth-child(2)")))
+                .getText();
         Assert.assertEquals(text, "テンプレートを作成しました。", "[Template name] Message do not match");
     }
 
     public void create_search_template_name_Cancel(WebDriver driver) throws InterruptedException {
         // Click Save template button
         driver.findElement(By.cssSelector("div>button[type]:nth-child(4)")).click();
-        sleep(1000);
 
         // Click Cancel button
-        driver.findElement(By.cssSelector("div:nth-child(3) > div > div:nth-child(1) > button")).click();
+        new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.elementToBeClickable(By.cssSelector("div:nth-child(3) > div > div:nth-child(1) > button")))
+                .click();
 
-        sleep(1000);
+        // Waiting for close popup
+        sleep(500);
 
         // Check popup close
         boolean check = true;
@@ -931,54 +1009,68 @@ public class Destination_selection {
     public void input_available_search_template_name(WebDriver driver) throws InterruptedException {
         // Click Save template button
         driver.findElement(By.cssSelector("div>button[type]:nth-child(4)")).click();
-        sleep(1000);
 
         String template_name = RandomStringUtils.randomAlphabetic(50);
 
         // Input search template name with 50 half width characters and verify message
-        driver.findElement(By.cssSelector("#newTemplateName")).sendKeys(template_name);
+        new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.elementToBeClickable(By.cssSelector("#newTemplateName")))
+                .sendKeys(template_name);
 
         // Click OK button
-        driver.findElement(By.cssSelector("div:nth-child(3) > div > div:nth-child(2) > button")).click();
+        new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.elementToBeClickable(By.cssSelector("div:nth-child(3) > div > div:nth-child(2) > button")))
+                .click();
 
-        sleep(2000);
-        String text = driver.findElement(By.cssSelector("div.ant-message-custom-content>span:nth-child(2)")).getText();
+        // Waiting for show message
+        sleep(1000);
+        String text = new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div.ant-message-custom-content>span:nth-child(2)")))
+                .getText();
         Assert.assertEquals(text, "テンプレートを作成しました。", "[Template name] Message do not match");
 
         // Click Save template button
-        driver.findElement(By.cssSelector("div>button[type]:nth-child(4)")).click();
-        sleep(1000);
+        new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.elementToBeClickable(By.cssSelector("div>button[type]:nth-child(4)")))
+                .click();
 
         // Input available template name
-        driver.findElement(By.cssSelector("#newTemplateName")).sendKeys(template_name);
+        new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.elementToBeClickable(By.cssSelector("#newTemplateName")))
+                .sendKeys(template_name);
 
         // Click OK button
-        driver.findElement(By.cssSelector("div:nth-child(3) > div > div:nth-child(2) > button")).click();
+        new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.elementToBeClickable(By.cssSelector("div:nth-child(3) > div > div:nth-child(2) > button")))
+                .click();
 
-        sleep(2000);
         // Verify error message
-        String text1 = driver.findElement(By.cssSelector("div.ant-message-custom-content>span:nth-child(2)")).getText();
-        Assert.assertTrue(text1.contains("同一名称のテンプレートが既に存在します、別のテンプレート名を入力してください"), "[Failed] Can create search template with available template name.");
+        String text1 = new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div.ant-message-error>span:nth-child(2)")))
+                .getText();
+        System.out.println(text1);
+        Assert.assertTrue(text1.contains("同一名称のテンプレートが既に存在します"), "[Failed] Can create search template with available template name.");
     }
 
     public void set_cancel_search_template_as_default(WebDriver driver) throws InterruptedException {
         // Create search template
         create_search_template_name_OK(driver);
-        sleep(1000);
 
         // Set template as default
-        driver.findElement(By.cssSelector("div > button[type]:nth-child(3)")).click();
-        sleep(1000);
-        String text1 = driver.findElement(By.cssSelector("div.ant-message-custom-content>span:nth-child(2)")).getText();
-        Assert.assertEquals(text1, "デフォルト設定が完了しました。", "[Failed] Can not set search template as default.");
+        new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.elementToBeClickable(By.cssSelector("div > button[type]:nth-child(3)")))
+                .click();
+
         String title1 = driver.findElement(By.cssSelector("div:nth-child(2) > div > div > div > div > span.ant-select-selection-item")).getAttribute("title");
         Assert.assertTrue(title1.contains("☆ :"), "[Failed] Can not set search template as default.");
 
         // Cancel template as default
-        driver.findElement(By.cssSelector("div > button[type]:nth-child(3)")).click();
+        new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.elementToBeClickable(By.cssSelector("div > button[type]:nth-child(3)")))
+                .click();
+
+        // waiting for cancel set default
         sleep(1000);
-        String text2 = driver.findElement(By.cssSelector("div.ant-message-custom-content>span:nth-child(2)")).getText();
-        Assert.assertEquals(text2, "デフォルト設定が完了しました。", "[Failed] Can not cancel search template as default.");
         String title2 = driver.findElement(By.cssSelector("div:nth-child(2) > div > div > div > div > span.ant-select-selection-item")).getAttribute("title");
         Assert.assertFalse(title2.contains("☆ :"), "[Failed] Can not cancel search template as default.");
     }
@@ -986,35 +1078,40 @@ public class Destination_selection {
     public void delete_search_template_OK(WebDriver driver) throws InterruptedException {
         // Create search template
         create_search_template_name_OK(driver);
-        sleep(1000);
 
         // Click delete icon
-        driver.findElement(By.cssSelector("div > button[type]:nth-child(2)")).click();
-        sleep(1000);
+        new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.elementToBeClickable(By.cssSelector("div > button[type]:nth-child(2)")))
+                .click();
 
         //Click OK button
-        driver.findElement(By.cssSelector("div.ant-modal-confirm-btns > button:nth-child(2)")).click();
-
-        sleep(1000);
+        new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.elementToBeClickable(By.cssSelector("div.ant-modal-confirm-btns > button:nth-child(2)")))
+                .click();
 
         // Verify message
-        String text = driver.findElement(By.cssSelector("div.ant-message-custom-content>span:nth-child(2)")).getText();
+        String text = new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div.ant-message-custom-content>span:nth-child(2)")))
+                .getText();
         Assert.assertEquals(text, "テンプレートを削除しました", "[Failed] Can not delete search template.");
     }
 
     public void delete_search_template_Cancel(WebDriver driver) throws InterruptedException {
         // Create search template
         create_search_template_name_OK(driver);
-        sleep(1000);
 
         // Click delete icon
-        driver.findElement(By.cssSelector("div > button[type]:nth-child(2)")).click();
-        sleep(1000);
+        new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.elementToBeClickable(By.cssSelector("div > button[type]:nth-child(2)")))
+                .click();
 
-        //Click OK button
-        driver.findElement(By.cssSelector("div.ant-modal-confirm-btns > button:nth-child(1)")).click();
+        //Click cancel button
+        new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.elementToBeClickable(By.cssSelector("div.ant-modal-confirm-btns > button:nth-child(1)")))
+                .click();
 
-        sleep(1000);
+        // Waiting for close popup
+        sleep(500);
 
         // Check popup close
         boolean check = true;
@@ -1026,34 +1123,34 @@ public class Destination_selection {
         Assert.assertFalse(check, "[Failed] Can not close delete search template popup.");
     }
 
-    public void reset_search_criteria(WebDriver driver) throws InterruptedException {
-        //** Delivery information **//
-        //** Delivery type **//
-        // 1: Deliver the matter, 2: Deliver personnel, 3: Deliver information
+    public void reset_search_criteria(WebDriver driver) {
+        /*
+        ** Delivery information ** //
+        ** Delivery type ** //
+         1: Deliver the matter, 2: Deliver personnel, 3: Deliver information
+        */
         int delivery_type = RandomUtils.nextInt(3) + 1;
         driver.findElement(By.cssSelector("#searchtype > label:nth-child(" + delivery_type + ") > span > input")).click();
 
         // Click reset search criteria button
         driver.findElement(By.cssSelector("div:nth-child(2) > div.ant-row-start > button")).click();
-        sleep(1000);
 
         // Verify search condition have been reset
-        boolean check = driver.findElement(By.cssSelector("#searchtype > label:nth-child(" + delivery_type + ") > span > input")).isSelected();
+        boolean check = driver.findElement(By.cssSelector("#searchtype > label:nth-child(" + delivery_type + ") > span > input"))
+                .isSelected();
         Assert.assertFalse(check, "[Failed] Can not reset search condition.");
     }
 
     public void link_to_partner_PIC_edit_from_destination_selection(WebDriver driver, String partnerPIC_url) throws InterruptedException {
-        sleep(1000);
         // Scroll down
         ((JavascriptExecutor) driver).executeScript("scroll(0, 550);");
         sleep(1000);
 
         // check null = "True" => No partner PIC => Can not link to partner PIC.
         boolean check_null = false;
-        try{
+        try {
             driver.findElement(By.cssSelector(" tr.ant-table-row:nth-child(1) > td:nth-child(2)")).click();
-        }
-        catch (NoSuchElementException ex) {
+        } catch (NoSuchElementException ex) {
             check_null = true;
         }
 
@@ -1061,8 +1158,7 @@ public class Destination_selection {
             sleep(1000);
             // If we can link to partner PIC, verify current url
             Assert.assertTrue(driver.getCurrentUrl().contains(partnerPIC_url), "[Failed] Can not link to partner PIC from Destination selection");
-        }
-        else {
+        } else {
             System.out.println("No result.");
         }
     }

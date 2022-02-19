@@ -46,32 +46,34 @@ public class Attachment {
     public void next_to_destination_selection_step(WebDriver driver, String role, Common cm) throws InterruptedException {
         // Master, Administrator, Responsible person, Leader, Member
         if (cm.authorized(role, cm.role_list(5))) {
-
-            sleep(2000);
             // Next to 宛先選択_Step
             driver.findElement(By.cssSelector("div:nth-child(4)>div>button")).click();
 
             // Check current tab
             boolean check = driver.findElement(By.cssSelector("div:nth-child(3)>div>div.ant-steps-item-icon")).isEnabled();
             Assert.assertTrue(check,"[Failed] Can not next to Destination selection from Attachment.");
+            
+            // Waiting for destination selection tab loading
+            sleep(1000);
         }
     }
 
     public void back_to_basic_information_step(WebDriver driver, String role, Common cm) throws InterruptedException {
         // Master, Administrator, Responsible person, Leader, Member
         if (cm.authorized(role, cm.role_list(5))) {
-
-            sleep(2000);
+            
             // Back to Basic information step
             driver.findElement(By.cssSelector("div:nth-child(1)>div.ant-col.ant-col-24 > div > div:nth-child(1) > div > button")).click();
 
             // Check current tab
             boolean check = driver.findElement(By.cssSelector("div:nth-child(1)>div>div.ant-steps-item-icon")).isEnabled();
             Assert.assertTrue(check,"[Failed] Can not back to Basic information from Attachment.");
+            
+            // Waiting for basic information tab loading
+            sleep(1000);
         }
     }
-
-
+    
     public void upload_maximum_capacity_1_file(WebDriver driver, long capacity) throws IOException, InterruptedException {
         generate_test_file(capacity);
         driver.findElement(By.cssSelector("span.ant-upload.ant-upload-btn>input")).sendKeys(System.getProperty("user.dir") + "\\excel.xlsx");
@@ -86,7 +88,7 @@ public class Attachment {
         driver.findElement(By.cssSelector("span.ant-upload.ant-upload-btn>input")).sendKeys(System.getProperty("user.dir") + "\\word.docx");
         driver.findElement(By.cssSelector("span.ant-upload.ant-upload-btn>input")).sendKeys(System.getProperty("user.dir") + "\\pdf.pdf");
         driver.findElement(By.cssSelector("span.ant-upload.ant-upload-btn>input")).sendKeys(System.getProperty("user.dir") + "\\excel.xlsx");
-        String text = new WebDriverWait(driver, Duration.ofSeconds(20))
+        String text = new WebDriverWait(driver, Duration.ofSeconds(50))
                 .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div:nth-child(1)>div>div.ant-message-custom-content > span:nth-child(2)"))).getText();
         Assert.assertTrue(text.contains("ファイルがアップロードされました"), "[Failed] Can not upload multi file with capacity = " + capacity + "MB");
     }
@@ -105,32 +107,36 @@ public class Attachment {
         driver.findElement(By.cssSelector("span.ant-upload.ant-upload-btn>input")).sendKeys(System.getProperty("user.dir") + "\\word.docx");
         driver.findElement(By.cssSelector("span.ant-upload.ant-upload-btn>input")).sendKeys(System.getProperty("user.dir") + "\\pdf.pdf");
         driver.findElement(By.cssSelector("span.ant-upload.ant-upload-btn>input")).sendKeys(System.getProperty("user.dir") + "\\excel.xlsx");
-        String text = new WebDriverWait(driver, Duration.ofSeconds(20))
+        String text = new WebDriverWait(driver, Duration.ofSeconds(50))
                 .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div:nth-child(1)>div>div.ant-message-custom-content > span:nth-child(2)"))).getText();
         Assert.assertTrue(text.contains("を超えるメールを配信することはできません"), "[Failed] Message do not match.");
     }
 
     public void do_you_want_to_delete_this_delivered_email_OK(WebDriver driver, String url_mail_list) throws InterruptedException {
         // Click delete button
-        sleep(1000);
         driver.findElement(By.cssSelector("button.ant-btn-danger")).click();
-        sleep(1000);
 
         // Click OK button
-        driver.findElement(By.cssSelector("div.ant-modal-confirm-btns > button:nth-child(2)")).click();
+        new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.elementToBeClickable(By.cssSelector("div.ant-modal-confirm-btns > button:nth-child(2)")))
+                        .click();
+        
+        //Waiting for mail list page loading
         sleep(1000);
         Assert.assertEquals(driver.getCurrentUrl(), url_mail_list, "[Failed] Can not delete delivered email");
     }
 
     public void do_you_want_to_delete_this_delivered_email_Cancel(WebDriver driver) throws InterruptedException {
         // Click delete button
-        sleep(1000);
         driver.findElement(By.cssSelector("button.ant-btn-danger")).click();
-        sleep(1000);
 
-        // Click delete button
-        driver.findElement(By.cssSelector("div.ant-modal-confirm-btns > button:nth-child(1)")).click();
-        sleep(1000);
+        // Click Cancel button
+        new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.elementToBeClickable(By.cssSelector("div.ant-modal-confirm-btns > button:nth-child(1)")))
+                        .click();
+        
+        // Waiting for close popup
+        sleep(500);
 
         // Check popup close
         boolean check = true;
@@ -145,30 +151,38 @@ public class Attachment {
 
     public void make_a_copy(WebDriver driver, String url_mail_list) throws InterruptedException {
         // Click make a copy button
-        sleep(1000);
         driver.findElement(By.cssSelector("div:nth-child(1)>button.ant-btn-sm")).click();
+        
+        // Waiting for mail list page loading
         sleep(1000);
         Assert.assertEquals(driver.getCurrentUrl(), url_mail_list, "[Failed] Can not make a copy of delivered email.");
     }
 
     public void would_you_like_to_change_this_delivery_email_to_Draft_status_OK(WebDriver driver, String url_mail_list) throws InterruptedException {
         // Click save as draft button
-        sleep(1000);
-        driver.findElement(By.cssSelector("div:nth-child(2)>button.ant-btn-sm")).click();
-        sleep(1000);
-        driver.findElement(By.cssSelector("div.ant-modal-confirm-btns>button:nth-child(2)")).click();
+        driver.findElement(By.cssSelector("div.ant-col:nth-child(2)>button.ant-btn-sm")).click();
+        
+        // Click OK button
+        new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.elementToBeClickable(By.cssSelector("div.ant-modal-confirm-btns>button:nth-child(2)")))
+                        .click();
+        
+        // Waiting for mail list page loading
         sleep(1000);
         Assert.assertEquals(driver.getCurrentUrl(), url_mail_list, "[Failed] Can not save delivered as draft.");
     }
 
     public void would_you_like_to_change_this_delivery_email_to_Draft_status_Cancel(WebDriver driver) throws InterruptedException {
         // Click save as draft button
-        sleep(1000);
-        driver.findElement(By.cssSelector("div:nth-child(2)>button.ant-btn-sm")).click();
-        sleep(1000);
-        //Click cancel button
-        driver.findElement(By.cssSelector("div.ant-modal-confirm-btns>button:nth-child(1)")).click();
-        sleep(1000);
+        driver.findElement(By.cssSelector("div.ant-col:nth-child(2)>button.ant-btn-sm")).click();
+        
+        // Click cancel button
+        new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.elementToBeClickable(By.cssSelector("div.ant-modal-confirm-btns>button:nth-child(1)")))
+                        .click();
+        
+        // Waiting for close popup
+        sleep(500);
         // Check popup close
         boolean check = true;
         try {
