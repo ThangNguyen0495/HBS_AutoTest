@@ -1,9 +1,9 @@
 package HBS;
 
-import BasePage.createMail.Attachment;
-import BasePage.createMail.Basic_information;
-import BasePage.createMail.Destination_selection;
-import BasePage.createMail.Final_confirmation;
+import BasePage.editMail.Attachment;
+import BasePage.editMail.Basic_information;
+import BasePage.editMail.Destination_selection;
+import BasePage.editMail.Final_confirmation;
 import Common.Common;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
@@ -13,7 +13,7 @@ import org.testng.annotations.Test;
 
 import java.io.IOException;
 
-public class CreateMail {
+public class EditMail {
 
     Common cm;
     WebDriver driver;

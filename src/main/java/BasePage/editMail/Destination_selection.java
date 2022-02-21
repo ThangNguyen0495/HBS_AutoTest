@@ -1,4 +1,4 @@
-package BasePage.createMail;
+package BasePage.editMail;
 
 import Common.Common;
 import org.apache.commons.lang.RandomStringUtils;
@@ -357,13 +357,13 @@ public class Destination_selection {
         // Delivery occupation
         String text2 = new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("form > div:nth-child(4) > div:nth-child(1)> div > div.ant-form-item-explain > div")))
-                .getText();
+                        .getText();
         Assert.assertEquals(text2, "必ず1つ選択してください", "[Delivery occupation] Message do not match");
 
         // Delivery commercial distribution
         String text3 = new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("form > div:nth-child(4) > div:nth-child(5)> div > div.ant-form-item-explain > div")))
-                .getText();
+                        .getText();
         Assert.assertEquals(text3, "必ず1つ選択してください", "[Delivery commercial distribution] Message do not match");
     }
 
@@ -380,25 +380,25 @@ public class Destination_selection {
         //Delivery area
         String text1 = new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("form > div:nth-child(3) > div > div > div.ant-form-item-explain > div")))
-                .getText();
+                        .getText();
         Assert.assertEquals(text1, "必ず1つ選択してください", "[Delivery area] Message do not match");
 
         // Delivery occupation/Development/Delivery job details
         String text2 = new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("form > div:nth-child(4) > div:nth-child(2) > div:nth-child(1) > div > div.ant-form-item-explain > div")))
-                .getText();
+                        .getText();
         Assert.assertEquals(text2, "必ず1つ選択してください", "[Delivery occupation/Development/Delivery job details] Message do not match");
 
         // Delivery occupation/Development/Delivery skill details
         String text3 = new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("form > div:nth-child(4) > div:nth-child(2) > div:nth-child(2) > div > div.ant-form-item-explain > div")))
-                .getText();
+                        .getText();
         Assert.assertEquals(text3, "必ず1つ選択してください", "[Delivery occupation/Development/Delivery skill details] Message do not match");
 
         // Delivery commercial distribution
         String text4 = new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("form > div:nth-child(4) > div:nth-child(5)> div > div.ant-form-item-explain > div")))
-                .getText();
+                        .getText();
         Assert.assertEquals(text4, "必ず1つ選択してください", "[Delivery commercial distribution] Message do not match");
     }
 
@@ -415,25 +415,25 @@ public class Destination_selection {
         //Delivery area
         String text1 = new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("form > div:nth-child(3) > div > div > div.ant-form-item-explain > div")))
-                .getText();
+                        .getText();
         Assert.assertEquals(text1, "必ず1つ選択してください", "[Delivery area] Message do not match");
 
         // Delivery occupation/Infrastructure/Delivery job details
         String text2 = new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("form > div:nth-child(4) > div:nth-child(3) > div:nth-child(1) > div > div.ant-form-item-explain > div")))
-                .getText();
+                        .getText();
         Assert.assertEquals(text2, "必ず1つ選択してください", "[Delivery occupation/Infrastructure/Delivery job details] Message do not match");
 
         // Delivery occupation/Infrastructure/Delivery skill details
         String text3 = new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("form > div:nth-child(4) > div:nth-child(3) > div:nth-child(2) > div > div.ant-form-item-explain > div")))
-                .getText();
+                        .getText();
         Assert.assertEquals(text3, "必ず1つ選択してください", "[Delivery occupation/Infrastructure/Delivery skill details] Message do not match");
 
         // Delivery commercial distribution
         String text4 = new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("form > div:nth-child(4) > div:nth-child(5)> div > div.ant-form-item-explain > div")))
-                .getText();
+                        .getText();
         Assert.assertEquals(text4, "必ず1つ選択してください", "[Delivery commercial distribution] Message do not match");
     }
 
@@ -450,19 +450,19 @@ public class Destination_selection {
         //Delivery area
         String text1 = new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("form > div:nth-child(3) > div > div > div.ant-form-item-explain > div")))
-                .getText();
+                        .getText();
         Assert.assertEquals(text1, "必ず1つ選択してください", "[Delivery area] Message do not match");
 
         // Delivery occupation/Others/Delivery job details
         String text2 = new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("form > div:nth-child(4) > div:nth-child(4) > div > div > div.ant-form-item-explain > div")))
-                .getText();
+                        .getText();
         Assert.assertEquals(text2, "必ず1つ選択してください", "[Delivery occupation/Others/Delivery job details] Message do not match");
 
         // Delivery commercial distribution
         String text3 = new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("form > div:nth-child(4) > div:nth-child(5)> div > div.ant-form-item-explain > div")))
-                .getText();
+                        .getText();
         Assert.assertEquals(text3, "必ず1つ選択してください", "[Delivery commercial distribution] Message do not match");
     }
 
@@ -479,25 +479,25 @@ public class Destination_selection {
         //Delivery area
         String text1 = new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("form > div:nth-child(3) > div > div > div.ant-form-item-explain > div")))
-                .getText();
+                        .getText();
         Assert.assertEquals(text1, "必ず1つ選択してください", "[Delivery area] Message do not match");
 
         // Delivery occupation
         String text2 = new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("form > div:nth-child(5) > div:nth-child(1) > div > div.ant-form-item-explain > div")))
-                .getText();
+                        .getText();
         Assert.assertEquals(text2, "必ず1つ選択してください", "[Delivery occupation] Message do not match");
 
         // Delivery employment form
         String text3 = new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("form > div:nth-child(5) > div:nth-child(2) > div > div.ant-form-item-explain > div")))
-                .getText();
+                        .getText();
         Assert.assertEquals(text3, "必ず1つ選択してください", "[Delivery employment form] Message do not match");
 
         // Delivery commercial distribution
         String text4 = new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("form > div:nth-child(5) > div:nth-child(3) > div > div.ant-form-item-explain > div")))
-                .getText();
+                        .getText();
         Assert.assertEquals(text4, "必ず1つ選択してください", "[Delivery commercial distribution] Message do not match");
     }
 
@@ -514,31 +514,31 @@ public class Destination_selection {
         //Delivery area
         String text1 = new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("form > div:nth-child(3) > div > div > div.ant-form-item-explain > div")))
-                .getText();
+                        .getText();
         Assert.assertEquals(text1, "必ず1つ選択してください", "[Delivery area] Message do not match");
 
         // Delivery occupation/Development/Delivery job details
         String text2 = new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("form > div:nth-child(5) > div > div > div > div > div > div:nth-child(1) > div> div.ant-form-item-explain > div")))
-                .getText();
+                        .getText();
         Assert.assertEquals(text2, "必ず1つ選択してください", "[Delivery occupation/Development/Delivery job details] Message do not match");
 
         // Delivery occupation/Development/Delivery skill details
         String text3 = new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("form > div:nth-child(5) > div > div > div > div > div > div:nth-child(2) > div> div.ant-form-item-explain > div")))
-                .getText();
+                        .getText();
         Assert.assertEquals(text3, "必ず1つ選択してください", "[Delivery occupation/Development/Delivery skill details] Message do not match");
 
         // Delivery employment form
         String text4 = new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("form > div:nth-child(5) > div:nth-child(2) > div > div.ant-form-item-explain > div")))
-                .getText();
+                        .getText();
         Assert.assertEquals(text4, "必ず1つ選択してください", "[Delivery employment form] Message do not match");
 
         // Delivery commercial distribution
         String text5 = new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("form > div:nth-child(5) > div:nth-child(3) > div > div.ant-form-item-explain> div")))
-                .getText();
+                        .getText();
         Assert.assertEquals(text5, "必ず1つ選択してください", "[Delivery commercial distribution] Message do not match");
     }
 
@@ -555,31 +555,31 @@ public class Destination_selection {
         //Delivery area
         String text1 = new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("form > div:nth-child(3) > div > div > div.ant-form-item-explain > div")))
-                .getText();
+                        .getText();
         Assert.assertEquals(text1, "必ず1つ選択してください", "[Delivery area] Message do not match");
 
         // Delivery occupation/Infrastructure/Delivery job details
         String text2 = new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("form > div:nth-child(5) > div > div > div > div > div > div:nth-child(1) > div > div.ant-form-item-explain > div")))
-                .getText();
+                        .getText();
         Assert.assertEquals(text2, "必ず1つ選択してください", "[Delivery occupation/Infrastructure/Delivery job details] Message do not match");
 
         // Delivery occupation/Infrastructure/Delivery skill details
         String text3 = new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("form > div:nth-child(5) > div > div > div > div > div > div:nth-child(2) > div > div.ant-form-item-explain > div")))
-                .getText();
+                        .getText();
         Assert.assertEquals(text3, "必ず1つ選択してください", "[Delivery occupation/Infrastructure/Delivery skill details] Message do not match");
 
         // Delivery employment form
         String text4 = new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("form > div:nth-child(5) > div:nth-child(2) > div > div.ant-form-item-explain > div")))
-                .getText();
+                        .getText();
         Assert.assertEquals(text4, "必ず1つ選択してください", "[Delivery employment form] Message do not match");
 
         // Delivery commercial distribution
         String text5 = new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("form > div:nth-child(5) > div:nth-child(3) > div > div.ant-form-item-explain> div")))
-                .getText();
+                        .getText();
         Assert.assertEquals(text5, "必ず1つ選択してください", "[Delivery commercial distribution] Message do not match");
     }
 
@@ -596,25 +596,25 @@ public class Destination_selection {
         //Delivery area
         String text1 = new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("form > div:nth-child(3) > div > div > div.ant-form-item-explain > div")))
-                .getText();
+                        .getText();
         Assert.assertEquals(text1, "必ず1つ選択してください", "[Delivery area] Message do not match");
 
         // Delivery occupation/Others/Delivery job details
         String text2 = new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("form > div:nth-child(5) > div > div > div > div > div > div > div > div.ant-form-item-explain > div")))
-                .getText();
+                        .getText();
         Assert.assertEquals(text2, "必ず1つ選択してください", "[Delivery occupation/Others/Delivery job details] Message do not match");
 
         // Delivery employment form
         String text3 = new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("form > div:nth-child(5) > div:nth-child(2) > div > div.ant-form-item-explain > div")))
-                .getText();
+                        .getText();
         Assert.assertEquals(text3, "必ず1つ選択してください", "[Delivery employment form] Message do not match");
 
         // Delivery commercial distribution
         String text4 = new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("form > div:nth-child(5) > div:nth-child(3) > div > div.ant-form-item-explain> div")))
-                .getText();
+                        .getText();
         Assert.assertEquals(text4, "必ず1つ選択してください", "[Delivery commercial distribution] Message do not match");
     }
 
@@ -637,31 +637,31 @@ public class Destination_selection {
         //Delivery area
         String text1 = new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("form > div:nth-child(3) > div > div > div.ant-form-item-explain > div")))
-                .getText();
+                        .getText();
         Assert.assertEquals(text1, "必ず1つ選択してください", "[Delivery area] Message do not match");
 
         // Delivery occupation/Development/Delivery job details
         String text2 = new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("form > div:nth-child(5) > div > div > div > div > div > div:nth-child(1) > div> div.ant-form-item-explain > div")))
-                .getText();
+                        .getText();
         Assert.assertEquals(text2, "必ず1つ選択してください", "[Delivery occupation/Development/Delivery job details] Message do not match");
 
         // Delivery occupation/Development/Delivery skill details
         String text3 = new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("form > div:nth-child(5) > div > div > div > div > div > div:nth-child(2) > div> div.ant-form-item-explain > div")))
-                .getText();
+                        .getText();
         Assert.assertEquals(text3, "必ず1つ選択してください", "[Delivery occupation/Development/Delivery skill details] Message do not match");
 
         // Delivery occupation/Infrastructure/Delivery job details
         String text4 = new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("form > div:nth-child(5) > div > div > div > div > div > div:nth-child(1) > div > div.ant-form-item-explain > div")))
-                .getText();
+                        .getText();
         Assert.assertEquals(text4, "必ず1つ選択してください", "[Delivery occupation/Infrastructure/Delivery job details] Message do not match");
 
         // Delivery occupation/Infrastructure/Delivery skill details
         String text5 = new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("form > div:nth-child(5) > div > div > div > div > div > div:nth-child(2) > div > div.ant-form-item-explain > div")))
-                .getText();
+                        .getText();
         Assert.assertEquals(text5, "必ず1つ選択してください", "[Delivery occupation/Infrastructure/Delivery skill details] Message do not match");
 
         // Delivery occupation/Others/Delivery job details
@@ -698,7 +698,7 @@ public class Destination_selection {
         // Account status
         String text = new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("form > div:nth-child(6) > div:nth-child(2) > div > div.ant-form-item-explain > div > div")))
-                .getText();
+                        .getText();
         Assert.assertEquals(text, "必ず1つ選択してください", "[Account status] Message do not match");
     }
 
@@ -903,7 +903,8 @@ public class Destination_selection {
         boolean check = false;
         try {
             driver.findElement(By.cssSelector("span:nth-child(4)>button")).getAttribute("type");
-        } catch (NoSuchElementException ex) {
+        }
+        catch (NoSuchElementException ex) {
             check = true;
         }
         return check;
@@ -917,7 +918,7 @@ public class Destination_selection {
         // Select template dropdown list
         new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(ExpectedConditions.elementToBeClickable(By.cssSelector("div:nth-child(2) > div > div > div > div > span.ant-select-selection-item")))
-                .click();
+                        .click();
 
         // Select template
         key.sendKeys(Keys.DOWN).sendKeys(Keys.ENTER).perform();
@@ -944,7 +945,7 @@ public class Destination_selection {
         // Click Save template button
         new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(ExpectedConditions.elementToBeClickable(By.cssSelector("div>button[type]:nth-child(4)")))
-                .click();
+                        .click();
 
         // Leave search template name blank and verify error message
         new WebDriverWait(driver, Duration.ofSeconds(10))
@@ -1031,9 +1032,10 @@ public class Destination_selection {
         // Check save button is enable
         if (!check_template_in_stock(driver)) {
             delete_search_template(driver, key);
-        } else {
+        }
+        else {
             new WebDriverWait(driver, Duration.ofSeconds(10))
-                    .until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("div:nth-child(1)>div>div.ant-message-custom-content>span:nth-child(2)")));
+                .until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("div:nth-child(1)>div>div.ant-message-custom-content>span:nth-child(2)")));
         }
 
         // Click Save template button
@@ -1091,7 +1093,8 @@ public class Destination_selection {
         // Check save button is enable
         if (!check_template_in_stock(driver)) {
             delete_search_template(driver, key);
-        } else {
+        }
+        else {
             new WebDriverWait(driver, Duration.ofSeconds(10))
                     .until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("div:nth-child(1)>div>div.ant-message-custom-content>span:nth-child(2)")));
         }

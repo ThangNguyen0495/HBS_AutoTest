@@ -1,4 +1,4 @@
-package BasePage.createMail;
+package BasePage.editMail;
 
 import Common.Common;
 import org.openqa.selenium.*;
@@ -90,7 +90,7 @@ public class Final_confirmation {
             // Date
             new WebDriverWait(driver, Duration.ofSeconds(10))
                     .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div.ant-col>div:nth-child(1)>div>div>div:nth-child(1)>div>div>input")))
-                    .click();
+                            .click();
 
             if (element.equals("")) {
                 driver.findElement(By.cssSelector(date_element(driver))).click();
@@ -159,7 +159,7 @@ public class Final_confirmation {
         // Click OK button
         new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(ExpectedConditions.elementToBeClickable(By.cssSelector("div.ant-modal-confirm-btns > button:nth-child(2)")))
-                .click();
+                        .click();
 
         // Waiting for loading mail list page
         sleep(1000);
@@ -173,7 +173,7 @@ public class Final_confirmation {
         // Click delete button
         new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(ExpectedConditions.elementToBeClickable(By.cssSelector("div.ant-modal-confirm-btns > button:nth-child(1)")))
-                .click();
+                        .click();
 
         // Waiting for close popup
         sleep(500);
@@ -220,7 +220,7 @@ public class Final_confirmation {
         // Click cancel button
         new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(ExpectedConditions.elementToBeClickable(By.cssSelector("div.ant-modal-confirm-btns>button:nth-child(1)")))
-                .click();
+                        .click();
 
         // Waiting for close popup
         sleep(500);
@@ -247,7 +247,7 @@ public class Final_confirmation {
 
             // Check current tab
             boolean check = driver.findElement(By.cssSelector("div:nth-child(3)>div>div.ant-steps-item-icon")).isEnabled();
-            Assert.assertTrue(check, "[Failed] Can not back to Destination selection from Final confirmation.");
+            Assert.assertTrue(check,"[Failed] Can not back to Destination selection from Final confirmation.");
 
             // back to Final confirmation from Destination selection
             driver.findElement(By.cssSelector("div:nth-child(4) > div > button")).click();
@@ -260,7 +260,7 @@ public class Final_confirmation {
 
             // Check current tab
             boolean check1 = driver.findElement(By.cssSelector("div:nth-child(3)>div>div.ant-steps-item-icon")).isEnabled();
-            Assert.assertTrue(check1, "[Failed] Can not back to Destination selection from Final confirmation.");
+            Assert.assertTrue(check1,"[Failed] Can not back to Destination selection from Final confirmation.");
 
         }
     }
@@ -275,7 +275,7 @@ public class Final_confirmation {
             sleep(500);
             // Check current tab
             boolean check = driver.findElement(By.cssSelector("div:nth-child(2)>div>div.ant-steps-item-icon")).isEnabled();
-            Assert.assertTrue(check, "[Failed] Can not back to Attachment from Final confirmation.");
+            Assert.assertTrue(check,"[Failed] Can not back to Attachment from Final confirmation.");
         }
     }
 
@@ -289,7 +289,7 @@ public class Final_confirmation {
             sleep(500);
             // Check current tab
             boolean check = driver.findElement(By.cssSelector("div:nth-child(1)>div>div.ant-steps-item-icon")).isEnabled();
-            Assert.assertTrue(check, "[Failed] Can not back to Basic information from Final confirmation.");
+            Assert.assertTrue(check,"[Failed] Can not back to Basic information from Final confirmation.");
         }
     }
 }

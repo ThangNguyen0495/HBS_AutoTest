@@ -1,4 +1,4 @@
-package BasePage.createMail;
+package BasePage.editMail;
 
 import Common.Common;
 import org.apache.commons.lang.math.RandomUtils;
@@ -49,8 +49,8 @@ public class Attachment {
 
             // Check current tab
             boolean check = driver.findElement(By.cssSelector("div:nth-child(3)>div>div.ant-steps-item-icon")).isEnabled();
-            Assert.assertTrue(check, "[Failed] Can not next to Destination selection from Attachment.");
-
+            Assert.assertTrue(check,"[Failed] Can not next to Destination selection from Attachment.");
+            
             // Waiting for destination selection tab loading
             sleep(1000);
         }
@@ -59,19 +59,19 @@ public class Attachment {
     public void back_to_basic_information_step(WebDriver driver, String role, Common cm) throws InterruptedException {
         // Master, Administrator, Responsible person, Leader, Member
         if (cm.authorized(role, cm.role_list(5))) {
-
+            
             // Back to Basic information step
             driver.findElement(By.cssSelector("div:nth-child(1)>div.ant-col.ant-col-24 > div > div:nth-child(1) > div > button")).click();
 
             // Check current tab
             boolean check = driver.findElement(By.cssSelector("div:nth-child(1)>div>div.ant-steps-item-icon")).isEnabled();
-            Assert.assertTrue(check, "[Failed] Can not back to Basic information from Attachment.");
-
+            Assert.assertTrue(check,"[Failed] Can not back to Basic information from Attachment.");
+            
             // Waiting for basic information tab loading
             sleep(1000);
         }
     }
-
+    
     public void upload_maximum_capacity_1_file(WebDriver driver, long capacity) throws IOException {
         generate_test_file(capacity);
         // Waiting for hid previous message
@@ -129,8 +129,8 @@ public class Attachment {
         // Click OK button
         new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(ExpectedConditions.elementToBeClickable(By.cssSelector("div.ant-modal-confirm-btns > button:nth-child(2)")))
-                .click();
-
+                        .click();
+        
         //Waiting for mail list page loading
         sleep(1000);
         Assert.assertEquals(driver.getCurrentUrl(), url_mail_list, "[Failed] Can not delete delivered email");
@@ -143,8 +143,8 @@ public class Attachment {
         // Click Cancel button
         new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(ExpectedConditions.elementToBeClickable(By.cssSelector("div.ant-modal-confirm-btns > button:nth-child(1)")))
-                .click();
-
+                        .click();
+        
         // Waiting for close popup
         sleep(500);
 
@@ -162,7 +162,7 @@ public class Attachment {
     public void make_a_copy(WebDriver driver, String url_mail_list) throws InterruptedException {
         // Click make a copy button
         driver.findElement(By.cssSelector("div:nth-child(1)>button.ant-btn-sm")).click();
-
+        
         // Waiting for mail list page loading
         sleep(1000);
         Assert.assertEquals(driver.getCurrentUrl(), url_mail_list, "[Failed] Can not make a copy of delivered email.");
@@ -171,12 +171,12 @@ public class Attachment {
     public void would_you_like_to_change_this_delivery_email_to_Draft_status_OK(WebDriver driver, String url_mail_list) throws InterruptedException {
         // Click save as draft button
         driver.findElement(By.cssSelector("div.ant-col:nth-child(2)>button.ant-btn-sm")).click();
-
+        
         // Click OK button
         new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(ExpectedConditions.elementToBeClickable(By.cssSelector("div.ant-modal-confirm-btns>button:nth-child(2)")))
-                .click();
-
+                        .click();
+        
         // Waiting for mail list page loading
         sleep(1000);
         Assert.assertEquals(driver.getCurrentUrl(), url_mail_list, "[Failed] Can not save delivered as draft.");
@@ -185,12 +185,12 @@ public class Attachment {
     public void would_you_like_to_change_this_delivery_email_to_Draft_status_Cancel(WebDriver driver) throws InterruptedException {
         // Click save as draft button
         driver.findElement(By.cssSelector("div.ant-col:nth-child(2)>button.ant-btn-sm")).click();
-
+        
         // Click cancel button
         new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(ExpectedConditions.elementToBeClickable(By.cssSelector("div.ant-modal-confirm-btns>button:nth-child(1)")))
-                .click();
-
+                        .click();
+        
         // Waiting for close popup
         sleep(500);
         // Check popup close
