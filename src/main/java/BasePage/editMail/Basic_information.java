@@ -24,60 +24,49 @@ public class Basic_information {
     WebDriverWait wait;
 
     @FindBy(css = "#text_format>label:nth-child(1)>span.ant-radio>input")
-    @CacheLookup
     WebElement text;
 
     @FindBy(css = "#text_format>label:nth-child(2)>span.ant-radio>input")
-    @CacheLookup
     WebElement html;
 
     @FindBy(css = "div.ant-form-item-control-input-content>div>div>div>div.ant-select-selector")
-    @CacheLookup
     WebElement distributor;
 
     @FindBy(css = "div.ant-col-9> div > div > div > div > div > span.ant-select-clear")
     WebElement clear_distributor;
 
     @FindBy(css = "input[type='text']")
-    @CacheLookup
     WebElement subject;
 
     @FindBy(css = "textarea[id='text']")
-    @CacheLookup
     WebElement insertion;
 
     @FindBy(css = "#send_copy_to_sender>span")
-    @CacheLookup
     WebElement send_a_copy_to_the_distributor;
 
     @FindBy(css = "div:nth-child(4)>div>button")
     @CacheLookup
-    WebElement Next_step_button;
+    WebElement next_step_button;
 
     @FindBy(css = "div:nth-child(2)>div>div.ant-steps-item-icon")
     WebElement attachment_step;
 
     @FindBy(css = "form > div:nth-child(2) > div > div.ant-form-item-explain > div")
-    @CacheLookup
     WebElement distributor_error;
 
     @FindBy(css = "form > div:nth-child(3) > div > div.ant-form-item-explain > div")
-    @CacheLookup
     WebElement subject_error;
 
     @FindBy(css = "form > div:nth-child(4) > div > div.ant-form-item-explain > div")
-    @CacheLookup
     WebElement insertion_error;
 
     @FindBy(css = "button.ant-btn-danger")
     WebElement delete_button;
 
     @FindBy(css = "div.ant-modal-confirm-btns > button:nth-child(2)")
-    @CacheLookup
     WebElement ok_button;
 
     @FindBy(css = "div.ant-modal-confirm-btns > button:nth-child(1)")
-    @CacheLookup
     WebElement cancel_button;
 
     @FindBy(css = "div:nth-child(1)>button.ant-btn-sm")
@@ -86,14 +75,13 @@ public class Basic_information {
     @FindBy(css = "div.ant-col:nth-child(2)>button.ant-btn-sm")
     WebElement save_as_draft_button;
 
+    @FindBy(css = "div.ant-row> div:nth-child(2) > button.ant-btn-primary")
+    WebElement update_button;
+
     public Basic_information(WebDriver driver) {
         this.driver = driver;
         wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         PageFactory.initElements(driver, this);
-    }
-    
-    public WebDriverWait wait(WebDriver driver) {
-        return new WebDriverWait(driver,Duration.ofSeconds(10));
     }
 
     public void format(String role, Common cm) {
@@ -166,7 +154,7 @@ public class Basic_information {
         // Master, Administrator, Responsible person, Leader, Member
         if (cm.authorized(role, cm.role_list(5))) {
             // Next to 添付ファイル_Step
-            Next_step_button.click();
+            next_step_button.click();
             // Check current tab
             boolean check = wait.until(ExpectedConditions.visibilityOf(attachment_step)).isEnabled();
             Assert.assertTrue(check, "[Failed] Can not next to Attachment from Basic information.");
@@ -201,10 +189,12 @@ public class Basic_information {
         sleep(3000);
         subject.sendKeys(Keys.CONTROL + "a", Keys.DELETE);
         subject.sendKeys(RandomStringUtils.randomAlphabetic(101));
+
         // waiting for loading new message
         sleep(500);
         String text = subject_error.getText();
         Assert.assertEquals(text, "100文字以内で入力してください。", "[Subject] Message do not match");
+        sleep(10000);
     }
 
     public void subject_exceed_100_full_width_characters() throws InterruptedException {
@@ -241,52 +231,46 @@ public class Basic_information {
         Assert.assertEquals(text, "必須項目です。", "[Insertion] Message do not match");
     }
 
-    public void insertion_exceed_10000_half_width_characters(WebDriver driver) throws InterruptedException {
+    public void insertion_exceed_10000_half_width_characters() throws InterruptedException {
         // wait and delete old insertion
         sleep(3000);
         insertion.sendKeys(Keys.CONTROL + "a", Keys.DELETE);
-        insertion.sendKeys(RandomStringUtils.randomAlphabetic(10001));
-
-        // Scroll down
-        ((JavascriptExecutor) driver).executeScript("scroll(0, 550);");
-
-        //waiting for loading new message
-        sleep(500);
-        String text = wait.until(ExpectedConditions.visibilityOf(distributor_error)).getText();
-        Assert.assertEquals(text, "全角5000文字または半角10000文字以内で入力してください。", "[Insertion] Message do not match");
-    }
-
-    public void insertion_exceed_5000_full_width_characters(WebDriver driver) throws InterruptedException {
-        // minJpnCharCode: 0x4e00
-        // maxJpnCharCode: 0x4f80
-        // wait and delete old insertion
-        sleep(3000);
-        insertion.sendKeys(Keys.CONTROL + "a", Keys.DELETE);
-        insertion.sendKeys(RandomStringUtils.random(5001, 0x4e00, 0x4f80, true, false));
-
-        // Scroll down
-        ((JavascriptExecutor) driver).executeScript("scroll(0, 550);");
+        String insertion_text = RandomStringUtils.randomAlphabetic(5000);
+        insertion.sendKeys(insertion_text);
+        insertion.sendKeys(insertion_text + " ");
 
         //waiting for loading new message
-        sleep(500);
         String text = wait.until(ExpectedConditions.visibilityOf(insertion_error)).getText();
         Assert.assertEquals(text, "全角5000文字または半角10000文字以内で入力してください。", "[Insertion] Message do not match");
     }
 
-    public void insertion_exceed_5000_mix_half_and_full_width_characters(WebDriver driver) throws InterruptedException {
+    public void insertion_exceed_5000_full_width_characters() throws InterruptedException {
+        // minJpnCharCode: 0x4e00
+        // maxJpnCharCode: 0x4f80
         // wait and delete old insertion
         sleep(3000);
         insertion.sendKeys(Keys.CONTROL + "a", Keys.DELETE);
-        int length_of_half_width = RandomUtils.nextInt(5000) + 1;
-        String insertion_text = RandomStringUtils.randomAlphabetic(length_of_half_width)
-                + RandomStringUtils.random(5001 - length_of_half_width, 0x4e00, 0x4f80, true, false);
+        String insert_text = RandomStringUtils.random(2500, 0x4e00, 0x4f80, true, false);
+        insertion.sendKeys(insert_text);
+        insertion.sendKeys(insert_text + " ");
+
+
+        //waiting for loading new message
+        String text = wait.until(ExpectedConditions.visibilityOf(insertion_error)).getText();
+        Assert.assertEquals(text, "全角5000文字または半角10000文字以内で入力してください。", "[Insertion] Message do not match");
+    }
+
+    public void insertion_exceed_5000_mix_half_and_full_width_characters() throws InterruptedException {
+        // wait and delete old insertion
+        sleep(3000);
+        insertion.sendKeys(Keys.CONTROL + "a", Keys.DELETE);
+        String insertion_half = RandomStringUtils.randomAlphabetic(2500);
+        String insertion_full = RandomStringUtils.random(2501, 0x4e00, 0x4f80, true, false);
 
         // minJpnCharCode: 0x4e00
         // maxJpnCharCode: 0x4f80
-        insertion.sendKeys(insertion_text);
-
-        // Scroll down
-        ((JavascriptExecutor) driver).executeScript("scroll(0, 550);");
+        insertion.sendKeys(insertion_half);
+        insertion.sendKeys(insertion_full);
 
         //waiting for loading new message
         sleep(500);
@@ -295,8 +279,15 @@ public class Basic_information {
     }
 
     // Delete button
-    public void delete_button_should_be_disable() {
-        Assert.assertFalse(delete_button.isEnabled(), "[Delete] button is not getting disable.");
+    public void update_delivery_with_valid_data(String url_mail_list) throws InterruptedException {
+        sleep(3000);
+        subject.sendKeys(Keys.CONTROL + "a", Keys.BACK_SPACE);
+        subject.sendKeys(RandomStringUtils.randomAlphabetic(100));
+        insertion.sendKeys(Keys.CONTROL + "a", Keys.BACK_SPACE);
+        insertion.sendKeys(RandomStringUtils.random(5000, 0x4e00, 0x5f80, true, false));
+        update_button.click();
+        sleep(1000);
+        Assert.assertEquals(driver.getCurrentUrl(), url_mail_list, "[Update] Can not update delivered email.");
     }
 
     public void do_you_want_to_delete_this_delivered_email_OK(WebDriver driver, String url_mail_list) throws InterruptedException {

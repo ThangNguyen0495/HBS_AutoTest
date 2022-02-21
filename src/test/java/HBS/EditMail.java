@@ -164,14 +164,14 @@ public class EditMail {
     @Test(priority = 6)
     public void TC_06_insertion_exceed_10000_half_width_characters() throws InterruptedException {
         // Input insertion exceed 10000 half width character and verify error message
-        bi.insertion_exceed_10000_half_width_characters(driver);
+        bi.insertion_exceed_10000_half_width_characters();
         driver.close();
     }
 
     @Test(priority = 7)
     public void TC_07_insertion_exceed_5000_full_width_characters() throws InterruptedException {
         // Input insertion exceed 5000 full width character and verify error message
-        bi.insertion_exceed_5000_full_width_characters(driver);
+        bi.insertion_exceed_5000_full_width_characters();
 
         // Close browser
         driver.close();
@@ -180,16 +180,17 @@ public class EditMail {
     @Test(priority = 8)
     public void TC_08_insertion_exceed_5000_mix_half_and_full_width_characters() throws InterruptedException {
         // Input insertion exceed mix 5000 half,full width character and verify error message
-        bi.insertion_exceed_5000_mix_half_and_full_width_characters(driver);
+        bi.insertion_exceed_5000_mix_half_and_full_width_characters();
 
         // Close browser
         driver.close();
     }
 
     @Test(priority = 9)
-    public void TC_09_delete_button_should_be_disable() {
+    @Parameters({"url_mail_list"})
+    public void TC_09_update_delivery_with_valid_data_basic_information(String url_mail_list) throws InterruptedException {
         // Verify delete button getting disable
-        bi.delete_button_should_be_disable();
+        bi.update_delivery_with_valid_data(url_mail_list);
 
         // Close browser
         driver.close();
