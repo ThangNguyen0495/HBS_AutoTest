@@ -5,6 +5,9 @@ import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.math.RandomUtils;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.CacheLookup;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
@@ -17,17 +20,96 @@ public class Basic_information {
     /*
         Process function
     */
-    public void format(WebDriver driver, String role, Common cm) {
+    WebDriver driver;
+    WebDriverWait wait;
+
+    @FindBy(css = "#text_format>label:nth-child(1)>span.ant-radio>input")
+    @CacheLookup
+    WebElement text;
+
+    @FindBy(css = "#text_format>label:nth-child(2)>span.ant-radio>input")
+    @CacheLookup
+    WebElement html;
+
+    @FindBy(css = "div.ant-form-item-control-input-content>div>div>div>div.ant-select-selector")
+    @CacheLookup
+    WebElement distributor;
+
+    @FindBy(css = "div.ant-col-9> div > div > div > div > div > span.ant-select-clear")
+    WebElement clear_distributor;
+
+    @FindBy(css = "input[type='text']")
+    @CacheLookup
+    WebElement subject;
+
+    @FindBy(css = "textarea[id='text']")
+    @CacheLookup
+    WebElement insertion;
+
+    @FindBy(css = "#send_copy_to_sender>span")
+    @CacheLookup
+    WebElement send_a_copy_to_the_distributor;
+
+    @FindBy(css = "div:nth-child(4)>div>button")
+    @CacheLookup
+    WebElement Next_step_button;
+
+    @FindBy(css = "div:nth-child(2)>div>div.ant-steps-item-icon")
+    WebElement attachment_step;
+
+    @FindBy(css = "form > div:nth-child(2) > div > div.ant-form-item-explain > div")
+    @CacheLookup
+    WebElement distributor_error;
+
+    @FindBy(css = "form > div:nth-child(3) > div > div.ant-form-item-explain > div")
+    @CacheLookup
+    WebElement subject_error;
+
+    @FindBy(css = "form > div:nth-child(4) > div > div.ant-form-item-explain > div")
+    @CacheLookup
+    WebElement insertion_error;
+
+    @FindBy(css = "button.ant-btn-danger")
+    WebElement delete_button;
+
+    @FindBy(css = "div.ant-modal-confirm-btns > button:nth-child(2)")
+    @CacheLookup
+    WebElement ok_button;
+
+    @FindBy(css = "div.ant-modal-confirm-btns > button:nth-child(1)")
+    @CacheLookup
+    WebElement cancel_button;
+
+    @FindBy(css = "div:nth-child(1)>button.ant-btn-sm")
+    WebElement make_a_copy_button;
+
+    @FindBy(css = "div.ant-col:nth-child(2)>button.ant-btn-sm")
+    WebElement save_as_draft_button;
+
+    public Basic_information(WebDriver driver) {
+        this.driver = driver;
+        wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        PageFactory.initElements(driver, this);
+    }
+    
+    public WebDriverWait wait(WebDriver driver) {
+        return new WebDriverWait(driver,Duration.ofSeconds(10));
+    }
+
+    public void format(String role, Common cm) {
         // Master, Administrator, Responsible person, Leader, Member
         if (cm.authorized(role, cm.role_list(5))) {
             // Format
             // 1: Text, 2: Html
-            int format = RandomUtils.nextInt(2) + 1;
-            driver.findElement(By.cssSelector("#text_format>label:nth-child(" + format + ")>span.ant-radio>input")).click();
+            try {
+                text.click();
+            } catch (ElementClickInterceptedException ex) {
+                html.click();
+            }
         }
     }
 
-    public void distributor(WebDriver driver, Actions key, String role, Common cm) throws InterruptedException {
+    public void distributor(Actions key, String role, Common cm) throws InterruptedException {
         // Master, Administrator, Responsible person, Leader, Member
         if (cm.authorized(role, cm.role_list(5))) {
             // waiting for loading distributor list
@@ -36,7 +118,7 @@ public class Basic_information {
             // Distributor
             // random distributor in range 1-20
             int distributor_id = RandomUtils.nextInt(20) + 1;
-            driver.findElement(By.cssSelector("div.ant-form-item-control-input-content>div>div>div>div.ant-select-selector")).click();
+            distributor.click();
             for (int i = 0; i < distributor_id; i++) {
                 key.sendKeys(Keys.DOWN).perform();
             }
@@ -45,49 +127,49 @@ public class Basic_information {
         }
     }
 
-    public void subject(WebDriver driver, String role, Common cm) {
+    public void subject(String role, Common cm) {
         // Master, Administrator, Responsible person, Leader, Member
         if (cm.authorized(role, cm.role_list(5))) {
+            // Delete old subject
+            wait.until(ExpectedConditions.elementToBeClickable(distributor));
+            wait.until(ExpectedConditions.elementToBeClickable(subject)).sendKeys(Keys.CONTROL + "a", Keys.DELETE);
             // length of subject in range 1-100
             int length_of_subject = RandomUtils.nextInt(100) + 1;
-            String subject = RandomStringUtils.randomAlphabetic(length_of_subject);
-            driver.findElement(By.cssSelector("input[type='text']")).sendKeys(subject);
+            subject.sendKeys(RandomStringUtils.randomAlphabetic(length_of_subject));
         }
     }
 
-    public void insertion(WebDriver driver, String role, Common cm) {
+    public void insertion(String role, Common cm) {
         // Master, Administrator, Responsible person, Leader, Member
         if (cm.authorized(role, cm.role_list(5))) {
-            // length of insertion in range 1-5000
+            // Delete old insertion
+            insertion.sendKeys(Keys.CONTROL + "a", Keys.DELETE);
+            // length of insertion in range 1-10000
             int length_of_insertion = RandomUtils.nextInt(50) + 1;
-            String insertion = RandomStringUtils.randomAlphabetic(length_of_insertion);
-            driver.findElement(By.cssSelector("textarea[id='text']")).sendKeys(insertion);
+            insertion.sendKeys(RandomStringUtils.randomAlphabetic(length_of_insertion));
         }
     }
 
-    public void send_a_copy_to_the_distributor(WebDriver driver, String role, Common cm) {
+    public void send_a_copy_to_the_distributor(String role, Common cm) {
         // Master, Administrator, Responsible person, Leader, Member
         if (cm.authorized(role, cm.role_list(5))) {
             // Send a copy to the distributor
-            // 0: Do not sent, 1: Send copy mail
+            // 0: not change, 1: change
             int send_copy = RandomUtils.nextInt(2);
             if (send_copy == 1) {
-                driver.findElement(By.cssSelector("#send_copy_to_sender>span")).click();
+                send_a_copy_to_the_distributor.click();
             }
         }
     }
 
-    public void next_to_attachment_step(WebDriver driver, String role, Common cm) throws InterruptedException {
+    public void next_to_attachment_step(String role, Common cm) throws InterruptedException {
         // Master, Administrator, Responsible person, Leader, Member
         if (cm.authorized(role, cm.role_list(5))) {
             // Next to 添付ファイル_Step
-            driver.findElement(By.cssSelector("div:nth-child(4)>div>button")).click();
-
+            Next_step_button.click();
             // Check current tab
-            boolean check = new WebDriverWait(driver, Duration.ofSeconds(10))
-                    .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div:nth-child(2)>div>div.ant-steps-item-icon"))).isEnabled();
+            boolean check = wait.until(ExpectedConditions.visibilityOf(attachment_step)).isEnabled();
             Assert.assertTrue(check, "[Failed] Can not next to Attachment from Basic information.");
-
             // Waiting for attachment tab loading
             sleep(1000);
         }
@@ -98,133 +180,143 @@ public class Basic_information {
     */
 
     // Distributor
-    public void leave_distributor_blank(WebDriver driver) throws InterruptedException {
+    public void leave_distributor_blank() throws InterruptedException {
         // waiting for loading distributor list
         sleep(3000);
-
         // click "x" button to delete distributor
-        driver.findElement(By.cssSelector("div.ant-col-9> div > div > div > div > div > span.ant-select-clear")).click();
-
-        String text = new WebDriverWait(driver, Duration.ofSeconds(10))
-                .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("form > div:nth-child(2) > div > div.ant-form-item-explain > div")))
-                .getText();
+        clear_distributor.click();
+        String text = wait.until(ExpectedConditions.visibilityOf(distributor_error)).getText();
         Assert.assertEquals(text, "必須項目です。", "[Distributor] Message do not match");
     }
 
     // Subject
-    public void leave_subject_blank(WebDriver driver, Actions key) {
-        driver.findElement(By.cssSelector("#subject")).sendKeys("leave_blank");
-        for (int i = 0; i < 11; i++) {
-            key.sendKeys(Keys.BACK_SPACE).perform();
-        }
-        String text = new WebDriverWait(driver, Duration.ofSeconds(10))
-                .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("form > div:nth-child(3) > div > div.ant-form-item-explain > div")))
-                .getText();
+    public void leave_subject_blank() {
+        wait.until(ExpectedConditions.elementToBeClickable(subject)).sendKeys(Keys.CONTROL + "a", Keys.DELETE);
+        String text = wait.until(ExpectedConditions.visibilityOf(subject_error)).getText();
         Assert.assertEquals(text, "必須項目です。", "[Subject] Message do not match");
     }
 
-    public void subject_exceed_100_half_width_characters(WebDriver driver) {
-        driver.findElement(By.cssSelector("#subject")).sendKeys(RandomStringUtils.randomAlphabetic(101));
-        String text = new WebDriverWait(driver, Duration.ofSeconds(10))
-                .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("form > div:nth-child(3) > div > div.ant-form-item-explain > div")))
-                .getText();
+    public void subject_exceed_100_half_width_characters() throws InterruptedException {
+        // wait and delete old subject
+        sleep(3000);
+        subject.sendKeys(Keys.CONTROL + "a", Keys.DELETE);
+        subject.sendKeys(RandomStringUtils.randomAlphabetic(101));
+        // waiting for loading new message
+        sleep(500);
+        String text = subject_error.getText();
         Assert.assertEquals(text, "100文字以内で入力してください。", "[Subject] Message do not match");
     }
 
-    public void subject_exceed_100_full_width_characters(WebDriver driver) {
-        driver.findElement(By.cssSelector("#subject")).sendKeys(RandomStringUtils.random(101, 0x4e00, 0x4f80, true, false));
-        String text = new WebDriverWait(driver, Duration.ofSeconds(10))
-                .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("form > div:nth-child(3) > div > div.ant-form-item-explain > div")))
-                .getText();
+    public void subject_exceed_100_full_width_characters() throws InterruptedException {
+        // wait and delete old subject
+        sleep(3000);
+        subject.sendKeys(Keys.CONTROL + "a", Keys.DELETE);
+        subject.sendKeys(RandomStringUtils.random(101, 0x4e00, 0x4f80, true, false));
+
+        //waiting for loading new message
+        sleep(500);
+        String text = wait.until(ExpectedConditions.visibilityOf(subject_error)).getText();
         Assert.assertEquals(text, "100文字以内で入力してください。", "[Subject] Message do not match");
     }
 
-    public void subject_exceed_100_mix_half_and_full_width_characters(WebDriver driver) {
+    public void subject_exceed_100_mix_half_and_full_width_characters() throws InterruptedException {
+        // wait and delete old subject
+        sleep(3000);
+        subject.sendKeys(Keys.CONTROL + "a", Keys.DELETE);
         int length_of_half_width = RandomUtils.nextInt(100) + 1;
-        String subject = RandomStringUtils.randomAlphabetic(length_of_half_width)
+        String subject_text = RandomStringUtils.randomAlphabetic(length_of_half_width)
                 + RandomStringUtils.random(101 - length_of_half_width, 0x4e00, 0x4f80, true, false);
-        driver.findElement(By.cssSelector("#subject")).sendKeys(subject);
-        String text = new WebDriverWait(driver, Duration.ofSeconds(10))
-                .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("form > div:nth-child(3) > div > div.ant-form-item-explain > div")))
-                .getText();
+        subject.sendKeys(subject_text);
+
+        //waiting for loading new message
+        sleep(500);
+        String text = wait.until(ExpectedConditions.visibilityOf(subject_error)).getText();
         Assert.assertEquals(text, "100文字以内で入力してください。", "[Subject] Message do not match");
     }
 
     // Insertion
-    public void leave_insertion_blank(WebDriver driver, Actions key) {
-        driver.findElement(By.cssSelector("#text")).sendKeys("leave_blank");
-        for (int i = 0; i < 11; i++) {
-            key.sendKeys(Keys.BACK_SPACE).perform();
-        }
-        String text = new WebDriverWait(driver, Duration.ofSeconds(10))
-                .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("form > div:nth-child(4) > div > div.ant-form-item-explain > div")))
-                .getText();
+    public void leave_insertion_blank() {
+        insertion.sendKeys(Keys.CONTROL + "a", Keys.DELETE);
+        String text = wait.until(ExpectedConditions.visibilityOf(insertion_error)).getText();
         Assert.assertEquals(text, "必須項目です。", "[Insertion] Message do not match");
     }
 
-    public void insertion_exceed_10000_half_width_characters(WebDriver driver) {
-        driver.findElement(By.cssSelector("#text")).sendKeys(RandomStringUtils.randomAlphabetic(10001));
+    public void insertion_exceed_10000_half_width_characters(WebDriver driver) throws InterruptedException {
+        // wait and delete old insertion
+        sleep(3000);
+        insertion.sendKeys(Keys.CONTROL + "a", Keys.DELETE);
+        insertion.sendKeys(RandomStringUtils.randomAlphabetic(10001));
+
         // Scroll down
         ((JavascriptExecutor) driver).executeScript("scroll(0, 550);");
-        String text = new WebDriverWait(driver, Duration.ofSeconds(10))
-                .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("form > div:nth-child(4) > div > div.ant-form-item-explain > div")))
-                        .getText();
+
+        //waiting for loading new message
+        sleep(500);
+        String text = wait.until(ExpectedConditions.visibilityOf(distributor_error)).getText();
         Assert.assertEquals(text, "全角5000文字または半角10000文字以内で入力してください。", "[Insertion] Message do not match");
     }
 
-    public void insertion_exceed_5000_full_width_characters(WebDriver driver) {
+    public void insertion_exceed_5000_full_width_characters(WebDriver driver) throws InterruptedException {
         // minJpnCharCode: 0x4e00
         // maxJpnCharCode: 0x4f80
-        driver.findElement(By.cssSelector("#text")).sendKeys(RandomStringUtils.random(5001, 0x4e00, 0x4f80, true, false));
+        // wait and delete old insertion
+        sleep(3000);
+        insertion.sendKeys(Keys.CONTROL + "a", Keys.DELETE);
+        insertion.sendKeys(RandomStringUtils.random(5001, 0x4e00, 0x4f80, true, false));
+
         // Scroll down
         ((JavascriptExecutor) driver).executeScript("scroll(0, 550);");
-        String text = new WebDriverWait(driver, Duration.ofSeconds(10))
-                .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("form > div:nth-child(4) > div > div.ant-form-item-explain > div")))
-                .getText();
+
+        //waiting for loading new message
+        sleep(500);
+        String text = wait.until(ExpectedConditions.visibilityOf(insertion_error)).getText();
         Assert.assertEquals(text, "全角5000文字または半角10000文字以内で入力してください。", "[Insertion] Message do not match");
     }
 
-    public void insertion_exceed_5000_mix_half_and_full_width_characters(WebDriver driver) {
+    public void insertion_exceed_5000_mix_half_and_full_width_characters(WebDriver driver) throws InterruptedException {
+        // wait and delete old insertion
+        sleep(3000);
+        insertion.sendKeys(Keys.CONTROL + "a", Keys.DELETE);
         int length_of_half_width = RandomUtils.nextInt(5000) + 1;
-        String insertion = RandomStringUtils.randomAlphabetic(length_of_half_width)
+        String insertion_text = RandomStringUtils.randomAlphabetic(length_of_half_width)
                 + RandomStringUtils.random(5001 - length_of_half_width, 0x4e00, 0x4f80, true, false);
+
         // minJpnCharCode: 0x4e00
         // maxJpnCharCode: 0x4f80
-        driver.findElement(By.cssSelector("#text")).sendKeys(insertion);
+        insertion.sendKeys(insertion_text);
+
         // Scroll down
         ((JavascriptExecutor) driver).executeScript("scroll(0, 550);");
-        String text = new WebDriverWait(driver, Duration.ofSeconds(10))
-                .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("form > div:nth-child(4) > div > div.ant-form-item-explain > div")))
-                .getText();
+
+        //waiting for loading new message
+        sleep(500);
+        String text = wait.until(ExpectedConditions.visibilityOf(insertion_error)).getText();
         Assert.assertEquals(text, "全角5000文字または半角10000文字以内で入力してください。", "[Insertion] Message do not match");
     }
 
     // Delete button
-    public void delete_button_should_be_disable(WebDriver driver) {
-        Assert.assertFalse(driver.findElement(By.cssSelector("button.ant-btn-danger")).isEnabled(), "[Delete] button is not getting disable.");
+    public void delete_button_should_be_disable() {
+        Assert.assertFalse(delete_button.isEnabled(), "[Delete] button is not getting disable.");
     }
 
     public void do_you_want_to_delete_this_delivered_email_OK(WebDriver driver, String url_mail_list) throws InterruptedException {
         // Click delete button
-        driver.findElement(By.cssSelector("button.ant-btn-danger")).click();
+        delete_button.click();
 
         // Click OK button
-        new WebDriverWait(driver, Duration.ofSeconds(10))
-                .until(ExpectedConditions.elementToBeClickable(By.cssSelector("div.ant-modal-confirm-btns > button:nth-child(2)")))
-                        .click();
+        wait.until(ExpectedConditions.elementToBeClickable(ok_button)).click();
+
         // Waiting for loading mail list page
         sleep(1000);
         Assert.assertEquals(driver.getCurrentUrl(), url_mail_list, "[Failed] Can not delete delivered email");
     }
 
-    public void do_you_want_to_delete_this_delivered_email_Cancel(WebDriver driver) throws InterruptedException {
+    public void do_you_want_to_delete_this_delivered_email_Cancel() throws InterruptedException {
         // Click delete button
-        driver.findElement(By.cssSelector("button.ant-btn-danger")).click();
+        delete_button.click();
 
         // Click cancel button
-        new WebDriverWait(driver, Duration.ofSeconds(10))
-                .until(ExpectedConditions.elementToBeClickable(By.cssSelector("div.ant-modal-confirm-btns > button:nth-child(1)")))
-                .click();
+        wait.until(ExpectedConditions.elementToBeClickable(cancel_button)).click();
 
         // Wait popup close
         sleep(500);
@@ -232,7 +324,7 @@ public class Basic_information {
         // Check popup close
         boolean check = true;
         try {
-            driver.findElement(By.cssSelector("div.ant-modal-confirm-btns > button:nth-child(1)")).click();
+            cancel_button.click();
         } catch (NoSuchElementException ex) {
             check = false;
         }
@@ -241,7 +333,7 @@ public class Basic_information {
 
     public void make_a_copy(WebDriver driver, String url_mail_list) throws InterruptedException {
         // Click make a copy button
-        driver.findElement(By.cssSelector("div:nth-child(1)>button.ant-btn-sm")).click();
+        make_a_copy_button.click();
 
         // Waiting for loading mail list page
         sleep(1000);
@@ -250,27 +342,22 @@ public class Basic_information {
 
     public void would_you_like_to_change_this_delivery_email_to_Draft_status_OK(WebDriver driver, String url_mail_list) throws InterruptedException {
         // Click save as draft button
-        driver.findElement(By.cssSelector("div.ant-col:nth-child(2)>button.ant-btn-sm")).click();
+        save_as_draft_button.click();
 
         // Click OK button
-        new WebDriverWait(driver, Duration.ofSeconds(10))
-                .until(ExpectedConditions.elementToBeClickable(By.cssSelector("div.ant-modal-confirm-btns>button:nth-child(2)")))
-                        .click();
+        wait.until(ExpectedConditions.elementToBeClickable(ok_button)).click();
 
         // Waiting for loading mail list page
         sleep(1000);
-        System.out.println(driver.getCurrentUrl());
         Assert.assertEquals(driver.getCurrentUrl(), url_mail_list, "[Failed] Can not save delivered as draft.");
     }
 
-    public void would_you_like_to_change_this_delivery_email_to_Draft_status_Cancel(WebDriver driver) throws InterruptedException {
+    public void would_you_like_to_change_this_delivery_email_to_Draft_status_Cancel() throws InterruptedException {
         // Click save as draft button
-        driver.findElement(By.cssSelector("div.ant-col:nth-child(2)>button.ant-btn-sm")).click();
+        save_as_draft_button.click();
 
         // Click cancel button
-        new WebDriverWait(driver, Duration.ofSeconds(10))
-                .until(ExpectedConditions.elementToBeClickable(By.cssSelector("div.ant-modal-confirm-btns>button:nth-child(1)")))
-                .click();
+        wait.until(ExpectedConditions.elementToBeClickable(cancel_button)).click();
 
         // Wait popup close
         sleep(500);
@@ -278,7 +365,7 @@ public class Basic_information {
         // Check popup close
         boolean check = true;
         try {
-            driver.findElement(By.cssSelector("div.ant-modal-confirm-btns>button:nth-child(1)")).click();
+            cancel_button.click();
         } catch (NoSuchElementException ex) {
             check = false;
         }

@@ -168,7 +168,7 @@ public class Basic_information {
         ((JavascriptExecutor) driver).executeScript("scroll(0, 550);");
         String text = new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("form > div:nth-child(4) > div > div.ant-form-item-explain > div")))
-                .getText();
+                        .getText();
         Assert.assertEquals(text, "全角5000文字または半角10000文字以内で入力してください。", "[Insertion] Message do not match");
     }
 
@@ -211,7 +211,7 @@ public class Basic_information {
         // Click OK button
         new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(ExpectedConditions.elementToBeClickable(By.cssSelector("div.ant-modal-confirm-btns > button:nth-child(2)")))
-                .click();
+                        .click();
         // Waiting for loading mail list page
         sleep(1000);
         Assert.assertEquals(driver.getCurrentUrl(), url_mail_list, "[Failed] Can not delete delivered email");
@@ -255,7 +255,7 @@ public class Basic_information {
         // Click OK button
         new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(ExpectedConditions.elementToBeClickable(By.cssSelector("div.ant-modal-confirm-btns>button:nth-child(2)")))
-                .click();
+                        .click();
 
         // Waiting for loading mail list page
         sleep(1000);
