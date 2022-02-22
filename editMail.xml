@@ -57,7 +57,7 @@
 <!--                    <include name="TC_31_deliver_the_personnel_only_select_delivery_occupation_infrastructure"/>-->
 <!--                    <include name="TC_32_deliver_the_personnel_only_select_delivery_occupation_others"/>-->
 <!--                    <include name="TC_33_deliver_the_personnel_select_delivery_occupation_development_infrastructure_and_others"/>-->
-<!--                    <include name="TC_34_do_not_select_account_status"/>-->
+                    <include name="TC_34_do_not_select_account_status"/>
 <!--                    <include name="TC_35_do_not_select_in_house_person_in_charge"/>-->
 <!--                    <include name="TC_36_do_not_select_compatibility"/>-->
 <!--                    <include name="TC_37_do_not_select_tag"/>-->
