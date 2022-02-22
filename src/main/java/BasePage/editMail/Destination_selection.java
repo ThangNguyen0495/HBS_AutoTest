@@ -581,8 +581,6 @@ public class Destination_selection {
         // Click Search button
         sleep(1000);
         search_button.click();
-//        key.moveToElement(search_button).click().build().perform();
-//        wait.until(ExpectedConditions.elementToBeClickable(search_button)).click();
 
         //Delivery area
         String text1 = wait.until(ExpectedConditions.visibilityOf(delivery_area_error)).getText();
