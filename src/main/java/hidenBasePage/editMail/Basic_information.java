@@ -1,4 +1,4 @@
-package BasePage.editMail;
+package hidenBasePage.editMail;
 
 import Common.Common;
 import org.apache.commons.lang.RandomStringUtils;
@@ -13,7 +13,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
 import java.time.Duration;
-import java.util.List;
 
 import static java.lang.Thread.sleep;
 
@@ -24,8 +23,11 @@ public class Basic_information {
     WebDriver driver;
     WebDriverWait wait;
 
-    @FindBy(css = "#text_format>label>span.ant-radio>input")
-    List<WebElement> format;
+    @FindBy(css = "#text_format>label:nth-child(1)>span.ant-radio>input")
+    WebElement text;
+
+    @FindBy(css = "#text_format>label:nth-child(2)>span.ant-radio>input")
+    WebElement html;
 
     @FindBy(css = "div.ant-form-item-control-input-content>div>div>div>div.ant-select-selector")
     WebElement distributor;
@@ -46,8 +48,8 @@ public class Basic_information {
     @CacheLookup
     WebElement next_step_button;
 
-    @FindBy(css = "div.ant-steps-item-icon")
-    List<WebElement> step_list;
+    @FindBy(css = "div:nth-child(2)>div>div.ant-steps-item-icon")
+    WebElement attachment_step;
 
     @FindBy(css = "form > div:nth-child(2) > div > div.ant-form-item-explain > div")
     WebElement distributor_error;
@@ -82,22 +84,25 @@ public class Basic_information {
         PageFactory.initElements(driver, this);
     }
 
-    public void format(String role, Common cm) throws InterruptedException {
+    public void format(String role, Common cm) {
         // Master, Administrator, Responsible person, Leader, Member
         if (cm.authorized(role, cm.role_list(5))) {
-            // waiting for loading distributor list
-            sleep(3000);
-
             // Format
-            // 0: Text, 1: Html
-            int id = RandomUtils.nextInt(2);
-            format.get(id).click();
+            // 1: Text, 2: Html
+            try {
+                text.click();
+            } catch (ElementClickInterceptedException ex) {
+                html.click();
+            }
         }
     }
 
     public void distributor(Actions key, String role, Common cm) throws InterruptedException {
         // Master, Administrator, Responsible person, Leader, Member
         if (cm.authorized(role, cm.role_list(5))) {
+            // waiting for loading distributor list
+            sleep(3000);
+
             // Distributor
             // random distributor in range 1-20
             int distributor_id = RandomUtils.nextInt(20) + 1;
@@ -114,7 +119,8 @@ public class Basic_information {
         // Master, Administrator, Responsible person, Leader, Member
         if (cm.authorized(role, cm.role_list(5))) {
             // Delete old subject
-            subject.sendKeys(Keys.CONTROL + "a", Keys.DELETE);
+            wait.until(ExpectedConditions.elementToBeClickable(distributor));
+            wait.until(ExpectedConditions.elementToBeClickable(subject)).sendKeys(Keys.CONTROL + "a", Keys.DELETE);
             // length of subject in range 1-100
             int length_of_subject = RandomUtils.nextInt(100) + 1;
             subject.sendKeys(RandomStringUtils.randomAlphabetic(length_of_subject));
@@ -150,8 +156,7 @@ public class Basic_information {
             // Next to 添付ファイル_Step
             next_step_button.click();
             // Check current tab
-            // 0: Basic information, 1: Attachment, 2: Destination selection, 3: Final confirmation
-            boolean check = wait.until(ExpectedConditions.visibilityOf(step_list.get(1))).isEnabled();
+            boolean check = wait.until(ExpectedConditions.visibilityOf(attachment_step)).isEnabled();
             Assert.assertTrue(check, "[Failed] Can not next to Attachment from Basic information.");
             // Waiting for attachment tab loading
             sleep(1000);
@@ -273,8 +278,13 @@ public class Basic_information {
         Assert.assertEquals(text, "全角5000文字または半角10000文字以内で入力してください。", "[Insertion] Message do not match");
     }
 
-    // Update button
+    // Delete button
     public void update_delivery_with_valid_data(String url_mail_list) throws InterruptedException {
+        sleep(3000);
+        subject.sendKeys(Keys.CONTROL + "a", Keys.BACK_SPACE);
+        subject.sendKeys(RandomStringUtils.randomAlphabetic(100));
+        insertion.sendKeys(Keys.CONTROL + "a", Keys.BACK_SPACE);
+        insertion.sendKeys(RandomStringUtils.random(5000, 0x4e00, 0x5f80, true, false));
         update_button.click();
         sleep(1000);
         Assert.assertEquals(driver.getCurrentUrl(), url_mail_list, "[Update] Can not update delivered email.");
