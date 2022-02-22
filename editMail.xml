@@ -30,7 +30,7 @@
 <!--                    <include name="TC_07_insertion_exceed_5000_full_width_characters"/>-->
 <!--                    <include name="TC_08_insertion_exceed_5000_mix_half_and_full_width_characters"/>-->
 
-                    <include name="TC_09_update_delivery_with_valid_data_basic_information"/>
+<!--                    <include name="TC_09_update_delivery_with_valid_data_basic_information"/>-->
 <!--                    <include name="TC_10_do_you_want_to_delete_this_delivered_email_OK_basic_information"/>-->
 <!--                    <include name="TC_11_do_you_want_to_delete_this_delivered_email_Cancel_basic_information"/>-->
 <!--                    <include name="TC_12_make_a_copy_basic_information"/>-->
@@ -41,27 +41,29 @@
 <!--                    <include name="TC_16_upload_maximum_capacity_multi_file"/>-->
 <!--                    <include name="TC_17_upload_exceed_maximum_capacity_1_file"/>-->
 <!--                    <include name="TC_18_upload_exceed_maximum_capacity_multi_file"/>-->
-<!--                    <include name="TC_19_do_you_want_to_delete_this_delivered_email_OK_attachment"/>-->
-<!--                    <include name="TC_20_do_you_want_to_delete_this_delivered_email_Cancel_attachment"/>-->
-<!--                    <include name="TC_21_make_a_copy_attachment"/>-->
-<!--                    <include name="TC_22_would_you_like_to_change_this_delivery_email_to_Draft_status_OK_attachment"/>-->
-<!--                    <include name="TC_23_would_you_like_to_change_this_delivery_email_to_Draft_status_Cancel_attachment"/>-->
+<!--                    <include name="TC_19_update_delivery_with_valid_data_attachment"/>-->
+<!--                    <include name="TC_20_do_you_want_to_delete_this_delivered_email_OK_attachment"/>-->
+<!--                    <include name="TC_21_do_you_want_to_delete_this_delivered_email_Cancel_attachment"/>-->
+<!--                    <include name="TC_22_make_a_copy_attachment"/>-->
+<!--                    <include name="TC_23_would_you_like_to_change_this_delivery_email_to_Draft_status_OK_attachment"/>-->
+<!--                    <include name="TC_24_would_you_like_to_change_this_delivery_email_to_Draft_status_Cancel_attachment"/>-->
 
-<!--                    <include name="TC_24_deliver_the_matter_do_not_select_condition"/>-->
-<!--                    <include name="TC_25_deliver_the_matter_only_select_delivery_occupation_development"/>-->
-<!--                    <include name="TC_26_deliver_the_matter_only_select_delivery_occupation_infrastructure"/>-->
-<!--                    <include name="TC_27_deliver_the_matter_only_select_delivery_occupation_others"/>-->
-<!--                    <include name="TC_28_deliver_the_personnel_do_not_select_condition"/>-->
-<!--                    <include name="TC_29_deliver_the_personnel_only_select_delivery_occupation_development"/>-->
-<!--                    <include name="TC_30_deliver_the_personnel_only_select_delivery_occupation_infrastructure"/>-->
-<!--                    <include name="TC_31_deliver_the_personnel_only_select_delivery_occupation_others"/>-->
-<!--                    <include name="TC_32_deliver_the_personnel_select_delivery_occupation_development_infrastructure_and_others"/>-->
-<!--                    <include name="TC_33_do_not_select_account_status"/>-->
-<!--                    <include name="TC_34_do_not_select_in_house_person_in_charge"/>-->
-<!--                    <include name="TC_35_do_not_select_compatibility"/>-->
-<!--                    <include name="TC_36_do_not_select_tag"/>-->
-<!--                    <include name="TC_37_select_exceeds_5_tags"/>-->
+<!--                    <include name="TC_25_deliver_the_matter_do_not_select_condition"/>-->
+<!--                    <include name="TC_26_deliver_the_matter_only_select_delivery_occupation_development"/>-->
+<!--                    <include name="TC_27_deliver_the_matter_only_select_delivery_occupation_infrastructure"/>-->
+<!--                    <include name="TC_28_deliver_the_matter_only_select_delivery_occupation_others"/>-->
+<!--                    <include name="TC_29_deliver_the_personnel_do_not_select_condition"/>-->
+<!--                    <include name="TC_30_deliver_the_personnel_only_select_delivery_occupation_development"/>-->
+<!--                    <include name="TC_31_deliver_the_personnel_only_select_delivery_occupation_infrastructure"/>-->
+<!--                    <include name="TC_32_deliver_the_personnel_only_select_delivery_occupation_others"/>-->
+<!--                    <include name="TC_33_deliver_the_personnel_select_delivery_occupation_development_infrastructure_and_others"/>-->
+<!--                    <include name="TC_34_do_not_select_account_status"/>-->
+<!--                    <include name="TC_35_do_not_select_in_house_person_in_charge"/>-->
+<!--                    <include name="TC_36_do_not_select_compatibility"/>-->
+<!--                    <include name="TC_37_do_not_select_tag"/>-->
+<!--                    <include name="TC_38_select_exceeds_5_tags"/>-->
 
+                    <include name=""/>
 <!--                    <include name="TC_38_do_you_want_to_delete_this_delivered_email_OK_destination_selection" />-->
 <!--                    <include name="TC_39_do_you_want_to_delete_this_delivered_email_Cancel_destination_selection" />-->
 <!--                    <include name="TC_40_make_a_copy_destination_selection" />-->
