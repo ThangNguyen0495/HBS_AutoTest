@@ -224,21 +224,54 @@ public class Destination_selection {
 
     @FindBy(css = "div.ant-message-error>span:nth-child(2)")
     WebElement message_error;
+    
+    @FindBy(css = "span:nth-child(4)>button")
+    WebElement save_button_disable;
+    
+    @FindBy(css = "div:nth-child(2) > div > div > div > div > span.ant-select-selection-item")
+    WebElement template_dropdown;
+    
+    @FindBy(css = "div > button[type]:nth-child(2)")
+    WebElement delete_template_button;
+    
+    @FindBy(css = "div>button[type]:nth-child(4)")
+    WebElement save_button;
+    
+    @FindBy(css = "div:nth-child(3) > div > div:nth-child(2) > button")
+    WebElement ok_button_template;
+    
+    @FindBy(css = "div:nth-child(3) > div > div:nth-child(1) > button")
+    WebElement cancel_button_template;
+    
+    @FindBy(css = "div > button[type]:nth-child(3)")
+    WebElement set_template_default;
+    
+    @FindBy(css = "tr.ant-table-row:nth-child(1) > td:nth-child(2)")
+    WebElement first_partner_PIC;
 
+    @FindBy(css = "li.ant-pagination-next")
+    WebElement next_page;
+
+    @FindBy(css = "li.ant-pagination-prev")
+    WebElement previous_page;
 
     WebDriver driver;
     WebDriverWait wait;
     Actions key;
     Common cm;
     String role;
+    String url_mail_list;
+    String partnerPIC_url;
 
-    public Destination_selection(WebDriver driver, Actions key, Common cm, String role) {
+    public Destination_selection(WebDriver driver, Actions key, Common cm, String role, String url_mail_list, String partnerPIC_url) {
         this.driver = driver;
         wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         PageFactory.initElements(driver, this);
         this.cm = cm;
         this.key = key;
         this.role = role;
+        this.url_mail_list = url_mail_list;
+        this.partnerPIC_url = partnerPIC_url;
     }
 
     //** Delivery information **//
@@ -253,7 +286,7 @@ public class Destination_selection {
             //** Delivery information **//
             //** Delivery type **//
             // 0: Deliver the matter, 1: Deliver personnel, 2: Deliver information
-            int delivery_type_id = RandomUtils.nextInt(3);
+            int delivery_type_id = 2;//RandomUtils.nextInt(3);
             delivery_type.get(delivery_type_id).click();
 
             // Search destination selection by delivery type
@@ -557,7 +590,7 @@ public class Destination_selection {
         }
     }
 
-    public void next_to_final_confirmation(String role, Common cm) {
+    public void next_to_final_confirmation() {
         // Master, Administrator, Responsible person, Leader, Member
         if (cm.authorized(role, cm.role_list(5))) {
             // Next to 最終確認_step
@@ -877,7 +910,7 @@ public class Destination_selection {
 
     }
 
-    public void do_not_select_account_status(String role, Common cm) {
+    public void do_not_select_account_status() {
         // Select delivery information
         delivery_information();
 
@@ -892,7 +925,7 @@ public class Destination_selection {
         Assert.assertEquals(text, "必ず1つ選択してください", "[Account status] Message do not match");
     }
 
-    public void do_not_select_in_house_person_in_charge(String role, Common cm) {
+    public void do_not_select_in_house_person_in_charge() {
         // Select delivery information
         delivery_information();
 
@@ -907,7 +940,7 @@ public class Destination_selection {
         Assert.assertEquals(text, "必ず選択してください", "[In-house person in charge] Message do not match");
     }
 
-    public void do_not_select_compatibility(String role, Common cm) {
+    public void do_not_select_compatibility() {
         // Select delivery information
         delivery_information();
 
@@ -922,7 +955,7 @@ public class Destination_selection {
         Assert.assertEquals(text, "必ず選択してください", "[Compatibility] Message do not match");
     }
 
-    public void do_not_select_tag(String role, Common cm) {
+    public void do_not_select_tag() {
         // Select delivery information
         delivery_information();
 
@@ -937,7 +970,7 @@ public class Destination_selection {
         Assert.assertEquals(text, "必ず1つ選択してください", "[Tag] Message do not match");
     }
 
-    public void select_exceed_5_tags(String role, Common cm, Actions key) throws InterruptedException {
+    public void select_exceed_5_tags() throws InterruptedException {
         // Select delivery information
         delivery_information();
 
@@ -959,69 +992,69 @@ public class Destination_selection {
     }
 
     // Update button
-    public void update_delivery_with_valid_data(String url_mail_list) throws InterruptedException {
+    public void update_delivery_with_valid_data() throws InterruptedException {
         update_button.click();
         sleep(1000);
         Assert.assertEquals(driver.getCurrentUrl(), url_mail_list, "[Update] Can not update delivered email.");
     }
 
-    public void do_you_want_to_delete_this_delivered_email_OK(WebDriver driver, String url_mail_list) throws InterruptedException {
+    public void do_you_want_to_delete_this_delivered_email_OK() throws InterruptedException {
         // Click delete button
-        driver.findElement(By.cssSelector("button.ant-btn-danger")).click();
+        delete_button.click();
 
         // Click OK button
-        wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("div.ant-modal-confirm-btns > button:nth-child(2)"))).click();
+        wait.until(ExpectedConditions.elementToBeClickable(ok_button)).click();
 
         // Waiting for loading mail list page
         sleep(1000);
         Assert.assertEquals(driver.getCurrentUrl(), url_mail_list, "[Failed] Can not delete delivered email");
     }
 
-    public void do_you_want_to_delete_this_delivered_email_Cancel(WebDriver driver) throws InterruptedException {
+    public void do_you_want_to_delete_this_delivered_email_Cancel() throws InterruptedException {
         // Click delete button
-        driver.findElement(By.cssSelector("button.ant-btn-danger")).click();
+        delete_button.click();
 
         // Click delete button
-        wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("div.ant-modal-confirm-btns > button:nth-child(1)"))).click();
+        wait.until(ExpectedConditions.elementToBeClickable(cancel_button)).click();
         sleep(1000);
 
         // Check popup close
         boolean check = true;
         try {
-            driver.findElement(By.cssSelector("div:nth-child(3) > div > div:nth-child(1) > button")).click();
+            cancel_button.click();
         } catch (NoSuchElementException ex) {
             check = false;
         }
         Assert.assertFalse(check, "[Failed] Can not close delete delivered email popup");
     }
 
-    public void make_a_copy(WebDriver driver, String url_mail_list) throws InterruptedException {
+    public void make_a_copy() throws InterruptedException {
         // Click make a copy button
-        driver.findElement(By.cssSelector("div:nth-child(1)>button.ant-btn-sm")).click();
+        make_a_copy_button.click();
 
         // Waiting for loading mail list page
         sleep(1000);
         Assert.assertEquals(driver.getCurrentUrl(), url_mail_list, "[Failed] Can not make a copy of delivered email.");
     }
 
-    public void would_you_like_to_change_this_delivery_email_to_Draft_status_OK(WebDriver driver, String url_mail_list) throws InterruptedException {
+    public void would_you_like_to_change_this_delivery_email_to_Draft_status_OK() throws InterruptedException {
         // Click save as draft button
-        driver.findElement(By.cssSelector("div.ant-col:nth-child(2)>button.ant-btn-sm")).click();
+        save_as_draft_button.click();
 
         // Click OK button
-        wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("div.ant-modal-confirm-btns>button:nth-child(2)"))).click();
+        wait.until(ExpectedConditions.elementToBeClickable(ok_button)).click();
 
         // Waiting for loading mail list page
         sleep(1000);
         Assert.assertEquals(driver.getCurrentUrl(), url_mail_list, "[Failed] Can not save delivered as draft.");
     }
 
-    public void would_you_like_to_change_this_delivery_email_to_Draft_status_Cancel(WebDriver driver) throws InterruptedException {
+    public void would_you_like_to_change_this_delivery_email_to_Draft_status_Cancel() throws InterruptedException {
         // Click save as draft button
-        driver.findElement(By.cssSelector("div.ant-col:nth-child(2)>button.ant-btn-sm")).click();
+        save_as_draft_button.click();
 
         // Click cancel button
-        wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("div.ant-modal-confirm-btns>button:nth-child(1)"))).click();
+        wait.until(ExpectedConditions.elementToBeClickable(cancel_button)).click();
 
         // Waiting for close popup
         sleep(500);
@@ -1029,96 +1062,87 @@ public class Destination_selection {
         // Check popup close
         boolean check = true;
         try {
-            driver.findElement(By.cssSelector("div:nth-child(3) > div > div:nth-child(1) > button")).click();
+            cancel_button.click();
         } catch (NoSuchElementException ex) {
             check = false;
         }
         Assert.assertFalse(check, "[Failed] Can not close save delivered as draft popup.");
     }
 
-    public void back_to_attachment_step(WebDriver driver, Actions key, String role, Common cm) throws InterruptedException {
+    public void back_to_attachment_step() {
         // Master, Administrator, Responsible person, Leader, Member
         if (cm.authorized(role, cm.role_list(5))) {
             // Back to Attachment step
-            driver.findElement(By.cssSelector("div:nth-child(1)>div.ant-col.ant-col-24 > div > div:nth-child(1) > div > button")).click();
-
-            // Waiting for loading attachment tab
-            sleep(500);
+            back_button.click();
 
             // Check current tab
-            boolean check = driver.findElement(By.cssSelector("div:nth-child(2)>div>div.ant-steps-item-icon")).isEnabled();
-            Assert.assertTrue(check, "[Failed] Can not back to Attachment from Destination selection.");
+            Assert.assertTrue(step_list.get(1).isEnabled(), "[Failed] Can not back to Attachment from Destination selection.");
 
             // Back to Destination selection step
-            wait
-                    .until(ExpectedConditions.elementToBeClickable(By.cssSelector("div:nth-child(4)>div>button")))
-                    .click();
+            wait.until(ExpectedConditions.elementToBeClickable(next_step_button)).click();
 
             // Back to Attachment step
-            WebElement back_to_attachment = driver.findElement(By.cssSelector("div:nth-child(2)>div>div.ant-steps-item-icon"));
-            key.moveToElement(back_to_attachment).click().build().perform();
+            key.moveToElement(step_list.get(1)).click().build().perform();
 
             // Check current tab
-            boolean check1 = driver.findElement(By.cssSelector("div:nth-child(2)>div>div.ant-steps-item-icon")).isEnabled();
-            Assert.assertTrue(check1, "[Failed] Can not back to Attachment from Destination selection.");
+            Assert.assertTrue(step_list.get(1).isEnabled(), "[Failed] Can not back to Attachment from Destination selection.");
         }
     }
 
-    public void back_to_basic_information_step(WebDriver driver, String role, Common cm) {
+    public void back_to_basic_information_step() {
         // Master, Administrator, Responsible person, Leader, Member
         if (cm.authorized(role, cm.role_list(5))) {
             // Back to Basic information step
-            driver.findElement(By.cssSelector("div:nth-child(1)>div>div.ant-steps-item-icon")).click();
+            step_list.get(0).click();
 
             // Check current tab
-            boolean check = driver.findElement(By.cssSelector("div:nth-child(1)>div>div.ant-steps-item-icon")).isEnabled();
-            Assert.assertTrue(check, "[Failed] Can not back to Basic information from Destination selection.");
+            Assert.assertTrue(step_list.get(0).isEnabled(), "[Failed] Can not back to Basic information from Destination selection.");
         }
     }
 
-    public Boolean check_template_in_stock(WebDriver driver) {
+    public Boolean check_template_in_stock() {
         // Check save button is enable
         // true: in stock
         // false: out of stock
         boolean check = false;
         try {
-            driver.findElement(By.cssSelector("span:nth-child(4)>button")).getAttribute("type");
+            save_button_disable.getAttribute("type");
         } catch (NoSuchElementException ex) {
             check = true;
         }
         return check;
     }
 
-    public void delete_search_template(Actions key) throws InterruptedException {
+    public void delete_search_template() throws InterruptedException {
         // Wait message hide
         wait.until(ExpectedConditions.invisibilityOf(message));
 
         // Select template dropdown list
-        wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("div:nth-child(2) > div > div > div > div > span.ant-select-selection-item"))).click();
+        wait.until(ExpectedConditions.elementToBeClickable(template_dropdown)).click();
 
         // Select template
         key.sendKeys(Keys.DOWN).sendKeys(Keys.ENTER).perform();
 
         // Click delete icon
-        wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("div > button[type]:nth-child(2)"))).click();
+        wait.until(ExpectedConditions.elementToBeClickable(delete_template_button)).click();
 
         //Click OK button
-        wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("div.ant-modal-confirm-btns > button:nth-child(2)"))).click();
+        wait.until(ExpectedConditions.elementToBeClickable(ok_button)).click();
 
         sleep(3000);
     }
 
 
-    public void leave_search_template_name_blank(WebDriver driver, Actions key) throws InterruptedException {
+    public void leave_search_template_name_blank() throws InterruptedException {
         // Check save button is enable
-        if (!check_template_in_stock(driver)) {
-            delete_search_template(key);
+        if (!check_template_in_stock()) {
+            delete_search_template();
         }
         // Click Save template button
-        wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("div>button[type]:nth-child(4)"))).click();
+        wait.until(ExpectedConditions.elementToBeClickable(save_button)).click();
 
         // Leave search template name blank and verify error message
-        wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("#newTemplateName")))
+        wait.until(ExpectedConditions.elementToBeClickable(template_name))
                 .sendKeys("leave_blank");
         for (int i = 0; i < 11; i++) {
             key.sendKeys(Keys.BACK_SPACE).perform();
@@ -1127,16 +1151,16 @@ public class Destination_selection {
         Assert.assertEquals(text, "テンプレート名を入力してください", "[Template name] Message do not match");
     }
 
-    public void search_template_name_exceed_50_half_width_characters(WebDriver driver, Actions key) throws InterruptedException {
+    public void search_template_name_exceed_50_half_width_characters() throws InterruptedException {
         // Check save button is enable
-        if (!check_template_in_stock(driver)) {
-            delete_search_template(key);
+        if (!check_template_in_stock()) {
+            delete_search_template();
         }
         // Click Save template button
-        wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("div>button[type]:nth-child(4)"))).click();
+        wait.until(ExpectedConditions.elementToBeClickable(save_button)).click();
 
         // Input search template name exceed 50 half width characters and verify error message
-        wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("#newTemplateName")))
+        wait.until(ExpectedConditions.elementToBeClickable(template_name))
                 .sendKeys(RandomStringUtils.randomAlphabetic(51));
 
         sleep(2000);
@@ -1144,16 +1168,16 @@ public class Destination_selection {
         Assert.assertEquals(text, "テンプレート名は50文字以内で入力してください。", "[Template name] Message do not match");
     }
 
-    public void search_template_name_exceed_50_full_width_characters(WebDriver driver, Actions key) throws InterruptedException {
+    public void search_template_name_exceed_50_full_width_characters() throws InterruptedException {
         // Check save button is enable
-        if (!check_template_in_stock(driver)) {
-            delete_search_template(key);
+        if (!check_template_in_stock()) {
+            delete_search_template();
         }
         // Click Save template button
-        wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("div>button[type]:nth-child(4)"))).click();
+        wait.until(ExpectedConditions.elementToBeClickable(save_button)).click();
 
         // Input search template name exceed 50 full width characters and verify error message
-        wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("#newTemplateName")))
+        wait.until(ExpectedConditions.elementToBeClickable(template_name))
                 .sendKeys(RandomStringUtils.random(51, 0x4e00, 0x4f80, true, false));
 
         sleep(2000);
@@ -1161,59 +1185,60 @@ public class Destination_selection {
         Assert.assertEquals(text, "テンプレート名は50文字以内で入力してください。", "[Template name] Message do not match");
     }
 
-    public void search_template_name_exceed_mix_50_half_and_full_width_characters(WebDriver driver, Actions key) throws InterruptedException {
+    public void search_template_name_exceed_mix_50_half_and_full_width_characters() throws InterruptedException {
         // Check save button is enable
-        if (!check_template_in_stock(driver)) {
-            delete_search_template(key);
+        if (!check_template_in_stock()) {
+            delete_search_template();
         }
         // Click Save template button
-        wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("div>button[type]:nth-child(4)"))).click();
+        wait.until(ExpectedConditions.elementToBeClickable(save_button)).click();
 
         int length_of_half = RandomUtils.nextInt(50) + 1;
-        String template_name = RandomStringUtils.randomAlphabetic(length_of_half) + RandomStringUtils.random(51 - length_of_half, 0x4e00, 0x4f80, true, false);
+        String template_name_text = RandomStringUtils.randomAlphabetic(length_of_half) 
+                + RandomStringUtils.random(51 - length_of_half, 0x4e00, 0x4f80, true, false);
         // Input search template name exceed mix 50 half and full width characters and verify error message
-        wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("#newTemplateName")))
-                .sendKeys(template_name);
+        wait.until(ExpectedConditions.elementToBeClickable(template_name))
+                .sendKeys(template_name_text);
 
         String text = wait.until(ExpectedConditions.visibilityOf(template_name_error)).getText();
         Assert.assertEquals(text, "テンプレート名は50文字以内で入力してください。", "[Template name] Message do not match");
     }
 
 
-    public void create_search_template_name_OK(WebDriver driver, Actions key) throws InterruptedException {
+    public void create_search_template_name_OK() throws InterruptedException {
         // Check save button is enable
-        if (!check_template_in_stock(driver)) {
-            delete_search_template(key);
+        if (!check_template_in_stock()) {
+            delete_search_template();
         } else {
             wait.until(ExpectedConditions.invisibilityOf(message));
         }
 
         // Click Save template button
-        wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("div>button[type]:nth-child(4)"))).click();
+        wait.until(ExpectedConditions.elementToBeClickable(save_button)).click();
 
-        String template_name = RandomStringUtils.randomAlphabetic(50);
+        String template_name_text = RandomStringUtils.randomAlphabetic(50);
 
         // Input search template name with 50 half width characters
-        wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("#newTemplateName")))
-                .sendKeys(template_name);
+        wait.until(ExpectedConditions.elementToBeClickable(template_name))
+                .sendKeys(template_name_text);
 
         // Click OK button
-        wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("div:nth-child(3) > div > div:nth-child(2) > button"))).click();
+        wait.until(ExpectedConditions.elementToBeClickable(ok_button_template)).click();
 
         String text = wait.until(ExpectedConditions.visibilityOf(message)).getText();
         Assert.assertEquals(text, "テンプレートを作成しました。", "[Template name] Message do not match");
     }
 
-    public void create_search_template_name_Cancel(WebDriver driver, Actions key) throws InterruptedException {
+    public void create_search_template_name_Cancel() throws InterruptedException {
         // Check save button is enable
-        if (!check_template_in_stock(driver)) {
-            delete_search_template(key);
+        if (!check_template_in_stock()) {
+            delete_search_template();
         }
         // Click Save template button
-        wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("div>button[type]:nth-child(4)"))).click();
+        wait.until(ExpectedConditions.elementToBeClickable(save_button)).click();
 
         // Click Cancel button
-        wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("div:nth-child(3) > div > div:nth-child(1) > button"))).click();
+        wait.until(ExpectedConditions.elementToBeClickable(cancel_button_template)).click();
 
         // Waiting for close popup
         sleep(500);
@@ -1221,106 +1246,106 @@ public class Destination_selection {
         // Check popup close
         boolean check = true;
         try {
-            driver.findElement(By.cssSelector("div:nth-child(3) > div > div:nth-child(1) > button")).click();
+            cancel_button_template.click();
         } catch (NoSuchElementException ex) {
             check = false;
         }
         Assert.assertFalse(check, "[Failed] Can not close create search template popup.");
     }
 
-    public void input_available_search_template_name(WebDriver driver, Actions key) throws InterruptedException {
+    public void input_available_search_template_name() throws InterruptedException {
         // Check save button is enable
-        if (!check_template_in_stock(driver)) {
-            delete_search_template(key);
+        if (!check_template_in_stock()) {
+            delete_search_template();
         } else {
             wait
                     .until(ExpectedConditions.invisibilityOf(message));
         }
         // Click Save template button
-        wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("div>button[type]:nth-child(4)"))).click();
+        wait.until(ExpectedConditions.elementToBeClickable(save_button)).click();
 
-        String template_name = RandomStringUtils.randomAlphabetic(50);
+        String template_name_text = RandomStringUtils.randomAlphabetic(50);
 
         // Input search template name with 50 half width characters and verify message
-        wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("#newTemplateName")))
-                .sendKeys(template_name);
+        wait.until(ExpectedConditions.elementToBeClickable(template_name))
+                .sendKeys(template_name_text);
 
 
         // Click OK button
-        wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("div:nth-child(3) > div > div:nth-child(2) > button"))).click();
+        wait.until(ExpectedConditions.elementToBeClickable(ok_button_template)).click();
 
         // Waiting for show message
         String text = wait.until(ExpectedConditions.visibilityOf(message)).getText();
         Assert.assertEquals(text, "テンプレートを作成しました。", "[Template name] Message do not match");
 
         // Check save button is enable
-        if (!check_template_in_stock(driver)) {
-            delete_search_template(key);
+        if (!check_template_in_stock()) {
+            delete_search_template();
         }
 
         // Click Save template button
-        wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("div>button[type]:nth-child(4)"))).click();
+        wait.until(ExpectedConditions.elementToBeClickable(save_button)).click();
 
         // Input available template name
-        wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("#newTemplateName")))
-                .sendKeys(template_name);
+        wait.until(ExpectedConditions.elementToBeClickable(template_name))
+                .sendKeys(template_name_text);
 
         // Click OK button
-        wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("div:nth-child(3) > div > div:nth-child(2) > button"))).click();
+        wait.until(ExpectedConditions.elementToBeClickable(ok_button_template)).click();
 
         // Verify error message
         String text1 = wait.until(ExpectedConditions.visibilityOf(message_error)).getText();
         Assert.assertTrue(text1.contains("同一名称のテンプレートが既に存在します"), "[Failed] Can create search template with available template name.");
     }
 
-    public void set_cancel_search_template_as_default(WebDriver driver, Actions key) throws InterruptedException {
+    public void set_cancel_search_template_as_default() throws InterruptedException {
         // Create search template
-        create_search_template_name_OK(driver, key);
+        create_search_template_name_OK();
 
         // Set template as default
-        wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("div > button[type]:nth-child(3)"))).click();
+        wait.until(ExpectedConditions.elementToBeClickable(set_template_default)).click();
 
         // waiting for set as default
         sleep(1000);
-        String title1 = driver.findElement(By.cssSelector("div:nth-child(2) > div > div > div > div > span.ant-select-selection-item")).getAttribute("title");
+        String title1 = template_dropdown.getAttribute("title");
         Assert.assertTrue(title1.contains("☆ :"), "[Failed] Can not set search template as default.");
 
         // Cancel template as default
-        wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("div > button[type]:nth-child(3)"))).click();
+        wait.until(ExpectedConditions.elementToBeClickable(set_template_default)).click();
 
         // waiting for cancel set default
         sleep(1000);
-        String title2 = driver.findElement(By.cssSelector("div:nth-child(2) > div > div > div > div > span.ant-select-selection-item")).getAttribute("title");
+        String title2 = template_dropdown.getAttribute("title");
         Assert.assertFalse(title2.contains("☆ :"), "[Failed] Can not cancel search template as default.");
     }
 
-    public void delete_search_template_OK(WebDriver driver, Actions key) throws InterruptedException {
+    public void delete_search_template_OK() throws InterruptedException {
         // Create search template
-        create_search_template_name_OK(driver, key);
+        create_search_template_name_OK();
 
         // Wait message hide
         wait.until(ExpectedConditions.invisibilityOf(message));
 
         // Click delete icon
-        wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("div > button[type]:nth-child(2)"))).click();
+        wait.until(ExpectedConditions.elementToBeClickable(delete_template_button)).click();
 
         //Click OK button
-        wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("div.ant-modal-confirm-btns > button:nth-child(2)"))).click();
+        wait.until(ExpectedConditions.elementToBeClickable(ok_button)).click();
 
         // Verify message
         String text = wait.until(ExpectedConditions.visibilityOf(message)).getText();
         Assert.assertEquals(text, "テンプレートを削除しました", "[Failed] Can not delete search template.");
     }
 
-    public void delete_search_template_Cancel(WebDriver driver, Actions key) throws InterruptedException {
+    public void delete_search_template_Cancel() throws InterruptedException {
         // Create search template
-        create_search_template_name_OK(driver, key);
+        create_search_template_name_OK();
 
         // Click delete icon
-        wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("div > button[type]:nth-child(2)"))).click();
+        wait.until(ExpectedConditions.elementToBeClickable(delete_template_button)).click();
 
         //Click cancel button
-        wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("div.ant-modal-confirm-btns > button:nth-child(1)"))).click();
+        wait.until(ExpectedConditions.elementToBeClickable(cancel_button)).click();
 
         // Waiting for close popup
         sleep(500);
@@ -1328,29 +1353,27 @@ public class Destination_selection {
         // Check popup close
         boolean check = true;
         try {
-            driver.findElement(By.cssSelector("div:nth-child(3) > div > div:nth-child(1) > button")).click();
+            cancel_button_template.click();
         } catch (NoSuchElementException ex) {
             check = false;
         }
         Assert.assertFalse(check, "[Failed] Can not close delete search template popup.");
     }
 
-    public void reset_search_criteria(WebDriver driver) {
+    public void reset_search_criteria() {
         /*
         ** Delivery information ** //
         ** Delivery type ** //
          1: Deliver the matter, 2: Deliver personnel, 3: Deliver information
         */
-        int delivery_type = RandomUtils.nextInt(3) + 1;
-        driver.findElement(By.cssSelector("#searchtype > label:nth-child(" + delivery_type + ") > span > input")).click();
+        int delivery_type_id = RandomUtils.nextInt(3);
+        delivery_type.get(delivery_type_id).click();
 
         // Click reset search criteria button
-        driver.findElement(By.cssSelector("div:nth-child(2) > div.ant-row-start > button")).click();
+        reset_search_criteria_button.click();
 
         // Verify search condition have been reset
-        boolean check = driver.findElement(By.cssSelector("#searchtype > label:nth-child(" + delivery_type + ") > span > input"))
-                .isSelected();
-        Assert.assertFalse(check, "[Failed] Can not reset search condition.");
+        Assert.assertFalse(delivery_type.get(delivery_type_id).isSelected(), "[Failed] Can not reset search condition.");
     }
 
     public void link_to_partner_PIC_edit_from_destination_selection(WebDriver driver, String partnerPIC_url) throws InterruptedException {
@@ -1361,7 +1384,7 @@ public class Destination_selection {
         // check null = "True" => No partner PIC => Can not link to partner PIC.
         boolean check_null = false;
         try {
-            driver.findElement(By.cssSelector(" tr.ant-table-row:nth-child(1) > td:nth-child(2)")).click();
+            first_partner_PIC.click();
         } catch (NoSuchElementException ex) {
             check_null = true;
         }
@@ -1379,7 +1402,7 @@ public class Destination_selection {
         // check null = "True" => No partner PIC
         boolean check_null = false;
         try {
-            driver.findElement(By.cssSelector("li.ant-pagination-item-active")).click();
+            current_page.click();
         } catch (NoSuchElementException ex) {
             check_null = true;
         }
@@ -1390,18 +1413,14 @@ public class Destination_selection {
             ((JavascriptExecutor) driver).executeScript("scroll(0, 1000);");
             sleep(1000);
 
-            String next_page = driver.findElement(By.cssSelector("li.ant-pagination-next")).getAttribute("class");
-            if (!next_page.contains("disabled")) {
-                String current_page;
+            if (!next_page.getAttribute("class").contains("disabled")) {
                 // if we can go to next page, verify current page
-                driver.findElement(By.cssSelector("li.ant-pagination-next")).click();
-                current_page = driver.findElement(By.cssSelector("li.ant-pagination-item-active")).getAttribute("title");
-                Assert.assertEquals(current_page, "2", "[Failed] Can not go to next page.");
+                next_page.click();
+                Assert.assertEquals(current_page.getAttribute("title"), "2", "[Failed] Can not go to next page.");
 
                 // back to previous page
-                driver.findElement(By.cssSelector("li.ant-pagination-prev")).click();
-                current_page = driver.findElement(By.cssSelector("li.ant-pagination-item-active")).getAttribute("title");
-                Assert.assertEquals(current_page, "1", "[Failed] Can not back to previous page.");
+                previous_page.click();
+                Assert.assertEquals(current_page.getAttribute("title"), "1", "[Failed] Can not back to previous page.");
             }
         }
     }

@@ -13,8 +13,6 @@ import org.testng.annotations.Test;
 
 import java.io.IOException;
 
-import static java.lang.Thread.sleep;
-
 public class EditMail {
 
     Common cm;
@@ -26,8 +24,8 @@ public class EditMail {
     Final_confirmation fc;
 
     @BeforeMethod
-    @Parameters({"headless", "email", "password", "url", "role"})
-    public void init(Boolean headless, String email, String password, String url, String role) throws InterruptedException {
+    @Parameters({"headless", "email", "password", "url", "role", "url_mail_list", "partnerPIC_url"})
+    public void init(Boolean headless, String email, String password, String url, String role, String url_mail_list, String partnerPIC_url) throws InterruptedException {
         // Init Common function
         cm = new Common();
 
@@ -47,7 +45,7 @@ public class EditMail {
         a = new Attachment(driver);
 
         // Init Destination selection function
-        ds = new Destination_selection(driver, key, cm, role);
+        ds = new Destination_selection(driver, key, cm, role, url_mail_list, partnerPIC_url);
 
         // Init Final confirmation function
         fc = new Final_confirmation();
@@ -72,7 +70,7 @@ public class EditMail {
         bi.insertion(role, cm);
 
         // Send a copy to the distributor
-        bi.send_a_copy_to_the_distributor( role, cm);
+        bi.send_a_copy_to_the_distributor(role, cm);
 
         // Next to 添付ファイル_Step
         bi.next_to_attachment_step(role, cm);
@@ -103,7 +101,7 @@ public class EditMail {
         ds.select_contact();
 
         // Next to 最終確認_step
-        ds.next_to_final_confirmation(role, cm);
+        ds.next_to_final_confirmation();
 
         //****** 最終確認 ****** //
         // Final confirmation
@@ -189,7 +187,7 @@ public class EditMail {
     }
 
     @Test(priority = 9)
-    @Parameters({"role","url_mail_list"})
+    @Parameters({"role", "url_mail_list"})
     public void TC_09_update_delivery_with_valid_data_basic_information(String role, String url_mail_list) throws InterruptedException {
         // Select format
         bi.format(role, cm);
@@ -426,7 +424,7 @@ public class EditMail {
     }
 
     @Test(priority = 19)
-    @Parameters({"role","url_mail_list"})
+    @Parameters({"role", "url_mail_list"})
     public void TC_19_update_delivery_with_valid_data_attachment(String role, String url_mail_list) throws InterruptedException {
         // Select format
         bi.format(role, cm);
@@ -823,7 +821,7 @@ public class EditMail {
         // Account status: ON
         // Do not select account status
         // Click search button
-        ds.do_not_select_account_status(role, cm);
+        ds.do_not_select_account_status();
 
         // Close browser
         driver.close();
@@ -850,7 +848,7 @@ public class EditMail {
         // In-house person in charge: ON
         // Do not select in-house person in charge
         // Click search button
-        ds.do_not_select_in_house_person_in_charge(role, cm);
+        ds.do_not_select_in_house_person_in_charge();
 
         // Close browser
         driver.close();
@@ -876,7 +874,7 @@ public class EditMail {
         // Compatibility: ON
         // Do not select compatibility
         // Click search button
-        ds.do_not_select_compatibility(role, cm);
+        ds.do_not_select_compatibility();
 
         // Close browser
         driver.close();
@@ -903,7 +901,7 @@ public class EditMail {
         // Tag: ON
         // Do not select tag
         // Click search button
-        ds.do_not_select_tag(role, cm);
+        ds.do_not_select_tag();
 
         // Close browser
         driver.close();
@@ -930,7 +928,7 @@ public class EditMail {
         // Tag: ON
         // Select exceed 5 tags
         // Click search button
-        ds.select_exceed_5_tags(role, cm, key);
+        ds.select_exceed_5_tags();
 
         // Close browser
         driver.close();
@@ -938,7 +936,32 @@ public class EditMail {
 
     @Test(priority = 39)
     @Parameters({"role", "url_mail_list"})
-    public void TC_39_do_you_want_to_delete_this_delivered_email_OK_destination_selection(String role, String url_mail_list) throws InterruptedException {
+    public void TC_39_update_delivery_with_valid_data_basic_information(String role, String url_mail_list) throws InterruptedException {
+        // Select format
+        bi.format(role, cm);
+
+        // Input valid subject
+        bi.subject(role, cm);
+
+        // Input valid insertion
+        bi.insertion(role, cm);
+
+        // Next to attachment step
+        bi.next_to_attachment_step(role, cm);
+
+        // Next to destination selection step
+        a.next_to_destination_selection_step(role, cm);
+
+        // Verify that can update delivered mail with valid data
+        ds.update_delivery_with_valid_data();
+
+        // Close browser
+        driver.close();
+    }
+
+    @Test(priority = 40)
+    @Parameters({"role", "url_mail_list"})
+    public void TC_40_do_you_want_to_delete_this_delivered_email_OK_destination_selection(String role, String url_mail_list) throws InterruptedException {
         // Select format
         bi.format(role, cm);
 
@@ -956,15 +979,15 @@ public class EditMail {
 
         // Click delete button => show "Do you want to delete this delivered mail
         // Click OK button => delivered mail should be deleted
-        ds.do_you_want_to_delete_this_delivered_email_OK(driver, url_mail_list);
+        ds.do_you_want_to_delete_this_delivered_email_OK();
 
         // Close browser
         driver.close();
     }
 
-    @Test(priority = 39)
+    @Test(priority = 41)
     @Parameters({"role"})
-    public void TC_39_do_you_want_to_delete_this_delivered_email_Cancel_destination_selection(String role) throws InterruptedException {
+    public void TC_41_do_you_want_to_delete_this_delivered_email_Cancel_destination_selection(String role) throws InterruptedException {
         // Select format
         bi.format(role, cm);
 
@@ -982,13 +1005,13 @@ public class EditMail {
 
         // Click delete button => show "Do you want to delete this delivered mail" popup
         // Click cancel button => close popup
-        ds.do_you_want_to_delete_this_delivered_email_Cancel(driver);
+        ds.do_you_want_to_delete_this_delivered_email_Cancel();
 
         // Close browser
         driver.close();
     }
 
-    @Test(priority = 40)
+    @Test(priority = 42)
     @Parameters({"role", "url_mail_list"})
     public void TC_40_make_a_copy_destination_selection(String role, String url_mail_list) throws InterruptedException {
         // Select format
@@ -1007,15 +1030,15 @@ public class EditMail {
         a.next_to_destination_selection_step(role, cm);
 
         // Click make a copy button => create a copy mail and link to mail list page
-        ds.make_a_copy(driver, url_mail_list);
+        ds.make_a_copy();
 
         // Close browser
         driver.close();
     }
 
-    @Test(priority = 41)
+    @Test(priority = 43)
     @Parameters({"role", "url_mail_list"})
-    public void TC_41_would_you_like_to_change_this_delivery_email_to_Draft_status_OK_destination_selection(String role, String url_mail_list) throws InterruptedException {
+    public void TC_43_would_you_like_to_change_this_delivery_email_to_Draft_status_OK_destination_selection(String role, String url_mail_list) throws InterruptedException {
         // Select format
         bi.format(role, cm);
 
@@ -1033,15 +1056,15 @@ public class EditMail {
 
         // Click save as draft button => show "Would you like to change this delivery email to Draft status" popup
         // Click OK button => Save delivered as draft status and link to mail list page
-        ds.would_you_like_to_change_this_delivery_email_to_Draft_status_OK(driver, url_mail_list);
+        ds.would_you_like_to_change_this_delivery_email_to_Draft_status_OK();
 
         // Close browser
         driver.close();
     }
 
-    @Test(priority = 42)
+    @Test(priority = 44)
     @Parameters({"role"})
-    public void TC_42_would_you_like_to_change_this_delivery_email_to_Draft_status_Cancel_destination_selection(String role) throws InterruptedException {
+    public void TC_44_would_you_like_to_change_this_delivery_email_to_Draft_status_Cancel_destination_selection(String role) throws InterruptedException {
         // Select format
         bi.format(role, cm);
 
@@ -1059,15 +1082,15 @@ public class EditMail {
 
         // Click save as draft button => show "Would you like to change this delivery email to Draft status" popup
         // Click cancel button => close popup
-        ds.would_you_like_to_change_this_delivery_email_to_Draft_status_Cancel(driver);
+        ds.would_you_like_to_change_this_delivery_email_to_Draft_status_Cancel();
 
         // Close browser
         driver.close();
     }
 
-    @Test(priority = 43)
+    @Test(priority = 45)
     @Parameters({"role"})
-    public void TC_43_back_to_basic_information_from_destination_selection(String role) throws InterruptedException {
+    public void TC_45_back_to_basic_information_from_destination_selection(String role) throws InterruptedException {
         // Select format
         bi.format(role, cm);
 
@@ -1084,15 +1107,15 @@ public class EditMail {
         a.next_to_destination_selection_step(role, cm);
 
         // Back to basic information step
-        ds.back_to_basic_information_step(driver, role, cm);
+        ds.back_to_basic_information_step();
 
         // Close browser
         driver.close();
     }
 
-    @Test(priority = 44)
+    @Test(priority = 46)
     @Parameters({"role"})
-    public void TC_44_back_to_attachment_from_destination_selection(String role) throws InterruptedException {
+    public void TC_46_back_to_attachment_from_destination_selection(String role) throws InterruptedException {
         // Select format
         bi.format(role, cm);
 
@@ -1109,15 +1132,15 @@ public class EditMail {
         a.next_to_destination_selection_step(role, cm);
 
         // Back to attachment step
-        ds.back_to_attachment_step(driver, key, role, cm);
+        ds.back_to_attachment_step();
 
         // Close browser
         driver.close();
     }
 
-    @Test(priority = 45)
+    @Test(priority = 47)
     @Parameters({"role"})
-    public void TC_45_leave_search_template_name_blank(String role) throws InterruptedException {
+    public void TC_47_leave_search_template_name_blank(String role) throws InterruptedException {
         // Select format
         bi.format(role, cm);
 
@@ -1134,15 +1157,15 @@ public class EditMail {
         a.next_to_destination_selection_step(role, cm);
 
         // Leave search template name blank and verify error message
-        ds.leave_search_template_name_blank(driver, key);
+        ds.leave_search_template_name_blank();
 
         // Close browser
         driver.close();
     }
 
-    @Test(priority = 46)
+    @Test(priority = 48)
     @Parameters({"role"})
-    public void TC_46_search_template_name_exceed_50_half_width_characters(String role) throws InterruptedException {
+    public void TC_48_search_template_name_exceed_50_half_width_characters(String role) throws InterruptedException {
         // Select format
         bi.format(role, cm);
 
@@ -1159,15 +1182,15 @@ public class EditMail {
         a.next_to_destination_selection_step(role, cm);
 
         // Input search template name exceed 50 half width characters and verify error message
-        ds.search_template_name_exceed_50_half_width_characters(driver, key);
+        ds.search_template_name_exceed_50_half_width_characters();
 
         // Close browser
         driver.close();
     }
 
-    @Test(priority = 47)
+    @Test(priority = 49)
     @Parameters({"role"})
-    public void TC_47_search_template_name_exceed_50_full_width_characters(String role) throws InterruptedException {
+    public void TC_49_search_template_name_exceed_50_full_width_characters(String role) throws InterruptedException {
         // Select format
         bi.format(role, cm);
 
@@ -1184,15 +1207,15 @@ public class EditMail {
         a.next_to_destination_selection_step(role, cm);
 
         // Input search template name exceed 50 full width characters and verify error message
-        ds.search_template_name_exceed_50_full_width_characters(driver, key);
+        ds.search_template_name_exceed_50_full_width_characters();
 
         // Close browser
         driver.close();
     }
 
-    @Test(priority = 48)
+    @Test(priority = 50)
     @Parameters({"role"})
-    public void TC_48_search_template_name_exceed_mix_50_half_and_full_width_characters(String role) throws InterruptedException {
+    public void TC_50_search_template_name_exceed_mix_50_half_and_full_width_characters(String role) throws InterruptedException {
         // Select format
         bi.format(role, cm);
 
@@ -1209,15 +1232,15 @@ public class EditMail {
         a.next_to_destination_selection_step(role, cm);
 
         // Input search template name exceed mix 50 half, full width characters and verify error message
-        ds.search_template_name_exceed_mix_50_half_and_full_width_characters(driver, key);
+        ds.search_template_name_exceed_mix_50_half_and_full_width_characters();
 
         // Close browser
         driver.close();
     }
 
-    @Test(priority = 49)
+    @Test(priority = 51)
     @Parameters({"role"})
-    public void TC_49_create_search_template_name_OK(String role) throws InterruptedException {
+    public void TC_51_create_search_template_name_OK(String role) throws InterruptedException {
         // Select format
         bi.format(role, cm);
 
@@ -1234,15 +1257,15 @@ public class EditMail {
         a.next_to_destination_selection_step(role, cm);
 
         // Create search template with valid name
-        ds.create_search_template_name_OK(driver, key);
+        ds.create_search_template_name_OK();
 
         // Close browser
         driver.close();
     }
 
-    @Test(priority = 50)
+    @Test(priority = 52)
     @Parameters({"role"})
-    public void TC_50_create_search_template_name_Cancel(String role) throws InterruptedException {
+    public void TC_52_create_search_template_name_Cancel(String role) throws InterruptedException {
         // Select format
         bi.format(role, cm);
 
@@ -1259,15 +1282,15 @@ public class EditMail {
         a.next_to_destination_selection_step(role, cm);
 
         // Close create search template popup
-        ds.create_search_template_name_Cancel(driver, key);
+        ds.create_search_template_name_Cancel();
 
         // Close browser
         driver.close();
     }
 
-    @Test(priority = 51)
+    @Test(priority = 53)
     @Parameters({"role"})
-    public void TC_51_input_available_search_template_name(String role) throws InterruptedException {
+    public void TC_53_input_available_search_template_name(String role) throws InterruptedException {
         // Select format
         bi.format(role, cm);
 
@@ -1284,15 +1307,15 @@ public class EditMail {
         a.next_to_destination_selection_step(role, cm);
 
         // Verify error message when create search template with available name.
-        ds.input_available_search_template_name(driver, key);
+        ds.input_available_search_template_name();
 
         // Close browser
         driver.close();
     }
 
-    @Test(priority = 52)
+    @Test(priority = 54)
     @Parameters({"role"})
-    public void TC_52_set_cancel_search_template_as_default(String role) throws InterruptedException {
+    public void TC_54_set_cancel_search_template_as_default(String role) throws InterruptedException {
         // Select format
         bi.format(role, cm);
 
@@ -1309,15 +1332,15 @@ public class EditMail {
         a.next_to_destination_selection_step(role, cm);
 
         // Verify can set and cancel template as default
-        ds.set_cancel_search_template_as_default(driver, key);
+        ds.set_cancel_search_template_as_default();
 
         // Close browser
         driver.close();
     }
 
-    @Test(priority = 53)
+    @Test(priority = 55)
     @Parameters({"role"})
-    public void TC_53_delete_search_template_OK(String role) throws InterruptedException {
+    public void TC_55_delete_search_template_OK(String role) throws InterruptedException {
         // Select format
         bi.format(role, cm);
 
@@ -1334,15 +1357,15 @@ public class EditMail {
         a.next_to_destination_selection_step(role, cm);
 
         // Verify that can delete template
-        ds.delete_search_template_OK(driver, key);
+        ds.delete_search_template_OK();
 
         // Close browser
         driver.close();
     }
 
-    @Test(priority = 54)
+    @Test(priority = 56)
     @Parameters({"role"})
-    public void TC_54_delete_search_template_Cancel(String role) throws InterruptedException {
+    public void TC_56_delete_search_template_Cancel(String role) throws InterruptedException {
         // Select format
         bi.format(role, cm);
 
@@ -1359,15 +1382,15 @@ public class EditMail {
         a.next_to_destination_selection_step(role, cm);
 
         // Close delete template popup
-        ds.delete_search_template_Cancel(driver, key);
+        ds.delete_search_template_Cancel();
 
         // Close browser
         driver.close();
     }
 
-    @Test(priority = 55)
+    @Test(priority = 57)
     @Parameters({"role"})
-    public void TC_55_reset_search_criteria(String role) throws InterruptedException {
+    public void TC_57_reset_search_criteria(String role) throws InterruptedException {
         // Select format
         bi.format(role, cm);
 
@@ -1384,15 +1407,15 @@ public class EditMail {
         a.next_to_destination_selection_step(role, cm);
 
         // Verify that can reset search condition
-        ds.reset_search_criteria(driver);
+        ds.reset_search_criteria();
 
         // Close browser
         driver.close();
     }
 
-    @Test(priority = 56)
+    @Test(priority = 58)
     @Parameters({"role", "partnerPIC_url"})
-    public void TC_56_link_to_partner_PIC_edit_from_destination_selection(String role, String partnerPIC_url) throws InterruptedException {
+    public void TC_58_link_to_partner_PIC_edit_from_destination_selection(String role, String partnerPIC_url) throws InterruptedException {
         // Select format
         bi.format(role, cm);
 
@@ -1424,9 +1447,9 @@ public class EditMail {
         driver.close();
     }
 
-    @Test(priority = 57)
+    @Test(priority = 59)
     @Parameters({"role"})
-    public void TC_57_pagination_destination_selection(String role) throws InterruptedException {
+    public void TC_59_pagination_destination_selection(String role) throws InterruptedException {
         // Select format
         bi.format(role, cm);
 
@@ -1489,7 +1512,7 @@ public class EditMail {
         ds.select_contact();
 
         // Next to Final confirmation step
-        ds.next_to_final_confirmation(role, cm);
+        ds.next_to_final_confirmation();
 
         // Click delete button => show "Do you want to delete this delivered mail
         // Click OK button => delivered mail should be deleted
@@ -1530,7 +1553,7 @@ public class EditMail {
         ds.select_contact();
 
         // Next to Final confirmation step
-        ds.next_to_final_confirmation(role, cm);
+        ds.next_to_final_confirmation();
 
         // Click delete button => show "Do you want to delete this delivered mail" popup
         // Click cancel button => close popup
@@ -1571,7 +1594,7 @@ public class EditMail {
         ds.select_contact();
 
         // Next to Final confirmation step
-        ds.next_to_final_confirmation(role, cm);
+        ds.next_to_final_confirmation();
 
         // Click make a copy button => create a copy mail and link to mail list page
         fc.make_a_copy(driver, key, url_mail_list);
@@ -1611,7 +1634,7 @@ public class EditMail {
         ds.select_contact();
 
         // Next to Final confirmation step
-        ds.next_to_final_confirmation(role, cm);
+        ds.next_to_final_confirmation();
 
         // Click save as draft button => show "Would you like to change this delivery email to Draft status" popup
         // Click OK button => Save delivered as draft status and link to mail list page
@@ -1652,7 +1675,7 @@ public class EditMail {
         ds.select_contact();
 
         // Next to Final confirmation step
-        ds.next_to_final_confirmation(role, cm);
+        ds.next_to_final_confirmation();
 
         // Click save as draft button => show "Would you like to change this delivery email to Draft status" popup
         // Click cancel button => close popup
@@ -1693,7 +1716,7 @@ public class EditMail {
         ds.select_contact();
 
         // Next to Final confirmation step
-        ds.next_to_final_confirmation(role, cm);
+        ds.next_to_final_confirmation();
 
         // Back to destination selection step
         fc.back_to_destination_selection_step(driver, key, role, cm);
@@ -1733,7 +1756,7 @@ public class EditMail {
         ds.select_contact();
 
         // Next to Final confirmation step
-        ds.next_to_final_confirmation(role, cm);
+        ds.next_to_final_confirmation();
 
         // Back to attachment step
         fc.back_to_attachment_step(driver, key, role, cm);
@@ -1773,7 +1796,7 @@ public class EditMail {
         ds.select_contact();
 
         // Next to Final confirmation step
-        ds.next_to_final_confirmation(role, cm);
+        ds.next_to_final_confirmation();
 
         // Back to basic information step
         fc.back_to_basic_information_step(driver, key, role, cm);
