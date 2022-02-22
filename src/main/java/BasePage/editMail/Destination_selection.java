@@ -244,9 +244,11 @@ public class Destination_selection {
     //** Delivery information **//
     public void delivery_information() {
         // Master, Administrator, Responsible person, Leader, Member
-        if (cm.authorized(role, cm.role_list(5)) && ((delivery_type.get(0).isSelected()) || (delivery_type.get(1).isSelected()) || (delivery_type.get(2).isSelected()))) {
+        if (cm.authorized(role, cm.role_list(5))) {
             // Reset search criteria
-            reset_search_criteria_button.click();
+            if ((delivery_type.get(0).isSelected()) || (delivery_type.get(1).isSelected()) || (delivery_type.get(2).isSelected())) {
+                reset_search_criteria_button.click();
+            }
 
             //** Delivery information **//
             //** Delivery type **//
@@ -284,9 +286,7 @@ public class Destination_selection {
 
                     // select delivery skill details from 1 to number_of_delivery_skill_details
                     for (int i = 0; i <= number_of_delivery_skill_details; i++) {
-                        if (i > 0) {
-                            matter_delivery_skill_details_dev.get(i).click();
-                        }
+                        matter_delivery_skill_details_dev.get(i).click();
                     }
                 }
 
@@ -322,7 +322,7 @@ public class Destination_selection {
             }
 
             // Delivery type: Deliver personnel
-            else if ((delivery_type_id == 1) && (!delivery_type.get(1).isSelected())) {
+            else if (delivery_type_id == 1) {
                 // ** Delivery area **//
                 // 0: Hokaido, 1: Tohoku, 2: Kanto, 3:Chubu , 4:Tokai , 5:Kansai , 6:Shikoku , 7:China , 8:Kyushu , 9: others
                 int number_of_delivery_area = RandomUtils.nextInt(10);
@@ -334,7 +334,7 @@ public class Destination_selection {
 
                 //** Delivery occupation **//
                 // 0: Development, 1:Infrastructure, 2: Others
-                int delivery_occupation = RandomUtils.nextInt(3) + 1;
+                int delivery_occupation = RandomUtils.nextInt(3);
 
                 // select delivery occupation from 1 to delivery_occupation
                 for (int i = 0; i <= delivery_occupation; i++) {
@@ -569,20 +569,17 @@ public class Destination_selection {
         }
     }
 
-    public void deliver_the_matter_do_not_select_condition() throws InterruptedException {
+    public void deliver_the_matter_do_not_select_condition() {
         // Reset search criteria
         if ((delivery_type.get(0).isSelected()) || (delivery_type.get(1).isSelected()) || (delivery_type.get(2).isSelected())) {
             reset_search_criteria_button.click();
         }
 
         // Delivery type: Deliver the matter
-        key.moveToElement(delivery_type.get(0)).click().build().perform();
+        delivery_type.get(0).click();
 
         // Click Search button
-        sleep(1000);
         search_button.click();
-//        key.moveToElement(search_button).click().build().perform();
-//        wait.until(ExpectedConditions.elementToBeClickable(search_button)).click();
 
         //Delivery area
         String text1 = wait.until(ExpectedConditions.visibilityOf(delivery_area_error)).getText();
@@ -881,11 +878,6 @@ public class Destination_selection {
     }
 
     public void do_not_select_account_status(String role, Common cm) {
-        // Reset search criteria
-        if ((delivery_type.get(0).isSelected()) || (delivery_type.get(1).isSelected()) || (delivery_type.get(2).isSelected())) {
-            reset_search_criteria_button.click();
-        }
-
         // Select delivery information
         delivery_information();
 
@@ -901,11 +893,6 @@ public class Destination_selection {
     }
 
     public void do_not_select_in_house_person_in_charge(String role, Common cm) {
-        // Reset search criteria
-        if ((delivery_type.get(0).isSelected()) || (delivery_type.get(1).isSelected()) || (delivery_type.get(2).isSelected())) {
-            reset_search_criteria_button.click();
-        }
-
         // Select delivery information
         delivery_information();
 
@@ -921,11 +908,6 @@ public class Destination_selection {
     }
 
     public void do_not_select_compatibility(String role, Common cm) {
-        // Reset search criteria
-        if ((delivery_type.get(0).isSelected()) || (delivery_type.get(1).isSelected()) || (delivery_type.get(2).isSelected())) {
-            reset_search_criteria_button.click();
-        }
-
         // Select delivery information
         delivery_information();
 
@@ -941,11 +923,6 @@ public class Destination_selection {
     }
 
     public void do_not_select_tag(String role, Common cm) {
-        // Reset search criteria
-        if ((delivery_type.get(0).isSelected()) || (delivery_type.get(1).isSelected()) || (delivery_type.get(2).isSelected())) {
-            reset_search_criteria_button.click();
-        }
-
         // Select delivery information
         delivery_information();
 
@@ -961,11 +938,6 @@ public class Destination_selection {
     }
 
     public void select_exceed_5_tags(String role, Common cm, Actions key) throws InterruptedException {
-        // Reset search criteria
-        if ((delivery_type.get(0).isSelected()) || (delivery_type.get(1).isSelected()) || (delivery_type.get(2).isSelected())) {
-            reset_search_criteria_button.click();
-        }
-
         // Select delivery information
         delivery_information();
 

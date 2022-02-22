@@ -14,7 +14,7 @@
 <!--                    <parameter name="password" value="12345678a"/>-->
                     <parameter name="password" value="lc1SHiPupKndwD@"/>
                     <parameter name="role" value="Master"/>
-                    <parameter name="url" value="https://dev.app.cmrb.jp/scheduledMails/2d0d4b14-afe8-4c66-82d4-236a4d259f4f"/>
+                    <parameter name="url" value="https://dev.app.cmrb.jp/scheduledMails/8e9874f7-cf03-40f2-a272-8eb778838d38"/>
 <!--                    <parameter name="url" value="https://dev.app.cmrb.jp/scheduledMails/register"/>-->
                     <parameter name="url_mail_list" value="https://dev.app.cmrb.jp/scheduledMails"/>
                     <parameter name="partnerPIC_url" value="https://test.app.cmrb.jp/contacts/"/>
@@ -48,7 +48,7 @@
 <!--                    <include name="TC_23_would_you_like_to_change_this_delivery_email_to_Draft_status_OK_attachment"/>-->
 <!--                    <include name="TC_24_would_you_like_to_change_this_delivery_email_to_Draft_status_Cancel_attachment"/>-->
 
-<!--                    <include name="TC_25_deliver_the_matter_do_not_select_condition"/>-->
+                    <include name="TC_25_deliver_the_matter_do_not_select_condition"/>
 <!--                    <include name="TC_26_deliver_the_matter_only_select_delivery_occupation_development"/>-->
 <!--                    <include name="TC_27_deliver_the_matter_only_select_delivery_occupation_infrastructure"/>-->
 <!--                    <include name="TC_28_deliver_the_matter_only_select_delivery_occupation_others"/>-->

@@ -13,6 +13,8 @@ import org.testng.annotations.Test;
 
 import java.io.IOException;
 
+import static java.lang.Thread.sleep;
+
 public class EditMail {
 
     Common cm;
