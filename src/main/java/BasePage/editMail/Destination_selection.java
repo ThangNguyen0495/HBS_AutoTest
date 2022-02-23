@@ -286,7 +286,7 @@ public class Destination_selection {
             //** Delivery information **//
             //** Delivery type **//
             // 0: Deliver the matter, 1: Deliver personnel, 2: Deliver information
-            int delivery_type_id = RandomUtils.nextInt(3);
+            int delivery_type_id = 2;//RandomUtils.nextInt(3);
             key.moveToElement(delivery_type.get(delivery_type_id)).click().build().perform();
 
             // Search destination selection by delivery type
@@ -577,7 +577,7 @@ public class Destination_selection {
             // 0: select all contact, 1: select first contact
             int contact = RandomUtils.nextInt(2);
             // Scroll down
-            ((JavascriptExecutor) driver).executeScript("scroll(0, 1250);");
+            ((JavascriptExecutor) driver).executeScript("scroll(0, 750);");
             // select all contact
             if (contact == 0) {
                 select_all_contact.click();

@@ -52,7 +52,7 @@ public class EditMail {
     }
 
     @Test(priority = 1)
-    public void TC01_process_create_mail() throws InterruptedException, IOException {
+    public void TC01_process_edit_mail() throws InterruptedException, IOException {
         //****** 基本情報 ****** //
         // Basic information
         // Format

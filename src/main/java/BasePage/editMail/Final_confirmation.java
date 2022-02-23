@@ -16,7 +16,6 @@ import java.util.List;
 import static java.lang.Thread.sleep;
 
 public class Final_confirmation {
-    public static int current_id;
     @FindBy(css = "table.ant-picker-content>tbody>tr>td")
     List<WebElement> calendar;
 
@@ -75,6 +74,8 @@ public class Final_confirmation {
     String role;
     Actions key;
 
+    public int current_id;
+
     public Final_confirmation(WebDriver driver, Actions key, String role, Common cm, String url_mail_list) {
         this.driver = driver;
         this.cm = cm;
@@ -88,8 +89,7 @@ public class Final_confirmation {
     public Boolean check_date(int id) {
         return calendar.get(id).getAttribute("class").contains("disable");
     }
-
-    public WebElement date_element() {
+    public int date_id() {
         int id = 0;
         while (check_date(id)) {
             id++;
@@ -99,12 +99,12 @@ public class Final_confirmation {
                 next_month.click();
             }
         }
-        current_id = id;
-        return calendar.get(current_id);
+        return id;
     }
 
-    public WebElement next_date_element() {
-        int id = current_id;
+    public int next_date_id() {
+        int id;
+        id = current_id + 1;
 
         while (check_date(id)) {
             id++;
@@ -112,9 +112,8 @@ public class Final_confirmation {
                 id = 0;
                 next_month.click();
             }
-            current_id = id;
         }
-        return calendar.get(current_id);
+        return id;
     }
 
     public Boolean check_time() throws InterruptedException {
@@ -153,7 +152,8 @@ public class Final_confirmation {
         if (cm.authorized(role, cm.role_list(5))) {
             // Date
             wait.until(ExpectedConditions.visibilityOf(date)).click();
-            date_element().click();
+            current_id = date_id();
+            wait.until(ExpectedConditions.elementToBeClickable(calendar.get(current_id))).click();
         }
     }
 
@@ -177,11 +177,12 @@ public class Final_confirmation {
                 if (new_hour < 8) {
                     new_hour = 8;
                     new_min = 0;
-                } else if (new_hour > 19) {
+                } else if (new_hour >= 19) {
                     new_hour = 8;
                     new_min = 0;
                     wait.until(ExpectedConditions.visibilityOf(date)).click();
-                    next_date_element().click();
+                    current_id = next_date_id();
+                    wait.until(ExpectedConditions.elementToBeClickable(calendar.get(current_id))).click();
                 }
                 time.click();
                 for (int i = 0; i < 10; i++) {
@@ -190,6 +191,7 @@ public class Final_confirmation {
                 // Select time
                 time.sendKeys(time_str(new_min, new_hour));
                 // Click 決 定 button
+//                key.sendKeys(Keys.ENTER).perform();
                 wait.until(ExpectedConditions.elementToBeClickable(decisive_button)).click();
 
                 //** 配信時刻設定 Popup **//

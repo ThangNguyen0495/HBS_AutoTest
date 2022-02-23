@@ -104,7 +104,7 @@ public class CreateMail {
         fc.open_delivery_time_setting_popup();
 
         // Select date
-        fc.select_date("");
+        fc.select_date();
 
         // Select time and select again when time incorrect
         fc.select_time_and_select_again_when_time_incorrect();
