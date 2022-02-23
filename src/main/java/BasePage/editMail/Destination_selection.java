@@ -224,28 +224,28 @@ public class Destination_selection {
 
     @FindBy(css = "div.ant-message-error>span:nth-child(2)")
     WebElement message_error;
-    
+
     @FindBy(css = "span:nth-child(4)>button")
     WebElement save_button_disable;
-    
+
     @FindBy(css = "div:nth-child(2) > div > div > div > div > span.ant-select-selection-item")
     WebElement template_dropdown;
-    
+
     @FindBy(css = "div > button[type]:nth-child(2)")
     WebElement delete_template_button;
-    
+
     @FindBy(css = "div>button[type]:nth-child(4)")
     WebElement save_button;
-    
+
     @FindBy(css = "div:nth-child(3) > div > div:nth-child(2) > button")
     WebElement ok_button_template;
-    
+
     @FindBy(css = "div:nth-child(3) > div > div:nth-child(1) > button")
     WebElement cancel_button_template;
-    
+
     @FindBy(css = "div > button[type]:nth-child(3)")
     WebElement set_template_default;
-    
+
     @FindBy(css = "tr.ant-table-row:nth-child(1) > td:nth-child(2)")
     WebElement first_partner_PIC;
 
@@ -265,13 +265,13 @@ public class Destination_selection {
 
     public Destination_selection(WebDriver driver, Actions key, Common cm, String role, String url_mail_list, String partnerPIC_url) {
         this.driver = driver;
-        wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        PageFactory.initElements(driver, this);
         this.cm = cm;
         this.key = key;
         this.role = role;
         this.url_mail_list = url_mail_list;
         this.partnerPIC_url = partnerPIC_url;
+        wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        PageFactory.initElements(driver, this);
     }
 
     //** Delivery information **//
@@ -286,8 +286,8 @@ public class Destination_selection {
             //** Delivery information **//
             //** Delivery type **//
             // 0: Deliver the matter, 1: Deliver personnel, 2: Deliver information
-            int delivery_type_id = 2;//RandomUtils.nextInt(3);
-            delivery_type.get(delivery_type_id).click();
+            int delivery_type_id = RandomUtils.nextInt(3);
+            key.moveToElement(delivery_type.get(delivery_type_id)).click().build().perform();
 
             // Search destination selection by delivery type
             // Delivery type: Deliver the matter
@@ -297,7 +297,7 @@ public class Destination_selection {
                 int number_of_delivery_area = RandomUtils.nextInt(10);
 
                 //select delivery area from 1 to number_of_delivery_area
-                for (int i = 0; i < number_of_delivery_area; i++) {
+                for (int i = 0; i <= number_of_delivery_area; i++) {
                     delivery_area.get(i).click();
                 }
 
@@ -382,7 +382,7 @@ public class Destination_selection {
 
                         // select details of delivery occupation from 1 to detail_of_delivery_occupation
                         for (int j = 0; j <= detail_of_delivery_occupation; j++) {
-                            personnel_detail_of_delivery_occupation_dev.get(i).click();
+                            personnel_detail_of_delivery_occupation_dev.get(j).click();
                         }
 
                         // Delivery skill details
@@ -550,7 +550,7 @@ public class Destination_selection {
         }
     }
 
-    public void select_contact() {
+    public Boolean check_result_is_null() {
         // check null = "True" => No partner PIC
         boolean check_null = false;
         try {
@@ -558,9 +558,21 @@ public class Destination_selection {
         } catch (NoSuchElementException ex) {
             check_null = true;
         }
+        return check_null;
+    }
 
+    public void select_contact() throws InterruptedException {
         // Master, Administrator, Responsible person, Leader, Member
-        if (cm.authorized(role, cm.role_list(5)) && (!check_null)) {
+        if (cm.authorized(role, cm.role_list(5))) {
+            while (check_result_is_null()) {
+                System.out.println("Can not find partner PIC with this condition.");
+                System.out.println("Please add more data or change your search condition.");
+                System.out.println("Search condition have been changed and try again, please wait ...");
+                System.out.println("-----------------------------------------------------------------");
+                delivery_information();
+                commitment();
+                search_contact_by_condition();
+            }
             // Select contact
             // 0: select all contact, 1: select first contact
             int contact = RandomUtils.nextInt(2);
@@ -574,9 +586,6 @@ public class Destination_selection {
             else {
                 select_first_contact.click();
             }
-        } else {
-            System.out.println("Can not find partner PIC with this condition.");
-            System.out.println("Please add more data or change your search condition.");
         }
     }
 
@@ -597,8 +606,7 @@ public class Destination_selection {
             next_step_button.click();
 
             // Check current tab
-            String text = wait.until(ExpectedConditions.visibilityOf(message)).getText();
-            Assert.assertEquals(text, "アイテムが更新されました", "[Failed] Can not next to Final confirmation from Destination selection.");
+            Assert.assertTrue(step_list.get(3).isEnabled(), "[Failed] Can not next to Final confirmation from Destination selection.");
         }
     }
 
@@ -1194,7 +1202,7 @@ public class Destination_selection {
         wait.until(ExpectedConditions.elementToBeClickable(save_button)).click();
 
         int length_of_half = RandomUtils.nextInt(50) + 1;
-        String template_name_text = RandomStringUtils.randomAlphabetic(length_of_half) 
+        String template_name_text = RandomStringUtils.randomAlphabetic(length_of_half)
                 + RandomStringUtils.random(51 - length_of_half, 0x4e00, 0x4f80, true, false);
         // Input search template name exceed mix 50 half and full width characters and verify error message
         wait.until(ExpectedConditions.elementToBeClickable(template_name))
@@ -1376,7 +1384,7 @@ public class Destination_selection {
         Assert.assertFalse(delivery_type.get(delivery_type_id).isSelected(), "[Failed] Can not reset search condition.");
     }
 
-    public void link_to_partner_PIC_edit_from_destination_selection(WebDriver driver, String partnerPIC_url) throws InterruptedException {
+    public void link_to_partner_PIC_edit_from_destination_selection() throws InterruptedException {
         // Scroll down
         ((JavascriptExecutor) driver).executeScript("scroll(0, 550);");
         sleep(1000);

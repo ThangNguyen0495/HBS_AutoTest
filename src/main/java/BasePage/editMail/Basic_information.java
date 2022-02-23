@@ -74,15 +74,25 @@ public class Basic_information {
     WebElement save_as_draft_button;
 
     @FindBy(css = "div.ant-row> div:nth-child(2) > button.ant-btn-primary")
-    WebElement update_button;
 
-    public Basic_information(WebDriver driver) {
+    WebElement update_button;
+    String role;
+    Common cm;
+    String url_mail_list;
+    Actions key;
+
+
+    public Basic_information(WebDriver driver, Actions key, String role, Common cm, String url_mail_list) {
         this.driver = driver;
+        this.key = key;
+        this.role = role;
+        this.cm = cm;
+        this.url_mail_list = url_mail_list;
         wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         PageFactory.initElements(driver, this);
     }
 
-    public void format(String role, Common cm) throws InterruptedException {
+    public void format() throws InterruptedException {
         // Master, Administrator, Responsible person, Leader, Member
         if (cm.authorized(role, cm.role_list(5))) {
             // waiting for loading distributor list
@@ -95,7 +105,7 @@ public class Basic_information {
         }
     }
 
-    public void distributor(Actions key, String role, Common cm) throws InterruptedException {
+    public void distributor() throws InterruptedException {
         // Master, Administrator, Responsible person, Leader, Member
         if (cm.authorized(role, cm.role_list(5))) {
             // Distributor
@@ -110,7 +120,7 @@ public class Basic_information {
         }
     }
 
-    public void subject(String role, Common cm) {
+    public void subject() {
         // Master, Administrator, Responsible person, Leader, Member
         if (cm.authorized(role, cm.role_list(5))) {
             // Delete old subject
@@ -121,7 +131,7 @@ public class Basic_information {
         }
     }
 
-    public void insertion(String role, Common cm) {
+    public void insertion() {
         // Master, Administrator, Responsible person, Leader, Member
         if (cm.authorized(role, cm.role_list(5))) {
             // Delete old insertion
@@ -132,7 +142,7 @@ public class Basic_information {
         }
     }
 
-    public void send_a_copy_to_the_distributor(String role, Common cm) {
+    public void send_a_copy_to_the_distributor() {
         // Master, Administrator, Responsible person, Leader, Member
         if (cm.authorized(role, cm.role_list(5))) {
             // Send a copy to the distributor
@@ -144,7 +154,7 @@ public class Basic_information {
         }
     }
 
-    public void next_to_attachment_step(String role, Common cm) throws InterruptedException {
+    public void next_to_attachment_step() throws InterruptedException {
         // Master, Administrator, Responsible person, Leader, Member
         if (cm.authorized(role, cm.role_list(5))) {
             // Next to 添付ファイル_Step
@@ -175,7 +185,13 @@ public class Basic_information {
     // Subject
     public void leave_subject_blank() {
         wait.until(ExpectedConditions.elementToBeClickable(subject)).sendKeys(Keys.CONTROL + "a", Keys.DELETE);
-        String text = wait.until(ExpectedConditions.visibilityOf(subject_error)).getText();
+        String text = "Error message not showing.";
+        try {
+            wait.until(ExpectedConditions.visibilityOf(subject_error));
+        }
+        catch (TimeoutException ex) {
+            System.out.println("No error message shown or occurred error. \nPlease run this test again and verify.");
+        }
         Assert.assertEquals(text, "必須項目です。", "[Subject] Message do not match");
     }
 
@@ -274,13 +290,13 @@ public class Basic_information {
     }
 
     // Update button
-    public void update_delivery_with_valid_data(String url_mail_list) throws InterruptedException {
+    public void update_delivery_with_valid_data() throws InterruptedException {
         update_button.click();
         sleep(1000);
         Assert.assertEquals(driver.getCurrentUrl(), url_mail_list, "[Update] Can not update delivered email.");
     }
 
-    public void do_you_want_to_delete_this_delivered_email_OK(WebDriver driver, String url_mail_list) throws InterruptedException {
+    public void do_you_want_to_delete_this_delivered_email_OK() throws InterruptedException {
         // Click delete button
         delete_button.click();
 
@@ -312,7 +328,7 @@ public class Basic_information {
         Assert.assertFalse(check, "[Failed] Can not close delete delivered email popup");
     }
 
-    public void make_a_copy(WebDriver driver, String url_mail_list) throws InterruptedException {
+    public void make_a_copy() throws InterruptedException {
         // Click make a copy button
         make_a_copy_button.click();
 
@@ -321,7 +337,7 @@ public class Basic_information {
         Assert.assertEquals(driver.getCurrentUrl(), url_mail_list, "[Failed] Can not make a copy of delivered email.");
     }
 
-    public void would_you_like_to_change_this_delivery_email_to_Draft_status_OK(WebDriver driver, String url_mail_list) throws InterruptedException {
+    public void would_you_like_to_change_this_delivery_email_to_Draft_status_OK() throws InterruptedException {
         // Click save as draft button
         save_as_draft_button.click();
 

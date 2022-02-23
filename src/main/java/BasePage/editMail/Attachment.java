@@ -54,23 +54,32 @@ public class Attachment {
 
     WebDriver driver;
     WebDriverWait wait;
+    String role;
+    Common cm;
+    int capacity;
 
-    public Attachment(WebDriver driver) {
+    String url_mail_list;
+
+    public Attachment(WebDriver driver, String role, Common cm, int capacity, String url_mail_list) {
         this.driver = driver;
+        this.capacity = capacity;
+        this.role = role;
+        this.cm = cm;
+        this.url_mail_list = url_mail_list;
         wait = new WebDriverWait(driver, Duration.ofSeconds(60));
         PageFactory.initElements(driver, this);
     }
 
-    public void generate_test_file(long capacity) throws IOException {
+    public void generate_test_file() throws IOException {
         // Generate test file
         // capacity: MB
-        new RandomAccessFile("text.txt", "rw").setLength(capacity * 1024 * 1024);
-        new RandomAccessFile("excel.xlsx", "rw").setLength(capacity * 1024 * 1024);
-        new RandomAccessFile("word.docx", "rw").setLength(capacity * 1024 * 1024);
-        new RandomAccessFile("pdf.pdf", "rw").setLength(capacity * 1024 * 1024);
+        new RandomAccessFile("text.txt", "rw").setLength((long) capacity * 1024 * 1024);
+        new RandomAccessFile("excel.xlsx", "rw").setLength((long) capacity * 1024 * 1024);
+        new RandomAccessFile("word.docx", "rw").setLength((long) capacity * 1024 * 1024);
+        new RandomAccessFile("pdf.pdf", "rw").setLength((long) capacity * 1024 * 1024);
     }
 
-    public void upload_file(String role, Common cm) {
+    public void upload_file() {
         // Master, Administrator, Responsible person, Leader, Member
         if (cm.authorized(role, cm.role_list(5))) {
             // Wait hide message
@@ -92,7 +101,7 @@ public class Attachment {
         }
     }
 
-    public void next_to_destination_selection_step(String role, Common cm) throws InterruptedException {
+    public void next_to_destination_selection_step() throws InterruptedException {
         // Master, Administrator, Responsible person, Leader, Member
         if (cm.authorized(role, cm.role_list(5))) {
             // Next to 宛先選択_Step
@@ -108,7 +117,7 @@ public class Attachment {
         }
     }
 
-    public void back_to_basic_information_step(String role, Common cm) throws InterruptedException {
+    public void back_to_basic_information_step() throws InterruptedException {
         // Master, Administrator, Responsible person, Leader, Member
         if (cm.authorized(role, cm.role_list(5))) {
 
@@ -126,14 +135,14 @@ public class Attachment {
     }
 
     // Update button
-    public void update_delivery_with_valid_data(String url_mail_list) throws InterruptedException {
+    public void update_delivery_with_valid_data() throws InterruptedException {
         update_button.click();
         sleep(1000);
         Assert.assertEquals(driver.getCurrentUrl(), url_mail_list, "[Update] Can not update delivered email.");
     }
 
-    public void upload_maximum_capacity_1_file(long capacity) throws IOException {
-        generate_test_file(capacity);
+    public void upload_maximum_capacity_1_file() throws IOException {
+        generate_test_file();
         // Waiting for hide previous message
         wait.until(ExpectedConditions.invisibilityOf(message));
         upload_file.sendKeys(System.getProperty("user.dir") + "\\text.txt");
@@ -142,8 +151,8 @@ public class Attachment {
                 + capacity + "MB.\n Actual message: " + text + "\n Expect message: contains ファイルがアップロードされました");
     }
 
-    public void upload_maximum_capacity_multi_file(long capacity) throws IOException {
-        generate_test_file(capacity);
+    public void upload_maximum_capacity_multi_file() throws IOException {
+        generate_test_file();
         // Waiting for hid previous message
         wait.until(ExpectedConditions.invisibilityOf(message));
         upload_file.sendKeys(System.getProperty("user.dir") + "\\text.txt");
@@ -155,8 +164,8 @@ public class Attachment {
                 + capacity + "MB.\n Actual message: " + text + "\n Expect message: contains ファイルがアップロードされました");
     }
 
-    public void upload_exceed_maximum_capacity_1_file(long capacity) throws IOException {
-        generate_test_file(capacity + 1);
+    public void upload_exceed_maximum_capacity_1_file() throws IOException {
+        generate_test_file();
         // Waiting for hid previous message
         wait.until(ExpectedConditions.invisibilityOf(message));
         upload_file.sendKeys(System.getProperty("user.dir") + "\\excel.xlsx");
@@ -165,8 +174,8 @@ public class Attachment {
                 + "\n Actual message: " + text + "\n Expect message: contains を超えるメールを配信することはできません");
     }
 
-    public void upload_exceed_maximum_capacity_multi_file(long capacity) throws IOException {
-        generate_test_file(capacity + 1);
+    public void upload_exceed_maximum_capacity_multi_file() throws IOException {
+        generate_test_file();
         // Waiting for hid previous message
         wait.until(ExpectedConditions.invisibilityOf(message));
         upload_file.sendKeys(System.getProperty("user.dir") + "\\text.txt");
@@ -178,7 +187,7 @@ public class Attachment {
                 + "\n Actual message: " + text + "\n Expect message: contains を超えるメールを配信することはできません");
     }
 
-    public void do_you_want_to_delete_this_delivered_email_OK(WebDriver driver, String url_mail_list) throws InterruptedException {
+    public void do_you_want_to_delete_this_delivered_email_OK() throws InterruptedException {
         // Click delete button
         delete_button.click();
 
@@ -211,7 +220,7 @@ public class Attachment {
         Assert.assertFalse(check, "[Failed] Can not close delete delivered email popup.");
     }
 
-    public void make_a_copy(WebDriver driver, String url_mail_list) throws InterruptedException {
+    public void make_a_copy() throws InterruptedException {
         // Click make a copy button
         make_a_copy_button.click();
 
@@ -220,7 +229,7 @@ public class Attachment {
         Assert.assertEquals(driver.getCurrentUrl(), url_mail_list, "[Failed] Can not make a copy of delivered email.");
     }
 
-    public void would_you_like_to_change_this_delivery_email_to_Draft_status_OK(WebDriver driver, String url_mail_list) throws InterruptedException {
+    public void would_you_like_to_change_this_delivery_email_to_Draft_status_OK() throws InterruptedException {
         // Click save as draft button
         save_as_draft_button.click();
 
