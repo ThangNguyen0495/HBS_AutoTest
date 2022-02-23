@@ -14,9 +14,23 @@ import java.time.Duration;
 import static java.lang.Thread.sleep;
 
 public class Destination_selection {
+    WebDriver driver;
+    String role;
+    String url_mail_list;
+    Actions key;
+    Common cm;
+    String partnerPIC_url;
+    public Destination_selection(WebDriver driver, Actions key, String role, Common cm, String url_mail_list, String partnerPIC_url) {
+        this.driver = driver;
+        this.key = key;
+        this.role = role;
+        this.cm = cm;
+        this.url_mail_list = url_mail_list;
+        this.partnerPIC_url = partnerPIC_url;
+    }
 
     //** Delivery information **//
-    public void delivery_information(WebDriver driver, String role, Common cm) {
+    public void delivery_information() {
         // Master, Administrator, Responsible person, Leader, Member
         if (cm.authorized(role, cm.role_list(5))) {
             //** Delivery information **//
@@ -185,7 +199,7 @@ public class Destination_selection {
     }
 
     //** Commitment **//
-    public void account_status(WebDriver driver) {
+    public void account_status() {
         // Account status
         // 0: Do not search by Account status, 1: add Account status conditions
         int account_status = RandomUtils.nextInt(2);
@@ -201,7 +215,7 @@ public class Destination_selection {
         }
     }
 
-    public void in_house_person_in_charge(WebDriver driver, Actions key) throws InterruptedException {
+    public void in_house_person_in_charge() throws InterruptedException {
         // In-house person in charge
         // 0: Do not search by In-house person in charge, 1: add In-house person in charge condition
         int in_house_person_in_charge = RandomUtils.nextInt(2);
@@ -220,7 +234,7 @@ public class Destination_selection {
         }
     }
 
-    public void compatibility(WebDriver driver, Actions key) {
+    public void compatibility() {
         // Compatibility
         // 0: Do not search by Compatibility, 1: add Compatibility condition
         int compatibility = RandomUtils.nextInt(2);
@@ -248,7 +262,7 @@ public class Destination_selection {
         }
     }
 
-    public void tag(WebDriver driver, Actions key) throws InterruptedException {
+    public void tag() throws InterruptedException {
         // Tag
         // 0: Do not search by Tag, 1: add Tag condition
         int tag = RandomUtils.nextInt(2);
@@ -276,7 +290,7 @@ public class Destination_selection {
         }
     }
 
-    public void search_contact_by_condition(WebDriver driver, Actions key, String role, Common cm) throws InterruptedException {
+    public void search_contact_by_condition() throws InterruptedException {
         // Master, Administrator, Responsible person, Leader, Member
         if (cm.authorized(role, cm.role_list(5))) {
             // Search
@@ -288,7 +302,7 @@ public class Destination_selection {
         }
     }
 
-    public void select_contact(WebDriver driver, String role, Common cm) {
+    public void select_contact() {
         // check null = "True" => No partner PIC
         boolean check_null = false;
         try {
@@ -318,17 +332,17 @@ public class Destination_selection {
         }
     }
 
-    public void commitment(WebDriver driver, Actions key, String role, Common cm) throws InterruptedException {
+    public void commitment() throws InterruptedException {
         // Master, Administrator, Responsible person, Leader, Member
         if (cm.authorized(role, cm.role_list(5))) {
-            account_status(driver);
-            in_house_person_in_charge(driver, key);
-            compatibility(driver, key);
-            tag(driver, key);
+            account_status();
+            in_house_person_in_charge();
+            compatibility();
+            tag();
         }
     }
 
-    public void next_to_final_confirmation(WebDriver driver, String role, Common cm) {
+    public void next_to_final_confirmation() {
         // Master, Administrator, Responsible person, Leader, Member
         if (cm.authorized(role, cm.role_list(5))) {
             // Next to 最終確認_step
@@ -341,7 +355,7 @@ public class Destination_selection {
         }
     }
 
-    public void deliver_the_matter_do_not_select_condition(WebDriver driver) {
+    public void deliver_the_matter_do_not_select_condition() {
         // Delivery type: Deliver the matter
         driver.findElement(By.cssSelector("#searchtype > label:nth-child(1) > span > input")).click();
 
@@ -367,7 +381,7 @@ public class Destination_selection {
         Assert.assertEquals(text3, "必ず1つ選択してください", "[Delivery commercial distribution] Message do not match");
     }
 
-    public void deliver_the_matter_only_select_delivery_occupation_development(WebDriver driver) {
+    public void deliver_the_matter_only_select_delivery_occupation_development() {
         // Delivery type: Deliver the matter
         driver.findElement(By.cssSelector("#searchtype > label:nth-child(1) > span > input")).click();
 
@@ -402,7 +416,7 @@ public class Destination_selection {
         Assert.assertEquals(text4, "必ず1つ選択してください", "[Delivery commercial distribution] Message do not match");
     }
 
-    public void deliver_the_matter_only_select_delivery_occupation_infrastructure(WebDriver driver) {
+    public void deliver_the_matter_only_select_delivery_occupation_infrastructure() {
         // Delivery type: Deliver the matter
         driver.findElement(By.cssSelector("#searchtype > label:nth-child(1) > span > input")).click();
 
@@ -437,7 +451,7 @@ public class Destination_selection {
         Assert.assertEquals(text4, "必ず1つ選択してください", "[Delivery commercial distribution] Message do not match");
     }
 
-    public void deliver_the_matter_only_select_delivery_occupation_others(WebDriver driver) {
+    public void deliver_the_matter_only_select_delivery_occupation_others() {
         // Delivery type: Deliver the matter
         driver.findElement(By.cssSelector("#searchtype > label:nth-child(1) > span > input")).click();
 
@@ -469,7 +483,7 @@ public class Destination_selection {
     /**
      *
      */
-    public void deliver_the_personnel_do_not_select_condition(WebDriver driver) {
+    public void deliver_the_personnel_do_not_select_condition() {
         // Delivery type: Deliver the personnel
         driver.findElement(By.cssSelector("#searchtype > label:nth-child(2) > span > input")).click();
 
@@ -501,7 +515,7 @@ public class Destination_selection {
         Assert.assertEquals(text4, "必ず1つ選択してください", "[Delivery commercial distribution] Message do not match");
     }
 
-    public void deliver_the_personnel_only_select_delivery_occupation_development(WebDriver driver) {
+    public void deliver_the_personnel_only_select_delivery_occupation_development() {
         // Delivery type: Deliver the personnel
         driver.findElement(By.cssSelector("#searchtype > label:nth-child(2) > span > input")).click();
 
@@ -542,7 +556,7 @@ public class Destination_selection {
         Assert.assertEquals(text5, "必ず1つ選択してください", "[Delivery commercial distribution] Message do not match");
     }
 
-    public void deliver_the_personnel_only_select_delivery_occupation_infrastructure(WebDriver driver) {
+    public void deliver_the_personnel_only_select_delivery_occupation_infrastructure() {
         // Delivery type: Deliver the personnel
         driver.findElement(By.cssSelector("#searchtype > label:nth-child(2) > span > input")).click();
 
@@ -583,7 +597,7 @@ public class Destination_selection {
         Assert.assertEquals(text5, "必ず1つ選択してください", "[Delivery commercial distribution] Message do not match");
     }
 
-    public void deliver_the_personnel_only_select_delivery_occupation_others(WebDriver driver) {
+    public void deliver_the_personnel_only_select_delivery_occupation_others() {
         // Delivery type: Deliver the personnel
         driver.findElement(By.cssSelector("#searchtype > label:nth-child(2) > span > input")).click();
 
@@ -618,7 +632,7 @@ public class Destination_selection {
         Assert.assertEquals(text4, "必ず1つ選択してください", "[Delivery commercial distribution] Message do not match");
     }
 
-    public void deliver_the_personnel_select_delivery_occupation_development_infrastructure_and_others(WebDriver driver) {
+    public void deliver_the_personnel_select_delivery_occupation_development_infrastructure_and_others() {
         // Delivery type: Deliver the personnel
         driver.findElement(By.cssSelector("#searchtype > label:nth-child(2) > span > input")).click();
 
@@ -685,9 +699,9 @@ public class Destination_selection {
 
     }
 
-    public void do_not_select_account_status(WebDriver driver, String role, Common cm) {
+    public void do_not_select_account_status() {
         // Select delivery information
-        delivery_information(driver, role, cm);
+        delivery_information();
 
         // Account status: ON
         driver.findElement(By.cssSelector("div:nth-child(2) > div.ant-col.ant-col-19.ant-form-item-control > div > div > div > div > button")).click();
@@ -702,9 +716,9 @@ public class Destination_selection {
         Assert.assertEquals(text, "必ず1つ選択してください", "[Account status] Message do not match");
     }
 
-    public void do_not_select_in_house_person_in_charge(WebDriver driver, String role, Common cm) {
+    public void do_not_select_in_house_person_in_charge() {
         // Select delivery information
-        delivery_information(driver, role, cm);
+        delivery_information();
 
         // In-house person in charge: ON
         driver.findElement(By.cssSelector("div:nth-child(3) > div > div > div > div > div > div > button")).click();
@@ -719,9 +733,9 @@ public class Destination_selection {
         Assert.assertEquals(text, "必ず選択してください", "[In-house person in charge] Message do not match");
     }
 
-    public void do_not_select_compatibility(WebDriver driver, String role, Common cm) {
+    public void do_not_select_compatibility() {
         // Select delivery information
-        delivery_information(driver, role, cm);
+        delivery_information();
 
         // Compatibility: ON
         driver.findElement(By.cssSelector("div:nth-child(4) > div > div > div > div > div > button")).click();
@@ -736,9 +750,9 @@ public class Destination_selection {
         Assert.assertEquals(text, "必ず選択してください", "[Compatibility] Message do not match");
     }
 
-    public void do_not_select_tag(WebDriver driver, String role, Common cm) {
+    public void do_not_select_tag() {
         // Select delivery information
-        delivery_information(driver, role, cm);
+        delivery_information();
 
         // Tag: ON
         driver.findElement(By.cssSelector("div:nth-child(5) > div > div > div > div > div > div > button")).click();
@@ -753,9 +767,9 @@ public class Destination_selection {
         Assert.assertEquals(text, "必ず1つ選択してください", "[Tag] Message do not match");
     }
 
-    public void select_exceed_5_tags(WebDriver driver, String role, Common cm, Actions key) throws InterruptedException {
+    public void select_exceed_5_tags() throws InterruptedException {
         // Select delivery information
-        delivery_information(driver, role, cm);
+        delivery_information();
 
         // Tag: ON
         driver.findElement(By.cssSelector("div:nth-child(5) > div > div > div > div > div > div > button")).click();
@@ -777,7 +791,7 @@ public class Destination_selection {
         Assert.assertEquals(text, "これ以上選択できません", "[Tag] Message do not match");
     }
 
-    public void do_you_want_to_delete_this_delivered_email_OK(WebDriver driver, String url_mail_list) throws InterruptedException {
+    public void do_you_want_to_delete_this_delivered_email_OK() throws InterruptedException {
         // Click delete button
         driver.findElement(By.cssSelector("button.ant-btn-danger")).click();
 
@@ -791,7 +805,7 @@ public class Destination_selection {
         Assert.assertEquals(driver.getCurrentUrl(), url_mail_list, "[Failed] Can not delete delivered email");
     }
 
-    public void do_you_want_to_delete_this_delivered_email_Cancel(WebDriver driver) throws InterruptedException {
+    public void do_you_want_to_delete_this_delivered_email_Cancel() throws InterruptedException {
         // Click delete button
         driver.findElement(By.cssSelector("button.ant-btn-danger")).click();
 
@@ -811,7 +825,7 @@ public class Destination_selection {
         Assert.assertFalse(check, "[Failed] Can not close delete delivered email popup");
     }
 
-    public void make_a_copy(WebDriver driver, String url_mail_list) throws InterruptedException {
+    public void make_a_copy() throws InterruptedException {
         // Click make a copy button
         driver.findElement(By.cssSelector("div:nth-child(1)>button.ant-btn-sm")).click();
 
@@ -820,7 +834,7 @@ public class Destination_selection {
         Assert.assertEquals(driver.getCurrentUrl(), url_mail_list, "[Failed] Can not make a copy of delivered email.");
     }
 
-    public void would_you_like_to_change_this_delivery_email_to_Draft_status_OK(WebDriver driver, String url_mail_list) throws InterruptedException {
+    public void would_you_like_to_change_this_delivery_email_to_Draft_status_OK() throws InterruptedException {
         // Click save as draft button
         driver.findElement(By.cssSelector("div.ant-col:nth-child(2)>button.ant-btn-sm")).click();
 
@@ -834,7 +848,7 @@ public class Destination_selection {
         Assert.assertEquals(driver.getCurrentUrl(), url_mail_list, "[Failed] Can not save delivered as draft.");
     }
 
-    public void would_you_like_to_change_this_delivery_email_to_Draft_status_Cancel(WebDriver driver) throws InterruptedException {
+    public void would_you_like_to_change_this_delivery_email_to_Draft_status_Cancel() throws InterruptedException {
         // Click save as draft button
         driver.findElement(By.cssSelector("div.ant-col:nth-child(2)>button.ant-btn-sm")).click();
 
@@ -856,7 +870,7 @@ public class Destination_selection {
         Assert.assertFalse(check, "[Failed] Can not close save delivered as draft popup.");
     }
 
-    public void back_to_attachment_step(WebDriver driver, Actions key, String role, Common cm) throws InterruptedException {
+    public void back_to_attachment_step() throws InterruptedException {
         // Master, Administrator, Responsible person, Leader, Member
         if (cm.authorized(role, cm.role_list(5))) {
             // Back to Attachment step
@@ -884,7 +898,7 @@ public class Destination_selection {
         }
     }
 
-    public void back_to_basic_information_step(WebDriver driver, String role, Common cm) {
+    public void back_to_basic_information_step() {
         // Master, Administrator, Responsible person, Leader, Member
         if (cm.authorized(role, cm.role_list(5))) {
             // Back to Basic information step
@@ -896,7 +910,7 @@ public class Destination_selection {
         }
     }
 
-    public Boolean check_template_in_stock(WebDriver driver) {
+    public Boolean check_template_in_stock() {
         // Check save button is enable
         // true: in stock
         // false: out of stock
@@ -909,7 +923,7 @@ public class Destination_selection {
         return check;
     }
 
-    public void delete_search_template(WebDriver driver, Actions key) throws InterruptedException {
+    public void delete_search_template() throws InterruptedException {
         // Wait message hide
         new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("div:nth-child(1)>div>div.ant-message-custom-content>span:nth-child(2)")));
@@ -936,10 +950,10 @@ public class Destination_selection {
     }
 
 
-    public void leave_search_template_name_blank(WebDriver driver, Actions key) throws InterruptedException {
+    public void leave_search_template_name_blank() throws InterruptedException {
         // Check save button is enable
-        if (!check_template_in_stock(driver)) {
-            delete_search_template(driver, key);
+        if (!check_template_in_stock()) {
+            delete_search_template();
         }
         // Click Save template button
         new WebDriverWait(driver, Duration.ofSeconds(10))
@@ -959,10 +973,10 @@ public class Destination_selection {
         Assert.assertEquals(text, "テンプレート名を入力してください", "[Template name] Message do not match");
     }
 
-    public void search_template_name_exceed_50_half_width_characters(WebDriver driver, Actions key) throws InterruptedException {
+    public void search_template_name_exceed_50_half_width_characters() throws InterruptedException {
         // Check save button is enable
-        if (!check_template_in_stock(driver)) {
-            delete_search_template(driver, key);
+        if (!check_template_in_stock()) {
+            delete_search_template();
         }
         // Click Save template button
         new WebDriverWait(driver, Duration.ofSeconds(10))
@@ -981,10 +995,10 @@ public class Destination_selection {
         Assert.assertEquals(text, "テンプレート名は50文字以内で入力してください。", "[Template name] Message do not match");
     }
 
-    public void search_template_name_exceed_50_full_width_characters(WebDriver driver, Actions key) throws InterruptedException {
+    public void search_template_name_exceed_50_full_width_characters() throws InterruptedException {
         // Check save button is enable
-        if (!check_template_in_stock(driver)) {
-            delete_search_template(driver, key);
+        if (!check_template_in_stock()) {
+            delete_search_template();
         }
         // Click Save template button
         new WebDriverWait(driver, Duration.ofSeconds(10))
@@ -1003,10 +1017,10 @@ public class Destination_selection {
         Assert.assertEquals(text, "テンプレート名は50文字以内で入力してください。", "[Template name] Message do not match");
     }
 
-    public void search_template_name_exceed_mix_50_half_and_full_width_characters(WebDriver driver, Actions key) throws InterruptedException {
+    public void search_template_name_exceed_mix_50_half_and_full_width_characters() throws InterruptedException {
         // Check save button is enable
-        if (!check_template_in_stock(driver)) {
-            delete_search_template(driver, key);
+        if (!check_template_in_stock()) {
+            delete_search_template();
         }
         // Click Save template button
         new WebDriverWait(driver, Duration.ofSeconds(10))
@@ -1027,10 +1041,10 @@ public class Destination_selection {
     }
 
 
-    public void create_search_template_name_OK(WebDriver driver, Actions key) throws InterruptedException {
+    public void create_search_template_name_OK() throws InterruptedException {
         // Check save button is enable
-        if (!check_template_in_stock(driver)) {
-            delete_search_template(driver, key);
+        if (!check_template_in_stock()) {
+            delete_search_template();
         } else {
             new WebDriverWait(driver, Duration.ofSeconds(10))
                     .until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("div:nth-child(1)>div>div.ant-message-custom-content>span:nth-child(2)")));
@@ -1059,10 +1073,10 @@ public class Destination_selection {
         Assert.assertEquals(text, "テンプレートを作成しました。", "[Template name] Message do not match");
     }
 
-    public void create_search_template_name_Cancel(WebDriver driver, Actions key) throws InterruptedException {
+    public void create_search_template_name_Cancel() throws InterruptedException {
         // Check save button is enable
-        if (!check_template_in_stock(driver)) {
-            delete_search_template(driver, key);
+        if (!check_template_in_stock()) {
+            delete_search_template();
         }
         // Click Save template button
         new WebDriverWait(driver, Duration.ofSeconds(10))
@@ -1087,10 +1101,10 @@ public class Destination_selection {
         Assert.assertFalse(check, "[Failed] Can not close create search template popup.");
     }
 
-    public void input_available_search_template_name(WebDriver driver, Actions key) throws InterruptedException {
+    public void input_available_search_template_name() throws InterruptedException {
         // Check save button is enable
-        if (!check_template_in_stock(driver)) {
-            delete_search_template(driver, key);
+        if (!check_template_in_stock()) {
+            delete_search_template();
         } else {
             new WebDriverWait(driver, Duration.ofSeconds(10))
                     .until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("div:nth-child(1)>div>div.ant-message-custom-content>span:nth-child(2)")));
@@ -1120,8 +1134,8 @@ public class Destination_selection {
         Assert.assertEquals(text, "テンプレートを作成しました。", "[Template name] Message do not match");
 
         // Check save button is enable
-        if (!check_template_in_stock(driver)) {
-            delete_search_template(driver, key);
+        if (!check_template_in_stock()) {
+            delete_search_template();
         }
 
         // Click Save template button
@@ -1146,9 +1160,9 @@ public class Destination_selection {
         Assert.assertTrue(text1.contains("同一名称のテンプレートが既に存在します"), "[Failed] Can create search template with available template name.");
     }
 
-    public void set_cancel_search_template_as_default(WebDriver driver, Actions key) throws InterruptedException {
+    public void set_cancel_search_template_as_default() throws InterruptedException {
         // Create search template
-        create_search_template_name_OK(driver, key);
+        create_search_template_name_OK();
 
         // Set template as default
         new WebDriverWait(driver, Duration.ofSeconds(10))
@@ -1171,9 +1185,9 @@ public class Destination_selection {
         Assert.assertFalse(title2.contains("☆ :"), "[Failed] Can not cancel search template as default.");
     }
 
-    public void delete_search_template_OK(WebDriver driver, Actions key) throws InterruptedException {
+    public void delete_search_template_OK() throws InterruptedException {
         // Create search template
-        create_search_template_name_OK(driver, key);
+        create_search_template_name_OK();
 
         // Wait message hide
         new WebDriverWait(driver, Duration.ofSeconds(10))
@@ -1196,9 +1210,9 @@ public class Destination_selection {
         Assert.assertEquals(text, "テンプレートを削除しました", "[Failed] Can not delete search template.");
     }
 
-    public void delete_search_template_Cancel(WebDriver driver, Actions key) throws InterruptedException {
+    public void delete_search_template_Cancel() throws InterruptedException {
         // Create search template
-        create_search_template_name_OK(driver, key);
+        create_search_template_name_OK();
 
         // Click delete icon
         new WebDriverWait(driver, Duration.ofSeconds(10))
@@ -1223,7 +1237,7 @@ public class Destination_selection {
         Assert.assertFalse(check, "[Failed] Can not close delete search template popup.");
     }
 
-    public void reset_search_criteria(WebDriver driver) {
+    public void reset_search_criteria() {
         /*
         ** Delivery information ** //
         ** Delivery type ** //
@@ -1241,7 +1255,7 @@ public class Destination_selection {
         Assert.assertFalse(check, "[Failed] Can not reset search condition.");
     }
 
-    public void link_to_partner_PIC_edit_from_destination_selection(WebDriver driver, String partnerPIC_url) throws InterruptedException {
+    public void link_to_partner_PIC_edit_from_destination_selection() throws InterruptedException {
         // Scroll down
         ((JavascriptExecutor) driver).executeScript("scroll(0, 550);");
         sleep(1000);
@@ -1263,7 +1277,7 @@ public class Destination_selection {
         }
     }
 
-    public void pagination_destination_selection(WebDriver driver) throws InterruptedException {
+    public void pagination_destination_selection() throws InterruptedException {
         // check null = "True" => No partner PIC
         boolean check_null = false;
         try {

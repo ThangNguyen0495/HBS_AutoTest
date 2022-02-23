@@ -76,10 +76,6 @@ public class EditMail {
 
         //****** 添付ファイル ****** //
         // Attachment
-        // Generate test file
-        // Capacity: MB
-        a.generate_test_file();
-
         // Upload file
         a.upload_file();
 

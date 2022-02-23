@@ -14,10 +14,23 @@ import java.time.Duration;
 import static java.lang.Thread.sleep;
 
 public class Basic_information {
+
+    WebDriver driver;
+    Actions key;
+    String role;
+    String url_mail_list;
+    Common cm;
+    public Basic_information(WebDriver driver, Actions key, String role,Common cm, String url_mail_list) {
+        this.driver = driver;
+        this.key = key;
+        this.role = role;
+        this.cm = cm;
+        this.url_mail_list = url_mail_list;
+    }
     /*
         Process function
     */
-    public void format(WebDriver driver, String role, Common cm) {
+    public void format() {
         // Master, Administrator, Responsible person, Leader, Member
         if (cm.authorized(role, cm.role_list(5))) {
             // Format
@@ -27,7 +40,7 @@ public class Basic_information {
         }
     }
 
-    public void distributor(WebDriver driver, Actions key, String role, Common cm) throws InterruptedException {
+    public void distributor() throws InterruptedException {
         // Master, Administrator, Responsible person, Leader, Member
         if (cm.authorized(role, cm.role_list(5))) {
             // waiting for loading distributor list
@@ -45,7 +58,7 @@ public class Basic_information {
         }
     }
 
-    public void subject(WebDriver driver, String role, Common cm) {
+    public void subject() {
         // Master, Administrator, Responsible person, Leader, Member
         if (cm.authorized(role, cm.role_list(5))) {
             // length of subject in range 1-100
@@ -55,7 +68,7 @@ public class Basic_information {
         }
     }
 
-    public void insertion(WebDriver driver, String role, Common cm) {
+    public void insertion() {
         // Master, Administrator, Responsible person, Leader, Member
         if (cm.authorized(role, cm.role_list(5))) {
             // length of insertion in range 1-5000
@@ -65,9 +78,9 @@ public class Basic_information {
         }
     }
 
-    public void send_a_copy_to_the_distributor(WebDriver driver, String role, Common cm) {
-        // Master, Administrator, Responsible person, Leader, Member
-        if (cm.authorized(role, cm.role_list(5))) {
+    public void send_a_copy_to_the_distributor() {
+        // Master, Administrator, Responsible person, Leader
+        if (cm.authorized(role, cm.role_list(4))) {
             // Send a copy to the distributor
             // 0: Do not sent, 1: Send copy mail
             int send_copy = RandomUtils.nextInt(2);
@@ -77,7 +90,7 @@ public class Basic_information {
         }
     }
 
-    public void next_to_attachment_step(WebDriver driver, String role, Common cm) throws InterruptedException {
+    public void next_to_attachment_step() throws InterruptedException {
         // Master, Administrator, Responsible person, Leader, Member
         if (cm.authorized(role, cm.role_list(5))) {
             // Next to 添付ファイル_Step
@@ -98,7 +111,7 @@ public class Basic_information {
     */
 
     // Distributor
-    public void leave_distributor_blank(WebDriver driver) throws InterruptedException {
+    public void leave_distributor_blank() throws InterruptedException {
         // waiting for loading distributor list
         sleep(3000);
 
@@ -112,7 +125,7 @@ public class Basic_information {
     }
 
     // Subject
-    public void leave_subject_blank(WebDriver driver, Actions key) {
+    public void leave_subject_blank() {
         driver.findElement(By.cssSelector("#subject")).sendKeys("leave_blank");
         for (int i = 0; i < 11; i++) {
             key.sendKeys(Keys.BACK_SPACE).perform();
@@ -123,7 +136,7 @@ public class Basic_information {
         Assert.assertEquals(text, "必須項目です。", "[Subject] Message do not match");
     }
 
-    public void subject_exceed_100_half_width_characters(WebDriver driver) {
+    public void subject_exceed_100_half_width_characters() {
         driver.findElement(By.cssSelector("#subject")).sendKeys(RandomStringUtils.randomAlphabetic(101));
         String text = new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("form > div:nth-child(3) > div > div.ant-form-item-explain > div")))
@@ -131,7 +144,7 @@ public class Basic_information {
         Assert.assertEquals(text, "100文字以内で入力してください。", "[Subject] Message do not match");
     }
 
-    public void subject_exceed_100_full_width_characters(WebDriver driver) {
+    public void subject_exceed_100_full_width_characters() {
         driver.findElement(By.cssSelector("#subject")).sendKeys(RandomStringUtils.random(101, 0x4e00, 0x4f80, true, false));
         String text = new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("form > div:nth-child(3) > div > div.ant-form-item-explain > div")))
@@ -139,7 +152,7 @@ public class Basic_information {
         Assert.assertEquals(text, "100文字以内で入力してください。", "[Subject] Message do not match");
     }
 
-    public void subject_exceed_100_mix_half_and_full_width_characters(WebDriver driver) {
+    public void subject_exceed_100_mix_half_and_full_width_characters() {
         int length_of_half_width = RandomUtils.nextInt(100) + 1;
         String subject = RandomStringUtils.randomAlphabetic(length_of_half_width)
                 + RandomStringUtils.random(101 - length_of_half_width, 0x4e00, 0x4f80, true, false);
@@ -151,7 +164,7 @@ public class Basic_information {
     }
 
     // Insertion
-    public void leave_insertion_blank(WebDriver driver, Actions key) {
+    public void leave_insertion_blank() {
         driver.findElement(By.cssSelector("#text")).sendKeys("leave_blank");
         for (int i = 0; i < 11; i++) {
             key.sendKeys(Keys.BACK_SPACE).perform();
@@ -162,7 +175,7 @@ public class Basic_information {
         Assert.assertEquals(text, "必須項目です。", "[Insertion] Message do not match");
     }
 
-    public void insertion_exceed_10000_half_width_characters(WebDriver driver) {
+    public void insertion_exceed_10000_half_width_characters() {
         driver.findElement(By.cssSelector("#text")).sendKeys(RandomStringUtils.randomAlphabetic(10001));
         // Scroll down
         ((JavascriptExecutor) driver).executeScript("scroll(0, 550);");
@@ -172,7 +185,7 @@ public class Basic_information {
         Assert.assertEquals(text, "全角5000文字または半角10000文字以内で入力してください。", "[Insertion] Message do not match");
     }
 
-    public void insertion_exceed_5000_full_width_characters(WebDriver driver) {
+    public void insertion_exceed_5000_full_width_characters() {
         // minJpnCharCode: 0x4e00
         // maxJpnCharCode: 0x4f80
         driver.findElement(By.cssSelector("#text")).sendKeys(RandomStringUtils.random(5001, 0x4e00, 0x4f80, true, false));
@@ -184,7 +197,7 @@ public class Basic_information {
         Assert.assertEquals(text, "全角5000文字または半角10000文字以内で入力してください。", "[Insertion] Message do not match");
     }
 
-    public void insertion_exceed_5000_mix_half_and_full_width_characters(WebDriver driver) {
+    public void insertion_exceed_5000_mix_half_and_full_width_characters() {
         int length_of_half_width = RandomUtils.nextInt(5000) + 1;
         String insertion = RandomStringUtils.randomAlphabetic(length_of_half_width)
                 + RandomStringUtils.random(5001 - length_of_half_width, 0x4e00, 0x4f80, true, false);
@@ -200,11 +213,11 @@ public class Basic_information {
     }
 
     // Delete button
-    public void delete_button_should_be_disable(WebDriver driver) {
+    public void delete_button_should_be_disable() {
         Assert.assertFalse(driver.findElement(By.cssSelector("button.ant-btn-danger")).isEnabled(), "[Delete] button is not getting disable.");
     }
 
-    public void do_you_want_to_delete_this_delivered_email_OK(WebDriver driver, String url_mail_list) throws InterruptedException {
+    public void do_you_want_to_delete_this_delivered_email_OK() throws InterruptedException {
         // Click delete button
         driver.findElement(By.cssSelector("button.ant-btn-danger")).click();
 
@@ -217,7 +230,7 @@ public class Basic_information {
         Assert.assertEquals(driver.getCurrentUrl(), url_mail_list, "[Failed] Can not delete delivered email");
     }
 
-    public void do_you_want_to_delete_this_delivered_email_Cancel(WebDriver driver) throws InterruptedException {
+    public void do_you_want_to_delete_this_delivered_email_Cancel() throws InterruptedException {
         // Click delete button
         driver.findElement(By.cssSelector("button.ant-btn-danger")).click();
 
@@ -239,7 +252,7 @@ public class Basic_information {
         Assert.assertFalse(check, "[Failed] Can not close delete delivered email popup");
     }
 
-    public void make_a_copy(WebDriver driver, String url_mail_list) throws InterruptedException {
+    public void make_a_copy() throws InterruptedException {
         // Click make a copy button
         driver.findElement(By.cssSelector("div:nth-child(1)>button.ant-btn-sm")).click();
 
@@ -248,7 +261,7 @@ public class Basic_information {
         Assert.assertEquals(driver.getCurrentUrl(), url_mail_list, "[Failed] Can not make a copy of delivered email.");
     }
 
-    public void would_you_like_to_change_this_delivery_email_to_Draft_status_OK(WebDriver driver, String url_mail_list) throws InterruptedException {
+    public void would_you_like_to_change_this_delivery_email_to_Draft_status_OK() throws InterruptedException {
         // Click save as draft button
         driver.findElement(By.cssSelector("div.ant-col:nth-child(2)>button.ant-btn-sm")).click();
 
@@ -263,7 +276,7 @@ public class Basic_information {
         Assert.assertEquals(driver.getCurrentUrl(), url_mail_list, "[Failed] Can not save delivered as draft.");
     }
 
-    public void would_you_like_to_change_this_delivery_email_to_Draft_status_Cancel(WebDriver driver) throws InterruptedException {
+    public void would_you_like_to_change_this_delivery_email_to_Draft_status_Cancel() throws InterruptedException {
         // Click save as draft button
         driver.findElement(By.cssSelector("div.ant-col:nth-child(2)>button.ant-btn-sm")).click();
 

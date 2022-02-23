@@ -70,7 +70,7 @@ public class Attachment {
         PageFactory.initElements(driver, this);
     }
 
-    public void generate_test_file() throws IOException {
+    public void generate_test_file(int capacity) throws IOException {
         // Generate test file
         // capacity: MB
         new RandomAccessFile("text.txt", "rw").setLength((long) capacity * 1024 * 1024);
@@ -79,9 +79,10 @@ public class Attachment {
         new RandomAccessFile("pdf.pdf", "rw").setLength((long) capacity * 1024 * 1024);
     }
 
-    public void upload_file() {
+    public void upload_file() throws IOException {
         // Master, Administrator, Responsible person, Leader, Member
         if (cm.authorized(role, cm.role_list(5))) {
+            generate_test_file(capacity);
             // Wait hide message
             wait.until(ExpectedConditions.invisibilityOf(message));
 
@@ -142,7 +143,7 @@ public class Attachment {
     }
 
     public void upload_maximum_capacity_1_file() throws IOException {
-        generate_test_file();
+        generate_test_file(capacity);
         // Waiting for hide previous message
         wait.until(ExpectedConditions.invisibilityOf(message));
         upload_file.sendKeys(System.getProperty("user.dir") + "\\text.txt");
@@ -152,7 +153,7 @@ public class Attachment {
     }
 
     public void upload_maximum_capacity_multi_file() throws IOException {
-        generate_test_file();
+        generate_test_file(capacity);
         // Waiting for hid previous message
         wait.until(ExpectedConditions.invisibilityOf(message));
         upload_file.sendKeys(System.getProperty("user.dir") + "\\text.txt");
@@ -165,17 +166,17 @@ public class Attachment {
     }
 
     public void upload_exceed_maximum_capacity_1_file() throws IOException {
-        generate_test_file();
+        generate_test_file(capacity + 1);
         // Waiting for hid previous message
         wait.until(ExpectedConditions.invisibilityOf(message));
-        upload_file.sendKeys(System.getProperty("user.dir") + "\\excel.xlsx");
+        upload_file.sendKeys(System.getProperty("user.dir") + "\\text.txt");
         String text = wait.until(ExpectedConditions.visibilityOf(message)).getText();
         Assert.assertTrue(text.contains("を超えるメールを配信することはできません"), "[Failed] Message do not match."
                 + "\n Actual message: " + text + "\n Expect message: contains を超えるメールを配信することはできません");
     }
 
     public void upload_exceed_maximum_capacity_multi_file() throws IOException {
-        generate_test_file();
+        generate_test_file(capacity + 1);
         // Waiting for hid previous message
         wait.until(ExpectedConditions.invisibilityOf(message));
         upload_file.sendKeys(System.getProperty("user.dir") + "\\text.txt");

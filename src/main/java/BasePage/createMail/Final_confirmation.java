@@ -16,13 +16,27 @@ public class Final_confirmation {
     public static int col1;
     public static int row1;
 
-    public Boolean check_date(int col, int row, WebDriver driver) {
+    WebDriver driver;
+    String role;
+    String url_mail_list;
+    Actions key;
+    Common cm;
+
+    public Final_confirmation(WebDriver driver, Actions key, String role, Common cm, String url_mail_list) {
+        this.driver = driver;
+        this.key = key;
+        this.role = role;
+        this.cm = cm;
+        this.url_mail_list = url_mail_list;
+    }
+
+    public Boolean check_date(int col, int row) {
         String date_check = driver.findElement(By.cssSelector("table.ant-picker-content>tbody>tr:nth-child(" + row + ")>td:nth-child(" + col + ")"))
                 .getAttribute("class");
         return date_check.contains("disable");
     }
 
-    public String date_element(WebDriver driver) {
+    public String date_element() {
         int col = 0;
         int row = 1;
 
@@ -32,13 +46,13 @@ public class Final_confirmation {
                 row++;
                 col = 1;
             }
-        } while (check_date(col, row, driver));
+        } while (check_date(col, row));
         col1 = col;
         row1 = row;
         return "table.ant-picker-content>tbody>tr:nth-child(" + row + ")>td:nth-child(" + col + ")";
     }
 
-    public String next_date_element(WebDriver driver) {
+    public String next_date_element() {
         int col = col1;
         int row = row1;
 
@@ -48,13 +62,13 @@ public class Final_confirmation {
                 row++;
                 col = 1;
             }
-        } while (check_date(col, row, driver));
+        } while (check_date(col, row));
         col1 = col;
         row1 = row;
         return "table.ant-picker-content>tbody>tr:nth-child(" + row + ")>td:nth-child(" + col + ")";
     }
 
-    public Boolean check_time(WebDriver driver, String url_mail_list) throws InterruptedException {
+    public Boolean check_time() throws InterruptedException {
         // Waiting for loading mail list page
         sleep(1000);
         return driver.getCurrentUrl().equals(url_mail_list);
@@ -76,7 +90,7 @@ public class Final_confirmation {
         return hour_str + ":" + min_str;
     }
 
-    public void open_delivery_time_setting_popup(WebDriver driver, String role, Common cm) {
+    public void open_delivery_time_setting_popup() {
         // Master, Administrator, Responsible person, Leader, Member
         if (cm.authorized(role, cm.role_list(5))) {
             // Click Time selection button
@@ -84,7 +98,7 @@ public class Final_confirmation {
         }
     }
 
-    public void select_date(WebDriver driver, String role, Common cm, String element) {
+    public void select_date(String element) {
         // Master, Administrator, Responsible person, Leader, Member
         if (cm.authorized(role, cm.role_list(5))) {
             // Date
@@ -93,14 +107,14 @@ public class Final_confirmation {
                     .click();
 
             if (element.equals("")) {
-                driver.findElement(By.cssSelector(date_element(driver))).click();
+                driver.findElement(By.cssSelector(date_element())).click();
             } else {
                 driver.findElement(By.cssSelector(element)).click();
             }
         }
     }
 
-    public void select_time_and_select_again_when_time_incorrect(WebDriver driver, Actions key, String role, Common cm, String url_mail_list) throws InterruptedException {
+    public void select_time_and_select_again_when_time_incorrect() throws InterruptedException {
         // Master, Administrator, Responsible person, Leader, Member
         if (cm.authorized(role, cm.role_list(5))) {
             // Time
@@ -110,7 +124,7 @@ public class Final_confirmation {
             int new_hour = LocalTime.now().getHour();
 
             // If time incorrect, add 10 minutes and select again
-            while (!check_time(driver, url_mail_list)) {
+            while (!check_time()) {
                 // Update time after add 10 minutes
                 if (new_min > 59) {
                     new_min = new_min - 60;
@@ -124,7 +138,7 @@ public class Final_confirmation {
                 } else if (new_hour > 19) {
                     new_hour = 8;
                     new_min = 0;
-                    select_date(driver, role, cm, next_date_element(driver));
+                    select_date(next_date_element());
                 }
                 time.click();
                 for (int i = 0; i < 10; i++) {
@@ -152,7 +166,7 @@ public class Final_confirmation {
         }
     }
 
-    public void do_you_want_to_delete_this_delivered_email_OK(WebDriver driver, String url_mail_list) throws InterruptedException {
+    public void do_you_want_to_delete_this_delivered_email_OK() throws InterruptedException {
         // Click delete button
         driver.findElement(By.cssSelector("button.ant-btn-danger")).click();
 
@@ -166,7 +180,7 @@ public class Final_confirmation {
         Assert.assertEquals(driver.getCurrentUrl(), url_mail_list, "[Failed] Can not delete delivered email");
     }
 
-    public void do_you_want_to_delete_this_delivered_email_Cancel(WebDriver driver) throws InterruptedException {
+    public void do_you_want_to_delete_this_delivered_email_Cancel() throws InterruptedException {
         // Click delete button
         driver.findElement(By.cssSelector("button.ant-btn-danger")).click();
 
@@ -188,7 +202,7 @@ public class Final_confirmation {
         Assert.assertFalse(check, "[Failed] Can not close delete delivered email popup");
     }
 
-    public void make_a_copy(WebDriver driver, Actions key, String url_mail_list) throws InterruptedException {
+    public void make_a_copy() throws InterruptedException {
         // Click make a copy button
         WebElement make_a_copy = driver.findElement(By.cssSelector("div:nth-child(1)>button.ant-btn-sm"));
         key.moveToElement(make_a_copy).click().build().perform();
@@ -198,7 +212,7 @@ public class Final_confirmation {
         Assert.assertEquals(driver.getCurrentUrl(), url_mail_list, "[Failed] Can not make a copy of delivered email.");
     }
 
-    public void would_you_like_to_change_this_delivery_email_to_Draft_status_OK(WebDriver driver, Actions key, String url_mail_list) throws InterruptedException {
+    public void would_you_like_to_change_this_delivery_email_to_Draft_status_OK() throws InterruptedException {
         // Click save as draft button
         WebElement save_as_draft = driver.findElement(By.cssSelector("div.ant-col:nth-child(2)>button.ant-btn-sm"));
         key.moveToElement(save_as_draft).click().build().perform();
@@ -212,7 +226,7 @@ public class Final_confirmation {
         Assert.assertEquals(driver.getCurrentUrl(), url_mail_list, "[Failed] Can not save delivered as draft.");
     }
 
-    public void would_you_like_to_change_this_delivery_email_to_Draft_status_Cancel(WebDriver driver, Actions key) throws InterruptedException {
+    public void would_you_like_to_change_this_delivery_email_to_Draft_status_Cancel() throws InterruptedException {
         // Click save as draft button
         WebElement save_as_draft = driver.findElement(By.cssSelector("div.ant-col:nth-child(2)>button.ant-btn-sm"));
         key.moveToElement(save_as_draft).click().build().perform();
@@ -235,7 +249,7 @@ public class Final_confirmation {
         Assert.assertFalse(check, "[Failed] Can not close save delivered as draft popup.");
     }
 
-    public void back_to_destination_selection_step(WebDriver driver, Actions key, String role, Common cm) throws InterruptedException {
+    public void back_to_destination_selection_step() throws InterruptedException {
         // Master, Administrator, Responsible person, Leader, Member
         if (cm.authorized(role, cm.role_list(5))) {
             // Back to Destination selection step
@@ -265,7 +279,7 @@ public class Final_confirmation {
         }
     }
 
-    public void back_to_attachment_step(WebDriver driver, Actions key, String role, Common cm) throws InterruptedException {
+    public void back_to_attachment_step() throws InterruptedException {
         // Master, Administrator, Responsible person, Leader, Member
         if (cm.authorized(role, cm.role_list(5))) {
             // Back to Attachment step
@@ -279,7 +293,7 @@ public class Final_confirmation {
         }
     }
 
-    public void back_to_basic_information_step(WebDriver driver, Actions key, String role, Common cm) throws InterruptedException {
+    public void back_to_basic_information_step() throws InterruptedException {
         // Master, Administrator, Responsible person, Leader, Member
         if (cm.authorized(role, cm.role_list(5))) {
             // Back to Basic information step

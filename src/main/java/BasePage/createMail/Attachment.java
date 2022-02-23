@@ -5,6 +5,7 @@ import org.apache.commons.lang.math.RandomUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
@@ -16,16 +17,30 @@ import java.time.Duration;
 import static java.lang.Thread.sleep;
 
 public class Attachment {
-    public void generate_test_file(long capacity) throws IOException {
+    WebDriver driver;
+    int capacity;
+    String role;
+    String url_mail_list;
+    Actions key;
+    Common cm;
+    public Attachment(WebDriver driver, Actions key, String role, Common cm, String url_mail_list, int capacity) {
+        this.driver = driver;
+        this.key = key;
+        this.role = role;
+        this.cm = cm;
+        this.url_mail_list = url_mail_list;
+        this.capacity = capacity;
+    }
+    public void generate_test_file(int capacity) throws IOException {
         // Generate test file
         // capacity: MB
-        new RandomAccessFile("text.txt", "rw").setLength(capacity * 1024 * 1024);
-        new RandomAccessFile("excel.xlsx", "rw").setLength(capacity * 1024 * 1024);
-        new RandomAccessFile("word.docx", "rw").setLength(capacity * 1024 * 1024);
-        new RandomAccessFile("pdf.pdf", "rw").setLength(capacity * 1024 * 1024);
+        new RandomAccessFile("text.txt", "rw").setLength((long) capacity * 1024 * 1024);
+        new RandomAccessFile("excel.xlsx", "rw").setLength((long) capacity * 1024 * 1024);
+        new RandomAccessFile("word.docx", "rw").setLength((long) capacity * 1024 * 1024);
+        new RandomAccessFile("pdf.pdf", "rw").setLength((long) capacity * 1024 * 1024);
     }
 
-    public void upload_file(WebDriver driver, String role, Common cm) throws InterruptedException {
+    public void upload_file() throws InterruptedException {
         // Master, Administrator, Responsible person, Leader, Member
         if (cm.authorized(role, cm.role_list(5))) {
             // 0: upload 1 file, 1: upload multi file
@@ -41,7 +56,7 @@ public class Attachment {
         }
     }
 
-    public void next_to_destination_selection_step(WebDriver driver, String role, Common cm) throws InterruptedException {
+    public void next_to_destination_selection_step() throws InterruptedException {
         // Master, Administrator, Responsible person, Leader, Member
         if (cm.authorized(role, cm.role_list(5))) {
             // Next to 宛先選択_Step
@@ -56,7 +71,7 @@ public class Attachment {
         }
     }
 
-    public void back_to_basic_information_step(WebDriver driver, String role, Common cm) throws InterruptedException {
+    public void back_to_basic_information_step() throws InterruptedException {
         // Master, Administrator, Responsible person, Leader, Member
         if (cm.authorized(role, cm.role_list(5))) {
 
@@ -72,7 +87,7 @@ public class Attachment {
         }
     }
 
-    public void upload_maximum_capacity_1_file(WebDriver driver, long capacity) throws IOException {
+    public void upload_maximum_capacity_1_file() throws IOException {
         generate_test_file(capacity);
         // Waiting for hid previous message
         new WebDriverWait(driver, Duration.ofSeconds(10))
@@ -83,7 +98,7 @@ public class Attachment {
         Assert.assertTrue(text.contains("ファイルがアップロードされました"), "[Failed] Can not upload file with capacity: " + capacity + "MB");
     }
 
-    public void upload_maximum_capacity_multi_file(WebDriver driver, long capacity) throws IOException {
+    public void upload_maximum_capacity_multi_file() throws IOException {
         generate_test_file(capacity);
         // Waiting for hid previous message
         new WebDriverWait(driver, Duration.ofSeconds(10))
@@ -97,7 +112,7 @@ public class Attachment {
         Assert.assertTrue(text.contains("ファイルがアップロードされました"), "[Failed] Can not upload multi file with capacity = " + capacity + "MB");
     }
 
-    public void upload_exceed_maximum_capacity_1_file(WebDriver driver, long capacity) throws IOException {
+    public void upload_exceed_maximum_capacity_1_file() throws IOException {
         generate_test_file(capacity + 1);
         // Waiting for hid previous message
         new WebDriverWait(driver, Duration.ofSeconds(10))
@@ -108,7 +123,7 @@ public class Attachment {
         Assert.assertTrue(text.contains("を超えるメールを配信することはできません"), "[Failed] Message do not match.");
     }
 
-    public void upload_exceed_maximum_capacity_multi_file(WebDriver driver, long capacity) throws IOException {
+    public void upload_exceed_maximum_capacity_multi_file() throws IOException {
         generate_test_file(capacity + 1);
         // Waiting for hid previous message
         new WebDriverWait(driver, Duration.ofSeconds(10))
@@ -122,7 +137,7 @@ public class Attachment {
         Assert.assertTrue(text.contains("を超えるメールを配信することはできません"), "[Failed] Message do not match.");
     }
 
-    public void do_you_want_to_delete_this_delivered_email_OK(WebDriver driver, String url_mail_list) throws InterruptedException {
+    public void do_you_want_to_delete_this_delivered_email_OK() throws InterruptedException {
         // Click delete button
         driver.findElement(By.cssSelector("button.ant-btn-danger")).click();
 
@@ -136,7 +151,7 @@ public class Attachment {
         Assert.assertEquals(driver.getCurrentUrl(), url_mail_list, "[Failed] Can not delete delivered email");
     }
 
-    public void do_you_want_to_delete_this_delivered_email_Cancel(WebDriver driver) throws InterruptedException {
+    public void do_you_want_to_delete_this_delivered_email_Cancel() throws InterruptedException {
         // Click delete button
         driver.findElement(By.cssSelector("button.ant-btn-danger")).click();
 
@@ -159,7 +174,7 @@ public class Attachment {
         Assert.assertFalse(check, "[Failed] Can not close delete delivered email popup.");
     }
 
-    public void make_a_copy(WebDriver driver, String url_mail_list) throws InterruptedException {
+    public void make_a_copy() throws InterruptedException {
         // Click make a copy button
         driver.findElement(By.cssSelector("div:nth-child(1)>button.ant-btn-sm")).click();
 
@@ -168,7 +183,7 @@ public class Attachment {
         Assert.assertEquals(driver.getCurrentUrl(), url_mail_list, "[Failed] Can not make a copy of delivered email.");
     }
 
-    public void would_you_like_to_change_this_delivery_email_to_Draft_status_OK(WebDriver driver, String url_mail_list) throws InterruptedException {
+    public void would_you_like_to_change_this_delivery_email_to_Draft_status_OK() throws InterruptedException {
         // Click save as draft button
         driver.findElement(By.cssSelector("div.ant-col:nth-child(2)>button.ant-btn-sm")).click();
 
@@ -182,7 +197,7 @@ public class Attachment {
         Assert.assertEquals(driver.getCurrentUrl(), url_mail_list, "[Failed] Can not save delivered as draft.");
     }
 
-    public void would_you_like_to_change_this_delivery_email_to_Draft_status_Cancel(WebDriver driver) throws InterruptedException {
+    public void would_you_like_to_change_this_delivery_email_to_Draft_status_Cancel() throws InterruptedException {
         // Click save as draft button
         driver.findElement(By.cssSelector("div.ant-col:nth-child(2)>button.ant-btn-sm")).click();
 

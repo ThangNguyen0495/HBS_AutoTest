@@ -36,6 +36,10 @@ public class Common {
         return role_list.contains(role);
     }
 
+    /**
+     * @param number_of_role: 1: Master, 2: Administrator, 3: Responsible person, 4: Leader, 5: Member, 6: Guest
+     * @return: list role by number
+     **/
     public List<String> role_list(int number_of_role) {
 
         List<String> role_list = new ArrayList<>();
