@@ -91,7 +91,7 @@ public class EditMail {
         ds.delivery_information();
 
         // Commitment
-        ds.commitment();
+//        ds.commitment();
 
         // Search
         ds.search_contact_by_condition();

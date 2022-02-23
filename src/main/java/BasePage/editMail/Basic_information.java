@@ -3,7 +3,10 @@ package BasePage.editMail;
 import Common.Common;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.math.RandomUtils;
-import org.openqa.selenium.*;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.CacheLookup;
 import org.openqa.selenium.support.FindBy;
@@ -184,14 +187,8 @@ public class Basic_information {
 
     // Subject
     public void leave_subject_blank() {
-        wait.until(ExpectedConditions.elementToBeClickable(subject)).sendKeys(Keys.CONTROL + "a", Keys.DELETE);
-        String text = "Error message not showing.";
-        try {
-            wait.until(ExpectedConditions.visibilityOf(subject_error));
-        }
-        catch (TimeoutException ex) {
-            System.out.println("No error message shown or occurred error. \nPlease run this test again and verify.");
-        }
+        wait.until(ExpectedConditions.elementToBeClickable(subject)).sendKeys("text", Keys.CONTROL + "a", Keys.DELETE);
+        String text = wait.until(ExpectedConditions.visibilityOf(subject_error)).getText();
         Assert.assertEquals(text, "必須項目です。", "[Subject] Message do not match");
     }
 
@@ -237,7 +234,7 @@ public class Basic_information {
 
     // Insertion
     public void leave_insertion_blank() {
-        insertion.sendKeys(Keys.CONTROL + "a", Keys.DELETE);
+        insertion.sendKeys("text", Keys.CONTROL + "a", Keys.DELETE);
         String text = wait.until(ExpectedConditions.visibilityOf(insertion_error)).getText();
         Assert.assertEquals(text, "必須項目です。", "[Insertion] Message do not match");
     }
