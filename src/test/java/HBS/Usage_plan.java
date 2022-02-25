@@ -1,6 +1,6 @@
 package HBS;
 
-import BasePage.paymentProcess.Usage_plan;
+import BasePage.paymentProcess.usage_plan;
 import Common.Common;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
@@ -8,11 +8,11 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
-public class Payment {
+public class Usage_plan {
     Common cm;
     Actions key;
     WebDriver driver;
-    Usage_plan up;
+    usage_plan up;
 
     @BeforeMethod
     @Parameters({"headless", "domain", "email", "password","username_admin_page","password_admin_page"})
@@ -30,7 +30,7 @@ public class Payment {
         cm.login(driver, domain, email, password);
 
         // Init Usage plan function
-        up = new Usage_plan(driver, domain, username_admin_page, password_admin_page);
+        up = new usage_plan(driver, domain, username_admin_page, password_admin_page);
     }
 
     @Test(priority = 1)

@@ -1,8 +1,12 @@
 package BasePage.paymentProcess;
 
+import org.apache.commons.lang.RandomStringUtils;
+import org.apache.commons.lang.math.RandomUtils;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -14,8 +18,9 @@ import java.util.List;
 import static java.lang.Thread.sleep;
 
 @SuppressWarnings("ALL")
-public class Usage_plan extends payment {
-    public static String usage_plan_path = "/plan";
+public class usage_plan extends payment {
+    private static String usage_plan_path = "/plan";
+    private static String user_list_path = "/users";
     @FindBy(css = "div>div.ant-col-20>button")
     List<WebElement> plan_list;
     @FindBy(css = "div.ant-col:nth-child(1)>button")
@@ -36,16 +41,47 @@ public class Usage_plan extends payment {
     WebElement number_of_users;
     @FindBy(css = "span.PlanPage-ppStatisticContentSubjunction-Q1HlJ")
     WebElement additional_purchase;
+    @FindBy(css = "div.ant-btn-group > button")
+    WebElement search_template_button;
+    @FindBy(css = "#inactive_filter")
+    WebElement inactive_filter;
+    @FindBy(css = "div>a.ant-btn")
+    WebElement invite_user_button;
+    @FindBy(css = "div.ant-row-space-between>div>button")
+    WebElement cancel_button_search_template;
+    @FindBy(css = "li.ant-pagination-total-text")
+    WebElement current_number_of_users;
+    @FindBy(css = "#email")
+    WebElement invite_user_email;
+
+    @FindBy(css = "#role")
+    WebElement invite_user_role;
+
+    @FindBy(css = "div.ant-row-start>button:nth-child(2)")
+    WebElement invite_user_invite_button;
+    
+    @FindBy(css = "td:nth-child(1)>div>div>div>label>span>input")
+    WebElement user_list_first_check_box;
+    
+    @FindBy(css = ".page-tableControlButton-DRVBm:nth-child(2)")
+    WebElement user_list_active_button;
+
     WebDriverWait wait;
     String username_admin_page;
     String password_admin_page;
+    Actions key;
 
 
-    public Usage_plan(WebDriver driver, String domain, String username_admin_page, String password_admin_page) {
-        super(driver, domain, username_admin_page, password_admin_page);
-        this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+    public usage_plan(WebDriver driver, String domain, String username_admin_page, String password_admin_page) {
+        super(driver,domain, username_admin_page, password_admin_page);
+        wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        key = new Actions(driver);
         PageFactory.initElements(driver, this);
     }
+
+//    public usage_plan(WebDriver driver, Actions key, String domain, String username_admin_page, String password_admin_page) {
+//        super(driver, key, domain, username_admin_page, password_admin_page);
+//    }
 
     public boolean check_plan() throws InterruptedException {
         driver.get(domain + usage_plan_path);
@@ -203,6 +239,51 @@ public class Usage_plan extends payment {
         soft.assertEquals(add_tax(upper_price), (long) Long.parseLong(receipt_PayJP.get(1)), "[Failed][PayJP] Price not match.");
         // show all assert result
         soft.assertAll();
+
+        // Check limit of users
+        // Link to user list page
+        driver.get(domain + user_list_path);
+
+        // Search condition - Inactive users: ON
+        search_template_button.click();
+        wait.until(ExpectedConditions.visibilityOf(inactive_filter));
+        if (!inactive_filter.isEnabled()) {
+            inactive_filter.click();
+        }
+        cancel_button_search_template.click();
+
+        // Get current users
+        String number_of_users = wait.until(ExpectedConditions.visibilityOf(current_number_of_users))
+                .getText().split("件中")[0].replace("合計", "");
+        for (int i = 0; i < (int) (new_information.get(1) - Long.parseLong(number_of_users)); i++) {
+            // click invite user button
+            wait.until(ExpectedConditions.elementToBeClickable(invite_user_button)).click();
+            // input valid email
+            wait.until(ExpectedConditions.visibilityOf(invite_user_email))
+                    .sendKeys(RandomStringUtils.randomAlphabetic(10).toLowerCase() + "@"
+                            + RandomStringUtils.randomAlphabetic(3).toLowerCase() + "."
+                            + RandomStringUtils.randomAlphabetic(2).toLowerCase());
+            // open role list and select
+            invite_user_role.click();
+            // 1: Administrator, 2: Responsible person, 3: Leader, 4: Member, 5: Guest
+            int role_id = RandomUtils.nextInt(5);
+            for (int j = 0; j < role_id; j++) {
+                key.sendKeys(Keys.DOWN).perform();
+            }
+
+            key.sendKeys(Keys.ENTER).perform();
+
+            // click invite button
+            invite_user_invite_button.click();
+
+            // waiting for send invite mail
+            String text = wait.until(ExpectedConditions.visibilityOf(message)).getText();
+
+            // verify that user should be invited
+            // check message
+            soft.assertEquals(text, "招待メールを送信しました", "[Failed][Invite user] Message do not match.");
+            soft.assertEquals(driver.getCurrentUrl(), domain + user_list_path, "[Failed][Invite user] Url do not match.");
+        }
     }
 
     public void add_upper_limit_Cancel() throws InterruptedException {
@@ -253,7 +334,7 @@ public class Usage_plan extends payment {
     public void remove_upper_limit_OK() throws InterruptedException {
         // get old get_payment_history_receipt id
         String current_receipt_id = get_payment_history_receipt().get(0);
-        
+
         // Back to usage plan page
         driver.get(domain + usage_plan_path);
 
@@ -309,30 +390,30 @@ public class Usage_plan extends payment {
         List<Integer> current_information = get_current_information();
 
         if (current_information.get(1) != 0) {
-        // Click add upper limit button
-        remove_upper_limit_button.click();
+            // Click add upper limit button
+            remove_upper_limit_button.click();
 
-        // Wait and click OK button
-        wait.until(ExpectedConditions.elementToBeClickable(select_option.get(0))).click();
+            // Wait and click OK button
+            wait.until(ExpectedConditions.elementToBeClickable(select_option.get(0))).click();
 
-        // Waiting for Remove upper limit popup close
-        sleep(500);
-        boolean check = true;
-        try {
-            select_option.get(0).click();
-        } catch (IndexOutOfBoundsException ex) {
-            check = false;
-        }
+            // Waiting for Remove upper limit popup close
+            sleep(500);
+            boolean check = true;
+            try {
+                select_option.get(0).click();
+            } catch (IndexOutOfBoundsException ex) {
+                check = false;
+            }
 
-        // Get current information after add upper limit
-        List<Integer> new_information = get_current_information();
+            // Get current information after add upper limit
+            List<Integer> new_information = get_current_information();
 
-        // Additional purchase = 0. Can removed upper limit
-        // Verify that Cancel upper limit should be closed
-        soft.assertFalse(check, "[Failed] Can not close Remove upper limit popup.");
-        // [Usage plan] check number of users and additional purcharse
-        soft.assertEquals(new_information.get(0), current_information.get(0), "[Failed] Upper limit decrease => Can not cancel remove upper limit.");
-        soft.assertEquals(new_information.get(1), current_information.get(1), "[Failed] Additional purchase decrease => Can not cancel remove upper limit.");
+            // Additional purchase = 0. Can removed upper limit
+            // Verify that Cancel upper limit should be closed
+            soft.assertFalse(check, "[Failed] Can not close Remove upper limit popup.");
+            // [Usage plan] check number of users and additional purcharse
+            soft.assertEquals(new_information.get(0), current_information.get(0), "[Failed] Upper limit decrease => Can not cancel remove upper limit.");
+            soft.assertEquals(new_information.get(1), current_information.get(1), "[Failed] Additional purchase decrease => Can not cancel remove upper limit.");
         } else {
             // Additional purchase = 0. Can not removed upper limit
 //            soft.assertEquals(message_text, "ユーザー登録上限数の削除に失敗しました。", "[Failed][Additional purchase = 0] Message do not match.");
