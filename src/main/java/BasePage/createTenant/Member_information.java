@@ -31,9 +31,10 @@ public class Member_information {
     public void email_address(WebDriver driver) {
         int length_of_email_address = RandomUtils.nextInt(90) + 1;
         //generate email address by random text
-        email_address = RandomStringUtils.randomAlphabetic(length_of_email_address);
+        email_address = RandomStringUtils.randomAlphabetic(length_of_email_address).toLowerCase();
         // Email address
         driver.findElement(By.cssSelector("#email")).sendKeys(email_address + "@bedul.net");
+        System.out.println("Your mail: " + email_address + "@bedul.net");
     }
 
     public void password_and_confirm_password(WebDriver driver) throws InterruptedException {
@@ -48,6 +49,7 @@ public class Member_information {
         driver.findElement(By.cssSelector("#password_confirm")).sendKeys(password + "@");
         // Wait captcha
         sleep(2000);
+        System.out.println("Your password: " + password + "@");
     }
 
     public void recaptcha_checkbox(WebDriver driver) throws InterruptedException {

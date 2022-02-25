@@ -37,7 +37,7 @@ public class Destination_selection {
             //** Delivery information **//
             //** Delivery type **//
             // 1: Deliver the matter, 2: Deliver personnel, 3: Deliver information
-            int delivery_type = 3;//RandomUtils.nextInt(3) + 1;
+            int delivery_type = RandomUtils.nextInt(3) + 1;
             driver.findElement(By.cssSelector("#searchtype > label:nth-child(" + delivery_type + ") > span > input")).click();
 
             // Search destination selection by delivery type
@@ -890,7 +890,8 @@ public class Destination_selection {
             driver.findElement(By.cssSelector("div:nth-child(1)>button.ant-btn-sm")).click();
 
             // Waiting for loading mail list page
-            sleep(1000);
+            new WebDriverWait(driver, Duration.ofSeconds(10))
+                    .until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("div:nth-child(1)>div>div.ant-message-custom-content > span:nth-child(2)")));
             Assert.assertEquals(driver.getCurrentUrl(), url_mail_list, "[Failed] Can not make a copy of delivered email.");
         }
     }
@@ -1380,7 +1381,7 @@ public class Destination_selection {
             }
 
             if (!check_null) {
-                sleep(1000);
+                sleep(2000);
                 // If we can link to partner PIC, verify current url
                 Assert.assertTrue(driver.getCurrentUrl().contains(partnerPIC_url), "[Failed] Can not link to partner PIC from Destination selection");
             } else {

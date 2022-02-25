@@ -209,90 +209,108 @@ public class Final_confirmation {
 
     // Update button
     public void update_delivery_with_valid_data() throws InterruptedException {
-        update_button.click();
-        sleep(1000);
-        Assert.assertEquals(driver.getCurrentUrl(), url_mail_list, "[Update] Can not update delivered email.");
+        // Master, Administrator, Responsible person, Leader, Member
+        if (cm.authorized(role, cm.role_list(5))) {
+            update_button.click();
+            sleep(1000);
+            Assert.assertEquals(driver.getCurrentUrl(), url_mail_list, "[Update] Can not update delivered email.");
+        }
     }
 
     public void do_you_want_to_delete_this_delivered_email_OK() throws InterruptedException {
-        // Click delete button
-        sleep(1000);
-        delete_button.click();
+        // Master, Administrator, Responsible person, Leader, Member
+        if (cm.authorized(role, cm.role_list(5))) {
+            // Click delete button
+            sleep(1000);
+            delete_button.click();
 
-        // Click OK button
-        wait.until(ExpectedConditions.elementToBeClickable(ok_button)).click();
+            // Click OK button
+            wait.until(ExpectedConditions.elementToBeClickable(ok_button)).click();
 
-        // Waiting for loading mail list page
-        sleep(1000);
-        Assert.assertEquals(driver.getCurrentUrl(), url_mail_list, "[Failed] Can not delete delivered email");
+            // Waiting for loading mail list page
+            sleep(1000);
+            Assert.assertEquals(driver.getCurrentUrl(), url_mail_list, "[Failed] Can not delete delivered email");
+        }
     }
 
     public void do_you_want_to_delete_this_delivered_email_Cancel() throws InterruptedException {
-        // Click delete button
-        sleep(1000);
-        delete_button.click();
+        // Master, Administrator, Responsible person, Leader, Member
+        if (cm.authorized(role, cm.role_list(5))) {
+            // Click delete button
+            sleep(1000);
+            delete_button.click();
 
-        // Click cancel button
-        wait.until(ExpectedConditions.elementToBeClickable(cancel_button)).click();
+            // Click cancel button
+            wait.until(ExpectedConditions.elementToBeClickable(cancel_button)).click();
 
-        // Waiting for close popup
-        sleep(500);
+            // Waiting for close popup
+            sleep(500);
 
-        // Check popup close
-        boolean check = true;
-        try {
-            cancel_button.click();
-        } catch (NoSuchElementException ex) {
-            check = false;
+            // Check popup close
+            boolean check = true;
+            try {
+                cancel_button.click();
+            } catch (NoSuchElementException ex) {
+                check = false;
+            }
+            Assert.assertFalse(check, "[Failed] Can not close delete delivered email popup");
         }
-        Assert.assertFalse(check, "[Failed] Can not close delete delivered email popup");
     }
 
     public void make_a_copy() throws InterruptedException {
-        // Click make a copy button
-        sleep(1000);
-        key.moveToElement(make_a_copy_button).click().build().perform();
+        // Master, Administrator, Responsible person, Leader, Member
+        if (cm.authorized(role, cm.role_list(5))) {
+            // Click make a copy button
+            sleep(1000);
+            key.moveToElement(make_a_copy_button).click().build().perform();
 //        make_a_copy_button.click();
 
-        // Waiting for loading mail list page
-        sleep(1000);
-        Assert.assertEquals(driver.getCurrentUrl(), url_mail_list, "[Failed] Can not make a copy of delivered email.");
+            // Waiting for loading mail list page
+            sleep(1000);
+            Assert.assertEquals(driver.getCurrentUrl(), url_mail_list, "[Failed] Can not make a copy of delivered email.");
+        }
     }
 
     public void would_you_like_to_change_this_delivery_email_to_Draft_status_OK() throws InterruptedException {
-        // Click save as draft button
-        sleep(1000);
+        // Master, Administrator, Responsible person, Leader, Member
+        if (cm.authorized(role, cm.role_list(5))) {
+            // Click save as draft button
+            sleep(1000);
 //        save_as_draft_button.click();
-        key.moveToElement(save_as_draft_button).click().build().perform();
+            key.moveToElement(save_as_draft_button).click().build().perform();
 
-        // click OK button
-        wait.until(ExpectedConditions.elementToBeClickable(ok_button)).click();
+            // click OK button
+            wait.until(ExpectedConditions.elementToBeClickable(ok_button)).click();
 
-        // Waiting for loading mail list page
-        sleep(1000);
-        Assert.assertEquals(driver.getCurrentUrl(), url_mail_list, "[Failed] Can not save delivered as draft.");
+            // Waiting for loading mail list page
+            sleep(1000);
+            Assert.assertEquals(driver.getCurrentUrl(), url_mail_list, "[Failed] Can not save delivered as draft.");
+        }
     }
 
     public void would_you_like_to_change_this_delivery_email_to_Draft_status_Cancel() throws InterruptedException {
-        // Click save as draft button
-        sleep(1000);
-        key.moveToElement(save_as_draft_button).click().build().perform();
+        // Master, Administrator, Responsible person, Leader, Member
+        if (cm.authorized(role, cm.role_list(5))) {
+            // Click save as draft button
+            sleep(1000);
+            key.moveToElement(save_as_draft_button).click().build().perform();
 //        save_as_draft_button.click();
 
-        // Click cancel button
-        wait.until(ExpectedConditions.elementToBeClickable(cancel_button)).click();
+            // Click cancel button
+            wait.until(ExpectedConditions.elementToBeClickable(cancel_button)).click();
 
-        // Waiting for close popup
-        sleep(500);
+            // Waiting for close popup
+            sleep(500);
 
-        // Check popup close
-        boolean check = true;
-        try {
-            cancel_button.click();
-        } catch (NoSuchElementException ex) {
-            check = false;
+            // Check popup close
+            boolean check = true;
+            try {
+                cancel_button.click();
+            } catch (NoSuchElementException ex) {
+                check = false;
+            }
+            Assert.assertFalse(check, "[Failed] Can not close save delivered as draft popup.");
         }
-        Assert.assertFalse(check, "[Failed] Can not close save delivered as draft popup.");
     }
 
     public void back_to_destination_selection_step() throws InterruptedException {
