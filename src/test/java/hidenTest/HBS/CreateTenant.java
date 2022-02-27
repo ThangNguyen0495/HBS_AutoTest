@@ -1,4 +1,4 @@
-package HBS;
+package hidenTest.HBS;
 
 import BasePage.createTenant.Company_profile_information;
 import BasePage.createTenant.Member_information;
@@ -8,7 +8,6 @@ import Common.Common;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 

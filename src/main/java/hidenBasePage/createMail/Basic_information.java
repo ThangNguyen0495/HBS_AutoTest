@@ -1,4 +1,4 @@
-package BasePage.createMail;
+package hidenBasePage.createMail;
 
 import Common.Common;
 import org.apache.commons.lang.RandomStringUtils;

@@ -1,9 +1,9 @@
-package HBS;
+package hidenTest.HBS;
 
-import BasePage.editMail.Attachment;
-import BasePage.editMail.Basic_information;
-import BasePage.editMail.Destination_selection;
-import BasePage.editMail.Final_confirmation;
+import hidenBasePage.editMail.Attachment;
+import hidenBasePage.editMail.Basic_information;
+import hidenBasePage.editMail.Destination_selection;
+import hidenBasePage.editMail.Final_confirmation;
 import Common.Common;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
@@ -1419,7 +1419,7 @@ public class EditMail {
         ds.search_contact_by_condition();
 
         // Verify that pagination should be work normally
-        ds.pagination_destination_selection(driver);
+        ds.pagination_destination_selection();
 
         // Close browser
         driver.close();

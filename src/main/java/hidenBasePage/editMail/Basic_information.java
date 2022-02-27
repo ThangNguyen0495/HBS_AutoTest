@@ -3,7 +3,10 @@ package hidenBasePage.editMail;
 import Common.Common;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.math.RandomUtils;
-import org.openqa.selenium.*;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.CacheLookup;
 import org.openqa.selenium.support.FindBy;
@@ -13,6 +16,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
 import java.time.Duration;
+import java.util.List;
 
 import static java.lang.Thread.sleep;
 
@@ -23,11 +27,8 @@ public class Basic_information {
     WebDriver driver;
     WebDriverWait wait;
 
-    @FindBy(css = "#text_format>label:nth-child(1)>span.ant-radio>input")
-    WebElement text;
-
-    @FindBy(css = "#text_format>label:nth-child(2)>span.ant-radio>input")
-    WebElement html;
+    @FindBy(css = "#text_format>label>span.ant-radio>input")
+    List<WebElement> format;
 
     @FindBy(css = "div.ant-form-item-control-input-content>div>div>div>div.ant-select-selector")
     WebElement distributor;
@@ -48,8 +49,8 @@ public class Basic_information {
     @CacheLookup
     WebElement next_step_button;
 
-    @FindBy(css = "div:nth-child(2)>div>div.ant-steps-item-icon")
-    WebElement attachment_step;
+    @FindBy(css = "div.ant-steps-item-icon")
+    List<WebElement> step_list;
 
     @FindBy(css = "form > div:nth-child(2) > div > div.ant-form-item-explain > div")
     WebElement distributor_error;
@@ -76,33 +77,40 @@ public class Basic_information {
     WebElement save_as_draft_button;
 
     @FindBy(css = "div.ant-row> div:nth-child(2) > button.ant-btn-primary")
-    WebElement update_button;
 
-    public Basic_information(WebDriver driver) {
+    WebElement update_button;
+    String role;
+    Common cm;
+    String url_mail_list;
+    Actions key;
+
+
+    public Basic_information(WebDriver driver, Actions key, String role, Common cm, String url_mail_list) {
         this.driver = driver;
+        this.key = key;
+        this.role = role;
+        this.cm = cm;
+        this.url_mail_list = url_mail_list;
         wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         PageFactory.initElements(driver, this);
     }
 
-    public void format(String role, Common cm) {
-        // Master, Administrator, Responsible person, Leader, Member
-        if (cm.authorized(role, cm.role_list(5))) {
-            // Format
-            // 1: Text, 2: Html
-            try {
-                text.click();
-            } catch (ElementClickInterceptedException ex) {
-                html.click();
-            }
-        }
-    }
-
-    public void distributor(Actions key, String role, Common cm) throws InterruptedException {
+    public void format() throws InterruptedException {
         // Master, Administrator, Responsible person, Leader, Member
         if (cm.authorized(role, cm.role_list(5))) {
             // waiting for loading distributor list
             sleep(3000);
 
+            // Format
+            // 0: Text, 1: Html
+            int id = RandomUtils.nextInt(2);
+            format.get(id).click();
+        }
+    }
+
+    public void distributor() throws InterruptedException {
+        // Master, Administrator, Responsible person, Leader, Member
+        if (cm.authorized(role, cm.role_list(5))) {
             // Distributor
             // random distributor in range 1-20
             int distributor_id = RandomUtils.nextInt(20) + 1;
@@ -115,19 +123,18 @@ public class Basic_information {
         }
     }
 
-    public void subject(String role, Common cm) {
+    public void subject() {
         // Master, Administrator, Responsible person, Leader, Member
         if (cm.authorized(role, cm.role_list(5))) {
             // Delete old subject
-            wait.until(ExpectedConditions.elementToBeClickable(distributor));
-            wait.until(ExpectedConditions.elementToBeClickable(subject)).sendKeys(Keys.CONTROL + "a", Keys.DELETE);
+            subject.sendKeys(Keys.CONTROL + "a", Keys.DELETE);
             // length of subject in range 1-100
             int length_of_subject = RandomUtils.nextInt(100) + 1;
             subject.sendKeys(RandomStringUtils.randomAlphabetic(length_of_subject));
         }
     }
 
-    public void insertion(String role, Common cm) {
+    public void insertion() {
         // Master, Administrator, Responsible person, Leader, Member
         if (cm.authorized(role, cm.role_list(5))) {
             // Delete old insertion
@@ -138,7 +145,7 @@ public class Basic_information {
         }
     }
 
-    public void send_a_copy_to_the_distributor(String role, Common cm) {
+    public void send_a_copy_to_the_distributor() {
         // Master, Administrator, Responsible person, Leader, Member
         if (cm.authorized(role, cm.role_list(5))) {
             // Send a copy to the distributor
@@ -150,13 +157,14 @@ public class Basic_information {
         }
     }
 
-    public void next_to_attachment_step(String role, Common cm) throws InterruptedException {
+    public void next_to_attachment_step() throws InterruptedException {
         // Master, Administrator, Responsible person, Leader, Member
         if (cm.authorized(role, cm.role_list(5))) {
             // Next to 添付ファイル_Step
             next_step_button.click();
             // Check current tab
-            boolean check = wait.until(ExpectedConditions.visibilityOf(attachment_step)).isEnabled();
+            // 0: Basic information, 1: Attachment, 2: Destination selection, 3: Final confirmation
+            boolean check = wait.until(ExpectedConditions.visibilityOf(step_list.get(1))).isEnabled();
             Assert.assertTrue(check, "[Failed] Can not next to Attachment from Basic information.");
             // Waiting for attachment tab loading
             sleep(1000);
@@ -179,7 +187,7 @@ public class Basic_information {
 
     // Subject
     public void leave_subject_blank() {
-        wait.until(ExpectedConditions.elementToBeClickable(subject)).sendKeys(Keys.CONTROL + "a", Keys.DELETE);
+        wait.until(ExpectedConditions.elementToBeClickable(subject)).sendKeys("text", Keys.CONTROL + "a", Keys.DELETE);
         String text = wait.until(ExpectedConditions.visibilityOf(subject_error)).getText();
         Assert.assertEquals(text, "必須項目です。", "[Subject] Message do not match");
     }
@@ -226,7 +234,7 @@ public class Basic_information {
 
     // Insertion
     public void leave_insertion_blank() {
-        insertion.sendKeys(Keys.CONTROL + "a", Keys.DELETE);
+        insertion.sendKeys("text", Keys.CONTROL + "a", Keys.DELETE);
         String text = wait.until(ExpectedConditions.visibilityOf(insertion_error)).getText();
         Assert.assertEquals(text, "必須項目です。", "[Insertion] Message do not match");
     }
@@ -278,19 +286,14 @@ public class Basic_information {
         Assert.assertEquals(text, "全角5000文字または半角10000文字以内で入力してください。", "[Insertion] Message do not match");
     }
 
-    // Delete button
-    public void update_delivery_with_valid_data(String url_mail_list) throws InterruptedException {
-        sleep(3000);
-        subject.sendKeys(Keys.CONTROL + "a", Keys.BACK_SPACE);
-        subject.sendKeys(RandomStringUtils.randomAlphabetic(100));
-        insertion.sendKeys(Keys.CONTROL + "a", Keys.BACK_SPACE);
-        insertion.sendKeys(RandomStringUtils.random(5000, 0x4e00, 0x5f80, true, false));
+    // Update button
+    public void update_delivery_with_valid_data() throws InterruptedException {
         update_button.click();
         sleep(1000);
         Assert.assertEquals(driver.getCurrentUrl(), url_mail_list, "[Update] Can not update delivered email.");
     }
 
-    public void do_you_want_to_delete_this_delivered_email_OK(WebDriver driver, String url_mail_list) throws InterruptedException {
+    public void do_you_want_to_delete_this_delivered_email_OK() throws InterruptedException {
         // Click delete button
         delete_button.click();
 
@@ -322,7 +325,7 @@ public class Basic_information {
         Assert.assertFalse(check, "[Failed] Can not close delete delivered email popup");
     }
 
-    public void make_a_copy(WebDriver driver, String url_mail_list) throws InterruptedException {
+    public void make_a_copy() throws InterruptedException {
         // Click make a copy button
         make_a_copy_button.click();
 
@@ -331,7 +334,7 @@ public class Basic_information {
         Assert.assertEquals(driver.getCurrentUrl(), url_mail_list, "[Failed] Can not make a copy of delivered email.");
     }
 
-    public void would_you_like_to_change_this_delivery_email_to_Draft_status_OK(WebDriver driver, String url_mail_list) throws InterruptedException {
+    public void would_you_like_to_change_this_delivery_email_to_Draft_status_OK() throws InterruptedException {
         // Click save as draft button
         save_as_draft_button.click();
 

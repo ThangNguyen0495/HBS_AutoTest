@@ -1,4 +1,4 @@
-package BasePage.editMail;
+package hidenBasePage.editMail;
 
 import Common.Common;
 import org.openqa.selenium.*;

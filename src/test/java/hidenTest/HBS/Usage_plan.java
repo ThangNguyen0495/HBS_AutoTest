@@ -1,4 +1,4 @@
-package HBS;
+package hidenTest.HBS;
 
 import BasePage.paymentProcess.usage_plan;
 import Common.Common;

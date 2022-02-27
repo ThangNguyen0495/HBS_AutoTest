@@ -1,9 +1,9 @@
-package HBS;
+package Refactor_code;
 
-import BasePage.createMail.Attachment;
-import BasePage.createMail.Basic_information;
-import BasePage.createMail.Destination_selection;
-import BasePage.createMail.Final_confirmation;
+import BasePage.Mail.refactorCode.Step1_Basic_Information;
+import BasePage.Mail.refactorCode.Step2_Attachment;
+import BasePage.Mail.refactorCode.Step3_Destination_selection;
+import BasePage.Mail.refactorCode.Step4_Final_confirmation;
 import Common.Common;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
@@ -13,19 +13,21 @@ import org.testng.annotations.Test;
 
 import java.io.IOException;
 
-public class CreateMail {
+import static BasePage.Link_and_Path.HBS.mail_list_path;
+import static BasePage.Link_and_Path.HBS.register_path;
 
+public class Delivered_Mail_Register {
     Common cm;
     WebDriver driver;
     Actions key;
-    Basic_information bi;
-    Attachment a;
-    Destination_selection ds;
-    Final_confirmation fc;
+    Step1_Basic_Information bi;
+    Step2_Attachment a;
+    Step3_Destination_selection ds;
+    Step4_Final_confirmation fc;
 
     @BeforeMethod
-    @Parameters({"headless", "email", "password", "url", "role", "url_mail_list", "capacity","partnerPIC_url"})
-    public void init(Boolean headless, String email, String password, String url, String role, String url_mail_list, int capacity, String partnerPIC_url) throws InterruptedException {
+    @Parameters({"headless", "email", "password", "domain", "role", "capacity"})
+    public void init(Boolean headless, String email, String password, String domain, String role, int capacity) throws InterruptedException {
         // Init Common function
         cm = new Common();
 
@@ -36,23 +38,23 @@ public class CreateMail {
         key = new Actions(driver);
 
         //Login
-        cm.login(driver, url, email, password);
+        cm.login(driver, domain + mail_list_path + register_path, email, password);
 
         // Init Basic information function
-        bi = new Basic_information(driver, key, role, cm, url_mail_list);
+        bi = new Step1_Basic_Information(driver, role, cm, domain, "Register");
 
         // Init Attachment function
-        a = new Attachment(driver, key, role, cm, url_mail_list, capacity);
+        a = new Step2_Attachment(driver, role, cm, domain, capacity, "Register");
 
         // Init Destination selection function
-        ds = new Destination_selection(driver, key, role, cm, url_mail_list, partnerPIC_url);
+        ds = new Step3_Destination_selection(driver, cm, role, domain, "Register");
 
         // Init Final confirmation function
-        fc = new Final_confirmation(driver, key, role, cm, url_mail_list);
+        fc = new Step4_Final_confirmation(driver, role, cm, domain, "Register");
     }
 
     @Test(priority = 1)
-    public void TC01_process_create_mail() throws InterruptedException {
+    public void TC01_process_create_mail() throws InterruptedException, IOException {
         //****** 基本情報 ****** //
         // Basic information
         // Format
@@ -76,8 +78,8 @@ public class CreateMail {
 
         //****** 添付ファイル ****** //
         // Attachment
-        // Upload file
-        a.upload_file();
+//        // Upload file
+//        a.upload_file();
 
         // Next to 宛先選択_Step
         a.next_to_destination_selection_step();
@@ -114,7 +116,7 @@ public class CreateMail {
     }
 
     @Test(priority = 2)
-    public void TC_02_leave_all_blank_basic_information() throws InterruptedException {
+    public void TC_02_leave_all_blank_basic_information() {
         // Leave distributor blank and verify error message
         bi.leave_distributor_blank();
 
@@ -129,7 +131,7 @@ public class CreateMail {
     }
 
     @Test(priority = 3)
-    public void TC_03_subject_exceed_100_half_width_characters() {
+    public void TC_03_subject_exceed_100_half_width_characters() throws InterruptedException {
         // Input subject exceed 100 half width character and verify error message
         bi.subject_exceed_100_half_width_characters();
 
@@ -138,7 +140,7 @@ public class CreateMail {
     }
 
     @Test(priority = 4)
-    public void TC_04_subject_exceed_100_full_width_characters() {
+    public void TC_04_subject_exceed_100_full_width_characters() throws InterruptedException {
         // Input subject exceed 100 full width character and verify error message
         bi.subject_exceed_100_full_width_characters();
 
@@ -147,7 +149,7 @@ public class CreateMail {
     }
 
     @Test(priority = 5)
-    public void TC_05_subject_exceed_100_mix_half_and_full_width_characters() {
+    public void TC_05_subject_exceed_100_mix_half_and_full_width_characters() throws InterruptedException {
         // Input subject exceed mix 100 half, full width character and verify error message
         bi.subject_exceed_100_mix_half_and_full_width_characters();
 
@@ -157,15 +159,15 @@ public class CreateMail {
 
 
     @Test(priority = 6)
-    public void TC_06_insertion_exceed_10000_half_width_characters() {
+    public void TC_06_insertion_exceed_10000_half_width_characters() throws InterruptedException {
         // Input insertion exceed 10000 half width character and verify error message
         bi.insertion_exceed_10000_half_width_characters();
         driver.close();
     }
 
     @Test(priority = 7)
-    public void TC_07_insertion_exceed_5000_full_width_characters() {
-        // Input insertion exceed 5000 full width character and verify error message
+    public void TC_07_insertion_exceed_5000_full_width_characters() throws InterruptedException {
+        /* Input insertion exceed 5000 full width character and verify error message */
         bi.insertion_exceed_5000_full_width_characters();
 
         // Close browser
@@ -173,7 +175,7 @@ public class CreateMail {
     }
 
     @Test(priority = 8)
-    public void TC_08_insertion_exceed_5000_mix_half_and_full_width_characters() {
+    public void TC_08_insertion_exceed_5000_mix_half_and_full_width_characters() throws InterruptedException {
         // Input insertion exceed mix 5000 half,full width character and verify error message
         bi.insertion_exceed_5000_mix_half_and_full_width_characters();
 
@@ -355,7 +357,7 @@ public class CreateMail {
     }
 
     @Test(priority = 18)
-    public void TC_18_upload_exceed_maximum_capacity_multi_file() throws IOException, InterruptedException {
+    public void TC_18_upload_exceed_maximum_capacity_multi_file() throws InterruptedException {
         // Input valid subject
         bi.subject();
 

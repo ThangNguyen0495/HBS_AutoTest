@@ -1,8 +1,10 @@
-package BasePage.createMail;
+package BasePage.Mail.refactorCode;
 
 import Common.Common;
-import org.openqa.selenium.*;
-import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -13,9 +15,10 @@ import java.time.Duration;
 import java.time.LocalTime;
 import java.util.List;
 
+import static BasePage.Link_and_Path.HBS.mail_list_path;
 import static java.lang.Thread.sleep;
 
-public class Final_confirmation {
+public class Step4_Final_confirmation extends Delivered_Mail_Page {
     @FindBy(css = "table.ant-picker-content>tbody>tr>td")
     List<WebElement> calendar;
 
@@ -40,24 +43,6 @@ public class Final_confirmation {
     @FindBy(css = "div.ant-modal-confirm-btns>button:nth-child(2)")
     WebElement ok_button_confirm_select_date_time;
 
-    @FindBy(css = "button.ant-btn-danger")
-    WebElement delete_button;
-
-    @FindBy(css = "div.ant-modal-confirm-btns > button:nth-child(2)")
-    WebElement ok_button;
-
-    @FindBy(css = "div.ant-modal-confirm-btns > button:nth-child(1)")
-    WebElement cancel_button;
-
-    @FindBy(css = "div:nth-child(1)>button.ant-btn-sm")
-    WebElement make_a_copy_button;
-
-    @FindBy(css = "div.ant-col:nth-child(2)>button.ant-btn-sm")
-    WebElement save_as_draft_button;
-
-    @FindBy(css = "div.ant-row> div:nth-child(2) > button.ant-btn-primary")
-    WebElement update_button;
-
     @FindBy(css = "div:nth-child(1)>div.ant-col.ant-col-24 > div > div:nth-child(1) > div > button")
     WebElement back_button;
 
@@ -67,21 +52,10 @@ public class Final_confirmation {
     @FindBy(css = "div:nth-child(4) > div > button")
     WebElement next_step_button;
 
-    WebDriver driver;
-    WebDriverWait wait;
-    Common cm;
-    String url_mail_list;
-    String role;
-    Actions key;
-
     public int current_id;
 
-    public Final_confirmation(WebDriver driver, Actions key, String role, Common cm, String url_mail_list) {
-        this.driver = driver;
-        this.cm = cm;
-        this.role = role;
-        this.key = key;
-        this.url_mail_list = url_mail_list;
+    public Step4_Final_confirmation(WebDriver driver, String role, Common cm, String domain, String Mode) {
+        super(driver, role, cm, domain, Mode);
         wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         PageFactory.initElements(driver, this);
     }
@@ -89,6 +63,7 @@ public class Final_confirmation {
     public Boolean check_date(int id) {
         return calendar.get(id).getAttribute("class").contains("disable");
     }
+
     public int date_id() {
         int id = 0;
         while (check_date(id)) {
@@ -119,7 +94,7 @@ public class Final_confirmation {
     public Boolean check_time() throws InterruptedException {
         // Waiting for loading mail list page
         sleep(1000);
-        return driver.getCurrentUrl().equals(url_mail_list);
+        return driver.getCurrentUrl().equals(domain + mail_list_path);
     }
 
     public String time_str(int min, int hour) {
@@ -182,7 +157,9 @@ public class Final_confirmation {
                     new_min = 0;
                     wait.until(ExpectedConditions.visibilityOf(date)).click();
                     current_id = next_date_id();
-                    wait.until(ExpectedConditions.elementToBeClickable(calendar.get(current_id))).click();
+                    sleep(1000);
+                    key.moveToElement(calendar.get(current_id)).click().build().perform();
+//                    wait.until(ExpectedConditions.elementToBeClickable(calendar.get(current_id))).click();
                 }
                 time.click();
                 for (int i = 0; i < 10; i++) {
@@ -204,112 +181,6 @@ public class Final_confirmation {
 
                 new_min += 10;
             }
-        }
-    }
-
-    // Update button
-    public void update_delivery_with_valid_data() throws InterruptedException {
-        // Master, Administrator, Responsible person, Leader, Member
-        if (cm.authorized(role, cm.role_list(5))) {
-            update_button.click();
-            sleep(1000);
-            Assert.assertEquals(driver.getCurrentUrl(), url_mail_list, "[Update] Can not update delivered email.");
-        }
-    }
-
-    public void do_you_want_to_delete_this_delivered_email_OK() throws InterruptedException {
-        // Master, Administrator, Responsible person, Leader, Member
-        if (cm.authorized(role, cm.role_list(5))) {
-            // Click delete button
-            sleep(1000);
-            delete_button.click();
-
-            // Click OK button
-            wait.until(ExpectedConditions.elementToBeClickable(ok_button)).click();
-
-            // Waiting for loading mail list page
-            sleep(1000);
-            Assert.assertEquals(driver.getCurrentUrl(), url_mail_list, "[Failed] Can not delete delivered email");
-        }
-    }
-
-    public void do_you_want_to_delete_this_delivered_email_Cancel() throws InterruptedException {
-        // Master, Administrator, Responsible person, Leader, Member
-        if (cm.authorized(role, cm.role_list(5))) {
-            // Click delete button
-            sleep(1000);
-            delete_button.click();
-
-            // Click cancel button
-            wait.until(ExpectedConditions.elementToBeClickable(cancel_button)).click();
-
-            // Waiting for close popup
-            sleep(500);
-
-            // Check popup close
-            boolean check = true;
-            try {
-                cancel_button.click();
-            } catch (NoSuchElementException ex) {
-                check = false;
-            }
-            Assert.assertFalse(check, "[Failed] Can not close delete delivered email popup");
-        }
-    }
-
-    public void make_a_copy() throws InterruptedException {
-        // Master, Administrator, Responsible person, Leader, Member
-        if (cm.authorized(role, cm.role_list(5))) {
-            // Click make a copy button
-            sleep(1000);
-            key.moveToElement(make_a_copy_button).click().build().perform();
-//        make_a_copy_button.click();
-
-            // Waiting for loading mail list page
-            sleep(1000);
-            Assert.assertEquals(driver.getCurrentUrl(), url_mail_list, "[Failed] Can not make a copy of delivered email.");
-        }
-    }
-
-    public void would_you_like_to_change_this_delivery_email_to_Draft_status_OK() throws InterruptedException {
-        // Master, Administrator, Responsible person, Leader, Member
-        if (cm.authorized(role, cm.role_list(5))) {
-            // Click save as draft button
-            sleep(1000);
-//        save_as_draft_button.click();
-            key.moveToElement(save_as_draft_button).click().build().perform();
-
-            // click OK button
-            wait.until(ExpectedConditions.elementToBeClickable(ok_button)).click();
-
-            // Waiting for loading mail list page
-            sleep(1000);
-            Assert.assertEquals(driver.getCurrentUrl(), url_mail_list, "[Failed] Can not save delivered as draft.");
-        }
-    }
-
-    public void would_you_like_to_change_this_delivery_email_to_Draft_status_Cancel() throws InterruptedException {
-        // Master, Administrator, Responsible person, Leader, Member
-        if (cm.authorized(role, cm.role_list(5))) {
-            // Click save as draft button
-            sleep(1000);
-            key.moveToElement(save_as_draft_button).click().build().perform();
-//        save_as_draft_button.click();
-
-            // Click cancel button
-            wait.until(ExpectedConditions.elementToBeClickable(cancel_button)).click();
-
-            // Waiting for close popup
-            sleep(500);
-
-            // Check popup close
-            boolean check = true;
-            try {
-                cancel_button.click();
-            } catch (NoSuchElementException ex) {
-                check = false;
-            }
-            Assert.assertFalse(check, "[Failed] Can not close save delivered as draft popup.");
         }
     }
 

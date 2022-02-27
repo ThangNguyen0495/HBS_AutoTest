@@ -2,9 +2,9 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="All Test Suite">
     <test verbose="2"
-          name="C:/Users/Admin/IdeaProjects/HBS_AutoTest/src/test/java/HBS/CreateMail.java">
+          name="C:/Users/Admin/IdeaProjects/HBS_AutoTest/src/test/java/hidenTest.HBS/CreateMail.java">
         <classes>
-            <class name="HBS.EditMail">
+            <class name="hidenTest.HBS.EditMail">
                 <methods>
                     <parameter name="headless" value="true"/>
 <!--                    <parameter name="headless" value="false"/>-->

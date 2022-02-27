@@ -1,22 +1,21 @@
-package BasePage.editMail;
+package BasePage.Mail.refactorCode;
 
 import Common.Common;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.math.RandomUtils;
 import org.openqa.selenium.*;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.Assert;
 
 import java.time.Duration;
 import java.util.List;
 
+import static BasePage.Link_and_Path.HBS.contact_list_path;
 import static java.lang.Thread.sleep;
 
-public class Destination_selection {
+public class Step3_Destination_selection extends Delivered_Mail_Page {
     // Delivery information
     // Matter
     @FindBy(css = "#searchtype > label > span > input")
@@ -198,23 +197,11 @@ public class Destination_selection {
     @FindBy(css = "div:nth-child(1)>div.ant-col.ant-col-24 > div > div:nth-child(1) > div > button")
     WebElement back_button;
 
-    @FindBy(css = "button.ant-btn-danger")
-    WebElement delete_button;
-
     @FindBy(css = "div.ant-modal-confirm-btns > button:nth-child(2)")
     WebElement ok_button;
 
     @FindBy(css = "div.ant-modal-confirm-btns > button:nth-child(1)")
     WebElement cancel_button;
-
-    @FindBy(css = "div:nth-child(1)>button.ant-btn-sm")
-    WebElement make_a_copy_button;
-
-    @FindBy(css = "div.ant-col:nth-child(2)>button.ant-btn-sm")
-    WebElement save_as_draft_button;
-
-    @FindBy(css = "div.ant-row> div:nth-child(2) > button.ant-btn-primary")
-    WebElement update_button;
 
     @FindBy(css = "#newTemplateName")
     WebElement template_name;
@@ -255,21 +242,8 @@ public class Destination_selection {
     @FindBy(css = "li.ant-pagination-prev")
     WebElement previous_page;
 
-    WebDriver driver;
-    WebDriverWait wait;
-    Actions key;
-    Common cm;
-    String role;
-    String url_mail_list;
-    String partnerPIC_url;
-
-    public Destination_selection(WebDriver driver, Actions key, Common cm, String role, String url_mail_list, String partnerPIC_url) {
-        this.driver = driver;
-        this.cm = cm;
-        this.key = key;
-        this.role = role;
-        this.url_mail_list = url_mail_list;
-        this.partnerPIC_url = partnerPIC_url;
+    public Step3_Destination_selection(WebDriver driver, Common cm, String role, String domain, String Mode) {
+        super(driver, role, cm, domain, Mode);
         wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         PageFactory.initElements(driver, this);
     }
@@ -471,7 +445,8 @@ public class Destination_selection {
         if (search_by_in_house_person_in_charge == 1) {
             // add In-house person in charge condition
             in_house_person_in_charge.click();
-            sleep(3000); // Wait dropdown has been loaded
+            wait_for_loading_element(in_house_person_in_charge_dropdown);
+//            sleep(3000); // Wait dropdown has been loaded
             in_house_person_in_charge_dropdown.click(); // Open In-house person in charge dropdown
             int id = RandomUtils.nextInt(20);
             for (int i = 0; i <= id; i++) {
@@ -519,7 +494,8 @@ public class Destination_selection {
             // add Tag condition
             tag.click();
             // wait Tag dropdown has been loaded
-            sleep(3000);
+            wait_for_loading_element(tag_dropdown_1);
+//            sleep(3000);
             // number of tags has been selected in range 1-5
             int number_of_tags = RandomUtils.nextInt(5) + 1;
             // Open Tag dropdown
@@ -599,14 +575,29 @@ public class Destination_selection {
         }
     }
 
-    public void next_to_final_confirmation() {
+    public void next_to_final_confirmation() throws InterruptedException {
         // Master, Administrator, Responsible person, Leader, Member
         if (cm.authorized(role, cm.role_list(5))) {
             // Next to 最終確認_step
             next_step_button.click();
 
+            if (Mode.equals("Register")) {
+
+                // wait for message
+                String text = wait.until(ExpectedConditions.visibilityOf(message)).getText();
+                wait.until(ExpectedConditions.invisibilityOf(message));
+
+                // check message
+                soft.assertEquals(text, "アイテムが更新されました", "[Failed][Destination selection] Message do not match.");
+            }
+            else {
+                // waiting for final confirmation step loading
+                sleep(5000);
+            }
+
             // Check current tab
-            Assert.assertTrue(step_list.get(3).isEnabled(), "[Failed] Can not next to Final confirmation from Destination selection.");
+            soft.assertTrue(step_list.get(3).isEnabled(), "[Failed][Destination selection] Can not next to Final confirmation from Destination selection.");
+            soft.assertAll();
         }
     }
 
@@ -624,15 +615,17 @@ public class Destination_selection {
 
         //Delivery area
         String text1 = wait.until(ExpectedConditions.visibilityOf(delivery_area_error)).getText();
-        Assert.assertEquals(text1, "必ず1つ選択してください", "[Delivery area] Message do not match");
+        soft.assertEquals(text1, "必ず1つ選択してください", "[Delivery area] Message do not match");
 
         // Delivery occupation
         String text2 = wait.until(ExpectedConditions.visibilityOf(matter_delivery_occupation_error)).getText();
-        Assert.assertEquals(text2, "必ず1つ選択してください", "[Delivery occupation] Message do not match");
+        soft.assertEquals(text2, "必ず1つ選択してください", "[Delivery occupation] Message do not match");
 
         // Delivery commercial distribution
         String text3 = wait.until(ExpectedConditions.visibilityOf(matter_delivery_commercial_distribution_error)).getText();
-        Assert.assertEquals(text3, "必ず1つ選択してください", "[Delivery commercial distribution] Message do not match");
+        soft.assertEquals(text3, "必ず1つ選択してください", "[Delivery commercial distribution] Message do not match");
+
+        soft.assertAll();
     }
 
     public void deliver_the_matter_only_select_delivery_occupation_development() {
@@ -652,19 +645,21 @@ public class Destination_selection {
 
         //Delivery area
         String text1 = wait.until(ExpectedConditions.visibilityOf(delivery_area_error)).getText();
-        Assert.assertEquals(text1, "必ず1つ選択してください", "[Delivery area] Message do not match");
+        soft.assertEquals(text1, "必ず1つ選択してください", "[Delivery area] Message do not match");
 
         // Delivery occupation/Development/Delivery job details
         String text2 = wait.until(ExpectedConditions.visibilityOf(matter_detail_of_delivery_occupation_dev_error)).getText();
-        Assert.assertEquals(text2, "必ず1つ選択してください", "[Delivery occupation/Development/Delivery job details] Message do not match");
+        soft.assertEquals(text2, "必ず1つ選択してください", "[Delivery occupation/Development/Delivery job details] Message do not match");
 
         // Delivery occupation/Development/Delivery skill details
         String text3 = wait.until(ExpectedConditions.visibilityOf(matter_delivery_skill_details_dev_error)).getText();
-        Assert.assertEquals(text3, "必ず1つ選択してください", "[Delivery occupation/Development/Delivery skill details] Message do not match");
+        soft.assertEquals(text3, "必ず1つ選択してください", "[Delivery occupation/Development/Delivery skill details] Message do not match");
 
         // Delivery commercial distribution
         String text4 = wait.until(ExpectedConditions.visibilityOf(matter_delivery_commercial_distribution_error)).getText();
-        Assert.assertEquals(text4, "必ず1つ選択してください", "[Delivery commercial distribution] Message do not match");
+        soft.assertEquals(text4, "必ず1つ選択してください", "[Delivery commercial distribution] Message do not match");
+
+        soft.assertAll();
     }
 
     public void deliver_the_matter_only_select_delivery_occupation_infrastructure() {
@@ -684,19 +679,21 @@ public class Destination_selection {
 
         //Delivery area
         String text1 = wait.until(ExpectedConditions.visibilityOf(delivery_area_error)).getText();
-        Assert.assertEquals(text1, "必ず1つ選択してください", "[Delivery area] Message do not match");
+        soft.assertEquals(text1, "必ず1つ選択してください", "[Delivery area] Message do not match");
 
         // Delivery occupation/Infrastructure/Delivery job details
         String text2 = wait.until(ExpectedConditions.visibilityOf(matter_detail_of_delivery_occupation_infra_error)).getText();
-        Assert.assertEquals(text2, "必ず1つ選択してください", "[Delivery occupation/Infrastructure/Delivery job details] Message do not match");
+        soft.assertEquals(text2, "必ず1つ選択してください", "[Delivery occupation/Infrastructure/Delivery job details] Message do not match");
 
         // Delivery occupation/Infrastructure/Delivery skill details
         String text3 = wait.until(ExpectedConditions.visibilityOf(matter_delivery_skill_details_infra_error)).getText();
-        Assert.assertEquals(text3, "必ず1つ選択してください", "[Delivery occupation/Infrastructure/Delivery skill details] Message do not match");
+        soft.assertEquals(text3, "必ず1つ選択してください", "[Delivery occupation/Infrastructure/Delivery skill details] Message do not match");
 
         // Delivery commercial distribution
         String text4 = wait.until(ExpectedConditions.visibilityOf(matter_delivery_commercial_distribution_error)).getText();
-        Assert.assertEquals(text4, "必ず1つ選択してください", "[Delivery commercial distribution] Message do not match");
+        soft.assertEquals(text4, "必ず1つ選択してください", "[Delivery commercial distribution] Message do not match");
+
+        soft.assertAll();
     }
 
     public void deliver_the_matter_only_select_delivery_occupation_others() {
@@ -716,15 +713,17 @@ public class Destination_selection {
 
         //Delivery area
         String text1 = wait.until(ExpectedConditions.visibilityOf(delivery_area_error)).getText();
-        Assert.assertEquals(text1, "必ず1つ選択してください", "[Delivery area] Message do not match");
+        soft.assertEquals(text1, "必ず1つ選択してください", "[Delivery area] Message do not match");
 
         // Delivery occupation/Others/Delivery job details
         String text2 = wait.until(ExpectedConditions.visibilityOf(matter_detail_of_delivery_occupation_others_error)).getText();
-        Assert.assertEquals(text2, "必ず1つ選択してください", "[Delivery occupation/Others/Delivery job details] Message do not match");
+        soft.assertEquals(text2, "必ず1つ選択してください", "[Delivery occupation/Others/Delivery job details] Message do not match");
 
         // Delivery commercial distribution
         String text3 = wait.until(ExpectedConditions.visibilityOf(matter_delivery_commercial_distribution_error)).getText();
-        Assert.assertEquals(text3, "必ず1つ選択してください", "[Delivery commercial distribution] Message do not match");
+        soft.assertEquals(text3, "必ず1つ選択してください", "[Delivery commercial distribution] Message do not match");
+
+        soft.assertAll();
     }
 
     /**
@@ -744,19 +743,21 @@ public class Destination_selection {
 
         //Delivery area
         String text1 = wait.until(ExpectedConditions.visibilityOf(delivery_area_error)).getText();
-        Assert.assertEquals(text1, "必ず1つ選択してください", "[Delivery area] Message do not match");
+        soft.assertEquals(text1, "必ず1つ選択してください", "[Delivery area] Message do not match");
 
         // Delivery occupation
         String text2 = wait.until(ExpectedConditions.visibilityOf(personnel_delivery_occupation_error)).getText();
-        Assert.assertEquals(text2, "必ず1つ選択してください", "[Delivery occupation] Message do not match");
+        soft.assertEquals(text2, "必ず1つ選択してください", "[Delivery occupation] Message do not match");
 
         // Delivery employment form
         String text3 = wait.until(ExpectedConditions.visibilityOf(personnel_delivery_employment_form_error)).getText();
-        Assert.assertEquals(text3, "必ず1つ選択してください", "[Delivery employment form] Message do not match");
+        soft.assertEquals(text3, "必ず1つ選択してください", "[Delivery employment form] Message do not match");
 
         // Delivery commercial distribution
         String text4 = wait.until(ExpectedConditions.visibilityOf(personnel_delivery_commercial_distribution_error)).getText();
-        Assert.assertEquals(text4, "必ず1つ選択してください", "[Delivery commercial distribution] Message do not match");
+        soft.assertEquals(text4, "必ず1つ選択してください", "[Delivery commercial distribution] Message do not match");
+
+        soft.assertAll();
     }
 
     public void deliver_the_personnel_only_select_delivery_occupation_development() {
@@ -776,23 +777,25 @@ public class Destination_selection {
 
         //Delivery area
         String text1 = wait.until(ExpectedConditions.visibilityOf(delivery_area_error)).getText();
-        Assert.assertEquals(text1, "必ず1つ選択してください", "[Delivery area] Message do not match");
+        soft.assertEquals(text1, "必ず1つ選択してください", "[Delivery area] Message do not match");
 
         // Delivery occupation/Development/Delivery job details
         String text2 = wait.until(ExpectedConditions.visibilityOf(personnel_detail_of_delivery_occupation_dev_error)).getText();
-        Assert.assertEquals(text2, "必ず1つ選択してください", "[Delivery occupation/Development/Delivery job details] Message do not match");
+        soft.assertEquals(text2, "必ず1つ選択してください", "[Delivery occupation/Development/Delivery job details] Message do not match");
 
         // Delivery occupation/Development/Delivery skill details
         String text3 = wait.until(ExpectedConditions.visibilityOf(personnel_delivery_skill_details_dev_error)).getText();
-        Assert.assertEquals(text3, "必ず1つ選択してください", "[Delivery occupation/Development/Delivery skill details] Message do not match");
+        soft.assertEquals(text3, "必ず1つ選択してください", "[Delivery occupation/Development/Delivery skill details] Message do not match");
 
         // Delivery employment form
         String text4 = wait.until(ExpectedConditions.visibilityOf(personnel_delivery_employment_form_error)).getText();
-        Assert.assertEquals(text4, "必ず1つ選択してください", "[Delivery employment form] Message do not match");
+        soft.assertEquals(text4, "必ず1つ選択してください", "[Delivery employment form] Message do not match");
 
         // Delivery commercial distribution
         String text5 = wait.until(ExpectedConditions.visibilityOf(personnel_delivery_commercial_distribution_error)).getText();
-        Assert.assertEquals(text5, "必ず1つ選択してください", "[Delivery commercial distribution] Message do not match");
+        soft.assertEquals(text5, "必ず1つ選択してください", "[Delivery commercial distribution] Message do not match");
+
+        soft.assertAll();
     }
 
     public void deliver_the_personnel_only_select_delivery_occupation_infrastructure() {
@@ -812,23 +815,25 @@ public class Destination_selection {
 
         //Delivery area
         String text1 = wait.until(ExpectedConditions.visibilityOf(delivery_area_error)).getText();
-        Assert.assertEquals(text1, "必ず1つ選択してください", "[Delivery area] Message do not match");
+        soft.assertEquals(text1, "必ず1つ選択してください", "[Delivery area] Message do not match");
 
         // Delivery occupation/Infrastructure/Delivery job details
         String text2 = wait.until(ExpectedConditions.visibilityOf(personnel_detail_of_delivery_occupation_infra_error)).getText();
-        Assert.assertEquals(text2, "必ず1つ選択してください", "[Delivery occupation/Infrastructure/Delivery job details] Message do not match");
+        soft.assertEquals(text2, "必ず1つ選択してください", "[Delivery occupation/Infrastructure/Delivery job details] Message do not match");
 
         // Delivery occupation/Infrastructure/Delivery skill details
         String text3 = wait.until(ExpectedConditions.visibilityOf(personnel_delivery_skill_details_infra_error)).getText();
-        Assert.assertEquals(text3, "必ず1つ選択してください", "[Delivery occupation/Infrastructure/Delivery skill details] Message do not match");
+        soft.assertEquals(text3, "必ず1つ選択してください", "[Delivery occupation/Infrastructure/Delivery skill details] Message do not match");
 
         // Delivery employment form
         String text4 = wait.until(ExpectedConditions.visibilityOf(personnel_delivery_employment_form_error)).getText();
-        Assert.assertEquals(text4, "必ず1つ選択してください", "[Delivery employment form] Message do not match");
+        soft.assertEquals(text4, "必ず1つ選択してください", "[Delivery employment form] Message do not match");
 
         // Delivery commercial distribution
         String text5 = wait.until(ExpectedConditions.visibilityOf(personnel_delivery_commercial_distribution_error)).getText();
-        Assert.assertEquals(text5, "必ず1つ選択してください", "[Delivery commercial distribution] Message do not match");
+        soft.assertEquals(text5, "必ず1つ選択してください", "[Delivery commercial distribution] Message do not match");
+
+        soft.assertAll();
     }
 
     public void deliver_the_personnel_only_select_delivery_occupation_others() {
@@ -848,19 +853,21 @@ public class Destination_selection {
 
         //Delivery area
         String text1 = wait.until(ExpectedConditions.visibilityOf(delivery_area_error)).getText();
-        Assert.assertEquals(text1, "必ず1つ選択してください", "[Delivery area] Message do not match");
+        soft.assertEquals(text1, "必ず1つ選択してください", "[Delivery area] Message do not match");
 
         // Delivery occupation/Others/Delivery job details
         String text2 = wait.until(ExpectedConditions.visibilityOf(personnel_detail_of_delivery_occupation_others_error)).getText();
-        Assert.assertEquals(text2, "必ず1つ選択してください", "[Delivery occupation/Others/Delivery job details] Message do not match");
+        soft.assertEquals(text2, "必ず1つ選択してください", "[Delivery occupation/Others/Delivery job details] Message do not match");
 
         // Delivery employment form
         String text3 = wait.until(ExpectedConditions.visibilityOf(personnel_delivery_employment_form_error)).getText();
-        Assert.assertEquals(text3, "必ず1つ選択してください", "[Delivery employment form] Message do not match");
+        soft.assertEquals(text3, "必ず1つ選択してください", "[Delivery employment form] Message do not match");
 
         // Delivery commercial distribution
         String text4 = wait.until(ExpectedConditions.visibilityOf(personnel_delivery_commercial_distribution_error)).getText();
-        Assert.assertEquals(text4, "必ず1つ選択してください", "[Delivery commercial distribution] Message do not match");
+        soft.assertEquals(text4, "必ず1つ選択してください", "[Delivery commercial distribution] Message do not match");
+
+        soft.assertAll();
     }
 
     public void deliver_the_personnel_select_delivery_occupation_development_infrastructure_and_others() {
@@ -886,36 +893,37 @@ public class Destination_selection {
 
         //Delivery area
         String text1 = wait.until(ExpectedConditions.visibilityOf(delivery_area_error)).getText();
-        Assert.assertEquals(text1, "必ず1つ選択してください", "[Delivery area] Message do not match");
+        soft.assertEquals(text1, "必ず1つ選択してください", "[Delivery area] Message do not match");
 
         // Delivery occupation/Development/Delivery job details
         String text2 = wait.until(ExpectedConditions.visibilityOf(personnel_detail_of_delivery_occupation_dev_error)).getText();
-        Assert.assertEquals(text2, "必ず1つ選択してください", "[Delivery occupation/Development/Delivery job details] Message do not match");
+        soft.assertEquals(text2, "必ず1つ選択してください", "[Delivery occupation/Development/Delivery job details] Message do not match");
 
         // Delivery occupation/Development/Delivery skill details
         String text3 = wait.until(ExpectedConditions.visibilityOf(personnel_delivery_skill_details_dev_error)).getText();
-        Assert.assertEquals(text3, "必ず1つ選択してください", "[Delivery occupation/Development/Delivery skill details] Message do not match");
+        soft.assertEquals(text3, "必ず1つ選択してください", "[Delivery occupation/Development/Delivery skill details] Message do not match");
 
         // Delivery occupation/Infrastructure/Delivery job details
         String text4 = wait.until(ExpectedConditions.visibilityOf(personnel_detail_of_delivery_occupation_infra_error)).getText();
-        Assert.assertEquals(text4, "必ず1つ選択してください", "[Delivery occupation/Infrastructure/Delivery job details] Message do not match");
+        soft.assertEquals(text4, "必ず1つ選択してください", "[Delivery occupation/Infrastructure/Delivery job details] Message do not match");
 
         // Delivery occupation/Infrastructure/Delivery skill details
         String text5 = wait.until(ExpectedConditions.visibilityOf(personnel_delivery_skill_details_infra_error)).getText();
-        Assert.assertEquals(text5, "必ず1つ選択してください", "[Delivery occupation/Infrastructure/Delivery skill details] Message do not match");
+        soft.assertEquals(text5, "必ず1つ選択してください", "[Delivery occupation/Infrastructure/Delivery skill details] Message do not match");
 
         // Delivery occupation/Others/Delivery job details
         String text6 = wait.until(ExpectedConditions.visibilityOf(personnel_detail_of_delivery_occupation_others_error)).getText();
-        Assert.assertEquals(text6, "必ず1つ選択してください", "[Delivery occupation/Others/Delivery job details] Message do not match");
+        soft.assertEquals(text6, "必ず1つ選択してください", "[Delivery occupation/Others/Delivery job details] Message do not match");
 
         // Delivery employment form
         String text7 = wait.until(ExpectedConditions.visibilityOf(personnel_delivery_employment_form_error)).getText();
-        Assert.assertEquals(text7, "必ず1つ選択してください", "[Delivery employment form] Message do not match");
+        soft.assertEquals(text7, "必ず1つ選択してください", "[Delivery employment form] Message do not match");
 
         // Delivery commercial distribution
         String text8 = wait.until(ExpectedConditions.visibilityOf(personnel_delivery_commercial_distribution_error)).getText();
-        Assert.assertEquals(text8, "必ず1つ選択してください", "[Delivery commercial distribution] Message do not match");
+        soft.assertEquals(text8, "必ず1つ選択してください", "[Delivery commercial distribution] Message do not match");
 
+        soft.assertAll();
     }
 
     public void do_not_select_account_status() {
@@ -930,7 +938,9 @@ public class Destination_selection {
 
         // Account status
         String text = wait.until(ExpectedConditions.visibilityOf(account_status_error)).getText();
-        Assert.assertEquals(text, "必ず1つ選択してください", "[Account status] Message do not match");
+        soft.assertEquals(text, "必ず1つ選択してください", "[Account status] Message do not match");
+
+        soft.assertAll();
     }
 
     public void do_not_select_in_house_person_in_charge() {
@@ -945,7 +955,9 @@ public class Destination_selection {
 
         // In-house person in charge
         String text = wait.until(ExpectedConditions.visibilityOf(in_house_person_in_charge_error)).getText();
-        Assert.assertEquals(text, "必ず選択してください", "[In-house person in charge] Message do not match");
+        soft.assertEquals(text, "必ず選択してください", "[In-house person in charge] Message do not match");
+
+        soft.assertAll();
     }
 
     public void do_not_select_compatibility() {
@@ -960,7 +972,9 @@ public class Destination_selection {
 
         // Compatibility
         String text = wait.until(ExpectedConditions.visibilityOf(compatibility_error)).getText();
-        Assert.assertEquals(text, "必ず選択してください", "[Compatibility] Message do not match");
+        soft.assertEquals(text, "必ず選択してください", "[Compatibility] Message do not match");
+
+        soft.assertAll();
     }
 
     public void do_not_select_tag() {
@@ -975,10 +989,12 @@ public class Destination_selection {
 
         // Tag
         String text = wait.until(ExpectedConditions.visibilityOf(tag_error_1)).getText();
-        Assert.assertEquals(text, "必ず1つ選択してください", "[Tag] Message do not match");
+        soft.assertEquals(text, "必ず1つ選択してください", "[Tag] Message do not match");
+
+        soft.assertAll();
     }
 
-    public void select_exceed_5_tags() throws InterruptedException {
+    public void select_exceed_5_tags() {
         // Select delivery information
         delivery_information();
 
@@ -986,7 +1002,7 @@ public class Destination_selection {
         tag.click();
 
         // Waiting for loading tag list
-        sleep(3000);
+        wait_for_loading_element(tag_dropdown_1);
 
         // Select 6 tags
         tag_dropdown_1.click();
@@ -996,85 +1012,9 @@ public class Destination_selection {
 
         // Tag
         String text = wait.until(ExpectedConditions.visibilityOf(tag_error_2)).getText();
-        Assert.assertEquals(text, "これ以上選択できません", "[Tag] Message do not match");
-    }
+        soft.assertEquals(text, "これ以上選択できません", "[Tag] Message do not match");
 
-    // Update button
-    public void update_delivery_with_valid_data() throws InterruptedException {
-        update_button.click();
-        sleep(1000);
-        Assert.assertEquals(driver.getCurrentUrl(), url_mail_list, "[Update] Can not update delivered email.");
-    }
-
-    public void do_you_want_to_delete_this_delivered_email_OK() throws InterruptedException {
-        // Click delete button
-        delete_button.click();
-
-        // Click OK button
-        wait.until(ExpectedConditions.elementToBeClickable(ok_button)).click();
-
-        // Waiting for loading mail list page
-        sleep(1000);
-        Assert.assertEquals(driver.getCurrentUrl(), url_mail_list, "[Failed] Can not delete delivered email");
-    }
-
-    public void do_you_want_to_delete_this_delivered_email_Cancel() throws InterruptedException {
-        // Click delete button
-        delete_button.click();
-
-        // Click delete button
-        wait.until(ExpectedConditions.elementToBeClickable(cancel_button)).click();
-        sleep(1000);
-
-        // Check popup close
-        boolean check = true;
-        try {
-            cancel_button.click();
-        } catch (NoSuchElementException ex) {
-            check = false;
-        }
-        Assert.assertFalse(check, "[Failed] Can not close delete delivered email popup");
-    }
-
-    public void make_a_copy() throws InterruptedException {
-        // Click make a copy button
-        make_a_copy_button.click();
-
-        // Waiting for loading mail list page
-        sleep(1000);
-        Assert.assertEquals(driver.getCurrentUrl(), url_mail_list, "[Failed] Can not make a copy of delivered email.");
-    }
-
-    public void would_you_like_to_change_this_delivery_email_to_Draft_status_OK() throws InterruptedException {
-        // Click save as draft button
-        save_as_draft_button.click();
-
-        // Click OK button
-        wait.until(ExpectedConditions.elementToBeClickable(ok_button)).click();
-
-        // Waiting for loading mail list page
-        sleep(1000);
-        Assert.assertEquals(driver.getCurrentUrl(), url_mail_list, "[Failed] Can not save delivered as draft.");
-    }
-
-    public void would_you_like_to_change_this_delivery_email_to_Draft_status_Cancel() throws InterruptedException {
-        // Click save as draft button
-        save_as_draft_button.click();
-
-        // Click cancel button
-        wait.until(ExpectedConditions.elementToBeClickable(cancel_button)).click();
-
-        // Waiting for close popup
-        sleep(500);
-
-        // Check popup close
-        boolean check = true;
-        try {
-            cancel_button.click();
-        } catch (NoSuchElementException ex) {
-            check = false;
-        }
-        Assert.assertFalse(check, "[Failed] Can not close save delivered as draft popup.");
+        soft.assertAll();
     }
 
     public void back_to_attachment_step() {
@@ -1084,7 +1024,7 @@ public class Destination_selection {
             back_button.click();
 
             // Check current tab
-            Assert.assertTrue(step_list.get(1).isEnabled(), "[Failed] Can not back to Attachment from Destination selection.");
+            soft.assertTrue(step_list.get(1).isEnabled(), "[Failed] Can not back to Attachment from Destination selection.");
 
             // Back to Destination selection step
             wait.until(ExpectedConditions.elementToBeClickable(next_step_button)).click();
@@ -1093,7 +1033,9 @@ public class Destination_selection {
             key.moveToElement(step_list.get(1)).click().build().perform();
 
             // Check current tab
-            Assert.assertTrue(step_list.get(1).isEnabled(), "[Failed] Can not back to Attachment from Destination selection.");
+            soft.assertTrue(step_list.get(1).isEnabled(), "[Failed] Can not back to Attachment from Destination selection.");
+
+            soft.assertAll();
         }
     }
 
@@ -1104,7 +1046,9 @@ public class Destination_selection {
             step_list.get(0).click();
 
             // Check current tab
-            Assert.assertTrue(step_list.get(0).isEnabled(), "[Failed] Can not back to Basic information from Destination selection.");
+            soft.assertTrue(step_list.get(0).isEnabled(), "[Failed] Can not back to Basic information from Destination selection.");
+
+            soft.assertAll();
         }
     }
 
@@ -1156,7 +1100,9 @@ public class Destination_selection {
             key.sendKeys(Keys.BACK_SPACE).perform();
         }
         String text = wait.until(ExpectedConditions.visibilityOf(template_name_error)).getText();
-        Assert.assertEquals(text, "テンプレート名を入力してください", "[Template name] Message do not match");
+        soft.assertEquals(text, "テンプレート名を入力してください", "[Template name] Message do not match");
+
+        soft.assertAll();
     }
 
     public void search_template_name_exceed_50_half_width_characters() throws InterruptedException {
@@ -1173,7 +1119,9 @@ public class Destination_selection {
 
         sleep(2000);
         String text = wait.until(ExpectedConditions.visibilityOf(template_name_error)).getText();
-        Assert.assertEquals(text, "テンプレート名は50文字以内で入力してください。", "[Template name] Message do not match");
+        soft.assertEquals(text, "テンプレート名は50文字以内で入力してください。", "[Template name] Message do not match");
+
+        soft.assertAll();
     }
 
     public void search_template_name_exceed_50_full_width_characters() throws InterruptedException {
@@ -1190,7 +1138,9 @@ public class Destination_selection {
 
         sleep(2000);
         String text = wait.until(ExpectedConditions.visibilityOf(template_name_error)).getText();
-        Assert.assertEquals(text, "テンプレート名は50文字以内で入力してください。", "[Template name] Message do not match");
+        soft.assertEquals(text, "テンプレート名は50文字以内で入力してください。", "[Template name] Message do not match");
+
+        soft.assertAll();
     }
 
     public void search_template_name_exceed_mix_50_half_and_full_width_characters() throws InterruptedException {
@@ -1209,7 +1159,9 @@ public class Destination_selection {
                 .sendKeys(template_name_text);
 
         String text = wait.until(ExpectedConditions.visibilityOf(template_name_error)).getText();
-        Assert.assertEquals(text, "テンプレート名は50文字以内で入力してください。", "[Template name] Message do not match");
+        soft.assertEquals(text, "テンプレート名は50文字以内で入力してください。", "[Template name] Message do not match");
+
+        soft.assertAll();
     }
 
 
@@ -1234,7 +1186,9 @@ public class Destination_selection {
         wait.until(ExpectedConditions.elementToBeClickable(ok_button_template)).click();
 
         String text = wait.until(ExpectedConditions.visibilityOf(message)).getText();
-        Assert.assertEquals(text, "テンプレートを作成しました。", "[Template name] Message do not match");
+        soft.assertEquals(text, "テンプレートを作成しました。", "[Template name] Message do not match");
+
+        soft.assertAll();
     }
 
     public void create_search_template_name_Cancel() throws InterruptedException {
@@ -1258,7 +1212,9 @@ public class Destination_selection {
         } catch (NoSuchElementException ex) {
             check = false;
         }
-        Assert.assertFalse(check, "[Failed] Can not close create search template popup.");
+        soft.assertFalse(check, "[Failed] Can not close create search template popup.");
+
+        soft.assertAll();
     }
 
     public void input_available_search_template_name() throws InterruptedException {
@@ -1284,7 +1240,7 @@ public class Destination_selection {
 
         // Waiting for show message
         String text = wait.until(ExpectedConditions.visibilityOf(message)).getText();
-        Assert.assertEquals(text, "テンプレートを作成しました。", "[Template name] Message do not match");
+        soft.assertEquals(text, "テンプレートを作成しました。", "[Template name] Message do not match");
 
         // Check save button is enable
         if (!check_template_in_stock()) {
@@ -1303,7 +1259,9 @@ public class Destination_selection {
 
         // Verify error message
         String text1 = wait.until(ExpectedConditions.visibilityOf(message_error)).getText();
-        Assert.assertTrue(text1.contains("同一名称のテンプレートが既に存在します"), "[Failed] Can create search template with available template name.");
+        soft.assertTrue(text1.contains("同一名称のテンプレートが既に存在します"), "[Failed] Can create search template with available template name.");
+
+        soft.assertAll();
     }
 
     public void set_cancel_search_template_as_default() throws InterruptedException {
@@ -1316,7 +1274,7 @@ public class Destination_selection {
         // waiting for set as default
         sleep(1000);
         String title1 = template_dropdown.getAttribute("title");
-        Assert.assertTrue(title1.contains("☆ :"), "[Failed] Can not set search template as default.");
+        soft.assertTrue(title1.contains("☆ :"), "[Failed] Can not set search template as default.");
 
         // Cancel template as default
         wait.until(ExpectedConditions.elementToBeClickable(set_template_default)).click();
@@ -1324,7 +1282,9 @@ public class Destination_selection {
         // waiting for cancel set default
         sleep(1000);
         String title2 = template_dropdown.getAttribute("title");
-        Assert.assertFalse(title2.contains("☆ :"), "[Failed] Can not cancel search template as default.");
+        soft.assertFalse(title2.contains("☆ :"), "[Failed] Can not cancel search template as default.");
+
+        soft.assertAll();
     }
 
     public void delete_search_template_OK() throws InterruptedException {
@@ -1342,7 +1302,9 @@ public class Destination_selection {
 
         // Verify message
         String text = wait.until(ExpectedConditions.visibilityOf(message)).getText();
-        Assert.assertEquals(text, "テンプレートを削除しました", "[Failed] Can not delete search template.");
+        soft.assertEquals(text, "テンプレートを削除しました", "[Failed] Can not delete search template.");
+
+        soft.assertAll();
     }
 
     public void delete_search_template_Cancel() throws InterruptedException {
@@ -1365,7 +1327,9 @@ public class Destination_selection {
         } catch (NoSuchElementException ex) {
             check = false;
         }
-        Assert.assertFalse(check, "[Failed] Can not close delete search template popup.");
+        soft.assertFalse(check, "[Failed] Can not close delete search template popup.");
+
+        soft.assertAll();
     }
 
     public void reset_search_criteria() {
@@ -1381,7 +1345,9 @@ public class Destination_selection {
         reset_search_criteria_button.click();
 
         // Verify search condition have been reset
-        Assert.assertFalse(delivery_type.get(delivery_type_id).isSelected(), "[Failed] Can not reset search condition.");
+        soft.assertFalse(delivery_type.get(delivery_type_id).isSelected(), "[Failed] Can not reset search condition.");
+
+        soft.assertAll();
     }
 
     public void link_to_partner_PIC_edit_from_destination_selection() throws InterruptedException {
@@ -1400,13 +1366,15 @@ public class Destination_selection {
         if (!check_null) {
             sleep(1000);
             // If we can link to partner PIC, verify current url
-            Assert.assertTrue(driver.getCurrentUrl().contains(partnerPIC_url), "[Failed] Can not link to partner PIC from Destination selection");
+            soft.assertTrue(driver.getCurrentUrl().contains(domain + contact_list_path), "[Failed] Can not link to partner PIC from Destination selection");
         } else {
             System.out.println("No result.");
         }
+
+        soft.assertAll();
     }
 
-    public void pagination_destination_selection(WebDriver driver) throws InterruptedException {
+    public void pagination_destination_selection() throws InterruptedException {
         // check null = "True" => No partner PIC
         boolean check_null = false;
         try {
@@ -1424,12 +1392,14 @@ public class Destination_selection {
             if (!next_page.getAttribute("class").contains("disabled")) {
                 // if we can go to next page, verify current page
                 next_page.click();
-                Assert.assertEquals(current_page.getAttribute("title"), "2", "[Failed] Can not go to next page.");
+                soft.assertEquals(current_page.getAttribute("title"), "2", "[Failed] Can not go to next page.");
 
                 // back to previous page
                 previous_page.click();
-                Assert.assertEquals(current_page.getAttribute("title"), "1", "[Failed] Can not back to previous page.");
+                soft.assertEquals(current_page.getAttribute("title"), "1", "[Failed] Can not back to previous page.");
             }
+
+            soft.assertAll();
         }
     }
 }

@@ -2,22 +2,19 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="All Test Suite">
     <test verbose="2"
-          name="C:/Users/Admin/IdeaProjects/HBS_AutoTest/src/test/java/HBS/CreateMail.java">
+          name="Delivered Mail Register">
         <classes>
-            <class name="HBS.CreateMail">
+            <class name="Refactor_code.Delivered_Mail_Register">
                 <methods>
-                    <parameter name="headless" value="true"/>
-<!--                    <parameter name="headless" value="false"/>-->
-<!--                    <parameter name="email" value="gordy31@isueir.com"/>-->
-<!--                    <parameter name="email" value="master@codun.site"/>-->
+<!--                    <parameter name="headless" value="true"/>-->
+                    <parameter name="headless" value="false"/>
                     <parameter name="email" value="yPJWDUoMNQSZoJises@bedul.net"/>
-<!--                    <parameter name="password" value="12345678a"/>-->
                     <parameter name="password" value="lc1SHiPupKndwD@"/>
                     <parameter name="role" value="Master"/>
-                    <parameter name="url" value="https://dev.app.cmrb.jp/scheduledMails/register"/>
-                    <parameter name="url_mail_list" value="https://dev.app.cmrb.jp/scheduledMails"/>
-                    <parameter name="partnerPIC_url" value="https://dev.app.cmrb.jp/contacts/"/>
-                    <parameter name="capacity" value="2"/>
+                    <parameter name="password" value="lc1SHiPupKndwD@"/>
+                    <parameter name="role" value="Master"/>
+                    <parameter name="domain" value="https://dev.app.cmrb.jp"/>
+                    <parameter name="capacity" value="1"/>
 
                     <include name="TC01_process_create_mail"/>
 
@@ -40,6 +37,7 @@
                     <include name="TC_16_upload_maximum_capacity_multi_file"/>
                     <include name="TC_17_upload_exceed_maximum_capacity_1_file"/>
                     <include name="TC_18_upload_exceed_maximum_capacity_multi_file"/>
+
                     <include name="TC_19_do_you_want_to_delete_this_delivered_email_OK_attachment"/>
                     <include name="TC_20_do_you_want_to_delete_this_delivered_email_Cancel_attachment"/>
                     <include name="TC_21_make_a_copy_attachment"/>
@@ -66,6 +64,7 @@
                     <include name="TC_40_make_a_copy_destination_selection" />
                     <include name="TC_41_would_you_like_to_change_this_delivery_email_to_Draft_status_OK_destination_selection" />
                     <include name="TC_42_would_you_like_to_change_this_delivery_email_to_Draft_status_Cancel_destination_selection" />
+
                     <include name="TC_43_back_to_basic_information_from_destination_selection" />
                     <include name="TC_44_back_to_attachment_from_destination_selection" />
                     <include name="TC_45_leave_search_template_name_blank" />
@@ -87,6 +86,7 @@
                     <include name="TC_60_make_a_copy_final_confirmation" />
                     <include name="TC_61_would_you_like_to_change_this_delivery_email_to_Draft_status_OK_final_confirmation" />
                     <include name="TC_62_would_you_like_to_change_this_delivery_email_to_Draft_status_Cancel_final_confirmation" />
+
                     <include name="TC_63_back_to_destination_selection_from_final_confirmation" />
                     <include name="TC_64_back_to_attachment_from_final_confirmation" />
                     <include name="TC_65_back_to_basic_information_from_final_confirmation" />

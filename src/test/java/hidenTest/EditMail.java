@@ -3,7 +3,7 @@
 //import hidenBasePage.editMail.Attachment;
 //import hidenBasePage.editMail.Basic_information;
 //import hidenBasePage.editMail.Destination_selection;
-//import BasePage.editMail.Final_confirmation;
+//import hidenBasePage.editMail.Final_confirmation;
 //import Common.Common;
 //import org.openqa.selenium.WebDriver;
 //import org.openqa.selenium.interactions.Actions;
