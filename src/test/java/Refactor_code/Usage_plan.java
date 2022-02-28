@@ -1,12 +1,20 @@
-package hidenTest.HBS;
+package Refactor_code;
 
 import BasePage.paymentProcess.usage_plan;
 import Common.Common;
+import org.apache.commons.io.FileUtils;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
+import org.testng.ITestResult;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
+
+import java.io.File;
+import java.io.IOException;
 
 public class Usage_plan {
     Common cm;
@@ -36,49 +44,46 @@ public class Usage_plan {
     @Test(priority = 1)
     public void TC_01_buy_usage_plan_Cancel() throws InterruptedException {
         up.buy_plan_Cancel();
-
-        driver.close();
     }
 
     @Test(priority = 2)
     public void TC_02_buy_usage_plan_OK() throws InterruptedException {
         up.buy_plan_OK();
-
-        driver.close();
     }
 
     @Test(priority = 3)
     public void TC_03_add_upper_limit_OK() throws InterruptedException {
         up.add_upper_limit_OK();
-
-        driver.close();
     }
 
     @Test(priority = 4)
     public void TC_04_add_upper_limit_Cancel() throws InterruptedException {
         up.add_upper_limit_Cancel();
-
-        driver.close();
     }
 
     @Test(priority = 5)
     public void TC_05_remove_upper_limit_OK() throws InterruptedException {
         up.remove_upper_limit_OK();
-
-        driver.close();
     }
 
     @Test(priority = 6)
     public void TC_06_remove_upper_limit_Cancel() throws InterruptedException {
         up.remove_upper_limit_Cancel();
-
-        driver.close();
     }
 
     @Test(priority = 7)
     public void TC_07_remove_upper_limit_Cancel() throws InterruptedException {
         System.out.println(up.get_company_id());
+    }
 
-        driver.close();
+    @AfterMethod
+    public void teardown(ITestResult result) throws IOException {
+        TakesScreenshot screenshot = ((TakesScreenshot) driver);
+        if (result.getStatus() == ITestResult.FAILURE) {
+            File scrShot = screenshot.getScreenshotAs(OutputType.FILE);
+            File dest = new File(System.getProperty("user.dir") +"\\img\\"+ result.getName() + ".jpg");
+            FileUtils.copyFile(scrShot, dest);
+        }
+        driver.quit();
     }
 }

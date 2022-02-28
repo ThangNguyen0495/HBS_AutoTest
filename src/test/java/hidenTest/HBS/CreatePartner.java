@@ -1,4 +1,4 @@
-package hidenTest;
+package hidenTest.HBS;
 
 import Common.Common;
 import hidenBasePage.createPartner.Business_partner_branch_information;

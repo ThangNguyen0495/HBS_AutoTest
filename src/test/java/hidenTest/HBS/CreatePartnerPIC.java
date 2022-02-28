@@ -1,4 +1,4 @@
-package hidenTest;
+package hidenTest.HBS;
 
 import Common.Common;
 import hidenBasePage.createPartnerPIC.Contact_information;

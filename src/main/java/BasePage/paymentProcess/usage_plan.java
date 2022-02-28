@@ -1,12 +1,8 @@
 package BasePage.paymentProcess;
 
-import org.apache.commons.lang.RandomStringUtils;
-import org.apache.commons.lang.math.RandomUtils;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -15,67 +11,45 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 import java.util.List;
 
+import static BasePage.Link_and_Path.HBS.usage_plan_path;
 import static java.lang.Thread.sleep;
 
 @SuppressWarnings("ALL")
 public class usage_plan extends payment {
-    private static String usage_plan_path = "/plan";
-    private static String user_list_path = "/users";
+
     @FindBy(css = "div>div.ant-col-20>button")
     List<WebElement> plan_list;
+
     @FindBy(css = "div.ant-col:nth-child(1)>button")
     WebElement add_upper_limit_button;
+
     @FindBy(css = "div.ant-col:nth-child(2)>button")
     WebElement remove_upper_limit_button;
+
     @FindBy(css = "div.ant-col:nth-child(2)>span>button")
     WebElement remove_upper_limit_button_disable;
+
     @FindBy(css = "div.ant-modal-confirm-btns > button")
     List<WebElement> select_option;
+
     @FindBy(css = "div.ant-message-custom-content>span:nth-child(2)")
     WebElement message;
+
     @FindBy(css = "span.PlanPage-ppPlanCardPriceMain-y2rKo")
     List<WebElement> plan_price_list;
+
     @FindBy(css = "div.PlanPage-ppPlanCardDescription-d2Zde > p:nth-child(3)")
     List<WebElement> price_upper_limit;
+
     @FindBy(css = "div.PlanPage-ppStatisticContent-jYsFp > span > span:nth-child(2)")
     WebElement number_of_users;
+
     @FindBy(css = "span.PlanPage-ppStatisticContentSubjunction-Q1HlJ")
     WebElement additional_purchase;
-    @FindBy(css = "div.ant-btn-group > button")
-    WebElement search_template_button;
-    @FindBy(css = "#inactive_filter")
-    WebElement inactive_filter;
-    @FindBy(css = "div>a.ant-btn")
-    WebElement invite_user_button;
-    @FindBy(css = "div.ant-row-space-between>div>button")
-    WebElement cancel_button_search_template;
-    @FindBy(css = "li.ant-pagination-total-text")
-    WebElement current_number_of_users;
-    @FindBy(css = "#email")
-    WebElement invite_user_email;
-
-    @FindBy(css = "#role")
-    WebElement invite_user_role;
-
-    @FindBy(css = "div.ant-row-start>button:nth-child(2)")
-    WebElement invite_user_invite_button;
-    
-    @FindBy(css = "td:nth-child(1)>div>div>div>label>span>input")
-    WebElement user_list_first_check_box;
-    
-    @FindBy(css = ".page-tableControlButton-DRVBm:nth-child(2)")
-    WebElement user_list_active_button;
-
-    WebDriverWait wait;
-    String username_admin_page;
-    String password_admin_page;
-    Actions key;
-
 
     public usage_plan(WebDriver driver, String domain, String username_admin_page, String password_admin_page) {
-        super(driver,domain, username_admin_page, password_admin_page);
+        super(driver, domain, username_admin_page, password_admin_page);
         wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        key = new Actions(driver);
         PageFactory.initElements(driver, this);
     }
 
@@ -167,7 +141,8 @@ public class usage_plan extends payment {
 
     public List<Integer> get_current_information() {
         // Get current number of users
-        String current_number_of_users = number_of_users.getText().split("/")[1].replace(" ", "");
+        String current_number_of_users = number_of_users.getText().split("/ ")[1];
+        String number_of_active_users = number_of_users.getText().split(" /")[0];
 
         // Get current additional purcharse
         String current_additional_purchase;
@@ -176,7 +151,8 @@ public class usage_plan extends payment {
         } catch (NoSuchElementException ex) {
             current_additional_purchase = "0";
         }
-        return List.of(Integer.parseInt(current_number_of_users), Integer.parseInt(current_additional_purchase));
+        // 0: current upper user, 1: curent aditional purchase, 2: current active user
+        return List.of(Integer.parseInt(current_number_of_users), Integer.parseInt(current_additional_purchase), Integer.parseInt(number_of_active_users));
     }
 
     public void add_upper_limit_OK() throws InterruptedException {
@@ -239,51 +215,6 @@ public class usage_plan extends payment {
         soft.assertEquals(add_tax(upper_price), (long) Long.parseLong(receipt_PayJP.get(1)), "[Failed][PayJP] Price not match.");
         // show all assert result
         soft.assertAll();
-
-        // Check limit of users
-        // Link to user list page
-        driver.get(domain + user_list_path);
-
-        // Search condition - Inactive users: ON
-        search_template_button.click();
-        wait.until(ExpectedConditions.visibilityOf(inactive_filter));
-        if (!inactive_filter.isEnabled()) {
-            inactive_filter.click();
-        }
-        cancel_button_search_template.click();
-
-        // Get current users
-        String number_of_users = wait.until(ExpectedConditions.visibilityOf(current_number_of_users))
-                .getText().split("件中")[0].replace("合計", "");
-        for (int i = 0; i < (int) (new_information.get(1) - Long.parseLong(number_of_users)); i++) {
-            // click invite user button
-            wait.until(ExpectedConditions.elementToBeClickable(invite_user_button)).click();
-            // input valid email
-            wait.until(ExpectedConditions.visibilityOf(invite_user_email))
-                    .sendKeys(RandomStringUtils.randomAlphabetic(10).toLowerCase() + "@"
-                            + RandomStringUtils.randomAlphabetic(3).toLowerCase() + "."
-                            + RandomStringUtils.randomAlphabetic(2).toLowerCase());
-            // open role list and select
-            invite_user_role.click();
-            // 1: Administrator, 2: Responsible person, 3: Leader, 4: Member, 5: Guest
-            int role_id = RandomUtils.nextInt(5);
-            for (int j = 0; j < role_id; j++) {
-                key.sendKeys(Keys.DOWN).perform();
-            }
-
-            key.sendKeys(Keys.ENTER).perform();
-
-            // click invite button
-            invite_user_invite_button.click();
-
-            // waiting for send invite mail
-            String text = wait.until(ExpectedConditions.visibilityOf(message)).getText();
-
-            // verify that user should be invited
-            // check message
-            soft.assertEquals(text, "招待メールを送信しました", "[Failed][Invite user] Message do not match.");
-            soft.assertEquals(driver.getCurrentUrl(), domain + user_list_path, "[Failed][Invite user] Url do not match.");
-        }
     }
 
     public void add_upper_limit_Cancel() throws InterruptedException {

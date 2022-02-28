@@ -2,28 +2,26 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="All Test Suite">
     <test verbose="2"
-          name="C:/Users/Admin/IdeaProjects/HBS_AutoTest/src/test/java/hidenTest.HBS/CreateMail.java">
+          name="C:/Users/Admin/IdeaProjects/HBS_AutoTest/src/test/java/hiddenTest.HBS/CreateMail.java">
         <classes>
-            <class name="Refactor_code.Usage_plan">
+            <class name="Refactor_code.Addons">
                 <methods>
-                    <parameter name="headless" value="true"/>
-<!--                    <parameter name="headless" value="false"/>-->
+<!--                    <parameter name="headless" value="true"/>-->
+                    <parameter name="headless" value="false"/>
                     <parameter name="username_admin_page" value="admin"/>
                     <parameter name="password_admin_page" value="ChangeMe"/>
-                    <parameter name="email" value="dkvjqpcsqdrlyqcgjxgksvhc@bedul.net"/>
-                    <parameter name="password" value="Lr3dP8t5hcqJ3dLXMlasO2kWbp@"/>
-                    <parameter name="role" value="Master"/>
-                    <parameter name="domain" value="https://test.app.cmrb.jp"/>
+                    <parameter name="email" value="yPJWDUoMNQSZoJises@bedul.net"/>
+                    <parameter name="password" value="lc1SHiPupKndwD@"/>
+<!--                    <parameter name="email" value="dkvjqpcsqdrlyqcgjxgksvhc@bedul.net"/>-->
+<!--                    <parameter name="password" value="Lr3dP8t5hcqJ3dLXMlasO2kWbp@"/>-->
 
-<!--                    <include name="TC_01_buy_usage_plan_Cancel"/>-->
-<!--                    <include name="TC_02_buy_usage_plan_OK"/>-->
-                    <include name="TC_03_add_upper_limit_OK"/>
-                    <include name="TC_04_add_upper_limit_Cancel"/>
-                    <include name="TC_05_remove_upper_limit_OK"/>
-                    <include name="TC_06_remove_upper_limit_Cancel"/>
-                    <include name="TC_07_remove_upper_limit_Cancel" />
-<!--                    <include name="" />-->
-<!--                    <include name="" />-->
+                    <parameter name="role" value="Master"/>
+                    <parameter name="domain" value="https://dev.app.cmrb.jp"/>
+<!--                    <parameter name="domain" value="https://test.app.cmrb.jp"/>-->
+
+<!--                    <include name="TC_01_acquisition_of_delivery_opening_information_Add"/>-->
+<!--                    <include name="TC_02_acquisition_of_delivery_opening_information_Remove" />-->
+                    <include name="test" />
 <!--                    <include name="" />-->
 <!--                    <include name="" />-->
 <!--                    <include name="" />-->

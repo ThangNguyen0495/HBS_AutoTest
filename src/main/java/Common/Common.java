@@ -3,8 +3,12 @@ package Common;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +22,6 @@ public class Common {
         WebDriverManager.chromedriver().setup();
         ChromeOptions options = new ChromeOptions();
         options.setHeadless(headless);
-        options.setBrowserVersion("98.0.4758.102");
         options.addArguments("--disable-gpu");
         options.addArguments("--no-sandbox");
         options.addArguments("--window-size=1280,800");
@@ -28,6 +31,22 @@ public class Common {
         driver.manage().window().maximize();
         return driver;
     }
+
+//    public WebDriver setupWebdriver(Boolean headless) {
+//        //Config Webdriver
+//        WebDriverManager.edgedriver().setup();
+//        EdgeDriver options = new EdgeDriver();
+////        options.setHeadless(headless);
+////        options.addArguments("--disable-gpu");
+////        options.addArguments("--no-sandbox");
+////        options.addArguments("--window-size=1280,800");
+////        options.addArguments("--disable-dev-shm-usage");
+////        options.addArguments("--allow-insecure-localhost");
+////        WebDriver driver = new FirefoxDriver(options);
+//        WebDriver driver = new EdgeDriver();
+//        driver.manage().window().maximize();
+//        return driver;
+//    }
 
     public void login(WebDriver driver, String url, String mail, String password) throws InterruptedException {
         driver.get(url);

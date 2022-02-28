@@ -13,6 +13,8 @@ import org.testng.asserts.SoftAssert;
 import java.time.Duration;
 import java.util.List;
 
+import static BasePage.Link_and_Path.HBS.*;
+import static BasePage.Link_and_Path.PAYJP.*;
 import static java.lang.Thread.sleep;
 
 public class payment {
@@ -40,20 +42,13 @@ public class payment {
     @FindBy(css = " tr:nth-child(1) > td:nth-child(1)")
     WebElement PayJP_price;
     WebDriver driver;
-    String role;
     Actions key;
     String domain;
     WebDriverWait wait;
-    String history_payment_path = "/purchaseHistory";
-    String company_profile_path = "/myCompany";
-    String search_company_id_path = "/admin/app_staffing/company/?q=";
+
     String username_admin_page;
     String password_admin_page;
-    String PayJP_email = "okuaki@h-basis.co.jp";
-    String PayJP_password = "iwnctndoTK40";
-    String PayJP_url = "https://pay.jp";
-    String PayJP_search_path = "/d/charges?keyword=";
-    String PayJP_login_path = "/login";
+
 
     SoftAssert soft;
 
@@ -64,9 +59,14 @@ public class payment {
         this.password_admin_page = password_admin_page;
         wait = new WebDriverWait(driver, Duration.ofSeconds(1));
         soft = new SoftAssert();
+        key = new Actions(driver);
         PageFactory.initElements(driver, this);
     }
 
+    /**
+     *
+     * @return 0: receipt id, 1: price
+     */
     public List<String> get_payment_history_receipt() {
         driver.get(domain + history_payment_path);
         String receipt_id;
