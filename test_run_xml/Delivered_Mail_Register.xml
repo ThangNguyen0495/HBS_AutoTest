@@ -6,8 +6,8 @@
         <classes>
             <class name="Refactor_code.Delivered_Mail_Register">
                 <methods>
-<!--                    <parameter name="headless" value="true"/>-->
-                    <parameter name="headless" value="false"/>
+                    <parameter name="headless" value="true"/>
+<!--                    <parameter name="headless" value="false"/>-->
                     <parameter name="email" value="yPJWDUoMNQSZoJises@bedul.net"/>
                     <parameter name="password" value="lc1SHiPupKndwD@"/>
                     <parameter name="role" value="Master"/>

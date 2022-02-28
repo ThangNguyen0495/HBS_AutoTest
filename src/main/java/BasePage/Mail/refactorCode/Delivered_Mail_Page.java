@@ -24,7 +24,7 @@ public class Delivered_Mail_Page {
     @FindBy(css = "div.ant-modal-confirm-btns > button:nth-child(1)")
     WebElement cancel_button;
 
-    @FindBy(css = "div:nth-child(1)>button.ant-btn-sm")
+    @FindBy(css = "span>div>div>div:nth-child(1)>button")
     WebElement make_a_copy_button;
 
     @FindBy(css = "div.ant-col:nth-child(2)>button.ant-btn-sm")
@@ -134,6 +134,8 @@ public class Delivered_Mail_Page {
 
         // Click make a copy button
 //        key.moveToElement(make_a_copy_button).click();
+        // scroll to top
+        ((JavascriptExecutor) driver).executeScript("window.scrollTo(0, 0)");
         wait.until(ExpectedConditions.elementToBeClickable(make_a_copy_button));
         key.moveToElement(make_a_copy_button).click().build().perform();
 
@@ -171,7 +173,9 @@ public class Delivered_Mail_Page {
             sleep(3000);
 
             // click make a copy button to make a copy mail
-            key.doubleClick(make_a_copy_button).perform();
+            ((JavascriptExecutor) driver).executeScript("window.scrollTo(0, 0)");
+            wait.until(ExpectedConditions.elementToBeClickable(make_a_copy_button));
+            make_a_copy_button.click();
 //            make_a_copy_button.click();
 
             // Waiting for loading mail list page
@@ -204,6 +208,9 @@ public class Delivered_Mail_Page {
     }
 
     public void would_you_like_to_change_this_delivery_email_to_Draft_status_OK() throws InterruptedException {
+        // scroll to top page
+        ((JavascriptExecutor) driver).executeScript("window.scrollTo(0, 0)");
+
         // Click save as draft button
         key.moveToElement(save_as_draft_button).click().build().perform();
 //        save_as_draft_button.click();
@@ -222,6 +229,9 @@ public class Delivered_Mail_Page {
     }
 
     public void would_you_like_to_change_this_delivery_email_to_Draft_status_Cancel() throws InterruptedException {
+        // scroll to top page
+        ((JavascriptExecutor) driver).executeScript("window.scrollTo(0, 0)");
+
         // Click save as draft button
         key.moveToElement(save_as_draft_button).click().build().perform();
 //        save_as_draft_button.click();

@@ -48,7 +48,7 @@ public class Step2_Attachment extends Delivered_Mail_Page {
     public void generate_test_file(int capacity) throws IOException {
         // Generate test file
         // capacity: MB
-        FileUtils.cleanDirectory(new File(System.getProperty("user.dir") + "\\upload_data"));
+//        FileUtils.cleanDirectory(new File(System.getProperty("user.dir") + "\\upload_data"));
         current_date_time = Integer.toString((int) ZonedDateTime.now().toInstant().toEpochMilli());
         new RandomAccessFile(System.getProperty("user.dir") + "\\upload_data\\text1" + current_date_time + ".txt", "rw")
                 .setLength((long) capacity * 1024 * 1024);

@@ -4,7 +4,7 @@
     <test verbose="2"
           name="C:/Users/Admin/IdeaProjects/HBS_AutoTest/src/test/java/hidenTest.HBS/CreateTenant.java">
         <classes>
-            <class name="hidenTest.HBS.CreateTenant">
+            <class name="Refactor_code.CreateTenant">
                 <methods>
                     <!-- Descriptions: headless
                     Headless is "test run" mode,

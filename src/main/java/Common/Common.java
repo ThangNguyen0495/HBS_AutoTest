@@ -18,9 +18,11 @@ public class Common {
         WebDriverManager.chromedriver().setup();
         ChromeOptions options = new ChromeOptions();
         options.setHeadless(headless);
+        options.setBrowserVersion("98.0.4758.102");
         options.addArguments("--disable-gpu");
         options.addArguments("--no-sandbox");
         options.addArguments("--window-size=1280,800");
+        options.addArguments("--disable-dev-shm-usage");
         options.addArguments("--allow-insecure-localhost");
         WebDriver driver = new ChromeDriver(options);
         driver.manage().window().maximize();

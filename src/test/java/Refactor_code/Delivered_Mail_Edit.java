@@ -5,12 +5,18 @@ import BasePage.Mail.refactorCode.Step2_Attachment;
 import BasePage.Mail.refactorCode.Step3_Destination_selection;
 import BasePage.Mail.refactorCode.Step4_Final_confirmation;
 import Common.Common;
+import org.apache.commons.io.FileUtils;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
+import org.testng.ITestResult;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
+import java.io.File;
 import java.io.IOException;
 
 import static BasePage.Link_and_Path.HBS.mail_list_path;
@@ -109,9 +115,6 @@ public class Delivered_Mail_Edit {
 
         // Select time and select again when time incorrect
         fc.select_time_and_select_again_when_time_incorrect();
-
-        // Close browser
-        driver.close();
     }
 
     @Test(priority = 2)
@@ -124,36 +127,24 @@ public class Delivered_Mail_Edit {
 
         // Leave insertion blank and verify error message
         bi.leave_insertion_blank();
-
-        // Close browser
-        driver.close();
     }
 
     @Test(priority = 3)
     public void TC_03_subject_exceed_100_half_width_characters() throws InterruptedException {
         // Input subject exceed 100 half width character and verify error message
         bi.subject_exceed_100_half_width_characters();
-
-        // Close browser
-        driver.close();
     }
 
     @Test(priority = 4)
     public void TC_04_subject_exceed_100_full_width_characters() throws InterruptedException {
         // Input subject exceed 100 full width character and verify error message
         bi.subject_exceed_100_full_width_characters();
-
-        // Close browser
-        driver.close();
     }
 
     @Test(priority = 5)
     public void TC_05_subject_exceed_100_mix_half_and_full_width_characters() throws InterruptedException {
         // Input subject exceed mix 100 half, full width character and verify error message
         bi.subject_exceed_100_mix_half_and_full_width_characters();
-
-        // Close browser
-        driver.close();
     }
 
 
@@ -168,18 +159,12 @@ public class Delivered_Mail_Edit {
     public void TC_07_insertion_exceed_5000_full_width_characters() throws InterruptedException {
         // Input insertion exceed 5000 full width character and verify error message
         bi.insertion_exceed_5000_full_width_characters();
-
-        // Close browser
-        driver.close();
     }
 
     @Test(priority = 8)
     public void TC_08_insertion_exceed_5000_mix_half_and_full_width_characters() throws InterruptedException {
         // Input insertion exceed mix 5000 half,full width character and verify error message
         bi.insertion_exceed_5000_mix_half_and_full_width_characters();
-
-        // Close browser
-        driver.close();
     }
 
     @Test(priority = 9)
@@ -189,18 +174,12 @@ public class Delivered_Mail_Edit {
 
         // Verify that can update delivered mail with valid data
         bi.update_delivery_with_valid_data();
-
-        // Close browser
-        driver.close();
     }
 
     @Test(priority = 10)
     public void TC_10_make_a_copy_basic_information() throws InterruptedException {
         // Click make a copy button => create a copy mail and link to mail list page
         bi.make_a_copy();
-
-        // Close browser
-        driver.close();
     }
 
     @Test(priority = 11)
@@ -211,9 +190,6 @@ public class Delivered_Mail_Edit {
         // Click delete button => show "Do you want to delete this delivered mail" popup
         // Click cancel button => close popup
         bi.do_you_want_to_delete_this_delivered_email_Cancel();
-
-        // Close browser
-        driver.close();
     }
 
     @Test(priority = 12)
@@ -224,9 +200,6 @@ public class Delivered_Mail_Edit {
         // Click delete button => show "Do you want to delete this delivered mail
         // Click OK button => delivered mail should be deleted
         bi.do_you_want_to_delete_this_delivered_email_OK();
-
-        // Close browser
-        driver.close();
     }
 
     @Test(priority = 13)
@@ -237,9 +210,6 @@ public class Delivered_Mail_Edit {
         // Click save as draft button => show "Would you like to change this delivery email to Draft status" popup
         // Click cancel button => close popup
         bi.would_you_like_to_change_this_delivery_email_to_Draft_status_Cancel();
-
-        // Close browser
-        driver.close();
     }
 
     @Test(priority = 14)
@@ -250,9 +220,6 @@ public class Delivered_Mail_Edit {
         // Click save as draft button => show "Would you like to change this delivery email to Draft status" popup
         // Click OK button => Save delivered as draft status and link to mail list page
         bi.would_you_like_to_change_this_delivery_email_to_Draft_status_OK();
-
-        // Close browser
-        driver.close();
     }
 
 
@@ -266,9 +233,6 @@ public class Delivered_Mail_Edit {
 
         // Upload 1 file with maximum capacity and verify message
         a.upload_maximum_capacity_1_file();
-
-        // Close browser
-        driver.close();
     }
 
     @Test(priority = 16)
@@ -281,9 +245,6 @@ public class Delivered_Mail_Edit {
 
         // Upload multi file with maximum capacity and verify message
         a.upload_maximum_capacity_multi_file();
-
-        // Close browser
-        driver.close();
     }
 
     @Test(priority = 17)
@@ -296,9 +257,6 @@ public class Delivered_Mail_Edit {
 
         // Upload 1 file with exceed maximum capacity and verify message
         a.upload_exceed_maximum_capacity_1_file();
-
-        // Close browser
-        driver.close();
     }
 
     @Test(priority = 18)
@@ -311,9 +269,6 @@ public class Delivered_Mail_Edit {
 
         // Upload multi file with exceed maximum capacity and verify message
         a.upload_exceed_maximum_capacity_multi_file();
-
-        // Close browser
-        driver.close();
     }
 
     @Test(priority = 19)
@@ -326,9 +281,6 @@ public class Delivered_Mail_Edit {
 
         // Verify that can update delivered mail with valid data
         a.update_delivery_with_valid_data();
-
-        // Close browser
-        driver.close();
     }
 
     @Test(priority = 20)
@@ -341,9 +293,6 @@ public class Delivered_Mail_Edit {
 
         // Click make a copy button => create a copy mail and link to mail list page
         a.make_a_copy();
-
-        // Close browser
-        driver.close();
     }
 
     @Test(priority = 21)
@@ -373,9 +322,6 @@ public class Delivered_Mail_Edit {
         // Click delete button => show "Do you want to delete this delivered mail" popup
         // Click OK button => delivered mail should be deleted and link to url mail list page
         a.do_you_want_to_delete_this_delivered_email_OK();
-
-        // Close browser
-        driver.close();
     }
 
     @Test(priority = 23)
@@ -389,9 +335,6 @@ public class Delivered_Mail_Edit {
         // Click save as draft button => show "Would you like to change this delivery email to Draft status" popup
         // Click cancel button => close popup
         a.would_you_like_to_change_this_delivery_email_to_Draft_status_Cancel();
-
-        // Close browser
-        driver.close();
     }
 
     @Test(priority = 24)
@@ -405,9 +348,6 @@ public class Delivered_Mail_Edit {
         // Click save as draft button => show "Would you like to change this delivery email to Draft status" popup
         // Click OK button => Save delivered as draft status and link to mail list page
         a.would_you_like_to_change_this_delivery_email_to_Draft_status_OK();
-
-        // Close browser
-        driver.close();
     }
 
     @Test(priority = 25)
@@ -424,9 +364,6 @@ public class Delivered_Mail_Edit {
         // Select delivery type: deliver the matter
         // Click search button
         ds.deliver_the_matter_do_not_select_condition();
-
-        // Close browser
-        driver.close();
     }
 
     @Test(priority = 26)
@@ -444,9 +381,6 @@ public class Delivered_Mail_Edit {
         // Select delivery occupation: development
         // Click search button
         ds.deliver_the_matter_only_select_delivery_occupation_development();
-
-        // Close browser
-        driver.close();
     }
 
     @Test(priority = 27)
@@ -464,9 +398,6 @@ public class Delivered_Mail_Edit {
         // Select delivery occupation: infrastructure
         // Click search button
         ds.deliver_the_matter_only_select_delivery_occupation_infrastructure();
-
-        // Close browser
-        driver.close();
     }
 
     @Test(priority = 28)
@@ -484,9 +415,6 @@ public class Delivered_Mail_Edit {
         // Select delivery occupation: others
         // Click search button
         ds.deliver_the_matter_only_select_delivery_occupation_others();
-
-        // Close browser
-        driver.close();
     }
 
     @Test(priority = 29)
@@ -503,9 +431,6 @@ public class Delivered_Mail_Edit {
         // Select delivery type: deliver the personnel
         // Click search button
         ds.deliver_the_personnel_do_not_select_condition();
-
-        // Close browser
-        driver.close();
     }
 
     @Test(priority = 30)
@@ -523,9 +448,6 @@ public class Delivered_Mail_Edit {
         // Select delivery occupation: development
         // Click search button
         ds.deliver_the_personnel_only_select_delivery_occupation_development();
-
-        // Close browser
-        driver.close();
     }
 
     @Test(priority = 31)
@@ -543,9 +465,6 @@ public class Delivered_Mail_Edit {
         // Select delivery occupation: infrastructure
         // Click search button
         ds.deliver_the_personnel_only_select_delivery_occupation_infrastructure();
-
-        // Close browser
-        driver.close();
     }
 
     @Test(priority = 32)
@@ -563,9 +482,6 @@ public class Delivered_Mail_Edit {
         // Select delivery occupation: others
         // Click search button
         ds.deliver_the_personnel_only_select_delivery_occupation_others();
-
-        // Close browser
-        driver.close();
     }
 
     @Test(priority = 33)
@@ -583,9 +499,6 @@ public class Delivered_Mail_Edit {
         // Select delivery occupation: development, infrastructure, others
         // Click search button
         ds.deliver_the_personnel_select_delivery_occupation_development_infrastructure_and_others();
-
-        // Close browser
-        driver.close();
     }
 
     @Test(priority = 34)
@@ -603,9 +516,6 @@ public class Delivered_Mail_Edit {
         // Do not select account status
         // Click search button
         ds.do_not_select_account_status();
-
-        // Close browser
-        driver.close();
     }
 
     @Test(priority = 35)
@@ -623,9 +533,6 @@ public class Delivered_Mail_Edit {
         // Do not select in-house person in charge
         // Click search button
         ds.do_not_select_in_house_person_in_charge();
-
-        // Close browser
-        driver.close();
     }
 
     @Test(priority = 36)
@@ -643,9 +550,6 @@ public class Delivered_Mail_Edit {
         // Do not select compatibility
         // Click search button
         ds.do_not_select_compatibility();
-
-        // Close browser
-        driver.close();
     }
 
     @Test(priority = 37)
@@ -663,9 +567,6 @@ public class Delivered_Mail_Edit {
         // Do not select tag
         // Click search button
         ds.do_not_select_tag();
-
-        // Close browser
-        driver.close();
     }
 
     @Test(priority = 38)
@@ -683,9 +584,6 @@ public class Delivered_Mail_Edit {
         // Select exceed 5 tags
         // Click search button
         ds.select_exceed_5_tags();
-
-        // Close browser
-        driver.close();
     }
 
     @Test(priority = 39)
@@ -701,9 +599,6 @@ public class Delivered_Mail_Edit {
 
         // Verify that can update delivered mail with valid data
         ds.update_delivery_with_valid_data();
-
-        // Close browser
-        driver.close();
     }
 
     @Test(priority = 40)
@@ -719,9 +614,6 @@ public class Delivered_Mail_Edit {
 
         // Click make a copy button => create a copy mail and link to mail list page
         ds.make_a_copy();
-
-        // Close browser
-        driver.close();
     }
 
     @Test(priority = 41)
@@ -738,9 +630,6 @@ public class Delivered_Mail_Edit {
         // Click delete button => show "Do you want to delete this delivered mail" popup
         // Click cancel button => close popup
         ds.do_you_want_to_delete_this_delivered_email_Cancel();
-
-        // Close browser
-        driver.close();
     }
 
     @Test(priority = 42)
@@ -757,9 +646,6 @@ public class Delivered_Mail_Edit {
         // Click delete button => show "Do you want to delete this delivered mail
         // Click OK button => delivered mail should be deleted
         ds.do_you_want_to_delete_this_delivered_email_OK();
-
-        // Close browser
-        driver.close();
     }
 
     @Test(priority = 43)
@@ -776,9 +662,6 @@ public class Delivered_Mail_Edit {
         // Click save as draft button => show "Would you like to change this delivery email to Draft status" popup
         // Click cancel button => close popup
         ds.would_you_like_to_change_this_delivery_email_to_Draft_status_Cancel();
-
-        // Close browser
-        driver.close();
     }
 
     @Test(priority = 44)
@@ -795,9 +678,6 @@ public class Delivered_Mail_Edit {
         // Click save as draft button => show "Would you like to change this delivery email to Draft status" popup
         // Click OK button => Save delivered as draft status and link to mail list page
         ds.would_you_like_to_change_this_delivery_email_to_Draft_status_OK();
-
-        // Close browser
-        driver.close();
     }
 
     @Test(priority = 45)
@@ -813,9 +693,6 @@ public class Delivered_Mail_Edit {
 
         // Back to basic information step
         ds.back_to_basic_information_step();
-
-        // Close browser
-        driver.close();
     }
 
     @Test(priority = 46)
@@ -831,9 +708,6 @@ public class Delivered_Mail_Edit {
 
         // Back to attachment step
         ds.back_to_attachment_step();
-
-        // Close browser
-        driver.close();
     }
 
     @Test(priority = 47)
@@ -849,9 +723,6 @@ public class Delivered_Mail_Edit {
 
         // Leave search template name blank and verify error message
         ds.leave_search_template_name_blank();
-
-        // Close browser
-        driver.close();
     }
 
     @Test(priority = 48)
@@ -867,9 +738,6 @@ public class Delivered_Mail_Edit {
 
         // Input search template name exceed 50 half width characters and verify error message
         ds.search_template_name_exceed_50_half_width_characters();
-
-        // Close browser
-        driver.close();
     }
 
     @Test(priority = 49)
@@ -885,9 +753,6 @@ public class Delivered_Mail_Edit {
 
         // Input search template name exceed 50 full width characters and verify error message
         ds.search_template_name_exceed_50_full_width_characters();
-
-        // Close browser
-        driver.close();
     }
 
     @Test(priority = 50)
@@ -903,9 +768,6 @@ public class Delivered_Mail_Edit {
 
         // Input search template name exceed mix 50 half, full width characters and verify error message
         ds.search_template_name_exceed_mix_50_half_and_full_width_characters();
-
-        // Close browser
-        driver.close();
     }
 
     @Test(priority = 51)
@@ -921,9 +783,6 @@ public class Delivered_Mail_Edit {
 
         // Create search template with valid name
         ds.create_search_template_name_OK();
-
-        // Close browser
-        driver.close();
     }
 
     @Test(priority = 52)
@@ -939,9 +798,6 @@ public class Delivered_Mail_Edit {
 
         // Close create search template popup
         ds.create_search_template_name_Cancel();
-
-        // Close browser
-        driver.close();
     }
 
     @Test(priority = 53)
@@ -957,9 +813,6 @@ public class Delivered_Mail_Edit {
 
         // Verify error message when create search template with available name.
         ds.input_available_search_template_name();
-
-        // Close browser
-        driver.close();
     }
 
     @Test(priority = 54)
@@ -975,9 +828,6 @@ public class Delivered_Mail_Edit {
 
         // Verify can set and cancel template as default
         ds.set_cancel_search_template_as_default();
-
-        // Close browser
-        driver.close();
     }
 
     @Test(priority = 55)
@@ -993,9 +843,6 @@ public class Delivered_Mail_Edit {
 
         // Verify that can delete template
         ds.delete_search_template_OK();
-
-        // Close browser
-        driver.close();
     }
 
     @Test(priority = 56)
@@ -1011,9 +858,6 @@ public class Delivered_Mail_Edit {
 
         // Close delete template popup
         ds.delete_search_template_Cancel();
-
-        // Close browser
-        driver.close();
     }
 
     @Test(priority = 57)
@@ -1029,9 +873,6 @@ public class Delivered_Mail_Edit {
 
         // Verify that can reset search condition
         ds.reset_search_criteria();
-
-        // Close browser
-        driver.close();
     }
 
     @Test(priority = 58)
@@ -1056,9 +897,6 @@ public class Delivered_Mail_Edit {
 
         // Click first record and verify partner PIC edit page should be open
         ds.link_to_partner_PIC_edit_from_destination_selection();
-
-        // Close browser
-        driver.close();
     }
 
     @Test(priority = 59)
@@ -1083,9 +921,6 @@ public class Delivered_Mail_Edit {
 
         // Verify that pagination should be work normally
         ds.pagination_destination_selection();
-
-        // Close browser
-        driver.close();
     }
 
     @Test(priority = 60)
@@ -1116,12 +951,9 @@ public class Delivered_Mail_Edit {
 
         // Verify that can update delivered mail with valid data
         fc.update_delivery_with_valid_data();
-
-        // Close browser
-        driver.close();
     }
 
-    @Test(priority = 61, invocationCount = 10)
+    @Test(priority = 61)
     public void TC_61_make_a_copy_final_confirmation() throws InterruptedException {
         // Select format
         bi.format();
@@ -1151,7 +983,7 @@ public class Delivered_Mail_Edit {
         fc.make_a_copy();
 
         // Close browser
-        driver.close();
+//        driver.close();
     }
 
     @Test(priority = 62)
@@ -1183,9 +1015,6 @@ public class Delivered_Mail_Edit {
         // Click delete button => show "Do you want to delete this delivered mail" popup
         // Click cancel button => close popup
         fc.do_you_want_to_delete_this_delivered_email_Cancel();
-
-        // Close browser
-        driver.close();
     }
 
     @Test(priority = 63)
@@ -1217,9 +1046,6 @@ public class Delivered_Mail_Edit {
         // Click delete button => show "Do you want to delete this delivered mail
         // Click OK button => delivered mail should be deleted
         fc.do_you_want_to_delete_this_delivered_email_OK();
-
-        // Close browser
-        driver.close();
     }
 
     @Test(priority = 64)
@@ -1251,9 +1077,6 @@ public class Delivered_Mail_Edit {
         // Click save as draft button => show "Would you like to change this delivery email to Draft status" popup
         // Click cancel button => close popup
         fc.would_you_like_to_change_this_delivery_email_to_Draft_status_Cancel();
-
-        // Close browser
-        driver.close();
     }
 
     @Test(priority = 65)
@@ -1285,9 +1108,6 @@ public class Delivered_Mail_Edit {
         // Click save as draft button => show "Would you like to change this delivery email to Draft status" popup
         // Click OK button => Save delivered as draft status and link to mail list page
         fc.would_you_like_to_change_this_delivery_email_to_Draft_status_OK();
-
-        // Close browser
-        driver.close();
     }
 
     @Test(priority = 66)
@@ -1318,9 +1138,6 @@ public class Delivered_Mail_Edit {
 
         // Back to destination selection step
         fc.back_to_destination_selection_step();
-
-        // Close browser
-        driver.close();
     }
 
     @Test(priority = 67)
@@ -1351,9 +1168,6 @@ public class Delivered_Mail_Edit {
 
         // Back to attachment step
         fc.back_to_attachment_step();
-
-        // Close browser
-        driver.close();
     }
 
     @Test(priority = 68)
@@ -1384,8 +1198,18 @@ public class Delivered_Mail_Edit {
 
         // Back to basic information step
         fc.back_to_basic_information_step();
+    }
 
-        // Close browser
-        driver.close();
+    @AfterMethod
+    public void teardown(ITestResult result) throws IOException {
+        TakesScreenshot screenshot = ((TakesScreenshot) driver);
+
+        if (result.getStatus() == ITestResult.FAILURE) {
+            File scrShot = screenshot.getScreenshotAs(OutputType.FILE);
+            File dest = new File(System.getProperty("user.dir") +"\\img\\"+ result.getName() + ".jpg");
+            FileUtils.copyFile(scrShot, dest);
+        }
+        
+        driver.quit();
     }
 }
