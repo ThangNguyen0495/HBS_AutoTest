@@ -10,55 +10,39 @@
                     <parameter name="headless" value="false"/>
                     <parameter name="username_admin_page" value="admin"/>
                     <parameter name="password_admin_page" value="ChangeMe"/>
-                    <parameter name="email" value="yPJWDUoMNQSZoJises@bedul.net"/>
-                    <parameter name="password" value="lc1SHiPupKndwD@"/>
-<!--                    <parameter name="email" value="dkvjqpcsqdrlyqcgjxgksvhc@bedul.net"/>-->
-<!--                    <parameter name="password" value="Lr3dP8t5hcqJ3dLXMlasO2kWbp@"/>-->
+<!--                    <parameter name="email" value="yPJWDUoMNQSZoJises@bedul.net"/>-->
+<!--                    <parameter name="password" value="lc1SHiPupKndwD@"/>-->
+                    <parameter name="email" value="dkvjqpcsqdrlyqcgjxgksvhc@bedul.net"/>
+                    <parameter name="password" value="Lr3dP8t5hcqJ3dLXMlasO2kWbp@"/>
 
                     <parameter name="role" value="Master"/>
-                    <parameter name="domain" value="https://dev.app.cmrb.jp"/>
-<!--                    <parameter name="domain" value="https://test.app.cmrb.jp"/>-->
+<!--                    <parameter name="domain" value="https://dev.app.cmrb.jp"/>-->
+                    <parameter name="domain" value="https://test.app.cmrb.jp"/>
 
-<!--                    <include name="TC_01_acquisition_of_delivery_opening_information_Add"/>-->
-<!--                    <include name="TC_02_acquisition_of_delivery_opening_information_Remove" />-->
-                    <include name="test" />
-<!--                    <include name="" />-->
-<!--                    <include name="" />-->
-<!--                    <include name="" />-->
-<!--                    <include name="" />-->
-<!--                    <include name="" />-->
-<!--                    <include name="" />-->
-<!--                    <include name="" />-->
-<!--                    <include name="" />-->
-<!--                    <include name="" />-->
-<!--                    <include name="" />-->
-<!--                    <include name="" />-->
-<!--                    <include name="" />-->
-<!--                    <include name="" />-->
-<!--                    <include name="" />-->
-<!--                    <include name="" />-->
-<!--                    <include name="" />-->
-<!--                    <include name="" />-->
-<!--                    <include name="" />-->
-<!--                    <include name="" />-->
-<!--                    <include name="" />-->
-<!--                    <include name="" />-->
-<!--                    <include name="" />-->
-<!--                    <include name="" />-->
-<!--                    <include name="" />-->
-<!--                    <include name="" />-->
-<!--                    <include name="" />-->
-<!--                    <include name="" />-->
-<!--                    <include name="" />-->
-<!--                    <include name="" />-->
-<!--                    <include name="" />-->
-<!--                    <include name="" />-->
-<!--                    <include name="" />-->
-<!--                    <include name="" />-->
-<!--                    <include name="" />-->
-<!--                    <include name="" />-->
-<!--                    <include name="" />-->
-<!--                    <include name="" />-->
+                    <include name="TC_01_recommendation_acquisition_of_delivery_opening_information_Add" />
+                    <include name="TC_02_recommendation_acquisition_of_delivery_opening_information_Remove" />
+                    <include name="TC_03_recommendation_maximum_number_of_deliveries_Add" />
+                    <include name="TC_04_recommendation_maximum_number_of_deliveries_Remove" />
+                    <include name="TC_05_recommendation_shortening_the_delivery_interval_Add" />
+                    <include name="TC_06_recommendation_shortening_the_delivery_interval_Remove" />
+                    <include name="TC_07_account_management_number_of_search_condition_template_registrations_Add" />
+                    <include name="TC_08_account_management_number_of_search_condition_template_registrations_Remove" />
+                    <include name="TC_09_account_management_number_of_comment_template_registrations_Add" />
+                    <include name="TC_10_account_management_number_of_comment_template_registrations_Remove" />
+                    <include name="TC_11_delivery_mail_management_number_of_search_condition_template_registrations_Add" />
+                    <include name="TC_12_delivery_mail_management_number_of_search_condition_template_registrations_Remove" />
+                    <include name="TC_13_delivery_mail_management_acquisition_of_delivery_opening_information_Add" />
+                    <include name="TC_14_delivery_mail_management_acquisition_of_delivery_opening_information_Remove" />
+                    <include name="TC_15_delivery_mail_management_extension_of_acquisition_period_of_delivery_opening_information_Add" />
+                    <include name="TC_16_delivery_mail_management_extension_of_acquisition_period_of_delivery_opening_information_Remove" />
+                    <include name="TC_17_delivery_mail_management_delivery_attachment_capacity_Add" />
+                    <include name="TC_18_delivery_mail_management_delivery_attachment_capacity_Remove" />
+                    <include name="TC_19_delivery_mail_management_advertising_display_during_html_distribution_Add" />
+                    <include name="TC_20_delivery_mail_management_advertising_display_during_html_distribution_Remove" />
+                    <include name="TC_21_delivery_mail_management_maximum_number_of_deliveries_Add" />
+                    <include name="TC_22_delivery_mail_management_maximum_number_of_deliveries_Remove" />
+                    <include name="TC_23_delivery_mail_management_shortening_the_delivery_interval_Add" />
+                    <include name="TC_24_delivery_mail_management_shortening_the_delivery_interval_Remove" />
                 </methods>
             </class>
         </classes>
