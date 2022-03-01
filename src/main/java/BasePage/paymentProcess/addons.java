@@ -325,14 +325,14 @@ public class addons extends payment {
         List<Integer> addons1_information = get_addons_information(list_addons_information.get(addons_id1));
         List<Integer> addons2_information = get_addons_information(list_addons_information.get(addons_id2));
 
-        System.out.println(get_add_remove_id(addons_id1));
-        System.out.println(get_add_remove_id(addons_id2));
+        int id1 = get_add_remove_id(addons_id1);
+        int id2 = get_add_remove_id(addons_id2);
 
         // get button status (enable/disable)
-        boolean addons1_add_status = list_add_button.get(get_add_remove_id(addons_id1)).isEnabled();
-        boolean addons1_remove_status = list_remove_button.get(get_add_remove_id(addons_id1)).isEnabled();
-        boolean addons2_add_status = list_add_button.get(get_add_remove_id(addons_id2)).isEnabled();
-        boolean addons2_remove_status = list_remove_button.get(get_add_remove_id(addons_id2)).isEnabled();
+        boolean addons1_add_status = list_add_button.get(id1).isEnabled();
+        boolean addons1_remove_status = list_remove_button.get(id1).isEnabled();
+        boolean addons2_add_status = list_add_button.get(id2).isEnabled();
+        boolean addons2_remove_status = list_remove_button.get(id2).isEnabled();
 
         // Compare
         // number of purchases/available purchase

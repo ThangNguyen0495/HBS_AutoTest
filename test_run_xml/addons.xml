@@ -6,8 +6,8 @@
         <classes>
             <class name="Refactor_code.Addons">
                 <methods>
-<!--                    <parameter name="headless" value="true"/>-->
-                    <parameter name="headless" value="false"/>
+                    <parameter name="headless" value="true"/>
+<!--                    <parameter name="headless" value="false"/>-->
                     <parameter name="username_admin_page" value="admin"/>
                     <parameter name="password_admin_page" value="ChangeMe"/>
 <!--                    <parameter name="email" value="yPJWDUoMNQSZoJises@bedul.net"/>-->
