@@ -17,7 +17,7 @@
                     <!-- Descriptions: url
                     Url is your create tenant link.
                     -->
-                    <parameter name="url" value="https://test.app.cmrb.jp/tenant"/>
+                    <parameter name="url" value="https://dev.app.cmrb.jp/tenant"/>
 
                     <!-- Create tenant process -->
                     <include name="TC01_process_create_tenant"/>

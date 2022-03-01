@@ -85,20 +85,20 @@ public class addons extends payment {
 
     /**
      * @param addons_id value in range 0-11
-     * <p>0: Recommendation - Acquisition of delivery opening information
-     * <p>1: Recommendation - Maximum number of deliveries
-     * <p>2: Recommendation - Shortening the delivery interval
-     * <p>3: Account management - Number of search condition template registrations
-     * <p>4: Account management - Number of comment template registrations
-     * <p>5: Delivery mail management - Number of search condition template registrations
-     * <p>6: Delivery mail management - Acquisition of delivery opening information
-     * <p>7: Delivery mail management - Extension of acquisition period of delivery opening information
-     * <p>8: Delivery mail management - Delivery attachment capacity
-     * <p>9: Delivery mail management - Advertising display during HTML distribution
-     * <p>10: Delivery mail management - Maximum number of deliveries
-     * <p>11: Delivery mail management - Shortening the delivery interval
-     * <p>Related: {0,6}, {1,10}, {2,11}, {3,5}
-     * <p>Related parent-child: {0,7}, {6,7}
+     * <p0: Recommendation - Acquisition of delivery opening information
+     * <p1: Recommendation - Maximum number of deliveries
+     * <p2: Recommendation - Shortening the delivery interval
+     * <p3: Account management - Number of search condition template registrations
+     * <p4: Account management - Number of comment template registrations
+     * <p5: Delivery mail management - Number of search condition template registrations
+     * <p6: Delivery mail management - Acquisition of delivery opening information
+     * <p7: Delivery mail management - Extension of acquisition period of delivery opening information
+     * <p8: Delivery mail management - Delivery attachment capacity
+     * <p9: Delivery mail management - Advertising display during HTML distribution
+     * <p10: Delivery mail management - Maximum number of deliveries
+     * <p11: Delivery mail management - Shortening the delivery interval
+     * <pRelated: {0,6}, {1,10}, {2,11}, {3,5}
+     * <pRelated parent-child: {0,7}, {6,7}
      **/
     public void Add(int addons_id) throws InterruptedException {
         // Waiting for loading page
@@ -108,7 +108,7 @@ public class addons extends payment {
         List<Integer> addons_info = get_addons_information(list_addons_information.get(addons_id));
 
         int addons_add_remove_id = get_add_remove_id(addons_id);
-        System.out.println(addons_add_remove_id);
+        System.out.println("addons_add_remove_id: " + addons_add_remove_id);
 
         boolean check;
         if ((addons_id == 0) || (addons_id == 6)) {
@@ -122,8 +122,8 @@ public class addons extends payment {
         if (check) {
             // number of available purchase = 0 => disable Add button
             if (addons_info.get(0) == 0) {
-                    soft.assertFalse(button_should_be_disable(list_add_button.get(addons_add_remove_id)),
-                            addons_name.get(addons_id) + "[Failed] Add button is not getting disable.");
+                soft.assertFalse(button_should_be_disable(list_add_button.get(addons_add_remove_id)),
+                        addons_name.get(addons_id) + "[Failed] Add button is not getting disable.");
             } else {
                 // number of available purchase = number of purchases => disable Remove button
                 if (addons_info.get(0).equals(addons_info.get(1))) {
@@ -148,6 +148,7 @@ public class addons extends payment {
 
                 // get Addons price
                 int price_id = get_price_id(addons_id);
+                System.out.println("price_id: " + price_id);
                 long price = add_tax(get_add_ons_price(list_addons_price.get(price_id)));
                 System.out.println(price);
 
@@ -192,10 +193,10 @@ public class addons extends payment {
 
                 // [Payment history] check receipt id and price
                 soft.assertNotEquals(receipt_history_payment.get(0), current_payment_history_receipt_id, addons_name.get(addons_id) + "[Failed][Payment history] Can not find new receipt ID => New payment history has not been added yet.");
-                soft.assertEquals(price, Long.parseLong(receipt_history_payment.get(1)), addons_name.get(addons_id) + "[Failed][Payment history] Price not match.");
+                soft.assertEquals(Long.parseLong(receipt_history_payment.get(1)), price, addons_name.get(addons_id) + "[Failed][Payment history] Price not match.");
                 // [PayJP] check receipt id and price
 //            soft.assertNotEquals(receipt_PayJP.get(0), current_PayJP_receipt_id, "[Failed][PayJP] Can not find new receipt ID => New payment history has not been added yet.");
-//            soft.assertEquals(price, Long.parseLong(receipt_PayJP.get(1)), "[Failed][PayJP] Price not match.");
+//            soft.assertEquals(Long.parseLong(receipt_PayJP.get(1)), price,  "[Failed][PayJP] Price not match.");
             }
         }
         // show all assert result
@@ -204,20 +205,20 @@ public class addons extends payment {
 
     /**
      * @param addons_id value in range 0-11
-     * <p>0: Recommendation - Acquisition of delivery opening information
-     * <p>1: Recommendation - Maximum number of deliveries
-     * <p>2: Recommendation - Shortening the delivery interval
-     * <p>3: Account management - Number of search condition template registrations
-     * <p>4: Account management - Number of comment template registrations
-     * <p>5: Delivery mail management - Number of search condition template registrations
-     * <p>6: Delivery mail management - Acquisition of delivery opening information
-     * <p>7: Delivery mail management - Extension of acquisition period of delivery opening information
-     * <p>8: Delivery mail management - Delivery attachment capacity
-     * <p>9: Delivery mail management - Advertising display during HTML distribution
-     * <p>10: Delivery mail management - Maximum number of deliveries
-     * <p>11: Delivery mail management - Shortening the delivery interval
-     * <p>Related: {0,6}, {1,10}, {2,11}, {3,5}
-     * <p>Related parent-child: {0,7}, {6,7}
+     * <p0: Recommendation - Acquisition of delivery opening information
+     * <p1: Recommendation - Maximum number of deliveries
+     * <p2: Recommendation - Shortening the delivery interval
+     * <p3: Account management - Number of search condition template registrations
+     * <p4: Account management - Number of comment template registrations
+     * <p5: Delivery mail management - Number of search condition template registrations
+     * <p6: Delivery mail management - Acquisition of delivery opening information
+     * <p7: Delivery mail management - Extension of acquisition period of delivery opening information
+     * <p8: Delivery mail management - Delivery attachment capacity
+     * <p9: Delivery mail management - Advertising display during HTML distribution
+     * <p10: Delivery mail management - Maximum number of deliveries
+     * <p11: Delivery mail management - Shortening the delivery interval
+     * <pRelated: {0,6}, {1,10}, {2,11}, {3,5}
+     * <pRelated parent-child: {0,7}, {6,7}
      **/
     public void Remove(int addons_id) throws InterruptedException {
         // Waiting for loading page
@@ -264,9 +265,9 @@ public class addons extends payment {
 
 
                 // wait and click remove button
-                    // (addons_id - 2): because addons_id = 0 and addons_id = 5 should be hidden
-                    wait.until(ExpectedConditions.visibilityOf(list_remove_button.get(addons_add_remove_id)));
-                    list_remove_button.get(addons_add_remove_id).click();
+                // (addons_id - 2): because addons_id = 0 and addons_id = 5 should be hidden
+                wait.until(ExpectedConditions.visibilityOf(list_remove_button.get(addons_add_remove_id)));
+                list_remove_button.get(addons_add_remove_id).click();
 
                 wait.until(ExpectedConditions.visibilityOf(select_option_remove.get(1)));
 
@@ -351,11 +352,7 @@ public class addons extends payment {
      * <p>False: child addons should be disabled
      * <p>True: can add and remove child addons
      */
-    public boolean check_parent_addons_has_been_added(int parent_addons_id) throws InterruptedException {
-        // Back to Addons page
-        driver.get(domain + addons_path);
-        sleep(2000);
-
+    public boolean check_parent_addons_has_been_added(int parent_addons_id) {
         // get number of purchases/available purchase
         List<Integer> parent_information = get_addons_information(list_addons_information.get(parent_addons_id));
 
@@ -368,11 +365,7 @@ public class addons extends payment {
      * <p>False: child addons should be disabled
      * <p>True: can add and remove parent addons
      */
-    public boolean check_child_addons_has_been_added(int child_addons_id) throws InterruptedException {
-        // Back to Addons page
-        driver.get(domain + addons_path);
-        sleep(2000);
-
+    public boolean check_child_addons_has_been_added(int child_addons_id) {
         // get number of purchases/available purchase
         List<Integer> child_information = get_addons_information(list_addons_information.get(child_addons_id));
 
@@ -380,17 +373,15 @@ public class addons extends payment {
         return !child_information.get(0).equals(child_information.get(1));
     }
 
-    public int get_add_remove_id(int addons_id) throws InterruptedException {
+    public int get_add_remove_id(int addons_id) {
         int addons_add_remove_id = addons_id;
         if (check_child_addons_has_been_added(7)) {
-            if ((addons_id > 0) && (addons_id < 5)) {
+            if ((addons_id > 0) && (addons_id < 6)) {
                 addons_add_remove_id = addons_id - 1;
-            }
-            else {
+            } else {
                 addons_add_remove_id = addons_id - 2;
             }
-        }
-        else if (!check_parent_addons_has_been_added(0)) {
+        } else if (!check_parent_addons_has_been_added(0)) {
             if (addons_id > 7) {
                 addons_add_remove_id = addons_id - 1;
             }
@@ -400,9 +391,9 @@ public class addons extends payment {
 
     public int get_price_id(int addons_id) {
         int id = addons_id;
-        for (int i = 0; i < addons_id; i ++) {
+        for (int i = 0; i < addons_id; i++) {
             if (get_addons_information(list_addons_information.get(i)).get(0) == 0) {
-                id = addons_id - 1;
+                id = id - 1;
             }
         }
         return id;
