@@ -52,15 +52,6 @@ public class Addons {
     public void TC_01_recommendation_acquisition_of_delivery_opening_information_Add() throws InterruptedException {
         addOns.Add(0);
         addOns.check_addons_related(0, 6);
-//        System.out.println(addonsAddRemoveCheck.get_number_of_search_template_list_page(partner_list_path));
-//        System.out.println(addonsAddRemoveCheck.get_number_of_search_template_list_page(mail_list_path));
-//        System.out.println(addonsAddRemoveCheck.get_number_of_search_template_list_page(contact_list_path));
-//        System.out.println(addonsAddRemoveCheck.get_number_of_search_template_destination_search());
-//        System.out.println(addonsAddRemoveCheck.check_delivery_attachment_capacity());
-//        System.out.println(addonsAddRemoveCheck.get_number_of_deliveries_destination_search());
-//        System.out.println(addonsAddRemoveCheck.get_number_of_comment_template(partner_list_path + register_path));
-//        System.out.println(addonsAddRemoveCheck.get_number_of_comment_template(contact_list_path + register_path));
-//        System.out.println(addonsAddRemoveCheck.check_shortening_the_delivery_interval());
     }
 
     @Test
@@ -202,6 +193,6 @@ public class Addons {
             File dest = new File(System.getProperty("user.dir") + "\\img\\" + result.getName() + ".jpg");
             FileUtils.copyFile(scrShot, dest);
         }
-//        driver.quit();
+        driver.quit();
     }
 }

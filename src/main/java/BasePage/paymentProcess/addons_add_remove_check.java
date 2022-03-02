@@ -245,7 +245,7 @@ public class addons_add_remove_check extends payment {
         driver.get(domain + mail_list_path + register_path);
 
         // wait distributor loading
-        sleep(3000);
+        sleep(5000);
 
         // input subject
         subject.sendKeys("addons test");
@@ -323,7 +323,7 @@ public class addons_add_remove_check extends payment {
      * <p>1: number of comment template.</p>
      */
     public List<Integer> get_number_of_comment_template(String path) throws InterruptedException {
-        driver.get(domain + path);
+        driver.get(domain + path + register_path);
         sleep(2000);
         comment_template_button.click();
         wait.until(ExpectedConditions.visibilityOf(comment_template_information));
@@ -588,11 +588,13 @@ public class addons_add_remove_check extends payment {
         time_selection.click();
     }
 
-    public void select_date() {
+    public void select_date() throws InterruptedException {
         // Date
         wait.until(ExpectedConditions.visibilityOf(date)).click();
         current_id = date_id();
-        wait.until(ExpectedConditions.elementToBeClickable(calendar.get(current_id))).click();
+        sleep(2000);
+        calendar.get(current_id).click();
+//        wait.until(ExpectedConditions.elementToBeClickable(calendar.get(current_id))).click();
     }
 
     /**

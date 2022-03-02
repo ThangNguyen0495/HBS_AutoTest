@@ -9,9 +9,10 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.List;
 
-import static BasePage.Link_and_Path.HBS.addons_path;
+import static BasePage.Link_and_Path.HBS.*;
 import static java.lang.Thread.sleep;
 
 
@@ -34,6 +35,8 @@ public class addons extends payment {
     List<WebElement> agree_to_immediate_cancellation;
     WebDriverWait wait;
 
+    addons_add_remove_check addonsAddRemoveCheck;
+
     public static List<String> addons_name = List.of(
             "Recommendation - Acquisition of delivery opening information",
             "Recommendation - Maximum number of deliveries",
@@ -51,6 +54,7 @@ public class addons extends payment {
     public addons(WebDriver driver, String domain, String username_admin_page, String password_admin_page) {
         super(driver, domain, username_admin_page, password_admin_page);
         wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        addonsAddRemoveCheck = new addons_add_remove_check(driver, domain, username_admin_page,password_admin_page);
         PageFactory.initElements(driver, this);
     }
 
@@ -85,6 +89,7 @@ public class addons extends payment {
 
     /**
      * @param addons_id value in range 0-11
+     * <p>DESCRIPTIONS:</p>
      * <p>0: Recommendation - Acquisition of delivery opening information
      * <p>1: Recommendation - Maximum number of deliveries
      * <p>2: Recommendation - Shortening the delivery interval
@@ -99,6 +104,20 @@ public class addons extends payment {
      * <p>11: Delivery mail management - Shortening the delivery interval
      * <p>Related: {0,6}, {1,10}, {2,11}, {3,5}
      * <p>Related parent-child: {0,7}, {6,7}
+     *
+     * <p>CHECK AFTER ADD/REMOVE ADDONS:</p>
+     * <p>0: can not verify
+     * <p>1: check maximum number of deliveries(1 check item: destination search)
+     * <p>2: check shortening the delivery interval (1 check item: final confirmation)
+     * <p>3: check maximum number of search templates (4 check items: partner/contact/mail list and destination search)
+     * <p>4: check maximum number of comment templates (2 check items: partner/contact list or register)
+     * <p>5: check maximum number of search templates (4 check items: partner/contact/mail list and destination search)
+     * <p>6: can not verify
+     * <p>7: can not verify
+     * <p>8: check delivery attachment capacity(1 check item: attachment)
+     * <p>9: can not verify
+     * <p>10: check maximum number of deliveries(1 check item: destination search)
+     * <p>11: check shortening the delivery interval (1 check item: final confirmation)
      **/
     public void Add(int addons_id) throws InterruptedException {
         driver.get(domain + addons_path);
@@ -147,6 +166,50 @@ public class addons extends payment {
 //            // login to PAY.JP and get old receipt_id
 //            login_to_PayJP_page();
 //            String current_PayJP_receipt_id = get_PayJP_receipt().get(0);
+
+                int old_maximum_number_of_deliveries = 0;
+                boolean old_check_shortening_the_delivery_interval = false;
+                List<Integer> old_maximum_number_of_search_template = new ArrayList<>();
+                List<Integer> old_maximum_number_of_comment_template= new ArrayList<>();
+                boolean old_check_delivery_attachment_capacity = false;
+
+                // check related item after addons has been added.
+                switch (addons_id) {
+                    case 0:
+                    case 6:
+                    case 7:
+                    case 9:
+                        System.out.println("[" + addons_name.get(addons_id) + "]" + "Can not verify related item.");
+                        break;
+
+                    case 1:
+                    case 10:
+                        old_maximum_number_of_deliveries = addonsAddRemoveCheck.get_number_of_deliveries_destination_search().get(1);
+                        System.out.println(old_maximum_number_of_deliveries);
+                        break;
+
+                    case 2:
+                    case 11:
+                        old_check_shortening_the_delivery_interval = addonsAddRemoveCheck.check_shortening_the_delivery_interval();
+                        break;
+
+                    case 3:
+                    case 5:
+                        old_maximum_number_of_search_template.add(addonsAddRemoveCheck.get_number_of_search_template_list_page(partner_list_path).get(1));
+                        old_maximum_number_of_search_template.add(addonsAddRemoveCheck.get_number_of_search_template_list_page(contact_list_path).get(1));
+                        old_maximum_number_of_search_template.add(addonsAddRemoveCheck.get_number_of_search_template_list_page(mail_list_path).get(1));
+                        old_maximum_number_of_search_template.add(addonsAddRemoveCheck.get_number_of_search_template_destination_search().get(1));
+                        break;
+
+                    case 4:
+                        old_maximum_number_of_comment_template.add(addonsAddRemoveCheck.get_number_of_comment_template(partner_list_path).get(1));
+                        old_maximum_number_of_comment_template.add(addonsAddRemoveCheck.get_number_of_comment_template(contact_list_path).get(1));
+                        break;
+
+                    case 8:
+                        old_check_delivery_attachment_capacity = addonsAddRemoveCheck.check_delivery_attachment_capacity();
+                        break;
+                }
 
                 // Back to Addons page
                 driver.get(domain + addons_path);
@@ -204,6 +267,56 @@ public class addons extends payment {
                 // [PayJP] check receipt id and price
 //            soft.assertNotEquals(receipt_PayJP.get(0), current_PayJP_receipt_id, "[Failed][PayJP] Can not find new receipt ID => New payment history has not been added yet.");
 //            soft.assertEquals(Long.parseLong(receipt_PayJP.get(1)), price,  "[Failed][PayJP] Price not match.");
+
+                // check related item after addons has been added.
+                int current_maximum_number_of_deliveries;
+                List<Integer> current_maximum_number_of_search_template;
+                List<Integer> current_maximum_number_of_comment_template;
+                boolean current_check_delivery_attachment_capacity;
+                boolean current_check_shortening_the_delivery_interval;
+                switch (addons_id) {
+                    case 0:
+                    case 6:
+                    case 7:
+                    case 9:
+                        System.out.println("[" + addons_name.get(addons_id) + "]" + "Can not verify related item.");
+                        break;
+
+                    case 1:
+                    case 10:
+                        current_maximum_number_of_deliveries = addonsAddRemoveCheck.get_number_of_deliveries_destination_search().get(1);
+                        System.out.println(current_maximum_number_of_deliveries);
+                        soft.assertEquals(current_maximum_number_of_deliveries, old_maximum_number_of_deliveries + 1000, "[Failed] 1");
+                        break;
+
+                    case 2:
+                    case 11:
+                        current_check_shortening_the_delivery_interval = addonsAddRemoveCheck.check_shortening_the_delivery_interval();
+                        soft.assertNotEquals(current_check_shortening_the_delivery_interval, old_check_shortening_the_delivery_interval, "[Failed] 2");
+                        break;
+
+                    case 3:
+                    case 5:
+                        current_maximum_number_of_search_template = new ArrayList<>();
+                        current_maximum_number_of_search_template.add(addonsAddRemoveCheck.get_number_of_search_template_list_page(partner_list_path).get(1) - 5);
+                        current_maximum_number_of_search_template.add(addonsAddRemoveCheck.get_number_of_search_template_list_page(contact_list_path).get(1) - 5);
+                        current_maximum_number_of_search_template.add(addonsAddRemoveCheck.get_number_of_search_template_list_page(mail_list_path).get(1) - 5);
+                        current_maximum_number_of_search_template.add(addonsAddRemoveCheck.get_number_of_search_template_destination_search().get(1) - 5);
+                        soft.assertEquals(current_maximum_number_of_search_template, old_maximum_number_of_search_template, "[Failed] 5");
+                        break;
+
+                    case 4:
+                        current_maximum_number_of_comment_template = new ArrayList<>();
+                        current_maximum_number_of_comment_template.add(addonsAddRemoveCheck.get_number_of_comment_template(partner_list_path).get(1) - 5);
+                        current_maximum_number_of_comment_template.add(addonsAddRemoveCheck.get_number_of_comment_template(contact_list_path).get(1) - 5);
+                        soft.assertEquals(current_maximum_number_of_comment_template, old_maximum_number_of_comment_template, "[Failed] 4");
+                        break;
+
+                    case 8:
+                        current_check_delivery_attachment_capacity = addonsAddRemoveCheck.check_delivery_attachment_capacity();
+                        soft.assertNotEquals(current_check_delivery_attachment_capacity, old_check_delivery_attachment_capacity, "[Failed] 8");
+                        break;
+                }
             }
         }
         // show all assert result
@@ -212,6 +325,7 @@ public class addons extends payment {
 
     /**
      * @param addons_id value in range 0-11
+     * <p>DESCRIPTIONS:</p>
      * <p>0: Recommendation - Acquisition of delivery opening information
      * <p>1: Recommendation - Maximum number of deliveries
      * <p>2: Recommendation - Shortening the delivery interval
@@ -226,6 +340,20 @@ public class addons extends payment {
      * <p>11: Delivery mail management - Shortening the delivery interval
      * <p>Related: {0,6}, {1,10}, {2,11}, {3,5}
      * <p>Related parent-child: {0,7}, {6,7}
+     *
+     * <p>CHECK AFTER ADD/REMOVE ADDONS:</p>
+     * <p>0: can not verify
+     * <p>1: check maximum number of deliveries(1 check item: destination search)
+     * <p>2: check shortening the delivery interval (1 check item: final confirmation)
+     * <p>3: check maximum number of search templates (4 check items: partner/contact/mail list and destination search)
+     * <p>4: check maximum number of comment templates (2 check items: partner/contact list or register)
+     * <p>5: check maximum number of search templates (4 check items: partner/contact/mail list and destination search)
+     * <p>6: can not verify
+     * <p>7: can not verify
+     * <p>8: check delivery attachment capacity(1 check item: attachment)
+     * <p>9: can not verify
+     * <p>10: check maximum number of deliveries(1 check item: destination search)
+     * <p>11: check shortening the delivery interval (1 check item: final confirmation)
      **/
     public void Remove(int addons_id) throws InterruptedException {
         driver.get(domain + addons_path);
@@ -267,6 +395,53 @@ public class addons extends payment {
 
                 // get old receipt id
                 String current_payment_history_receipt_id = get_payment_history_receipt().get(0);
+
+                int old_maximum_number_of_deliveries = 0;
+                boolean old_check_shortening_the_delivery_interval = false;
+                List<Integer> old_maximum_number_of_search_template = new ArrayList<>();
+                List<Integer> old_maximum_number_of_comment_template= new ArrayList<>();
+                boolean old_check_delivery_attachment_capacity = false;
+
+                // check related item after addons has been added.
+                switch (addons_id) {
+                    case 0:
+                    case 6:
+                    case 7:
+                    case 9:
+                        break;
+
+                    case 1:
+                    case 10:
+                        old_maximum_number_of_deliveries = addonsAddRemoveCheck.get_number_of_deliveries_destination_search().get(1);
+                        System.out.println(old_maximum_number_of_deliveries);
+                        break;
+
+                    case 2:
+                    case 11:
+                        old_check_shortening_the_delivery_interval = addonsAddRemoveCheck.check_shortening_the_delivery_interval();
+                        System.out.println(old_check_shortening_the_delivery_interval);
+                        break;
+
+                    case 3:
+                    case 5:
+                        old_maximum_number_of_search_template.add(addonsAddRemoveCheck.get_number_of_search_template_list_page(partner_list_path).get(1));
+                        old_maximum_number_of_search_template.add(addonsAddRemoveCheck.get_number_of_search_template_list_page(contact_list_path).get(1));
+                        old_maximum_number_of_search_template.add(addonsAddRemoveCheck.get_number_of_search_template_list_page(mail_list_path).get(1));
+                        old_maximum_number_of_search_template.add(addonsAddRemoveCheck.get_number_of_search_template_destination_search().get(1));
+                        System.out.println(old_maximum_number_of_comment_template);
+                        break;
+
+                    case 4:
+                        old_maximum_number_of_comment_template.add(addonsAddRemoveCheck.get_number_of_comment_template(partner_list_path).get(1));
+                        old_maximum_number_of_comment_template.add(addonsAddRemoveCheck.get_number_of_comment_template(contact_list_path).get(1));
+                        System.out.println(old_maximum_number_of_comment_template);
+                        break;
+
+                    case 8:
+                        old_check_delivery_attachment_capacity = addonsAddRemoveCheck.check_delivery_attachment_capacity();
+                        System.out.println(old_check_delivery_attachment_capacity);
+                        break;
+                }
 
                 // Back to Addons page
                 driver.get(domain + addons_path);
@@ -317,6 +492,60 @@ public class addons extends payment {
 
                 // [Payment history] check receipt id
                 soft.assertEquals(receipt_history_payment, current_payment_history_receipt_id, "[" + addons_name.get(addons_id) + "]" + "[Failed][Payment history] New receipt id has been found. Remove Addons is no fee.");
+
+                // check related item after addons has been removed.
+                int current_maximum_number_of_deliveries;
+                List<Integer> current_maximum_number_of_search_template;
+                List<Integer> current_maximum_number_of_comment_template;
+                boolean current_check_delivery_attachment_capacity;
+                boolean current_check_shortening_the_delivery_interval;
+                switch (addons_id) {
+                    case 0:
+                    case 6:
+                    case 7:
+                    case 9:
+                        System.out.println("[" + addons_name.get(addons_id) + "]" + "Can not verify related item.");
+                        break;
+
+                    case 1:
+                    case 10:
+                        current_maximum_number_of_deliveries = addonsAddRemoveCheck.get_number_of_deliveries_destination_search().get(1);
+                        System.out.println(current_maximum_number_of_deliveries);
+                        soft.assertEquals(current_maximum_number_of_deliveries, old_maximum_number_of_deliveries - 1000, "[Failed] 1");
+                        break;
+
+                    case 2:
+                    case 11:
+                        current_check_shortening_the_delivery_interval = addonsAddRemoveCheck.check_shortening_the_delivery_interval();
+                        System.out.println(current_check_shortening_the_delivery_interval);
+                        soft.assertNotEquals(current_check_shortening_the_delivery_interval, old_check_shortening_the_delivery_interval, "[Failed] 2");
+                        break;
+
+                    case 3:
+                    case 5:
+                        current_maximum_number_of_search_template = new ArrayList<>();
+                        current_maximum_number_of_search_template.add(addonsAddRemoveCheck.get_number_of_search_template_list_page(partner_list_path).get(1) + 5);
+                        current_maximum_number_of_search_template.add(addonsAddRemoveCheck.get_number_of_search_template_list_page(contact_list_path).get(1) + 5);
+                        current_maximum_number_of_search_template.add(addonsAddRemoveCheck.get_number_of_search_template_list_page(mail_list_path).get(1) + 5);
+                        current_maximum_number_of_search_template.add(addonsAddRemoveCheck.get_number_of_search_template_destination_search().get(1) + 5);
+                        System.out.println(current_maximum_number_of_search_template);
+                        soft.assertEquals(current_maximum_number_of_search_template, old_maximum_number_of_search_template, "[Failed] 5");
+                        break;
+
+                    case 4:
+                        current_maximum_number_of_comment_template = new ArrayList<>();
+                        current_maximum_number_of_comment_template.add(addonsAddRemoveCheck.get_number_of_comment_template(partner_list_path).get(1) + 5);
+                        current_maximum_number_of_comment_template.add(addonsAddRemoveCheck.get_number_of_comment_template(contact_list_path).get(1) + 5);
+                        System.out.println(current_maximum_number_of_comment_template);
+                        soft.assertEquals(current_maximum_number_of_comment_template, old_maximum_number_of_comment_template, "[Failed] 4");
+                        break;
+
+                    case 8:
+                        current_check_delivery_attachment_capacity = addonsAddRemoveCheck.check_delivery_attachment_capacity();
+                        System.out.println(current_check_delivery_attachment_capacity);
+                        soft.assertNotEquals(current_check_delivery_attachment_capacity, old_check_delivery_attachment_capacity, "[Failed] 8");
+                        break;
+                }
             }
         }
         // show all assert result
