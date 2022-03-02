@@ -1,6 +1,7 @@
 package Refactor_code;
 
 import BasePage.paymentProcess.addons;
+import BasePage.paymentProcess.addons_add_remove_check;
 import Common.Common;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.OutputType;
@@ -16,13 +17,15 @@ import org.testng.annotations.Test;
 import java.io.File;
 import java.io.IOException;
 
-import static BasePage.Link_and_Path.HBS.addons_path;
+import static BasePage.Link_and_Path.HBS.*;
 
 public class Addons {
     Common cm;
     Actions key;
     WebDriver driver;
     addons addOns;
+
+    addons_add_remove_check addonsAddRemoveCheck;
 
     @BeforeMethod
     @Parameters({"headless", "domain", "email", "password", "username_admin_page", "password_admin_page"})
@@ -41,13 +44,23 @@ public class Addons {
 
         // Init Addons function
         addOns = new addons(driver, domain, username_admin_page, password_admin_page);
+
+        addonsAddRemoveCheck = new addons_add_remove_check(driver,domain, username_admin_page,password_admin_page);
     }
 
     @Test
     public void TC_01_recommendation_acquisition_of_delivery_opening_information_Add() throws InterruptedException {
         addOns.Add(0);
         addOns.check_addons_related(0, 6);
-//        addOns.generate();
+//        System.out.println(addonsAddRemoveCheck.get_number_of_search_template_list_page(partner_list_path));
+//        System.out.println(addonsAddRemoveCheck.get_number_of_search_template_list_page(mail_list_path));
+//        System.out.println(addonsAddRemoveCheck.get_number_of_search_template_list_page(contact_list_path));
+//        System.out.println(addonsAddRemoveCheck.get_number_of_search_template_destination_search());
+//        System.out.println(addonsAddRemoveCheck.check_delivery_attachment_capacity());
+//        System.out.println(addonsAddRemoveCheck.get_number_of_deliveries_destination_search());
+//        System.out.println(addonsAddRemoveCheck.get_number_of_comment_template(partner_list_path + register_path));
+//        System.out.println(addonsAddRemoveCheck.get_number_of_comment_template(contact_list_path + register_path));
+//        System.out.println(addonsAddRemoveCheck.check_shortening_the_delivery_interval());
     }
 
     @Test
@@ -189,6 +202,6 @@ public class Addons {
             File dest = new File(System.getProperty("user.dir") + "\\img\\" + result.getName() + ".jpg");
             FileUtils.copyFile(scrShot, dest);
         }
-        driver.quit();
+//        driver.quit();
     }
 }

@@ -85,22 +85,23 @@ public class addons extends payment {
 
     /**
      * @param addons_id value in range 0-11
-     * <p0: Recommendation - Acquisition of delivery opening information
-     * <p1: Recommendation - Maximum number of deliveries
-     * <p2: Recommendation - Shortening the delivery interval
-     * <p3: Account management - Number of search condition template registrations
-     * <p4: Account management - Number of comment template registrations
-     * <p5: Delivery mail management - Number of search condition template registrations
-     * <p6: Delivery mail management - Acquisition of delivery opening information
-     * <p7: Delivery mail management - Extension of acquisition period of delivery opening information
-     * <p8: Delivery mail management - Delivery attachment capacity
-     * <p9: Delivery mail management - Advertising display during HTML distribution
-     * <p10: Delivery mail management - Maximum number of deliveries
-     * <p11: Delivery mail management - Shortening the delivery interval
-     * <pRelated: {0,6}, {1,10}, {2,11}, {3,5}
-     * <pRelated parent-child: {0,7}, {6,7}
+     * <p>0: Recommendation - Acquisition of delivery opening information
+     * <p>1: Recommendation - Maximum number of deliveries
+     * <p>2: Recommendation - Shortening the delivery interval
+     * <p>3: Account management - Number of search condition template registrations
+     * <p>4: Account management - Number of comment template registrations
+     * <p>5: Delivery mail management - Number of search condition template registrations
+     * <p>6: Delivery mail management - Acquisition of delivery opening information
+     * <p>7: Delivery mail management - Extension of acquisition period of delivery opening information
+     * <p>8: Delivery mail management - Delivery attachment capacity
+     * <p>9: Delivery mail management - Advertising display during HTML distribution
+     * <p>10: Delivery mail management - Maximum number of deliveries
+     * <p>11: Delivery mail management - Shortening the delivery interval
+     * <p>Related: {0,6}, {1,10}, {2,11}, {3,5}
+     * <p>Related parent-child: {0,7}, {6,7}
      **/
     public void Add(int addons_id) throws InterruptedException {
+        driver.get(domain + addons_path);
         // Waiting for loading page
         sleep(2000);
 
@@ -211,22 +212,23 @@ public class addons extends payment {
 
     /**
      * @param addons_id value in range 0-11
-     * <p0: Recommendation - Acquisition of delivery opening information
-     * <p1: Recommendation - Maximum number of deliveries
-     * <p2: Recommendation - Shortening the delivery interval
-     * <p3: Account management - Number of search condition template registrations
-     * <p4: Account management - Number of comment template registrations
-     * <p5: Delivery mail management - Number of search condition template registrations
-     * <p6: Delivery mail management - Acquisition of delivery opening information
-     * <p7: Delivery mail management - Extension of acquisition period of delivery opening information
-     * <p8: Delivery mail management - Delivery attachment capacity
-     * <p9: Delivery mail management - Advertising display during HTML distribution
-     * <p10: Delivery mail management - Maximum number of deliveries
-     * <p11: Delivery mail management - Shortening the delivery interval
-     * <pRelated: {0,6}, {1,10}, {2,11}, {3,5}
-     * <pRelated parent-child: {0,7}, {6,7}
+     * <p>0: Recommendation - Acquisition of delivery opening information
+     * <p>1: Recommendation - Maximum number of deliveries
+     * <p>2: Recommendation - Shortening the delivery interval
+     * <p>3: Account management - Number of search condition template registrations
+     * <p>4: Account management - Number of comment template registrations
+     * <p>5: Delivery mail management - Number of search condition template registrations
+     * <p>6: Delivery mail management - Acquisition of delivery opening information
+     * <p>7: Delivery mail management - Extension of acquisition period of delivery opening information
+     * <p>8: Delivery mail management - Delivery attachment capacity
+     * <p>9: Delivery mail management - Advertising display during HTML distribution
+     * <p>10: Delivery mail management - Maximum number of deliveries
+     * <p>11: Delivery mail management - Shortening the delivery interval
+     * <p>Related: {0,6}, {1,10}, {2,11}, {3,5}
+     * <p>Related parent-child: {0,7}, {6,7}
      **/
     public void Remove(int addons_id) throws InterruptedException {
+        driver.get(domain + addons_path);
         // Waiting for loading page
         sleep(2000);
 
@@ -322,7 +324,7 @@ public class addons extends payment {
     }
 
     /**
-     * <p>Related: {0,6}, {1,10}, {2,11}, {3,5}
+     * <p>>Related: {0,6}, {1,10}, {2,11}, {3,5}
      */
     public void check_addons_related(int addons_id1, int addons_id2) throws InterruptedException {
         // Back to Addons page

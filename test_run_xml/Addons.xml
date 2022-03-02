@@ -19,12 +19,12 @@
                     <parameter name="domain" value="https://dev.app.cmrb.jp"/>
 <!--                    <parameter name="domain" value="https://test.app.cmrb.jp"/>-->
 
-<!--                    <include name="TC_01_recommendation_acquisition_of_delivery_opening_information_Add" />-->
+                    <include name="TC_01_recommendation_acquisition_of_delivery_opening_information_Add" />
 <!--                    <include name="TC_02_recommendation_acquisition_of_delivery_opening_information_Remove" />-->
 <!--                    <include name="TC_03_recommendation_maximum_number_of_deliveries_Add" />-->
 <!--                    <include name="TC_04_recommendation_maximum_number_of_deliveries_Remove" />-->
-                    <include name="TC_05_recommendation_shortening_the_delivery_interval_Add" />
-                    <include name="TC_06_recommendation_shortening_the_delivery_interval_Remove" />
+<!--                    <include name="TC_05_recommendation_shortening_the_delivery_interval_Add" />-->
+<!--                    <include name="TC_06_recommendation_shortening_the_delivery_interval_Remove" />-->
 <!--                    <include name="TC_07_account_management_number_of_search_condition_template_registrations_Add" />-->
 <!--                    <include name="TC_08_account_management_number_of_search_condition_template_registrations_Remove" />-->
 <!--                    <include name="TC_09_account_management_number_of_comment_template_registrations_Add" />-->
