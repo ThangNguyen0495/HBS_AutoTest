@@ -111,11 +111,17 @@ public class addons extends payment {
         System.out.println("addons_add_remove_id: " + addons_add_remove_id);
 
         boolean check;
+        List<Integer> add_on_info;
         if ((addons_id == 0) || (addons_id == 6)) {
-            check = !check_child_addons_has_been_added(7);
+            add_on_info = get_addons_information(list_addons_information.get(7));
+            // addons no.7 has not been added => can add/remove addons no.0 and no.6
+            check = add_on_info.get(0).equals(add_on_info.get(1));
         } else if (addons_id == 7) {
-            check = check_parent_addons_has_been_added(0);
+            add_on_info = get_addons_information(list_addons_information.get(0));
+            // addons no.0 or no.6 has been added => can add/remove addons no.7
+            check = !add_on_info.get(0).equals(add_on_info.get(1));
         } else {
+            // remain addons => can add/remove
             check = true;
         }
 
@@ -123,12 +129,12 @@ public class addons extends payment {
             // number of available purchase = 0 => disable Add button
             if (addons_info.get(0) == 0) {
                 soft.assertFalse(button_should_be_disable(list_add_button.get(addons_add_remove_id)),
-                        addons_name.get(addons_id) + "[Failed] Add button is not getting disable.");
+                        "[" + addons_name.get(addons_id) + "]" + "[Failed] Add button is not getting disable.");
             } else {
                 // number of available purchase = number of purchases => disable Remove button
                 if (addons_info.get(0).equals(addons_info.get(1))) {
                     soft.assertFalse(button_should_be_disable(list_remove_button.get(addons_add_remove_id)),
-                            addons_name.get(addons_id) + "[Failed] Remove button is not getting disable.");
+                            "[" + addons_name.get(addons_id) + "]" + "[Failed] Remove button is not getting disable.");
                 }
 
 //            // get company_id
@@ -171,7 +177,7 @@ public class addons extends payment {
 
                 // reload page
                 driver.navigate().refresh();
-                sleep(1000);
+                sleep(2000);
 
                 // get current number of available for purchase
                 int current_number_of_available_for_purchase = get_addons_information(list_addons_information.get(addons_id)).get(0);
@@ -185,15 +191,15 @@ public class addons extends payment {
 
                 // check message
                 soft.assertEquals(text, "アドオンの購入に成功しました",
-                        addons_name.get(addons_id) + "[Failed] Message do not match.");
+                        "[" + addons_name.get(addons_id) + "]" + "[Failed] Message do not match.");
 
                 // check number of available for purchase
                 soft.assertEquals(current_number_of_available_for_purchase, addons_info.get(0) - 1,
-                        addons_name.get(addons_id) + "[Failed] Current number of available for purchase incorrect.");
+                        "[" + addons_name.get(addons_id) + "]" + "[Failed] Current number of available for purchase incorrect.");
 
                 // [Payment history] check receipt id and price
-                soft.assertNotEquals(receipt_history_payment.get(0), current_payment_history_receipt_id, addons_name.get(addons_id) + "[Failed][Payment history] Can not find new receipt ID => New payment history has not been added yet.");
-                soft.assertEquals(Long.parseLong(receipt_history_payment.get(1)), price, addons_name.get(addons_id) + "[Failed][Payment history] Price not match.");
+                soft.assertNotEquals(receipt_history_payment.get(0), current_payment_history_receipt_id, "[" + addons_name.get(addons_id) + "]" + "[Failed][Payment history] Can not find new receipt ID => New payment history has not been added yet.");
+                soft.assertEquals(Long.parseLong(receipt_history_payment.get(1)), price, "[" + addons_name.get(addons_id) + "]" + "[Failed][Payment history] Price not match.");
                 // [PayJP] check receipt id and price
 //            soft.assertNotEquals(receipt_PayJP.get(0), current_PayJP_receipt_id, "[Failed][PayJP] Can not find new receipt ID => New payment history has not been added yet.");
 //            soft.assertEquals(Long.parseLong(receipt_PayJP.get(1)), price,  "[Failed][PayJP] Price not match.");
@@ -228,13 +234,20 @@ public class addons extends payment {
         List<Integer> addons_info = get_addons_information(list_addons_information.get(addons_id));
 
         int addons_add_remove_id = get_add_remove_id(addons_id);
+        System.out.println("addons_add_remove_id :" + addons_add_remove_id);
 
         boolean check;
+        List<Integer> add_on_info;
         if ((addons_id == 0) || (addons_id == 6)) {
-            check = check_child_addons_has_been_added(7);
+            add_on_info = get_addons_information(list_addons_information.get(7));
+            // addons no.7 has not been added => can add/remove addons no.0 and no.6
+            check = add_on_info.get(0).equals(add_on_info.get(1));
         } else if (addons_id == 7) {
-            check = check_parent_addons_has_been_added(0);
+            add_on_info = get_addons_information(list_addons_information.get(0));
+            // addons no.0 or no.6 has been added => can add/remove addons no.7
+            check = !add_on_info.get(0).equals(add_on_info.get(1));
         } else {
+            // remain addons => can add/remove
             check = true;
         }
 
@@ -242,18 +255,12 @@ public class addons extends payment {
             // number of available purchase = number of purchases => disable Remove button
             if (addons_info.get(0).equals(addons_info.get(1))) {
                 soft.assertFalse(button_should_be_disable(list_remove_button.get(addons_add_remove_id)),
-                        addons_name.get(addons_id) + "[Failed] Remove button is not getting disable.");
+                        "[" + addons_name.get(addons_id) + "]" + "[Failed] Remove button is not getting disable.");
             } else {
                 // number of available purchase = 0 => disable Add button
                 if (addons_info.get(0) == 0) {
-                    if (addons_id == 7) {
-                        // (addons_id - 2): because addons_id = 0 and addons_id = 5 should be hidden
-                        soft.assertFalse(button_should_be_disable(list_add_button.get(addons_id - 2)),
-                                addons_name.get(addons_id) + "[Failed] Add button is not getting disable.");
-                    } else {
-                        soft.assertFalse(button_should_be_disable(list_add_button.get(addons_id)),
-                                addons_name.get(addons_id) + "[Failed] Add button is not getting disable.");
-                    }
+                    soft.assertFalse(button_should_be_disable(list_add_button.get(addons_add_remove_id)),
+                            "[" + addons_name.get(addons_id) + "]" + "[Failed] Add button is not getting disable.");
                 }
 
                 // get old receipt id
@@ -265,7 +272,6 @@ public class addons extends payment {
 
 
                 // wait and click remove button
-                // (addons_id - 2): because addons_id = 0 and addons_id = 5 should be hidden
                 wait.until(ExpectedConditions.visibilityOf(list_remove_button.get(addons_add_remove_id)));
                 list_remove_button.get(addons_add_remove_id).click();
 
@@ -281,7 +287,6 @@ public class addons extends payment {
                 }
 
                 // wait and click OK button
-
                 select_option_remove.get(1).click();
 
                 // wait message
@@ -291,6 +296,10 @@ public class addons extends payment {
                 String text = message.getText();
                 wait.until(ExpectedConditions.invisibilityOf(message));
 
+                // reload page
+                driver.navigate().refresh();
+                sleep(2000);
+
                 // get current number of available for purchase
                 int current_number_of_available_for_purchase = get_addons_information(list_addons_information.get(addons_id)).get(0);
 
@@ -298,15 +307,14 @@ public class addons extends payment {
                 String receipt_history_payment = get_payment_history_receipt().get(0);
 
                 // check message
-                soft.assertEquals(text, "アドオンの解約に成功しました",
-                        addons_name.get(addons_id) + "[Failed] Message do not match.");
+                soft.assertEquals(text, "アドオンの解約に成功しました", "[" + addons_name.get(addons_id) + "]" + "[Failed] Message do not match.");
 
                 // check number of available for purchase
                 soft.assertEquals(current_number_of_available_for_purchase, addons_info.get(0) + 1,
-                        addons_name.get(addons_id) + "[Failed] Current number of available for purchase incorrect.");
+                        "[" + addons_name.get(addons_id) + "]" + "[Failed] Current number of available for purchase incorrect.");
 
                 // [Payment history] check receipt id
-                soft.assertEquals(receipt_history_payment, current_payment_history_receipt_id, addons_name.get(addons_id) + "[Failed][Payment history] New receipt id has been found. Remove Addons is no fee.");
+                soft.assertEquals(receipt_history_payment, current_payment_history_receipt_id, "[" + addons_name.get(addons_id) + "]" + "[Failed][Payment history] New receipt id has been found. Remove Addons is no fee.");
             }
         }
         // show all assert result
@@ -326,62 +334,60 @@ public class addons extends payment {
         List<Integer> addons1_information = get_addons_information(list_addons_information.get(addons_id1));
         List<Integer> addons2_information = get_addons_information(list_addons_information.get(addons_id2));
 
-        int id1 = get_add_remove_id(addons_id1);
-        int id2 = get_add_remove_id(addons_id2);
-
-        // get button status (enable/disable)
-        boolean addons1_add_status = list_add_button.get(id1).isEnabled();
-        boolean addons1_remove_status = list_remove_button.get(id1).isEnabled();
-        boolean addons2_add_status = list_add_button.get(id2).isEnabled();
-        boolean addons2_remove_status = list_remove_button.get(id2).isEnabled();
-
         // Compare
         // number of purchases/available purchase
         soft.assertEquals(addons1_information, addons2_information, addons_name.get(addons_id1) + "[Failed][Number of purchases/available purchase] Number incorrect.");
 
-        // button status
-        soft.assertEquals(addons1_add_status, addons2_add_status, addons_name.get(addons_id1) + "[Failed][Add button] Button status incorrect.");
-        soft.assertEquals(addons1_remove_status, addons2_remove_status, addons_name.get(addons_id1) + "[Failed][Remove button] Button status incorrect.");
+        boolean check;
+        List<Integer> add_on_info;
+        if ((addons_id1 == 0) || (addons_id1 == 6)) {
+            add_on_info = get_addons_information(list_addons_information.get(7));
+            // addons no.7 has not been added => can add/remove addons no.0 and no.6
+            check = add_on_info.get(0).equals(add_on_info.get(1));
+        } else if (addons_id1 == 7) {
+            add_on_info = get_addons_information(list_addons_information.get(0));
+            // addons no.0 or no.6 has been added => can add/remove addons no.7
+            check = !add_on_info.get(0).equals(add_on_info.get(1));
+        } else {
+            // remain addons => can add/remove
+            check = true;
+        }
 
+        if (check) {
+            int id1 = get_add_remove_id(addons_id1);
+            int id2 = get_add_remove_id(addons_id2);
+
+            // get button status (enable/disable)
+            boolean addons1_add_status = list_add_button.get(id1).isEnabled();
+            boolean addons1_remove_status = list_remove_button.get(id1).isEnabled();
+            boolean addons2_add_status = list_add_button.get(id2).isEnabled();
+            boolean addons2_remove_status = list_remove_button.get(id2).isEnabled();
+
+            // button status
+            soft.assertEquals(addons1_add_status, addons2_add_status, addons_name.get(addons_id1) + "[Failed][Add button] Button status incorrect.");
+            soft.assertEquals(addons1_remove_status, addons2_remove_status, addons_name.get(addons_id1) + "[Failed][Remove button] Button status incorrect.");
+        }
         // show all assert result
         soft.assertAll();
     }
 
-    /**
-     * <p>Related {parent,child}: {0,7}, {6,7}
-     * <p>False: child addons should be disabled
-     * <p>True: can add and remove child addons
-     */
-    public boolean check_parent_addons_has_been_added(int parent_addons_id) {
-        // get number of purchases/available purchase
-        List<Integer> parent_information = get_addons_information(list_addons_information.get(parent_addons_id));
-
-        // if [parent addons] number of available purchase = [parent addons]number of purchases => child addons should be disabled
-        return !parent_information.get(0).equals(parent_information.get(1));
-    }
-
-    /**
-     * <p>Related {parent,child}: {0,7}, {6,7}
-     * <p>False: child addons should be disabled
-     * <p>True: can add and remove parent addons
-     */
-    public boolean check_child_addons_has_been_added(int child_addons_id) {
-        // get number of purchases/available purchase
-        List<Integer> child_information = get_addons_information(list_addons_information.get(child_addons_id));
-
-        // if [child addons] number of available purchase != [child addons]number of purchases => parent addons should be disabled
-        return !child_information.get(0).equals(child_information.get(1));
-    }
-
     public int get_add_remove_id(int addons_id) {
         int addons_add_remove_id = addons_id;
-        if (check_child_addons_has_been_added(7)) {
+        List<Integer> addon_info_0 = get_addons_information(list_addons_information.get(0));
+        List<Integer> addon_info_7 = get_addons_information(list_addons_information.get(7));
+        // if addons no.7 has been added, addons no.0 and no.6 should be disabled
+        // addons_id < 6, remove/add id - 1 (addons no.0 has been removed from list)
+        // addons_id > 6, remove/add id - 2 (addons no.0 and no.6 have been removed from list)
+        if (!addon_info_7.get(0).equals(addon_info_7.get(1))) {
             if ((addons_id > 0) && (addons_id < 6)) {
                 addons_add_remove_id = addons_id - 1;
             } else {
                 addons_add_remove_id = addons_id - 2;
             }
-        } else if (!check_parent_addons_has_been_added(0)) {
+        }
+        // in case, addons no.0 or no.5 have not been added, addons no.7 should be disabled
+        // addons_id > 7, remove/add id - 1 (addons no.7 has been removed from list)
+        else if (addon_info_0.get(0).equals(addon_info_0.get(1))) {
             if (addons_id > 7) {
                 addons_add_remove_id = addons_id - 1;
             }

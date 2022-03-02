@@ -184,7 +184,6 @@ public class Addons {
     @AfterMethod
     public void teardown(ITestResult result) throws IOException {
         TakesScreenshot screenshot = ((TakesScreenshot) driver);
-
         if (result.getStatus() == ITestResult.FAILURE) {
             File scrShot = screenshot.getScreenshotAs(OutputType.FILE);
             File dest = new File(System.getProperty("user.dir") + "\\img\\" + result.getName() + ".jpg");
