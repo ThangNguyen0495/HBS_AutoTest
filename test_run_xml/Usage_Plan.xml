@@ -4,24 +4,25 @@
     <test verbose="2"
           name="C:/Users/Admin/IdeaProjects/HBS_AutoTest/src/test/java/hidenTest.HBS/CreateMail.java">
         <classes>
-            <class name="Refactor_code.Usage_plan">
+            <class name="test.Payment.Usage_plan">
                 <methods>
                     <parameter name="headless" value="true"/>
 <!--                    <parameter name="headless" value="false"/>-->
+                    <parameter name="browser_name" value="chrome"/>
                     <parameter name="username_admin_page" value="admin"/>
-                    <parameter name="password_admin_page" value="ChangeMe"/>
-                    <parameter name="email" value="dkvjqpcsqdrlyqcgjxgksvhc@bedul.net"/>
-                    <parameter name="password" value="Lr3dP8t5hcqJ3dLXMlasO2kWbp@"/>
-                    <parameter name="role" value="Master"/>
-                    <parameter name="domain" value="https://test.app.cmrb.jp"/>
+                    <parameter name="password_admin_page" value="cenkfzjQ6ujbczQ2"/>
+                    <parameter name="email" value="eddklgutyiqtzbublzczamvsjpvbbzixkhollgdemweqbkxwsqkarifyqsnquxsjmekabzjhyvrgx@bedul.net"/>
+                    <parameter name="password" value="SwZMd9tT0b9UKP6DQgOpH8utukYnm@"/>
+<!--                    <parameter name="email" value="dkvjqpcsqdrlyqcgjxgksvhc@bedul.net"/>-->
+<!--                    <parameter name="password" value="Lr3dP8t5hcqJ3dLXMlasO2kWbp@"/>-->
 
-<!--                    <include name="TC_01_buy_usage_plan_Cancel"/>-->
-<!--                    <include name="TC_02_buy_usage_plan_OK"/>-->
-                    <include name="TC_03_add_upper_limit_OK"/>
-                    <include name="TC_04_add_upper_limit_Cancel"/>
-                    <include name="TC_05_remove_upper_limit_OK"/>
-                    <include name="TC_06_remove_upper_limit_Cancel"/>
-                    <include name="TC_07_remove_upper_limit_Cancel" />
+                    <parameter name="role" value="Master"/>
+<!--                    <parameter name="domain" value="https://dev.app.cmrb.jp"/>-->
+                    <parameter name="domain" value="https://stg.app.cmrb.jp"/>
+
+                    <include name="TC_01_buy_usage_plan"/>
+                    <include name="TC_02_add_upper_limit"/>
+                    <include name="TC_03_remove_upper_limit"/>
                 </methods>
             </class>
         </classes>

@@ -4,20 +4,21 @@
     <test verbose="2"
           name="Addons">
         <classes>
-            <class name="Refactor_code.Addons">
+            <class name="test.Payment.Addons">
                 <methods>
                     <parameter name="headless" value="true"/>
 <!--                    <parameter name="headless" value="false"/>-->
+                    <parameter name="browser_name" value="chrome"/>
                     <parameter name="username_admin_page" value="admin"/>
-                    <parameter name="password_admin_page" value="ChangeMe"/>
-<!--                    <parameter name="email" value="eddklgutyiqtzbublzczamvsjpvbbzixkhollgdemweqbkxwsqkarifyqsnquxsjmekabzjhyvrgx@bedul.net"/>-->
-<!--                    <parameter name="password" value="SwZMd9tT0b9UKP6DQgOpH8utukYnm@"/>-->
-                    <parameter name="email" value="dkvjqpcsqdrlyqcgjxgksvhc@bedul.net"/>
-                    <parameter name="password" value="Lr3dP8t5hcqJ3dLXMlasO2kWbp@"/>
+                    <parameter name="password_admin_page" value="cenkfzjQ6ujbczQ2"/>
+                    <parameter name="email" value="eddklgutyiqtzbublzczamvsjpvbbzixkhollgdemweqbkxwsqkarifyqsnquxsjmekabzjhyvrgx@bedul.net"/>
+                    <parameter name="password" value="SwZMd9tT0b9UKP6DQgOpH8utukYnm@"/>
+<!--                    <parameter name="email" value="dkvjqpcsqdrlyqcgjxgksvhc@bedul.net"/>-->
+<!--                    <parameter name="password" value="Lr3dP8t5hcqJ3dLXMlasO2kWbp@"/>-->
 
                     <parameter name="role" value="Master"/>
 <!--                    <parameter name="domain" value="https://dev.app.cmrb.jp"/>-->
-                    <parameter name="domain" value="https://test.app.cmrb.jp"/>
+                    <parameter name="domain" value="https://stg.app.cmrb.jp"/>
 
                     <include name="TC_01_recommendation_acquisition_of_delivery_opening_information_Add" />
                     <include name="TC_02_recommendation_acquisition_of_delivery_opening_information_Remove" />

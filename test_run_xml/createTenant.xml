@@ -4,74 +4,73 @@
     <test verbose="2"
           name="C:/Users/Admin/IdeaProjects/HBS_AutoTest/src/test/java/hidenTest.HBS/CreateTenant.java">
         <classes>
-            <class name="Refactor_code.CreateTenant">
+            <class name="test.Tenant.CreateTenant">
                 <methods>
                     <!-- Descriptions: headless
                     Headless is "test run" mode,
                     headless = "true": Run test with non UI mode (Browser will not be opened),
                     headless = "false": Run test with UI mode (Browser will be opened).
                     -->
-<!--                    <parameter name="headless" value="true"/>-->
-                    <parameter name="headless" value="false"/>
+                    <parameter name="headless" value="true"/>
+<!--                    <parameter name="headless" value="false"/>-->
+                    <parameter name="browser_name" value="chrome"/>
+                    <parameter name="register_token_cpi" value="ImM3MThmMzc3LWRhMGEtNGNjNS04NTQwLTY1ZGUwMTA3ZGU1ZSI:1nPgqm:f1pC9FCFLYH4npAAfj7Ki2B5Zao"/>
+                    <parameter name="register_token_ppi" value="ImUzYjRhYjkzLTc2ODQtNDVhYy1hNWU0LTI5ZjFhMzIwNThkYSI:1nPgu8:ceBUNKfwW43AfuXlc2hegEpR9ZE"/>
 
                     <!-- Descriptions: url
                     Url is your create tenant link.
                     -->
-                    <parameter name="url" value="https://stg.app.cmrb.jp/tenant"/>
+                    <parameter name="domain" value="https://stg.app.cmrb.jp"/>
 
                     <!-- Create tenant process -->
-                    <include name="TC01_process_create_tenant"/>
+<!--                    <include name="TC01_process_create_tenant"/>-->
 
                     <!-- Validation of Member information tab -->
-<!--                    <include name="TC02_leave_all_blank_member_information"/>-->
-<!--                    <include name="TC03_email_password_and_confirm_password_contains_full_width_characters"/>-->
-<!--                    <include name="TC04_email_contains_space_characters"/>-->
-<!--                    <include name="TC05_email_exceed_100_half_width_characters"/>-->
-<!--                    <include name="TC06_password_and_confirm_password_less_than_10_half_width_characters"/>-->
-<!--                    <include name="TC07_password_and_confirm_password_exceed_50_half_width_characters"/>-->
-<!--                    <include name="TC08_password_and_confirm_password_does_not_match"/>-->
-<!--                    <include name="TC09_password_and_confirm_password_does_not_mix_alphanumerical_characters"/>-->
+                    <include name="TC02_leave_all_blank_member_information"/>
+                    <include name="TC03_email_password_and_confirm_password_contains_full_width_characters"/>
+                    <include name="TC04_email_contains_space_characters"/>
+                    <include name="TC05_email_exceed_100_half_width_characters"/>
+                    <include name="TC06_password_and_confirm_password_less_than_10_half_width_characters"/>
+                    <include name="TC07_password_and_confirm_password_exceed_50_half_width_characters"/>
+                    <include name="TC08_password_and_confirm_password_does_not_match"/>
+                    <include name="TC09_password_and_confirm_password_does_not_mix_alphanumerical_characters"/>
 
                     <!-- Validation of Company profile information tab -->
                     <!-- Descriptions: url_cpi
                     url_cpi is your company profile information tab link.
                     -->
-<!--                    <parameter name="url_cpi"-->
-<!--                               value="https://test.app.cmrb.jp/tenant?auth_token=ImIyMzU5NDIzLTg0MzktNGQ3MC1iYTIxLWFlNDhjNTE2MDA2YyI:1nK0BV:0EgREoSouhVRyza-1Cb1XlsUHzk"/>-->
-<!--                    <include name="TC10_leave_all_blank_company_profile_information"/>-->
-<!--                    <include name="TC11_company_name_exceed_100_half_width_characters"/>-->
-<!--                    <include name="TC12_company_name_exceed_100_full_width_characters"/>-->
-<!--                    <include name="TC13_company_name_exceed_mix_100_half_and_full_width_characters"/>-->
-<!--                    <include name="TC14_address_exceed_100_half_width_characters"/>-->
-<!--                    <include name="TC15_address_exceed_100_full_width_characters"/>-->
-<!--                    <include name="TC16_address_exceed_mix_100_half_and_and_full_width_characters"/>-->
-<!--                    <include name="TC17_url_exceed_50_half_width_characters"/>-->
-<!--                    <include name="TC18_url_exceed_50_full_width_characters"/>-->
-<!--                    <include name="TC19_url_exceed_mix_50_half_and_full_width_characters"/>-->
-<!--                    <include name="TC20_capital_exceed_13_half_width_characters"/>-->
+                    <include name="TC10_leave_all_blank_company_profile_information"/>
+                    <include name="TC11_company_name_exceed_100_half_width_characters"/>
+                    <include name="TC12_company_name_exceed_100_full_width_characters"/>
+                    <include name="TC13_company_name_exceed_mix_100_half_and_full_width_characters"/>
+                    <include name="TC14_address_exceed_100_half_width_characters"/>
+                    <include name="TC15_address_exceed_100_full_width_characters"/>
+                    <include name="TC16_address_exceed_mix_100_half_and_and_full_width_characters"/>
+                    <include name="TC17_url_exceed_50_half_width_characters"/>
+                    <include name="TC18_url_exceed_50_full_width_characters"/>
+                    <include name="TC19_url_exceed_mix_50_half_and_full_width_characters"/>
+                    <include name="TC20_capital_exceed_13_half_width_characters"/>
 
                     <!-- Validation of Personal profile information tab -->
                     <!-- Descriptions: url_ppi
                     url_ppi is your personal profile information tab link.
                     -->
-<!--                    <parameter name="url_ppi"-->
-<!--                               value="https://test.app.cmrb.jp/tenant?auth_token=IjYzNDc4MDk4LWZlMWQtNDA4NS1hNDNiLWU1MmY5MDA4MThhNCI:1nK9oU:-mORO68To099FMll9BgkPt_htLE"/>-->
-<!--                    <include name="TC21_leave_username_blank_personal_profile_information"/>-->
-<!--                    <include name="TC22_username_exceed_50_half_width_characters"/>-->
-<!--                    <include name="TC23_username_exceed_50_full_width_characters"/>-->
-<!--                    <include name="TC24_username_exceed_mix_50_half_and_full_width_characters"/>-->
-<!--                    <include name="TC25_username_contains_space_characters"/>-->
-<!--                    <include name="TC26_do_not_fill_in_all_tel_fields"/>-->
-<!--                    <include name="TC27_tel_exceed_15_half_width_characters"/>-->
-<!--                    <include name="TC28_tel_contains_full_width_characters"/>-->
-<!--                    <include name="TC29_tel_contains_letter_characters"/>-->
-<!--                    <include name="TC30_password_less_than_10_half_width_characters"/>-->
-<!--                    <include name="TC31_password_exceed_50_half_width_characters"/>-->
-<!--                    <include name="TC32_password_do_not_mix_alphanumerical_characters"/>-->
-<!--                    <include name="TC33_password_contains_full_width_characters"/>-->
-<!--                    <include name="TC34_email_signature_exceed_1000_half_width_characters"/>-->
-<!--                    <include name="TC35_email_signature_exceed_1000_full_width_characters"/>-->
-<!--                    <include name="TC36_email_signature_exceed_1000_half_width_characters"/>-->
+                    <include name="TC21_leave_username_blank_personal_profile_information"/>
+                    <include name="TC22_username_exceed_50_half_width_characters"/>
+                    <include name="TC23_username_exceed_50_full_width_characters"/>
+                    <include name="TC24_username_exceed_mix_50_half_and_full_width_characters"/>
+                    <include name="TC25_username_contains_space_characters"/>
+                    <include name="TC26_do_not_fill_in_all_tel_fields"/>
+                    <include name="TC27_tel_exceed_15_half_width_characters"/>
+                    <include name="TC28_tel_contains_full_width_characters"/>
+                    <include name="TC29_tel_contains_letter_characters"/>
+                    <include name="TC30_password_less_than_10_half_width_characters"/>
+                    <include name="TC31_password_exceed_50_half_width_characters"/>
+                    <include name="TC32_password_do_not_mix_alphanumerical_characters"/>
+                    <include name="TC33_password_contains_full_width_characters"/>
+                    <include name="TC34_email_signature_exceed_1000_half_width_characters"/>
+                    <include name="TC35_email_signature_exceed_1000_full_width_characters"/>
+                    <include name="TC36_email_signature_exceed_1000_half_width_characters"/>
                 </methods>
             </class>
         </classes>
