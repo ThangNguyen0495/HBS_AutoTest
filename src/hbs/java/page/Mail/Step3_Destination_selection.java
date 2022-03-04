@@ -1,6 +1,5 @@
 package page.Mail;
 
-import utilities.Common.Common;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.math.RandomUtils;
 import org.openqa.selenium.*;
@@ -8,12 +7,13 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import utilities.Common.Common;
 
 import java.time.Duration;
 import java.util.List;
 
-import static utilities.Link_and_Path.HBS.contact_list_path;
 import static java.lang.Thread.sleep;
+import static utilities.Link_and_Path.HBS.contact_list_path;
 
 public class Step3_Destination_selection extends Delivered_Mail_Page {
     // Delivery information
@@ -242,8 +242,19 @@ public class Step3_Destination_selection extends Delivered_Mail_Page {
     @FindBy(css = "li.ant-pagination-prev")
     WebElement previous_page;
 
-    public Step3_Destination_selection(WebDriver driver, Common common, String role, String domain, String Mode) {
+    @FindBy(css = "div.rc-virtual-list-holder-inner>div")
+    List<WebElement> tags_list;
+
+    // Register Mode
+    public Step3_Destination_selection(WebDriver driver, String role, Common common, String domain, String Mode) {
         super(driver, role, common, domain, Mode);
+        wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        PageFactory.initElements(driver, this);
+    }
+
+    // Edit Mode
+    public Step3_Destination_selection(WebDriver driver, String role, Common common, String domain, String mail_id, String mail_status, String Mode) {
+        super(driver, role, common, domain, mail_id, mail_status, Mode);
         wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         PageFactory.initElements(driver, this);
     }
@@ -251,7 +262,13 @@ public class Step3_Destination_selection extends Delivered_Mail_Page {
     //** Delivery information **//
     public void delivery_information() {
         // Master, Administrator, Responsible person, Leader, Member
-        if (common.authorized(role, common.role_list(5))) {
+        int num;
+        if (Mode.equals("Edit")) {
+            num = 6;
+        } else {
+            num = 5;
+        }
+        if (common.authorized(role, common.role_list(num))) {
             // Reset search criteria
             if ((delivery_type.get(0).isSelected()) || (delivery_type.get(1).isSelected()) || (delivery_type.get(2).isSelected())) {
                 reset_search_criteria_button.click();
@@ -423,106 +440,146 @@ public class Step3_Destination_selection extends Delivered_Mail_Page {
 
     //** Commitment **//
     public void account_status() {
-        // Account status
-        // 0: Do not search by Account status, 1: add Account status conditions
-        int search_by_account_status = RandomUtils.nextInt(2);
-        if (search_by_account_status == 1) {
-            // add Account status conditions
-            account_status.click();
-            // 1: Prospect, 2:Approached, 3:Information exchanged, 4:Contract record available
-            int account_status_condition = RandomUtils.nextInt(4);
-            // select Account status conditions
-            for (int i = 0; i <= account_status_condition; i++) {
-                account_status_list.get(i).click();
+        int num;
+        if (Mode.equals("Edit")) {
+            num = 6;
+        } else {
+            num = 5;
+        }
+        if (common.authorized(role, common.role_list(num))) {
+            // Account status
+            // 0: Do not search by Account status, 1: add Account status conditions
+            int search_by_account_status = RandomUtils.nextInt(2);
+            if (search_by_account_status == 1) {
+                // add Account status conditions
+                account_status.click();
+                // 1: Prospect, 2:Approached, 3:Information exchanged, 4:Contract record available
+                int account_status_condition = RandomUtils.nextInt(4);
+                // select Account status conditions
+                for (int i = 0; i <= account_status_condition; i++) {
+                    account_status_list.get(i).click();
+                }
             }
         }
     }
 
     public void in_house_person_in_charge() throws InterruptedException {
-        // In-house person in charge
-        // 0: Do not search by In-house person in charge, 1: add In-house person in charge condition
-        int search_by_in_house_person_in_charge = RandomUtils.nextInt(2);
-        if (search_by_in_house_person_in_charge == 1) {
-            // add In-house person in charge condition
-            in_house_person_in_charge.click();
-            wait_for_loading_element(in_house_person_in_charge_dropdown);
+        int num;
+        if (Mode.equals("Edit")) {
+            num = 6;
+        } else {
+            num = 5;
+        }
+        if (common.authorized(role, common.role_list(num))) {
+            // In-house person in charge
+            // 0: Do not search by In-house person in charge, 1: add In-house person in charge condition
+            int search_by_in_house_person_in_charge = RandomUtils.nextInt(2);
+            if (search_by_in_house_person_in_charge == 1) {
+                // add In-house person in charge condition
+                in_house_person_in_charge.click();
+                wait_for_loading_element(in_house_person_in_charge_dropdown);
 //            sleep(3000); // Wait dropdown has been loaded
-            in_house_person_in_charge_dropdown.click(); // Open In-house person in charge dropdown
-            int id = RandomUtils.nextInt(20);
-            for (int i = 0; i <= id; i++) {
-                key.sendKeys(Keys.DOWN).perform();
+                in_house_person_in_charge_dropdown.click(); // Open In-house person in charge dropdown
+                int id = RandomUtils.nextInt(20);
+                for (int i = 0; i <= id; i++) {
+                    key.sendKeys(Keys.DOWN).perform();
+                }
+                // Wait and select In-house person in charge
+                sleep(1000);
+                key.sendKeys(Keys.ENTER).perform();
             }
-            // Wait and select In-house person in charge
-            sleep(1000);
-            key.sendKeys(Keys.ENTER).perform();
         }
     }
 
     public void compatibility() {
-        // Compatibility
-        // 0: Do not search by Compatibility, 1: add Compatibility condition
-        int search_by_compatibility = RandomUtils.nextInt(2);
-        if (search_by_compatibility == 1) {
-            // add Compatibility condition
-            compatibility.click();
+        int num;
+        if (Mode.equals("Edit")) {
+            num = 6;
+        } else {
+            num = 5;
+        }
+        if (common.authorized(role, common.role_list(num))) {
+            // Compatibility
+            // 0: Do not search by Compatibility, 1: add Compatibility condition
+            int search_by_compatibility = RandomUtils.nextInt(2);
+            if (search_by_compatibility == 1) {
+                // add Compatibility condition
+                compatibility.click();
 
-            // Open Compatibility dropdown
-            compatibility_dropdown_1.click();
+                // Open Compatibility dropdown
+                compatibility_dropdown_1.click();
 
-            // 0: Like, 1: Dislike
-            int compatibility_condition_1 = RandomUtils.nextInt(2);
-            for (int i = 0; i <= compatibility_condition_1; i++) {
-                key.sendKeys(Keys.DOWN).perform();
+                // 0: Like, 1: Dislike
+                int compatibility_condition_1 = RandomUtils.nextInt(2);
+                for (int i = 0; i <= compatibility_condition_1; i++) {
+                    key.sendKeys(Keys.DOWN).perform();
+                }
+                key.sendKeys(Keys.ENTER).perform();
+
+                // 0: Matches with, 1: Do not match with
+                int compatibility_condition_2 = RandomUtils.nextInt(2);
+                compatibility_dropdown_2.click();
+                for (int i = 0; i <= compatibility_condition_2; i++) {
+                    key.sendKeys(Keys.DOWN).perform();
+                }
+                key.sendKeys(Keys.ENTER).perform();
             }
-            key.sendKeys(Keys.ENTER).perform();
-
-            // 0: Matches with, 1: Do not match with
-            int compatibility_condition_2 = RandomUtils.nextInt(2);
-            compatibility_dropdown_2.click();
-            for (int i = 0; i <= compatibility_condition_2; i++) {
-                key.sendKeys(Keys.DOWN).perform();
-            }
-            key.sendKeys(Keys.ENTER).perform();
         }
     }
 
     public void tag() {
-        // Tag
-        // 0: Do not search by Tag, 1: add Tag condition
-        int search_by_tag = RandomUtils.nextInt(2);
-        if (search_by_tag == 1) {
-            // add Tag condition
-            tag.click();
-            // wait Tag dropdown has been loaded
-            wait_for_loading_element(tag_dropdown_1);
+        int num;
+        if (Mode.equals("Edit")) {
+            num = 6;
+        } else {
+            num = 5;
+        }
+        if (common.authorized(role, common.role_list(num))) {
+            // Tag
+            // 0: Do not search by Tag, 1: add Tag condition
+            int search_by_tag = RandomUtils.nextInt(2);
+            if (search_by_tag == 1) {
+                // add Tag condition
+                tag.click();
+                // wait Tag dropdown has been loaded
+                wait_for_loading_element(tag_dropdown_1);
 //            sleep(3000);
-            // number of tags has been selected in range 1-5
-            int number_of_tags = RandomUtils.nextInt(5) + 1;
-            // Open Tag dropdown
-            tag_dropdown_1.click();
-            for (int i = 0; i < number_of_tags; i++) {
-                key.sendKeys(Keys.DOWN).perform();
+                // number of tags has been selected in range 1-5
+                int number_of_tags = RandomUtils.nextInt(5) + 1;
+                // Open Tag dropdown
+                tag_dropdown_1.click();
+                for (int i = 0; i < number_of_tags; i++) {
+                    key.sendKeys(Keys.DOWN).perform();
+                    key.sendKeys(Keys.ENTER).perform();
+                }
+
+                // 0: AND, 1: OR
+                int tag_condition_2 = RandomUtils.nextInt(2);
+                tag_dropdown_2.click();
+                for (int i = 0; i <= tag_condition_2; i++) {
+                    key.sendKeys(Keys.DOWN).perform();
+                }
                 key.sendKeys(Keys.ENTER).perform();
             }
-
-            // 0: AND, 1: OR
-            int tag_condition_2 = RandomUtils.nextInt(2);
-            tag_dropdown_2.click();
-            for (int i = 0; i <= tag_condition_2; i++) {
-                key.sendKeys(Keys.DOWN).perform();
-            }
-            key.sendKeys(Keys.ENTER).perform();
         }
     }
 
     public void search_contact_by_condition() throws InterruptedException {
-        // Master, Administrator, Responsible person, Leader, Member
-        if (common.authorized(role, common.role_list(5))) {
-            // Search
-            key.moveToElement(search_button).click().build().perform();
+        int num;
+        if (Mode.equals("Edit")) {
+            num = 6;
+        } else {
+            num = 5;
+        }
+        if (common.authorized(role, common.role_list(num))) {
+            // Master, Administrator, Responsible person, Leader, Member
+            if (common.authorized(role, common.role_list(5))) {
+                // Search
+                key.moveToElement(search_button).click().build().perform();
 
-            // Waiting for loading result
-            sleep(1000);
+                // Waiting for loading result
+                sleep(1000);
+            }
         }
     }
 
@@ -539,14 +596,20 @@ public class Step3_Destination_selection extends Delivered_Mail_Page {
 
     public void select_contact() throws InterruptedException {
         // Master, Administrator, Responsible person, Leader, Member
-        if (common.authorized(role, common.role_list(5))) {
+        int num;
+        if (Mode.equals("Edit")) {
+            num = 6;
+        } else {
+            num = 5;
+        }
+        if (common.authorized(role, common.role_list(num))) {
             while (check_result_is_null()) {
                 System.out.println("Can not find partner PIC with this condition.");
                 System.out.println("Please add more data or change your search condition.");
                 System.out.println("Search condition have been changed and try again, please wait ...");
                 System.out.println("-----------------------------------------------------------------");
                 delivery_information();
-                commitment();
+//                commitment();
                 search_contact_by_condition();
             }
             // Select contact
@@ -567,7 +630,13 @@ public class Step3_Destination_selection extends Delivered_Mail_Page {
 
     public void commitment() throws InterruptedException {
         // Master, Administrator, Responsible person, Leader, Member
-        if (common.authorized(role, common.role_list(5))) {
+        int num;
+        if (Mode.equals("Edit")) {
+            num = 6;
+        } else {
+            num = 5;
+        }
+        if (common.authorized(role, common.role_list(num))) {
             account_status();
             in_house_person_in_charge();
             compatibility();
@@ -577,7 +646,13 @@ public class Step3_Destination_selection extends Delivered_Mail_Page {
 
     public void next_to_final_confirmation() throws InterruptedException {
         // Master, Administrator, Responsible person, Leader, Member
-        if (common.authorized(role, common.role_list(5))) {
+        int num;
+        if (Mode.equals("Edit")) {
+            num = 6;
+        } else {
+            num = 5;
+        }
+        if (common.authorized(role, common.role_list(num))) {
             // Next to 最終確認_step
             next_step_button.click();
 
@@ -589,8 +664,7 @@ public class Step3_Destination_selection extends Delivered_Mail_Page {
 
                 // check message
                 soft.assertEquals(text, "アイテムが更新されました", "[Failed][Destination selection] Message do not match.");
-            }
-            else {
+            } else {
                 // waiting for final confirmation step loading
                 sleep(5000);
             }
@@ -602,424 +676,546 @@ public class Step3_Destination_selection extends Delivered_Mail_Page {
     }
 
     public void deliver_the_matter_do_not_select_condition() {
-        // Reset search criteria
-        if ((delivery_type.get(0).isSelected()) || (delivery_type.get(1).isSelected()) || (delivery_type.get(2).isSelected())) {
-            reset_search_criteria_button.click();
+        int num;
+        if (Mode.equals("Edit")) {
+            num = 6;
+        } else {
+            num = 5;
         }
+        if (common.authorized(role, common.role_list(num))) {
+            // Reset search criteria
+            if ((delivery_type.get(0).isSelected()) || (delivery_type.get(1).isSelected()) || (delivery_type.get(2).isSelected())) {
+                reset_search_criteria_button.click();
+            }
 
-        // Delivery type: Deliver the matter
-        delivery_type.get(0).click();
+            // Delivery type: Deliver the matter
+            delivery_type.get(0).click();
 
-        // Click Search button
-        search_button.click();
+            // Click Search button
+            search_button.click();
 
-        //Delivery area
-        String text1 = wait.until(ExpectedConditions.visibilityOf(delivery_area_error)).getText();
-        soft.assertEquals(text1, "必ず1つ選択してください", "[Delivery area] Message do not match");
+            //Delivery area
+            String text1 = wait.until(ExpectedConditions.visibilityOf(delivery_area_error)).getText();
+            soft.assertEquals(text1, "必ず1つ選択してください", "[Delivery area] Message do not match");
 
-        // Delivery occupation
-        String text2 = wait.until(ExpectedConditions.visibilityOf(matter_delivery_occupation_error)).getText();
-        soft.assertEquals(text2, "必ず1つ選択してください", "[Delivery occupation] Message do not match");
+            // Delivery occupation
+            String text2 = wait.until(ExpectedConditions.visibilityOf(matter_delivery_occupation_error)).getText();
+            soft.assertEquals(text2, "必ず1つ選択してください", "[Delivery occupation] Message do not match");
 
-        // Delivery commercial distribution
-        String text3 = wait.until(ExpectedConditions.visibilityOf(matter_delivery_commercial_distribution_error)).getText();
-        soft.assertEquals(text3, "必ず1つ選択してください", "[Delivery commercial distribution] Message do not match");
+            // Delivery commercial distribution
+            String text3 = wait.until(ExpectedConditions.visibilityOf(matter_delivery_commercial_distribution_error)).getText();
+            soft.assertEquals(text3, "必ず1つ選択してください", "[Delivery commercial distribution] Message do not match");
 
-        soft.assertAll();
+            soft.assertAll();
+        }
     }
 
     public void deliver_the_matter_only_select_delivery_occupation_development() {
-        // Reset search criteria
-        if ((delivery_type.get(0).isSelected()) || (delivery_type.get(1).isSelected()) || (delivery_type.get(2).isSelected())) {
-            reset_search_criteria_button.click();
+        int num;
+        if (Mode.equals("Edit")) {
+            num = 6;
+        } else {
+            num = 5;
         }
+        if (common.authorized(role, common.role_list(num))) {
+            // Reset search criteria
+            if ((delivery_type.get(0).isSelected()) || (delivery_type.get(1).isSelected()) || (delivery_type.get(2).isSelected())) {
+                reset_search_criteria_button.click();
+            }
 
-        // Delivery type: Deliver the matter
-        delivery_type.get(0).click();
+            // Delivery type: Deliver the matter
+            delivery_type.get(0).click();
 
-        // Delivery occupation: Development
-        matter_delivery_occupation.get(0).click();
+            // Delivery occupation: Development
+            matter_delivery_occupation.get(0).click();
 
-        // Click Search button
-        search_button.click();
+            // Click Search button
+            search_button.click();
 
-        //Delivery area
-        String text1 = wait.until(ExpectedConditions.visibilityOf(delivery_area_error)).getText();
-        soft.assertEquals(text1, "必ず1つ選択してください", "[Delivery area] Message do not match");
+            //Delivery area
+            String text1 = wait.until(ExpectedConditions.visibilityOf(delivery_area_error)).getText();
+            soft.assertEquals(text1, "必ず1つ選択してください", "[Delivery area] Message do not match");
 
-        // Delivery occupation/Development/Delivery job details
-        String text2 = wait.until(ExpectedConditions.visibilityOf(matter_detail_of_delivery_occupation_dev_error)).getText();
-        soft.assertEquals(text2, "必ず1つ選択してください", "[Delivery occupation/Development/Delivery job details] Message do not match");
+            // Delivery occupation/Development/Delivery job details
+            String text2 = wait.until(ExpectedConditions.visibilityOf(matter_detail_of_delivery_occupation_dev_error)).getText();
+            soft.assertEquals(text2, "必ず1つ選択してください", "[Delivery occupation/Development/Delivery job details] Message do not match");
 
-        // Delivery occupation/Development/Delivery skill details
-        String text3 = wait.until(ExpectedConditions.visibilityOf(matter_delivery_skill_details_dev_error)).getText();
-        soft.assertEquals(text3, "必ず1つ選択してください", "[Delivery occupation/Development/Delivery skill details] Message do not match");
+            // Delivery occupation/Development/Delivery skill details
+            String text3 = wait.until(ExpectedConditions.visibilityOf(matter_delivery_skill_details_dev_error)).getText();
+            soft.assertEquals(text3, "必ず1つ選択してください", "[Delivery occupation/Development/Delivery skill details] Message do not match");
 
-        // Delivery commercial distribution
-        String text4 = wait.until(ExpectedConditions.visibilityOf(matter_delivery_commercial_distribution_error)).getText();
-        soft.assertEquals(text4, "必ず1つ選択してください", "[Delivery commercial distribution] Message do not match");
+            // Delivery commercial distribution
+            String text4 = wait.until(ExpectedConditions.visibilityOf(matter_delivery_commercial_distribution_error)).getText();
+            soft.assertEquals(text4, "必ず1つ選択してください", "[Delivery commercial distribution] Message do not match");
 
-        soft.assertAll();
+            soft.assertAll();
+        }
     }
 
     public void deliver_the_matter_only_select_delivery_occupation_infrastructure() {
-        // Reset search criteria
-        if ((delivery_type.get(0).isSelected()) || (delivery_type.get(1).isSelected()) || (delivery_type.get(2).isSelected())) {
-            reset_search_criteria_button.click();
+        int num;
+        if (Mode.equals("Edit")) {
+            num = 6;
+        } else {
+            num = 5;
         }
+        if (common.authorized(role, common.role_list(num))) {
+            // Reset search criteria
+            if ((delivery_type.get(0).isSelected()) || (delivery_type.get(1).isSelected()) || (delivery_type.get(2).isSelected())) {
+                reset_search_criteria_button.click();
+            }
 
-        // Delivery type: Deliver the matter
-        delivery_type.get(0).click();
+            // Delivery type: Deliver the matter
+            delivery_type.get(0).click();
 
-        // Delivery occupation: Infrastructure
-        matter_delivery_occupation.get(1).click();
+            // Delivery occupation: Infrastructure
+            matter_delivery_occupation.get(1).click();
 
-        // Click Search button
-        search_button.click();
+            // Click Search button
+            search_button.click();
 
-        //Delivery area
-        String text1 = wait.until(ExpectedConditions.visibilityOf(delivery_area_error)).getText();
-        soft.assertEquals(text1, "必ず1つ選択してください", "[Delivery area] Message do not match");
+            //Delivery area
+            String text1 = wait.until(ExpectedConditions.visibilityOf(delivery_area_error)).getText();
+            soft.assertEquals(text1, "必ず1つ選択してください", "[Delivery area] Message do not match");
 
-        // Delivery occupation/Infrastructure/Delivery job details
-        String text2 = wait.until(ExpectedConditions.visibilityOf(matter_detail_of_delivery_occupation_infra_error)).getText();
-        soft.assertEquals(text2, "必ず1つ選択してください", "[Delivery occupation/Infrastructure/Delivery job details] Message do not match");
+            // Delivery occupation/Infrastructure/Delivery job details
+            String text2 = wait.until(ExpectedConditions.visibilityOf(matter_detail_of_delivery_occupation_infra_error)).getText();
+            soft.assertEquals(text2, "必ず1つ選択してください", "[Delivery occupation/Infrastructure/Delivery job details] Message do not match");
 
-        // Delivery occupation/Infrastructure/Delivery skill details
-        String text3 = wait.until(ExpectedConditions.visibilityOf(matter_delivery_skill_details_infra_error)).getText();
-        soft.assertEquals(text3, "必ず1つ選択してください", "[Delivery occupation/Infrastructure/Delivery skill details] Message do not match");
+            // Delivery occupation/Infrastructure/Delivery skill details
+            String text3 = wait.until(ExpectedConditions.visibilityOf(matter_delivery_skill_details_infra_error)).getText();
+            soft.assertEquals(text3, "必ず1つ選択してください", "[Delivery occupation/Infrastructure/Delivery skill details] Message do not match");
 
-        // Delivery commercial distribution
-        String text4 = wait.until(ExpectedConditions.visibilityOf(matter_delivery_commercial_distribution_error)).getText();
-        soft.assertEquals(text4, "必ず1つ選択してください", "[Delivery commercial distribution] Message do not match");
+            // Delivery commercial distribution
+            String text4 = wait.until(ExpectedConditions.visibilityOf(matter_delivery_commercial_distribution_error)).getText();
+            soft.assertEquals(text4, "必ず1つ選択してください", "[Delivery commercial distribution] Message do not match");
 
-        soft.assertAll();
+            soft.assertAll();
+        }
     }
 
     public void deliver_the_matter_only_select_delivery_occupation_others() {
-        // Reset search criteria
-        if ((delivery_type.get(0).isSelected()) || (delivery_type.get(1).isSelected()) || (delivery_type.get(2).isSelected())) {
-            reset_search_criteria_button.click();
+        int num;
+        if (Mode.equals("Edit")) {
+            num = 6;
+        } else {
+            num = 5;
         }
+        if (common.authorized(role, common.role_list(num))) {
+            // Reset search criteria
+            if ((delivery_type.get(0).isSelected()) || (delivery_type.get(1).isSelected()) || (delivery_type.get(2).isSelected())) {
+                reset_search_criteria_button.click();
+            }
 
-        // Delivery type: Deliver the matter
-        delivery_type.get(0).click();
+            // Delivery type: Deliver the matter
+            delivery_type.get(0).click();
 
-        // Delivery occupation: Others
-        matter_delivery_occupation.get(2).click();
+            // Delivery occupation: Others
+            matter_delivery_occupation.get(2).click();
 
-        // Click Search button
-        search_button.click();
+            // Click Search button
+            search_button.click();
 
-        //Delivery area
-        String text1 = wait.until(ExpectedConditions.visibilityOf(delivery_area_error)).getText();
-        soft.assertEquals(text1, "必ず1つ選択してください", "[Delivery area] Message do not match");
+            //Delivery area
+            String text1 = wait.until(ExpectedConditions.visibilityOf(delivery_area_error)).getText();
+            soft.assertEquals(text1, "必ず1つ選択してください", "[Delivery area] Message do not match");
 
-        // Delivery occupation/Others/Delivery job details
-        String text2 = wait.until(ExpectedConditions.visibilityOf(matter_detail_of_delivery_occupation_others_error)).getText();
-        soft.assertEquals(text2, "必ず1つ選択してください", "[Delivery occupation/Others/Delivery job details] Message do not match");
+            // Delivery occupation/Others/Delivery job details
+            String text2 = wait.until(ExpectedConditions.visibilityOf(matter_detail_of_delivery_occupation_others_error)).getText();
+            soft.assertEquals(text2, "必ず1つ選択してください", "[Delivery occupation/Others/Delivery job details] Message do not match");
 
-        // Delivery commercial distribution
-        String text3 = wait.until(ExpectedConditions.visibilityOf(matter_delivery_commercial_distribution_error)).getText();
-        soft.assertEquals(text3, "必ず1つ選択してください", "[Delivery commercial distribution] Message do not match");
+            // Delivery commercial distribution
+            String text3 = wait.until(ExpectedConditions.visibilityOf(matter_delivery_commercial_distribution_error)).getText();
+            soft.assertEquals(text3, "必ず1つ選択してください", "[Delivery commercial distribution] Message do not match");
 
-        soft.assertAll();
+            soft.assertAll();
+        }
     }
 
     /**
      *
      */
     public void deliver_the_personnel_do_not_select_condition() {
-        // Reset search criteria
-        if ((delivery_type.get(0).isSelected()) || (delivery_type.get(1).isSelected()) || (delivery_type.get(2).isSelected())) {
-            reset_search_criteria_button.click();
+        int num;
+        if (Mode.equals("Edit")) {
+            num = 6;
+        } else {
+            num = 5;
         }
+        if (common.authorized(role, common.role_list(num))) {
+            // Reset search criteria
+            if ((delivery_type.get(0).isSelected()) || (delivery_type.get(1).isSelected()) || (delivery_type.get(2).isSelected())) {
+                reset_search_criteria_button.click();
+            }
 
-        // Delivery type: Deliver the personnel
-        delivery_type.get(1).click();
+            // Delivery type: Deliver the personnel
+            delivery_type.get(1).click();
 
-        // Click Search button
-        search_button.click();
+            // Click Search button
+            search_button.click();
 
-        //Delivery area
-        String text1 = wait.until(ExpectedConditions.visibilityOf(delivery_area_error)).getText();
-        soft.assertEquals(text1, "必ず1つ選択してください", "[Delivery area] Message do not match");
+            //Delivery area
+            String text1 = wait.until(ExpectedConditions.visibilityOf(delivery_area_error)).getText();
+            soft.assertEquals(text1, "必ず1つ選択してください", "[Delivery area] Message do not match");
 
-        // Delivery occupation
-        String text2 = wait.until(ExpectedConditions.visibilityOf(personnel_delivery_occupation_error)).getText();
-        soft.assertEquals(text2, "必ず1つ選択してください", "[Delivery occupation] Message do not match");
+            // Delivery occupation
+            String text2 = wait.until(ExpectedConditions.visibilityOf(personnel_delivery_occupation_error)).getText();
+            soft.assertEquals(text2, "必ず1つ選択してください", "[Delivery occupation] Message do not match");
 
-        // Delivery employment form
-        String text3 = wait.until(ExpectedConditions.visibilityOf(personnel_delivery_employment_form_error)).getText();
-        soft.assertEquals(text3, "必ず1つ選択してください", "[Delivery employment form] Message do not match");
+            // Delivery employment form
+            String text3 = wait.until(ExpectedConditions.visibilityOf(personnel_delivery_employment_form_error)).getText();
+            soft.assertEquals(text3, "必ず1つ選択してください", "[Delivery employment form] Message do not match");
 
-        // Delivery commercial distribution
-        String text4 = wait.until(ExpectedConditions.visibilityOf(personnel_delivery_commercial_distribution_error)).getText();
-        soft.assertEquals(text4, "必ず1つ選択してください", "[Delivery commercial distribution] Message do not match");
+            // Delivery commercial distribution
+            String text4 = wait.until(ExpectedConditions.visibilityOf(personnel_delivery_commercial_distribution_error)).getText();
+            soft.assertEquals(text4, "必ず1つ選択してください", "[Delivery commercial distribution] Message do not match");
 
-        soft.assertAll();
+            soft.assertAll();
+        }
     }
 
     public void deliver_the_personnel_only_select_delivery_occupation_development() {
-        // Reset search criteria
-        if ((delivery_type.get(0).isSelected()) || (delivery_type.get(1).isSelected()) || (delivery_type.get(2).isSelected())) {
-            reset_search_criteria_button.click();
+        int num;
+        if (Mode.equals("Edit")) {
+            num = 6;
+        } else {
+            num = 5;
         }
+        if (common.authorized(role, common.role_list(num))) {
+            // Reset search criteria
+            if ((delivery_type.get(0).isSelected()) || (delivery_type.get(1).isSelected()) || (delivery_type.get(2).isSelected())) {
+                reset_search_criteria_button.click();
+            }
 
-        // Delivery type: Deliver the personnel
-        delivery_type.get(1).click();
+            // Delivery type: Deliver the personnel
+            delivery_type.get(1).click();
 
-        // Delivery occupation: Development
-        personnel_delivery_occupation_dev.click();
+            // Delivery occupation: Development
+            personnel_delivery_occupation_dev.click();
 
-        // Click Search button
-        search_button.click();
+            // Click Search button
+            search_button.click();
 
-        //Delivery area
-        String text1 = wait.until(ExpectedConditions.visibilityOf(delivery_area_error)).getText();
-        soft.assertEquals(text1, "必ず1つ選択してください", "[Delivery area] Message do not match");
+            //Delivery area
+            String text1 = wait.until(ExpectedConditions.visibilityOf(delivery_area_error)).getText();
+            soft.assertEquals(text1, "必ず1つ選択してください", "[Delivery area] Message do not match");
 
-        // Delivery occupation/Development/Delivery job details
-        String text2 = wait.until(ExpectedConditions.visibilityOf(personnel_detail_of_delivery_occupation_dev_error)).getText();
-        soft.assertEquals(text2, "必ず1つ選択してください", "[Delivery occupation/Development/Delivery job details] Message do not match");
+            // Delivery occupation/Development/Delivery job details
+            String text2 = wait.until(ExpectedConditions.visibilityOf(personnel_detail_of_delivery_occupation_dev_error)).getText();
+            soft.assertEquals(text2, "必ず1つ選択してください", "[Delivery occupation/Development/Delivery job details] Message do not match");
 
-        // Delivery occupation/Development/Delivery skill details
-        String text3 = wait.until(ExpectedConditions.visibilityOf(personnel_delivery_skill_details_dev_error)).getText();
-        soft.assertEquals(text3, "必ず1つ選択してください", "[Delivery occupation/Development/Delivery skill details] Message do not match");
+            // Delivery occupation/Development/Delivery skill details
+            String text3 = wait.until(ExpectedConditions.visibilityOf(personnel_delivery_skill_details_dev_error)).getText();
+            soft.assertEquals(text3, "必ず1つ選択してください", "[Delivery occupation/Development/Delivery skill details] Message do not match");
 
-        // Delivery employment form
-        String text4 = wait.until(ExpectedConditions.visibilityOf(personnel_delivery_employment_form_error)).getText();
-        soft.assertEquals(text4, "必ず1つ選択してください", "[Delivery employment form] Message do not match");
+            // Delivery employment form
+            String text4 = wait.until(ExpectedConditions.visibilityOf(personnel_delivery_employment_form_error)).getText();
+            soft.assertEquals(text4, "必ず1つ選択してください", "[Delivery employment form] Message do not match");
 
-        // Delivery commercial distribution
-        String text5 = wait.until(ExpectedConditions.visibilityOf(personnel_delivery_commercial_distribution_error)).getText();
-        soft.assertEquals(text5, "必ず1つ選択してください", "[Delivery commercial distribution] Message do not match");
+            // Delivery commercial distribution
+            String text5 = wait.until(ExpectedConditions.visibilityOf(personnel_delivery_commercial_distribution_error)).getText();
+            soft.assertEquals(text5, "必ず1つ選択してください", "[Delivery commercial distribution] Message do not match");
 
-        soft.assertAll();
+            soft.assertAll();
+        }
     }
 
     public void deliver_the_personnel_only_select_delivery_occupation_infrastructure() {
-        // Reset search criteria
-        if ((delivery_type.get(0).isSelected()) || (delivery_type.get(1).isSelected()) || (delivery_type.get(2).isSelected())) {
-            reset_search_criteria_button.click();
+        int num;
+        if (Mode.equals("Edit")) {
+            num = 6;
+        } else {
+            num = 5;
         }
+        if (common.authorized(role, common.role_list(num))) {
+            // Reset search criteria
+            if ((delivery_type.get(0).isSelected()) || (delivery_type.get(1).isSelected()) || (delivery_type.get(2).isSelected())) {
+                reset_search_criteria_button.click();
+            }
 
-        // Delivery type: Deliver the personnel
-        delivery_type.get(1).click();
+            // Delivery type: Deliver the personnel
+            delivery_type.get(1).click();
 
-        // Delivery occupation: Infrastructure
-        personnel_delivery_occupation_infra.click();
+            // Delivery occupation: Infrastructure
+            personnel_delivery_occupation_infra.click();
 
-        // Click Search button
-        search_button.click();
+            // Click Search button
+            search_button.click();
 
-        //Delivery area
-        String text1 = wait.until(ExpectedConditions.visibilityOf(delivery_area_error)).getText();
-        soft.assertEquals(text1, "必ず1つ選択してください", "[Delivery area] Message do not match");
+            //Delivery area
+            String text1 = wait.until(ExpectedConditions.visibilityOf(delivery_area_error)).getText();
+            soft.assertEquals(text1, "必ず1つ選択してください", "[Delivery area] Message do not match");
 
-        // Delivery occupation/Infrastructure/Delivery job details
-        String text2 = wait.until(ExpectedConditions.visibilityOf(personnel_detail_of_delivery_occupation_infra_error)).getText();
-        soft.assertEquals(text2, "必ず1つ選択してください", "[Delivery occupation/Infrastructure/Delivery job details] Message do not match");
+            // Delivery occupation/Infrastructure/Delivery job details
+            String text2 = wait.until(ExpectedConditions.visibilityOf(personnel_detail_of_delivery_occupation_infra_error)).getText();
+            soft.assertEquals(text2, "必ず1つ選択してください", "[Delivery occupation/Infrastructure/Delivery job details] Message do not match");
 
-        // Delivery occupation/Infrastructure/Delivery skill details
-        String text3 = wait.until(ExpectedConditions.visibilityOf(personnel_delivery_skill_details_infra_error)).getText();
-        soft.assertEquals(text3, "必ず1つ選択してください", "[Delivery occupation/Infrastructure/Delivery skill details] Message do not match");
+            // Delivery occupation/Infrastructure/Delivery skill details
+            String text3 = wait.until(ExpectedConditions.visibilityOf(personnel_delivery_skill_details_infra_error)).getText();
+            soft.assertEquals(text3, "必ず1つ選択してください", "[Delivery occupation/Infrastructure/Delivery skill details] Message do not match");
 
-        // Delivery employment form
-        String text4 = wait.until(ExpectedConditions.visibilityOf(personnel_delivery_employment_form_error)).getText();
-        soft.assertEquals(text4, "必ず1つ選択してください", "[Delivery employment form] Message do not match");
+            // Delivery employment form
+            String text4 = wait.until(ExpectedConditions.visibilityOf(personnel_delivery_employment_form_error)).getText();
+            soft.assertEquals(text4, "必ず1つ選択してください", "[Delivery employment form] Message do not match");
 
-        // Delivery commercial distribution
-        String text5 = wait.until(ExpectedConditions.visibilityOf(personnel_delivery_commercial_distribution_error)).getText();
-        soft.assertEquals(text5, "必ず1つ選択してください", "[Delivery commercial distribution] Message do not match");
+            // Delivery commercial distribution
+            String text5 = wait.until(ExpectedConditions.visibilityOf(personnel_delivery_commercial_distribution_error)).getText();
+            soft.assertEquals(text5, "必ず1つ選択してください", "[Delivery commercial distribution] Message do not match");
 
-        soft.assertAll();
+            soft.assertAll();
+        }
     }
 
     public void deliver_the_personnel_only_select_delivery_occupation_others() {
-        // Reset search criteria
-        if ((delivery_type.get(0).isSelected()) || (delivery_type.get(1).isSelected()) || (delivery_type.get(2).isSelected())) {
-            reset_search_criteria_button.click();
+        int num;
+        if (Mode.equals("Edit")) {
+            num = 6;
+        } else {
+            num = 5;
         }
+        if (common.authorized(role, common.role_list(num))) {
+            // Reset search criteria
+            if ((delivery_type.get(0).isSelected()) || (delivery_type.get(1).isSelected()) || (delivery_type.get(2).isSelected())) {
+                reset_search_criteria_button.click();
+            }
 
-        // Delivery type: Deliver the personnel
-        delivery_type.get(1).click();
+            // Delivery type: Deliver the personnel
+            delivery_type.get(1).click();
 
-        // Delivery occupation: Others
-        personnel_delivery_occupation_others.click();
+            // Delivery occupation: Others
+            personnel_delivery_occupation_others.click();
 
-        // Click Search button
-        search_button.click();
+            // Click Search button
+            search_button.click();
 
-        //Delivery area
-        String text1 = wait.until(ExpectedConditions.visibilityOf(delivery_area_error)).getText();
-        soft.assertEquals(text1, "必ず1つ選択してください", "[Delivery area] Message do not match");
+            //Delivery area
+            String text1 = wait.until(ExpectedConditions.visibilityOf(delivery_area_error)).getText();
+            soft.assertEquals(text1, "必ず1つ選択してください", "[Delivery area] Message do not match");
 
-        // Delivery occupation/Others/Delivery job details
-        String text2 = wait.until(ExpectedConditions.visibilityOf(personnel_detail_of_delivery_occupation_others_error)).getText();
-        soft.assertEquals(text2, "必ず1つ選択してください", "[Delivery occupation/Others/Delivery job details] Message do not match");
+            // Delivery occupation/Others/Delivery job details
+            String text2 = wait.until(ExpectedConditions.visibilityOf(personnel_detail_of_delivery_occupation_others_error)).getText();
+            soft.assertEquals(text2, "必ず1つ選択してください", "[Delivery occupation/Others/Delivery job details] Message do not match");
 
-        // Delivery employment form
-        String text3 = wait.until(ExpectedConditions.visibilityOf(personnel_delivery_employment_form_error)).getText();
-        soft.assertEquals(text3, "必ず1つ選択してください", "[Delivery employment form] Message do not match");
+            // Delivery employment form
+            String text3 = wait.until(ExpectedConditions.visibilityOf(personnel_delivery_employment_form_error)).getText();
+            soft.assertEquals(text3, "必ず1つ選択してください", "[Delivery employment form] Message do not match");
 
-        // Delivery commercial distribution
-        String text4 = wait.until(ExpectedConditions.visibilityOf(personnel_delivery_commercial_distribution_error)).getText();
-        soft.assertEquals(text4, "必ず1つ選択してください", "[Delivery commercial distribution] Message do not match");
+            // Delivery commercial distribution
+            String text4 = wait.until(ExpectedConditions.visibilityOf(personnel_delivery_commercial_distribution_error)).getText();
+            soft.assertEquals(text4, "必ず1つ選択してください", "[Delivery commercial distribution] Message do not match");
 
-        soft.assertAll();
+            soft.assertAll();
+        }
     }
 
     public void deliver_the_personnel_select_delivery_occupation_development_infrastructure_and_others() {
-        // Reset search criteria
-        if ((delivery_type.get(0).isSelected()) || (delivery_type.get(1).isSelected()) || (delivery_type.get(2).isSelected())) {
-            reset_search_criteria_button.click();
+        int num;
+        if (Mode.equals("Edit")) {
+            num = 6;
+        } else {
+            num = 5;
         }
+        if (common.authorized(role, common.role_list(num))) {
+            // Reset search criteria
+            if ((delivery_type.get(0).isSelected()) || (delivery_type.get(1).isSelected()) || (delivery_type.get(2).isSelected())) {
+                reset_search_criteria_button.click();
+            }
 
-        // Delivery type: Deliver the personnel
-        delivery_type.get(1).click();
+            // Delivery type: Deliver the personnel
+            delivery_type.get(1).click();
 
-        // Delivery occupation: Development
-        personnel_delivery_occupation_dev.click();
+            // Delivery occupation: Development
+            personnel_delivery_occupation_dev.click();
 
-        // Delivery occupation: Infrastructure
-        personnel_delivery_occupation_infra.click();
+            // Delivery occupation: Infrastructure
+            personnel_delivery_occupation_infra.click();
 
-        // Delivery occupation: Others
-        personnel_delivery_occupation_others.click();
+            // Delivery occupation: Others
+            personnel_delivery_occupation_others.click();
 
-        // Click Search button
-        search_button.click();
+            // Click Search button
+            search_button.click();
 
-        //Delivery area
-        String text1 = wait.until(ExpectedConditions.visibilityOf(delivery_area_error)).getText();
-        soft.assertEquals(text1, "必ず1つ選択してください", "[Delivery area] Message do not match");
+            //Delivery area
+            String text1 = wait.until(ExpectedConditions.visibilityOf(delivery_area_error)).getText();
+            soft.assertEquals(text1, "必ず1つ選択してください", "[Delivery area] Message do not match");
 
-        // Delivery occupation/Development/Delivery job details
-        String text2 = wait.until(ExpectedConditions.visibilityOf(personnel_detail_of_delivery_occupation_dev_error)).getText();
-        soft.assertEquals(text2, "必ず1つ選択してください", "[Delivery occupation/Development/Delivery job details] Message do not match");
+            // Delivery occupation/Development/Delivery job details
+            String text2 = wait.until(ExpectedConditions.visibilityOf(personnel_detail_of_delivery_occupation_dev_error)).getText();
+            soft.assertEquals(text2, "必ず1つ選択してください", "[Delivery occupation/Development/Delivery job details] Message do not match");
 
-        // Delivery occupation/Development/Delivery skill details
-        String text3 = wait.until(ExpectedConditions.visibilityOf(personnel_delivery_skill_details_dev_error)).getText();
-        soft.assertEquals(text3, "必ず1つ選択してください", "[Delivery occupation/Development/Delivery skill details] Message do not match");
+            // Delivery occupation/Development/Delivery skill details
+            String text3 = wait.until(ExpectedConditions.visibilityOf(personnel_delivery_skill_details_dev_error)).getText();
+            soft.assertEquals(text3, "必ず1つ選択してください", "[Delivery occupation/Development/Delivery skill details] Message do not match");
 
-        // Delivery occupation/Infrastructure/Delivery job details
-        String text4 = wait.until(ExpectedConditions.visibilityOf(personnel_detail_of_delivery_occupation_infra_error)).getText();
-        soft.assertEquals(text4, "必ず1つ選択してください", "[Delivery occupation/Infrastructure/Delivery job details] Message do not match");
+            // Delivery occupation/Infrastructure/Delivery job details
+            String text4 = wait.until(ExpectedConditions.visibilityOf(personnel_detail_of_delivery_occupation_infra_error)).getText();
+            soft.assertEquals(text4, "必ず1つ選択してください", "[Delivery occupation/Infrastructure/Delivery job details] Message do not match");
 
-        // Delivery occupation/Infrastructure/Delivery skill details
-        String text5 = wait.until(ExpectedConditions.visibilityOf(personnel_delivery_skill_details_infra_error)).getText();
-        soft.assertEquals(text5, "必ず1つ選択してください", "[Delivery occupation/Infrastructure/Delivery skill details] Message do not match");
+            // Delivery occupation/Infrastructure/Delivery skill details
+            String text5 = wait.until(ExpectedConditions.visibilityOf(personnel_delivery_skill_details_infra_error)).getText();
+            soft.assertEquals(text5, "必ず1つ選択してください", "[Delivery occupation/Infrastructure/Delivery skill details] Message do not match");
 
-        // Delivery occupation/Others/Delivery job details
-        String text6 = wait.until(ExpectedConditions.visibilityOf(personnel_detail_of_delivery_occupation_others_error)).getText();
-        soft.assertEquals(text6, "必ず1つ選択してください", "[Delivery occupation/Others/Delivery job details] Message do not match");
+            // Delivery occupation/Others/Delivery job details
+            String text6 = wait.until(ExpectedConditions.visibilityOf(personnel_detail_of_delivery_occupation_others_error)).getText();
+            soft.assertEquals(text6, "必ず1つ選択してください", "[Delivery occupation/Others/Delivery job details] Message do not match");
 
-        // Delivery employment form
-        String text7 = wait.until(ExpectedConditions.visibilityOf(personnel_delivery_employment_form_error)).getText();
-        soft.assertEquals(text7, "必ず1つ選択してください", "[Delivery employment form] Message do not match");
+            // Delivery employment form
+            String text7 = wait.until(ExpectedConditions.visibilityOf(personnel_delivery_employment_form_error)).getText();
+            soft.assertEquals(text7, "必ず1つ選択してください", "[Delivery employment form] Message do not match");
 
-        // Delivery commercial distribution
-        String text8 = wait.until(ExpectedConditions.visibilityOf(personnel_delivery_commercial_distribution_error)).getText();
-        soft.assertEquals(text8, "必ず1つ選択してください", "[Delivery commercial distribution] Message do not match");
+            // Delivery commercial distribution
+            String text8 = wait.until(ExpectedConditions.visibilityOf(personnel_delivery_commercial_distribution_error)).getText();
+            soft.assertEquals(text8, "必ず1つ選択してください", "[Delivery commercial distribution] Message do not match");
 
-        soft.assertAll();
+            soft.assertAll();
+        }
     }
 
     public void do_not_select_account_status() {
-        // Select delivery information
-        delivery_information();
+        int num;
+        if (Mode.equals("Edit")) {
+            num = 6;
+        } else {
+            num = 5;
+        }
+        if (common.authorized(role, common.role_list(num))) {
+            // Select delivery information
+            delivery_information();
 
-        // Account status: ON
-        account_status.click();
+            // Account status: ON
+            account_status.click();
 
-        // Click Search button
-        search_button.click();
+            // Click Search button
+            search_button.click();
 
-        // Account status
-        String text = wait.until(ExpectedConditions.visibilityOf(account_status_error)).getText();
-        soft.assertEquals(text, "必ず1つ選択してください", "[Account status] Message do not match");
+            // Account status
+            String text = wait.until(ExpectedConditions.visibilityOf(account_status_error)).getText();
+            soft.assertEquals(text, "必ず1つ選択してください", "[Account status] Message do not match");
 
-        soft.assertAll();
+            soft.assertAll();
+        }
     }
 
     public void do_not_select_in_house_person_in_charge() {
-        // Select delivery information
-        delivery_information();
+        int num;
+        if (Mode.equals("Edit")) {
+            num = 6;
+        } else {
+            num = 5;
+        }
+        if (common.authorized(role, common.role_list(num))) {
+            // Select delivery information
+            delivery_information();
 
-        // In-house person in charge: ON
-        in_house_person_in_charge.click();
+            // In-house person in charge: ON
+            in_house_person_in_charge.click();
 
-        // Click Search button
-        search_button.click();
+            // Click Search button
+            search_button.click();
 
-        // In-house person in charge
-        String text = wait.until(ExpectedConditions.visibilityOf(in_house_person_in_charge_error)).getText();
-        soft.assertEquals(text, "必ず選択してください", "[In-house person in charge] Message do not match");
+            // In-house person in charge
+            String text = wait.until(ExpectedConditions.visibilityOf(in_house_person_in_charge_error)).getText();
+            soft.assertEquals(text, "必ず選択してください", "[In-house person in charge] Message do not match");
 
-        soft.assertAll();
+            soft.assertAll();
+        }
     }
 
     public void do_not_select_compatibility() {
-        // Select delivery information
-        delivery_information();
+        int num;
+        if (Mode.equals("Edit")) {
+            num = 6;
+        } else {
+            num = 5;
+        }
+        if (common.authorized(role, common.role_list(num))) {
+            // Select delivery information
+            delivery_information();
 
-        // Compatibility: ON
-        compatibility.click();
+            // Compatibility: ON
+            compatibility.click();
 
-        // Click Search button
-        search_button.click();
+            // Click Search button
+            search_button.click();
 
-        // Compatibility
-        String text = wait.until(ExpectedConditions.visibilityOf(compatibility_error)).getText();
-        soft.assertEquals(text, "必ず選択してください", "[Compatibility] Message do not match");
+            // Compatibility
+            String text = wait.until(ExpectedConditions.visibilityOf(compatibility_error)).getText();
+            soft.assertEquals(text, "必ず選択してください", "[Compatibility] Message do not match");
 
-        soft.assertAll();
+            soft.assertAll();
+        }
     }
 
     public void do_not_select_tag() {
-        // Select delivery information
-        delivery_information();
+        int num;
+        if (Mode.equals("Edit")) {
+            num = 6;
+        } else {
+            num = 5;
+        }
+        if (common.authorized(role, common.role_list(num))) {
+            // Select delivery information
+            delivery_information();
 
-        // Tag: ON
-        tag.click();
+            // Tag: ON
+            tag.click();
 
-        // Click Search button
-        search_button.click();
+            // Click Search button
+            search_button.click();
 
-        // Tag
-        String text = wait.until(ExpectedConditions.visibilityOf(tag_error_1)).getText();
-        soft.assertEquals(text, "必ず1つ選択してください", "[Tag] Message do not match");
+            // Tag
+            String text = wait.until(ExpectedConditions.visibilityOf(tag_error_1)).getText();
+            soft.assertEquals(text, "必ず1つ選択してください", "[Tag] Message do not match");
 
-        soft.assertAll();
+            soft.assertAll();
+        }
     }
 
     public void select_exceed_5_tags() {
-        // Select delivery information
-        delivery_information();
-
-        // Tag: ON
-        tag.click();
-
-        // Waiting for loading tag list
-        wait_for_loading_element(tag_dropdown_1);
-
-        // Select 6 tags
-        tag_dropdown_1.click();
-        for (int i = 0; i < 6; i++) {
-            key.sendKeys(Keys.DOWN).sendKeys(Keys.ENTER).perform();
+        int num;
+        if (Mode.equals("Edit")) {
+            num = 6;
+        } else {
+            num = 5;
         }
+        if (common.authorized(role, common.role_list(num))) {
+            // Select delivery information
+            delivery_information();
 
-        // Tag
-        String text = wait.until(ExpectedConditions.visibilityOf(tag_error_2)).getText();
-        soft.assertEquals(text, "これ以上選択できません", "[Tag] Message do not match");
+            // Tag: ON
+            tag.click();
 
-        soft.assertAll();
+            // Waiting for loading tag list
+            wait_for_loading_element(tag_dropdown_1);
+
+            if (tags_list.size() < 6) {
+                System.out.println("Number of tags < 6, so can not verify that case.\nPlease add more tags and try again.");
+            } else {
+                // Select 6 tags
+                tag_dropdown_1.click();
+                for (int i = 0; i < 6; i++) {
+                    key.sendKeys(Keys.DOWN).sendKeys(Keys.ENTER).perform();
+                }
+
+                // Tag
+                String text = wait.until(ExpectedConditions.visibilityOf(tag_error_2)).getText();
+                soft.assertEquals(text, "これ以上選択できません", "[Tag] Message do not match");
+
+                soft.assertAll();
+            }
+        }
     }
 
     public void back_to_attachment_step() {
         // Master, Administrator, Responsible person, Leader, Member
-        if (common.authorized(role, common.role_list(5))) {
+        int num;
+        if (Mode.equals("Edit")) {
+            num = 6;
+        } else {
+            num = 5;
+        }
+        if (common.authorized(role, common.role_list(num))) {
             // Back to Attachment step
             back_button.click();
 
@@ -1041,7 +1237,13 @@ public class Step3_Destination_selection extends Delivered_Mail_Page {
 
     public void back_to_basic_information_step() {
         // Master, Administrator, Responsible person, Leader, Member
-        if (common.authorized(role, common.role_list(5))) {
+        int num;
+        if (Mode.equals("Edit")) {
+            num = 6;
+        } else {
+            num = 5;
+        }
+        if (common.authorized(role, common.role_list(num))) {
             // Back to Basic information step
             step_list.get(0).click();
 
@@ -1066,340 +1268,452 @@ public class Step3_Destination_selection extends Delivered_Mail_Page {
     }
 
     public void delete_search_template() throws InterruptedException {
-        // Wait message hide
-        wait.until(ExpectedConditions.invisibilityOf(message));
+        int num;
+        if (Mode.equals("Edit")) {
+            num = 6;
+        } else {
+            num = 5;
+        }
+        if (common.authorized(role, common.role_list(num))) {
+            // Wait message hide
+            wait.until(ExpectedConditions.invisibilityOf(message));
 
-        // Select template dropdown list
-        wait.until(ExpectedConditions.elementToBeClickable(template_dropdown)).click();
+            // Select template dropdown list
+            wait.until(ExpectedConditions.elementToBeClickable(template_dropdown)).click();
 
-        // Select template
-        key.sendKeys(Keys.DOWN).sendKeys(Keys.ENTER).perform();
+            // Select template
+            key.sendKeys(Keys.DOWN).sendKeys(Keys.ENTER).perform();
 
-        // Click delete icon
-        wait.until(ExpectedConditions.elementToBeClickable(delete_template_button)).click();
+            // Click delete icon
+            wait.until(ExpectedConditions.elementToBeClickable(delete_template_button)).click();
 
-        //Click OK button
-        wait.until(ExpectedConditions.elementToBeClickable(ok_button)).click();
+            //Click OK button
+            wait.until(ExpectedConditions.elementToBeClickable(ok_button)).click();
 
-        sleep(3000);
+            sleep(3000);
+        }
     }
 
 
     public void leave_search_template_name_blank() throws InterruptedException {
-        // Check save button is enable
-        if (!check_template_in_stock()) {
-            delete_search_template();
+        int num;
+        if (Mode.equals("Edit")) {
+            num = 6;
+        } else {
+            num = 5;
         }
-        // Click Save template button
-        wait.until(ExpectedConditions.elementToBeClickable(save_button)).click();
+        if (common.authorized(role, common.role_list(num))) {
+            // Check save button is enable
+            if (!check_template_in_stock()) {
+                delete_search_template();
+            }
+            // Click Save template button
+            wait.until(ExpectedConditions.elementToBeClickable(save_button)).click();
 
-        // Leave search template name blank and verify error message
-        wait.until(ExpectedConditions.elementToBeClickable(template_name))
-                .sendKeys("leave_blank");
-        for (int i = 0; i < 11; i++) {
-            key.sendKeys(Keys.BACK_SPACE).perform();
+            // Leave search template name blank and verify error message
+            wait.until(ExpectedConditions.elementToBeClickable(template_name))
+                    .sendKeys("leave_blank");
+            for (int i = 0; i < 11; i++) {
+                key.sendKeys(Keys.BACK_SPACE).perform();
+            }
+            String text = wait.until(ExpectedConditions.visibilityOf(template_name_error)).getText();
+            soft.assertEquals(text, "テンプレート名を入力してください", "[Template name] Message do not match");
+
+            soft.assertAll();
         }
-        String text = wait.until(ExpectedConditions.visibilityOf(template_name_error)).getText();
-        soft.assertEquals(text, "テンプレート名を入力してください", "[Template name] Message do not match");
-
-        soft.assertAll();
     }
 
     public void search_template_name_exceed_50_half_width_characters() throws InterruptedException {
-        // Check save button is enable
-        if (!check_template_in_stock()) {
-            delete_search_template();
+        int num;
+        if (Mode.equals("Edit")) {
+            num = 6;
+        } else {
+            num = 5;
         }
-        // Click Save template button
-        wait.until(ExpectedConditions.elementToBeClickable(save_button)).click();
+        if (common.authorized(role, common.role_list(num))) {
+            // Check save button is enable
+            if (!check_template_in_stock()) {
+                delete_search_template();
+            }
+            // Click Save template button
+            wait.until(ExpectedConditions.elementToBeClickable(save_button)).click();
 
-        // Input search template name exceed 50 half width characters and verify error message
-        wait.until(ExpectedConditions.elementToBeClickable(template_name))
-                .sendKeys(RandomStringUtils.randomAlphabetic(51));
+            // Input search template name exceed 50 half width characters and verify error message
+            wait.until(ExpectedConditions.elementToBeClickable(template_name))
+                    .sendKeys(RandomStringUtils.randomAlphabetic(51));
 
-        sleep(2000);
-        String text = wait.until(ExpectedConditions.visibilityOf(template_name_error)).getText();
-        soft.assertEquals(text, "テンプレート名は50文字以内で入力してください。", "[Template name] Message do not match");
+            sleep(2000);
+            String text = wait.until(ExpectedConditions.visibilityOf(template_name_error)).getText();
+            soft.assertEquals(text, "テンプレート名は50文字以内で入力してください。", "[Template name] Message do not match");
 
-        soft.assertAll();
+            soft.assertAll();
+        }
     }
 
     public void search_template_name_exceed_50_full_width_characters() throws InterruptedException {
-        // Check save button is enable
-        if (!check_template_in_stock()) {
-            delete_search_template();
+        int num;
+        if (Mode.equals("Edit")) {
+            num = 6;
+        } else {
+            num = 5;
         }
-        // Click Save template button
-        wait.until(ExpectedConditions.elementToBeClickable(save_button)).click();
+        if (common.authorized(role, common.role_list(num))) {
+            // Check save button is enable
+            if (!check_template_in_stock()) {
+                delete_search_template();
+            }
+            // Click Save template button
+            wait.until(ExpectedConditions.elementToBeClickable(save_button)).click();
 
-        // Input search template name exceed 50 full width characters and verify error message
-        wait.until(ExpectedConditions.elementToBeClickable(template_name))
-                .sendKeys(RandomStringUtils.random(51, 0x4e00, 0x4f80, true, false));
+            // Input search template name exceed 50 full width characters and verify error message
+            wait.until(ExpectedConditions.elementToBeClickable(template_name))
+                    .sendKeys(RandomStringUtils.random(51, 0x4e00, 0x4f80, true, false));
 
-        sleep(2000);
-        String text = wait.until(ExpectedConditions.visibilityOf(template_name_error)).getText();
-        soft.assertEquals(text, "テンプレート名は50文字以内で入力してください。", "[Template name] Message do not match");
+            sleep(2000);
+            String text = wait.until(ExpectedConditions.visibilityOf(template_name_error)).getText();
+            soft.assertEquals(text, "テンプレート名は50文字以内で入力してください。", "[Template name] Message do not match");
 
-        soft.assertAll();
+            soft.assertAll();
+        }
     }
 
     public void search_template_name_exceed_mix_50_half_and_full_width_characters() throws InterruptedException {
-        // Check save button is enable
-        if (!check_template_in_stock()) {
-            delete_search_template();
+        int num;
+        if (Mode.equals("Edit")) {
+            num = 6;
+        } else {
+            num = 5;
         }
-        // Click Save template button
-        wait.until(ExpectedConditions.elementToBeClickable(save_button)).click();
+        if (common.authorized(role, common.role_list(num))) {
+            // Check save button is enable
+            if (!check_template_in_stock()) {
+                delete_search_template();
+            }
+            // Click Save template button
+            wait.until(ExpectedConditions.elementToBeClickable(save_button)).click();
 
-        int length_of_half = RandomUtils.nextInt(50) + 1;
-        String template_name_text = RandomStringUtils.randomAlphabetic(length_of_half)
-                + RandomStringUtils.random(51 - length_of_half, 0x4e00, 0x4f80, true, false);
-        // Input search template name exceed mix 50 half and full width characters and verify error message
-        wait.until(ExpectedConditions.elementToBeClickable(template_name))
-                .sendKeys(template_name_text);
+            int length_of_half = RandomUtils.nextInt(50) + 1;
+            String template_name_text = RandomStringUtils.randomAlphabetic(length_of_half)
+                    + RandomStringUtils.random(51 - length_of_half, 0x4e00, 0x4f80, true, false);
+            // Input search template name exceed mix 50 half and full width characters and verify error message
+            wait.until(ExpectedConditions.elementToBeClickable(template_name))
+                    .sendKeys(template_name_text);
 
-        String text = wait.until(ExpectedConditions.visibilityOf(template_name_error)).getText();
-        soft.assertEquals(text, "テンプレート名は50文字以内で入力してください。", "[Template name] Message do not match");
+            String text = wait.until(ExpectedConditions.visibilityOf(template_name_error)).getText();
+            soft.assertEquals(text, "テンプレート名は50文字以内で入力してください。", "[Template name] Message do not match");
 
-        soft.assertAll();
+            soft.assertAll();
+        }
     }
 
 
     public void create_search_template_name_OK() throws InterruptedException {
-        // Check save button is enable
-        if (!check_template_in_stock()) {
-            delete_search_template();
+        int num;
+        if (Mode.equals("Edit")) {
+            num = 6;
         } else {
-            wait.until(ExpectedConditions.invisibilityOf(message));
+            num = 5;
         }
+        if (common.authorized(role, common.role_list(num))) {
+            // Check save button is enable
+            if (!check_template_in_stock()) {
+                delete_search_template();
+            } else {
+                wait.until(ExpectedConditions.invisibilityOf(message));
+            }
 
-        // Click Save template button
-        wait.until(ExpectedConditions.elementToBeClickable(save_button)).click();
+            // Click Save template button
+            wait.until(ExpectedConditions.elementToBeClickable(save_button)).click();
 
-        String template_name_text = RandomStringUtils.randomAlphabetic(50);
+            String template_name_text = RandomStringUtils.randomAlphabetic(50);
 
-        // Input search template name with 50 half width characters
-        wait.until(ExpectedConditions.elementToBeClickable(template_name))
-                .sendKeys(template_name_text);
+            // Input search template name with 50 half width characters
+            wait.until(ExpectedConditions.elementToBeClickable(template_name))
+                    .sendKeys(template_name_text);
 
-        // Click OK button
-        wait.until(ExpectedConditions.elementToBeClickable(ok_button_template)).click();
+            // Click OK button
+            wait.until(ExpectedConditions.elementToBeClickable(ok_button_template)).click();
 
-        String text = wait.until(ExpectedConditions.visibilityOf(message)).getText();
-        soft.assertEquals(text, "テンプレートを作成しました。", "[Template name] Message do not match");
+            String text = wait.until(ExpectedConditions.visibilityOf(message)).getText();
+            soft.assertEquals(text, "テンプレートを作成しました。", "[Template name] Message do not match");
 
-        soft.assertAll();
+            soft.assertAll();
+        }
     }
 
     public void create_search_template_name_Cancel() throws InterruptedException {
-        // Check save button is enable
-        if (!check_template_in_stock()) {
-            delete_search_template();
+        int num;
+        if (Mode.equals("Edit")) {
+            num = 6;
+        } else {
+            num = 5;
         }
-        // Click Save template button
-        wait.until(ExpectedConditions.elementToBeClickable(save_button)).click();
+        if (common.authorized(role, common.role_list(num))) {
+            // Check save button is enable
+            if (!check_template_in_stock()) {
+                delete_search_template();
+            }
+            // Click Save template button
+            wait.until(ExpectedConditions.elementToBeClickable(save_button)).click();
 
-        // Click Cancel button
-        wait.until(ExpectedConditions.elementToBeClickable(cancel_button_template)).click();
+            // Click Cancel button
+            wait.until(ExpectedConditions.elementToBeClickable(cancel_button_template)).click();
 
-        // Waiting for close popup
-        sleep(500);
+            // Waiting for close popup
+            sleep(500);
 
-        // Check popup close
-        boolean check = true;
-        try {
-            cancel_button_template.click();
-        } catch (NoSuchElementException ex) {
-            check = false;
+            // Check popup close
+            boolean check = true;
+            try {
+                cancel_button_template.click();
+            } catch (NoSuchElementException ex) {
+                check = false;
+            }
+            soft.assertFalse(check, "[Failed] Can not close create search template popup.");
+
+            soft.assertAll();
         }
-        soft.assertFalse(check, "[Failed] Can not close create search template popup.");
-
-        soft.assertAll();
     }
 
     public void input_available_search_template_name() throws InterruptedException {
-        // Check save button is enable
-        if (!check_template_in_stock()) {
-            delete_search_template();
+        int num;
+        if (Mode.equals("Edit")) {
+            num = 6;
         } else {
-            wait
-                    .until(ExpectedConditions.invisibilityOf(message));
+            num = 5;
         }
-        // Click Save template button
-        wait.until(ExpectedConditions.elementToBeClickable(save_button)).click();
+        if (common.authorized(role, common.role_list(num))) {
+            // Check save button is enable
+            if (!check_template_in_stock()) {
+                delete_search_template();
+            } else {
+                wait
+                        .until(ExpectedConditions.invisibilityOf(message));
+            }
+            // Click Save template button
+            wait.until(ExpectedConditions.elementToBeClickable(save_button)).click();
 
-        String template_name_text = RandomStringUtils.randomAlphabetic(50);
+            String template_name_text = RandomStringUtils.randomAlphabetic(50);
 
-        // Input search template name with 50 half width characters and verify message
-        wait.until(ExpectedConditions.elementToBeClickable(template_name))
-                .sendKeys(template_name_text);
+            // Input search template name with 50 half width characters and verify message
+            wait.until(ExpectedConditions.elementToBeClickable(template_name))
+                    .sendKeys(template_name_text);
 
 
-        // Click OK button
-        wait.until(ExpectedConditions.elementToBeClickable(ok_button_template)).click();
+            // Click OK button
+            wait.until(ExpectedConditions.elementToBeClickable(ok_button_template)).click();
 
-        // Waiting for show message
-        String text = wait.until(ExpectedConditions.visibilityOf(message)).getText();
-        soft.assertEquals(text, "テンプレートを作成しました。", "[Template name] Message do not match");
+            // Waiting for show message
+            String text = wait.until(ExpectedConditions.visibilityOf(message)).getText();
+            soft.assertEquals(text, "テンプレートを作成しました。", "[Template name] Message do not match");
 
-        // Check save button is enable
-        if (!check_template_in_stock()) {
-            delete_search_template();
+            // Check save button is enable
+            if (!check_template_in_stock()) {
+                delete_search_template();
+            }
+
+            // Click Save template button
+            wait.until(ExpectedConditions.elementToBeClickable(save_button)).click();
+
+            // Input available template name
+            wait.until(ExpectedConditions.elementToBeClickable(template_name))
+                    .sendKeys(template_name_text);
+
+            // Click OK button
+            wait.until(ExpectedConditions.elementToBeClickable(ok_button_template)).click();
+
+            // Verify error message
+            String text1 = wait.until(ExpectedConditions.visibilityOf(message_error)).getText();
+            soft.assertTrue(text1.contains("同一名称のテンプレートが既に存在します"), "[Failed] Can create search template with available template name.");
+
+            soft.assertAll();
         }
-
-        // Click Save template button
-        wait.until(ExpectedConditions.elementToBeClickable(save_button)).click();
-
-        // Input available template name
-        wait.until(ExpectedConditions.elementToBeClickable(template_name))
-                .sendKeys(template_name_text);
-
-        // Click OK button
-        wait.until(ExpectedConditions.elementToBeClickable(ok_button_template)).click();
-
-        // Verify error message
-        String text1 = wait.until(ExpectedConditions.visibilityOf(message_error)).getText();
-        soft.assertTrue(text1.contains("同一名称のテンプレートが既に存在します"), "[Failed] Can create search template with available template name.");
-
-        soft.assertAll();
     }
 
     public void set_cancel_search_template_as_default() throws InterruptedException {
-        // Create search template
-        create_search_template_name_OK();
+        int num;
+        if (Mode.equals("Edit")) {
+            num = 6;
+        } else {
+            num = 5;
+        }
+        if (common.authorized(role, common.role_list(num))) {
+            // Create search template
+            create_search_template_name_OK();
 
-        // Set template as default
-        wait.until(ExpectedConditions.elementToBeClickable(set_template_default)).click();
+            // Set template as default
+            wait.until(ExpectedConditions.elementToBeClickable(set_template_default)).click();
 
-        // waiting for set as default
-        sleep(1000);
-        String title1 = template_dropdown.getAttribute("title");
-        soft.assertTrue(title1.contains("☆ :"), "[Failed] Can not set search template as default.");
+            // waiting for set as default
+            sleep(1000);
+            String title1 = template_dropdown.getAttribute("title");
+            soft.assertTrue(title1.contains("☆ :"), "[Failed] Can not set search template as default.");
 
-        // Cancel template as default
-        wait.until(ExpectedConditions.elementToBeClickable(set_template_default)).click();
+            // Cancel template as default
+            wait.until(ExpectedConditions.elementToBeClickable(set_template_default)).click();
 
-        // waiting for cancel set default
-        sleep(1000);
-        String title2 = template_dropdown.getAttribute("title");
-        soft.assertFalse(title2.contains("☆ :"), "[Failed] Can not cancel search template as default.");
+            // waiting for cancel set default
+            sleep(1000);
+            String title2 = template_dropdown.getAttribute("title");
+            soft.assertFalse(title2.contains("☆ :"), "[Failed] Can not cancel search template as default.");
 
-        soft.assertAll();
+            soft.assertAll();
+        }
     }
 
     public void delete_search_template_OK() throws InterruptedException {
-        // Create search template
-        create_search_template_name_OK();
+        int num;
+        if (Mode.equals("Edit")) {
+            num = 6;
+        } else {
+            num = 5;
+        }
+        if (common.authorized(role, common.role_list(num))) {
+            // Create search template
+            create_search_template_name_OK();
 
-        // Wait message hide
-        wait.until(ExpectedConditions.invisibilityOf(message));
+            // Wait message hide
+            wait.until(ExpectedConditions.invisibilityOf(message));
 
-        // Click delete icon
-        wait.until(ExpectedConditions.elementToBeClickable(delete_template_button)).click();
+            // Click delete icon
+            wait.until(ExpectedConditions.elementToBeClickable(delete_template_button)).click();
 
-        //Click OK button
-        wait.until(ExpectedConditions.elementToBeClickable(ok_button)).click();
+            //Click OK button
+            wait.until(ExpectedConditions.elementToBeClickable(ok_button)).click();
 
-        // Verify message
-        String text = wait.until(ExpectedConditions.visibilityOf(message)).getText();
-        soft.assertEquals(text, "テンプレートを削除しました", "[Failed] Can not delete search template.");
+            // Verify message
+            String text = wait.until(ExpectedConditions.visibilityOf(message)).getText();
+            soft.assertEquals(text, "テンプレートを削除しました", "[Failed] Can not delete search template.");
 
-        soft.assertAll();
+            soft.assertAll();
+        }
     }
 
     public void delete_search_template_Cancel() throws InterruptedException {
-        // Create search template
-        create_search_template_name_OK();
-
-        // Click delete icon
-        wait.until(ExpectedConditions.elementToBeClickable(delete_template_button)).click();
-
-        //Click cancel button
-        wait.until(ExpectedConditions.elementToBeClickable(cancel_button)).click();
-
-        // Waiting for close popup
-        sleep(500);
-
-        // Check popup close
-        boolean check = true;
-        try {
-            cancel_button_template.click();
-        } catch (NoSuchElementException ex) {
-            check = false;
+        int num;
+        if (Mode.equals("Edit")) {
+            num = 6;
+        } else {
+            num = 5;
         }
-        soft.assertFalse(check, "[Failed] Can not close delete search template popup.");
+        if (common.authorized(role, common.role_list(num))) {
+            // Create search template
+            create_search_template_name_OK();
 
-        soft.assertAll();
+            // Click delete icon
+            wait.until(ExpectedConditions.elementToBeClickable(delete_template_button)).click();
+
+            //Click cancel button
+            wait.until(ExpectedConditions.elementToBeClickable(cancel_button)).click();
+
+            // Waiting for close popup
+            sleep(500);
+
+            // Check popup close
+            boolean check = true;
+            try {
+                cancel_button_template.click();
+            } catch (NoSuchElementException ex) {
+                check = false;
+            }
+            soft.assertFalse(check, "[Failed] Can not close delete search template popup.");
+
+            soft.assertAll();
+        }
     }
 
     public void reset_search_criteria() {
+        int num;
+        if (Mode.equals("Edit")) {
+            num = 6;
+        } else {
+            num = 5;
+        }
+        if (common.authorized(role, common.role_list(num))) {
         /*
         ** Delivery information ** //
         ** Delivery type ** //
          1: Deliver the matter, 2: Deliver personnel, 3: Deliver information
         */
-        int delivery_type_id = RandomUtils.nextInt(3);
-        delivery_type.get(delivery_type_id).click();
+            int delivery_type_id = RandomUtils.nextInt(3);
+            delivery_type.get(delivery_type_id).click();
 
-        // Click reset search criteria button
-        reset_search_criteria_button.click();
+            // Click reset search criteria button
+            reset_search_criteria_button.click();
 
-        // Verify search condition have been reset
-        soft.assertFalse(delivery_type.get(delivery_type_id).isSelected(), "[Failed] Can not reset search condition.");
+            // Verify search condition have been reset
+            soft.assertFalse(delivery_type.get(delivery_type_id).isSelected(), "[Failed] Can not reset search condition.");
 
-        soft.assertAll();
+            soft.assertAll();
+        }
     }
 
     public void link_to_partner_PIC_edit_from_destination_selection() throws InterruptedException {
-        // Scroll down
-        ((JavascriptExecutor) driver).executeScript("scroll(0, 550);");
-        sleep(1000);
-
-        // check null = "True" => No partner PIC => Can not link to partner PIC.
-        boolean check_null = false;
-        try {
-            first_partner_PIC.click();
-        } catch (NoSuchElementException ex) {
-            check_null = true;
-        }
-
-        if (!check_null) {
-            sleep(1000);
-            // If we can link to partner PIC, verify current url
-            soft.assertTrue(driver.getCurrentUrl().contains(domain + contact_list_path), "[Failed] Can not link to partner PIC from Destination selection");
+        int num;
+        if (Mode.equals("Edit")) {
+            num = 6;
         } else {
-            System.out.println("No result.");
+            num = 5;
         }
-
-        soft.assertAll();
-    }
-
-    public void pagination_destination_selection() throws InterruptedException {
-        // check null = "True" => No partner PIC
-        boolean check_null = false;
-        try {
-            current_page.click();
-        } catch (NoSuchElementException ex) {
-            check_null = true;
-        }
-
-        if (!check_null) {
-            sleep(1000);
+        if (common.authorized(role, common.role_list(num))) {
             // Scroll down
-            ((JavascriptExecutor) driver).executeScript("scroll(0, 1000);");
+            ((JavascriptExecutor) driver).executeScript("scroll(0, 550);");
             sleep(1000);
 
-            if (!next_page.getAttribute("class").contains("disabled")) {
-                // if we can go to next page, verify current page
-                next_page.click();
-                soft.assertEquals(current_page.getAttribute("title"), "2", "[Failed] Can not go to next page.");
+            // check null = "True" => No partner PIC => Can not link to partner PIC.
+            boolean check_null = false;
+            try {
+                first_partner_PIC.click();
+            } catch (NoSuchElementException ex) {
+                check_null = true;
+            }
 
-                // back to previous page
-                previous_page.click();
-                soft.assertEquals(current_page.getAttribute("title"), "1", "[Failed] Can not back to previous page.");
+            if (!check_null) {
+                sleep(1000);
+                // If we can link to partner PIC, verify current url
+                soft.assertTrue(driver.getCurrentUrl().contains(domain + contact_list_path), "[Failed] Can not link to partner PIC from Destination selection");
+            } else {
+                System.out.println("No result.");
             }
 
             soft.assertAll();
+        }
+    }
+
+    public void pagination_destination_selection() throws InterruptedException {
+        int num;
+        if (Mode.equals("Edit")) {
+            num = 6;
+        } else {
+            num = 5;
+        }
+        if (common.authorized(role, common.role_list(num))) {
+            // check null = "True" => No partner PIC
+            boolean check_null = false;
+            try {
+                current_page.click();
+            } catch (NoSuchElementException ex) {
+                check_null = true;
+            }
+
+            if (!check_null) {
+                sleep(1000);
+                // Scroll down
+                ((JavascriptExecutor) driver).executeScript("scroll(0, 1000);");
+                sleep(1000);
+
+                if (!next_page.getAttribute("class").contains("disabled")) {
+                    // if we can go to next page, verify current page
+                    next_page.click();
+                    soft.assertEquals(current_page.getAttribute("title"), "2", "[Failed] Can not go to next page.");
+
+                    // back to previous page
+                    previous_page.click();
+                    soft.assertEquals(current_page.getAttribute("title"), "1", "[Failed] Can not back to previous page.");
+                }
+
+                soft.assertAll();
+            }
         }
     }
 }

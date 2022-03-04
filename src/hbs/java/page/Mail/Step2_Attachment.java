@@ -36,12 +36,23 @@ public class Step2_Attachment extends Delivered_Mail_Page {
     int capacity;
     public static String current_date_time;
 
+    // Register Mode
     public Step2_Attachment(WebDriver driver, String role, Common common, String domain, int capacity, String Mode) {
         super(driver, role, common, domain, Mode);
         this.capacity = capacity;
         wait = new WebDriverWait(driver, Duration.ofSeconds(60));
         PageFactory.initElements(driver, this);
     }
+
+    // Edit Mode
+    public Step2_Attachment(WebDriver driver, String role, Common common, String domain, int capacity, String mail_id, String mail_status, String Mode) {
+        super(driver, role, common, domain, mail_id, mail_status, Mode);
+        this.capacity = capacity;
+        wait = new WebDriverWait(driver, Duration.ofSeconds(60));
+        PageFactory.initElements(driver, this);
+    }
+
+
 
     public void generate_test_file(int capacity) throws IOException {
         // Generate test file
@@ -79,7 +90,13 @@ public class Step2_Attachment extends Delivered_Mail_Page {
 
     public void next_to_destination_selection_step() throws InterruptedException {
         // Master, Administrator, Responsible person, Leader, Member
-        if (common.authorized(role, common.role_list(5))) {
+        int num;
+        if (Mode.equals("Edit")) {
+            num = 6;
+        } else {
+            num = 5;
+        }
+        if (common.authorized(role, common.role_list(num))) {
             // Next to 宛先選択_Step
             next_step_button.click();
 
@@ -96,7 +113,13 @@ public class Step2_Attachment extends Delivered_Mail_Page {
 
     public void back_to_basic_information_step() throws InterruptedException {
         // Master, Administrator, Responsible person, Leader, Member
-        if (common.authorized(role, common.role_list(5))) {
+        int num;
+        if (Mode.equals("Edit")) {
+            num = 6;
+        } else {
+            num = 5;
+        }
+        if (common.authorized(role, common.role_list(num))) {
 
             // Back to Basic information step
             back_button.click();
@@ -113,47 +136,63 @@ public class Step2_Attachment extends Delivered_Mail_Page {
     }
 
     public void upload_maximum_capacity_1_file() throws IOException {
-        generate_test_file(capacity);
-        // Waiting for hide previous message
-        wait.until(ExpectedConditions.invisibilityOf(message));
-        upload_file.sendKeys(System.getProperty("user.dir") + "\\upload_data\\text1" + current_date_time + ".txt");
-        String text = wait.until(ExpectedConditions.visibilityOf(message)).getText();
-        soft.assertTrue(text.contains("ファイルがアップロードされました"), "[Failed] Can not upload file with capacity: "
-                + capacity + "MB.\n Actual message: " + text + "\n Expect message: contains ファイルがアップロードされました");
-        soft.assertAll();
+        if (common.authorized(role, common.role_list(5))) {
+            if ((Mode.equals("Register")) || (!list_mail_status.contains(mail_status) && (Mode.equals("Edit")))) {
+                generate_test_file(capacity);
+                // Waiting for hide previous message
+                wait.until(ExpectedConditions.invisibilityOf(message));
+                upload_file.sendKeys(System.getProperty("user.dir") + "\\upload_data\\text1" + current_date_time + ".txt");
+                String text = wait.until(ExpectedConditions.visibilityOf(message)).getText();
+                soft.assertTrue(text.contains("ファイルがアップロードされました"), "[Failed] Can not upload file with capacity: "
+                        + capacity + "MB.\n Actual message: " + text + "\n Expect message: contains ファイルがアップロードされました");
+                soft.assertAll();
+            }
+        }
     }
 
     public void upload_maximum_capacity_multi_file() {
-        // Waiting for hid previous message
-        wait.until(ExpectedConditions.invisibilityOf(message));
-        upload_file.sendKeys(System.getProperty("user.dir") + "\\upload_data\\text1" + current_date_time + ".txt");
-        upload_file.sendKeys(System.getProperty("user.dir") + "\\upload_data\\text2" + current_date_time + ".txt");
-        upload_file.sendKeys(System.getProperty("user.dir") + "\\upload_data\\text3" + current_date_time + ".txt");
-        String text = wait.until(ExpectedConditions.visibilityOf(message)).getText();
-        soft.assertTrue(text.contains("ファイルがアップロードされました"), "[Failed] Can not upload multi file with capacity = "
-                + capacity + "MB.\n Actual message: " + text + "\n Expect message: contains ファイルがアップロードされました");
-        soft.assertAll();
+        if (common.authorized(role, common.role_list(5))) {
+            if ((Mode.equals("Register")) || (!list_mail_status.contains(mail_status) && (Mode.equals("Edit")))) {
+                // Waiting for hide previous message
+                wait.until(ExpectedConditions.invisibilityOf(message));
+                upload_file.sendKeys(System.getProperty("user.dir") + "\\upload_data\\text1" + current_date_time + ".txt");
+                upload_file.sendKeys(System.getProperty("user.dir") + "\\upload_data\\text2" + current_date_time + ".txt");
+                upload_file.sendKeys(System.getProperty("user.dir") + "\\upload_data\\text3" + current_date_time + ".txt");
+                String text = wait.until(ExpectedConditions.visibilityOf(message)).getText();
+                soft.assertTrue(text.contains("ファイルがアップロードされました"), "[Failed] Can not upload multi file with capacity = "
+                        + capacity + "MB.\n Actual message: " + text + "\n Expect message: contains ファイルがアップロードされました");
+                soft.assertAll();
+            }
+        }
     }
 
     public void upload_exceed_maximum_capacity_1_file() throws IOException {
-        generate_test_file(capacity + 1);
-        // Waiting for hid previous message
-        wait.until(ExpectedConditions.invisibilityOf(message));
-        upload_file.sendKeys(System.getProperty("user.dir") + "\\upload_data\\text1" + current_date_time + ".txt");
-        String text = wait.until(ExpectedConditions.visibilityOf(message)).getText();
-        soft.assertTrue(text.contains("を超えるメールを配信することはできません"), "[Failed] Message do not match."
-                + "\n Actual message: " + text + "\n Expect message: contains を超えるメールを配信することはできません");
-        soft.assertAll();
+        if (common.authorized(role, common.role_list(5))) {
+            if ((Mode.equals("Register")) || (!list_mail_status.contains(mail_status) && (Mode.equals("Edit")))) {
+                generate_test_file(capacity + 1);
+                // Waiting for hid previous message
+                wait.until(ExpectedConditions.invisibilityOf(message));
+                upload_file.sendKeys(System.getProperty("user.dir") + "\\upload_data\\text1" + current_date_time + ".txt");
+                String text = wait.until(ExpectedConditions.visibilityOf(message)).getText();
+                soft.assertTrue(text.contains("を超えるメールを配信することはできません"), "[Failed] Message do not match."
+                        + "\n Actual message: " + text + "\n Expect message: contains を超えるメールを配信することはできません");
+                soft.assertAll();
+            }
+        }
     }
 
     public void upload_exceed_maximum_capacity_multi_file() {
-        // Waiting for hid previous message
-        upload_file.sendKeys(System.getProperty("user.dir") + "\\upload_data\\text1" + current_date_time + ".txt");
-        upload_file.sendKeys(System.getProperty("user.dir") + "\\upload_data\\text2" + current_date_time + ".txt");
-        upload_file.sendKeys(System.getProperty("user.dir") + "\\upload_data\\text3" + current_date_time + ".txt");
-        String text = wait.until(ExpectedConditions.visibilityOf(message)).getText();
-        soft.assertTrue(text.contains("を超えるメールを配信することはできません"), "[Failed] Message do not match."
-                + "\n Actual message: " + text + "\n Expect message: contains を超えるメールを配信することはできません");
-        soft.assertAll();
+        if (common.authorized(role, common.role_list(5))) {
+            if ((Mode.equals("Register")) || (!list_mail_status.contains(mail_status) && (Mode.equals("Edit")))) {
+                // Waiting for hid previous message
+                upload_file.sendKeys(System.getProperty("user.dir") + "\\upload_data\\text1" + current_date_time + ".txt");
+                upload_file.sendKeys(System.getProperty("user.dir") + "\\upload_data\\text2" + current_date_time + ".txt");
+                upload_file.sendKeys(System.getProperty("user.dir") + "\\upload_data\\text3" + current_date_time + ".txt");
+                String text = wait.until(ExpectedConditions.visibilityOf(message)).getText();
+                soft.assertTrue(text.contains("を超えるメールを配信することはできません"), "[Failed] Message do not match."
+                        + "\n Actual message: " + text + "\n Expect message: contains を超えるメールを配信することはできません");
+                soft.assertAll();
+            }
+        }
     }
 }

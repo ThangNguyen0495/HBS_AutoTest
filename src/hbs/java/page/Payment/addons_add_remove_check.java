@@ -366,7 +366,7 @@ public class addons_add_remove_check extends payment {
         //** Delivery information **//
         //** Delivery type **//
         // 0: Deliver the matter, 1: Deliver personnel, 2: Deliver information
-        int delivery_type_id = 2;//RandomUtils.nextInt(3);
+        int delivery_type_id = RandomUtils.nextInt(3);
         key.moveToElement(delivery_type.get(delivery_type_id)).click().build().perform();
 
         // Search destination selection by delivery type
@@ -594,7 +594,7 @@ public class addons_add_remove_check extends payment {
         current_id = date_id();
         sleep(2000);
         calendar.get(current_id).click();
-//        wait.until(ExpectedConditions.elementToBeClickable(calendar.get(current_id))).click();
+//        wait.until(ExpectedConditions.elementToBeClickable(calendar.get(current_date_id))).click();
     }
 
     /**

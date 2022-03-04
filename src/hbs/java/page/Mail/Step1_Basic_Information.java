@@ -1,6 +1,5 @@
 package page.Mail;
 
-import utilities.Common.Common;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.math.RandomUtils;
 import org.openqa.selenium.*;
@@ -8,6 +7,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import utilities.Common.Common;
 
 import java.time.Duration;
 import java.util.List;
@@ -51,15 +51,29 @@ public class Step1_Basic_Information extends Delivered_Mail_Page {
     @FindBy(css = "div.ant-message-custom-content>span:nth-child(2)")
     WebElement message;
 
+    // Register Mode
     public Step1_Basic_Information(WebDriver driver, String role, Common common, String domain, String Mode) {
         super(driver, role, common, domain, Mode);
         wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         PageFactory.initElements(driver, this);
     }
 
+    // Edit Mode
+    public Step1_Basic_Information(WebDriver driver, String role, Common common, String domain, String mail_id, String mail_status, String Mode) {
+        super(driver, role, common, domain, mail_id, mail_status, Mode);
+        wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        PageFactory.initElements(driver, this);
+    }
+
     public void format() throws InterruptedException {
         // Master, Administrator, Responsible person, Leader, Member
-        if (common.authorized(role, common.role_list(5))) {
+        int num;
+        if (Mode.equals("Edit")) {
+            num = 6;
+        } else {
+            num = 5;
+        }
+        if (common.authorized(role, common.role_list(num))) {
             // waiting for loading distributor list
             sleep(3000);
 
@@ -72,7 +86,7 @@ public class Step1_Basic_Information extends Delivered_Mail_Page {
 
     public void distributor() throws InterruptedException {
         // Master, Administrator, Responsible person, Leader, Member
-        if (common.authorized(role, common.role_list(5))) {
+        if (common.authorized(role, common.role_list(4))) {
             // Distributor
             // random distributor in range 1-20
             int distributor_id = RandomUtils.nextInt(20) + 1;
@@ -87,7 +101,13 @@ public class Step1_Basic_Information extends Delivered_Mail_Page {
 
     public void subject() {
         // Master, Administrator, Responsible person, Leader, Member
-        if (common.authorized(role, common.role_list(5))) {
+        int num;
+        if (Mode.equals("Edit")) {
+            num = 6;
+        } else {
+            num = 5;
+        }
+        if (common.authorized(role, common.role_list(num))) {
             // Delete old subject
             subject.sendKeys("text", Keys.CONTROL + "a", Keys.DELETE);
             // length of subject in range 1-100
@@ -98,7 +118,13 @@ public class Step1_Basic_Information extends Delivered_Mail_Page {
 
     public void insertion() {
         // Master, Administrator, Responsible person, Leader, Member
-        if (common.authorized(role, common.role_list(5))) {
+        int num;
+        if (Mode.equals("Edit")) {
+            num = 6;
+        } else {
+            num = 5;
+        }
+        if (common.authorized(role, common.role_list(num))) {
             // Delete old insertion
             insertion.sendKeys("text", Keys.CONTROL + "a", Keys.DELETE);
             // length of insertion in range 1-10000
@@ -109,7 +135,13 @@ public class Step1_Basic_Information extends Delivered_Mail_Page {
 
     public void send_a_copy_to_the_distributor() {
         // Master, Administrator, Responsible person, Leader, Member
-        if (common.authorized(role, common.role_list(5))) {
+        int num;
+        if (Mode.equals("Edit")) {
+            num = 6;
+        } else {
+            num = 5;
+        }
+        if (common.authorized(role, common.role_list(num))) {
             // Send a copy to the distributor
             // 0: not change, 1: change
             int send_copy = RandomUtils.nextInt(2);
@@ -121,7 +153,13 @@ public class Step1_Basic_Information extends Delivered_Mail_Page {
 
     public void next_to_attachment_step() throws InterruptedException {
         // Master, Administrator, Responsible person, Leader, Member
-        if (common.authorized(role, common.role_list(5))) {
+        int num;
+        if (Mode.equals("Edit")) {
+            num = 6;
+        } else {
+            num = 5;
+        }
+        if (common.authorized(role, common.role_list(num))) {
             // Next to 添付ファイル_Step
             next_step_button.click();
 
@@ -130,8 +168,7 @@ public class Step1_Basic_Information extends Delivered_Mail_Page {
                 String text = wait.until(ExpectedConditions.visibilityOf(message)).getText();
                 wait.until(ExpectedConditions.invisibilityOf(message));
                 soft.assertEquals(text, "アイテムが作成されました", "[Failed][Basic Information] Message do not match.");
-            }
-            else {
+            } else {
                 sleep(2000);
             }
 
@@ -151,156 +188,231 @@ public class Step1_Basic_Information extends Delivered_Mail_Page {
 
     // Distributor
     public void leave_distributor_blank() {
-        // waiting for loading distributor list
-        wait_for_loading_element(distributor);
+        // Master, Administrator, Responsible person, Leader, Member
+        if (common.authorized(role, common.role_list(4))) {
+            // waiting for loading distributor list
+            wait_for_loading_element(distributor);
 
-        // click "x" button to clear current distributor
-        clear_distributor.click();
+            // click "x" button to clear current distributor
+            clear_distributor.click();
 
-        // check error message
-        String text = wait.until(ExpectedConditions.visibilityOf(distributor_error)).getText();
-        soft.assertEquals(text, "必須項目です。", "[Distributor] Message do not match");
-        soft.assertAll();
+            // check error message
+            String text = wait.until(ExpectedConditions.visibilityOf(distributor_error)).getText();
+            soft.assertEquals(text, "必須項目です。", "[Distributor] Message do not match");
+            soft.assertAll();
+        }
     }
 
     // Subject
     public void leave_subject_blank() {
-        // leave subject blank
-        wait.until(ExpectedConditions.elementToBeClickable(subject)).sendKeys("text", Keys.CONTROL + "a", Keys.DELETE);
+        // Master, Administrator, Responsible person, Leader, Member
+        int num;
+        if (Mode.equals("Edit")) {
+            num = 6;
+        } else {
+            num = 5;
+        }
+        if (common.authorized(role, common.role_list(num))) {
+            // leave subject blank
+            wait.until(ExpectedConditions.elementToBeClickable(subject)).sendKeys("text", Keys.CONTROL + "a", Keys.DELETE);
 
-        // check error message
-        String text = wait.until(ExpectedConditions.visibilityOf(subject_error)).getText();
-        soft.assertEquals(text, "必須項目です。", "[Failed][Subject][Blank] Message do not match");
-        soft.assertAll();
+            // check error message
+            String text = wait.until(ExpectedConditions.visibilityOf(subject_error)).getText();
+            soft.assertEquals(text, "必須項目です。", "[Failed][Subject][Blank] Message do not match");
+            soft.assertAll();
+        }
     }
 
     public void subject_exceed_100_half_width_characters() throws InterruptedException {
-        // wait and delete old subject
-        wait_for_loading_element(distributor);
-        subject.sendKeys(Keys.CONTROL + "a", Keys.DELETE);
+        // Master, Administrator, Responsible person, Leader, Member
+        int num;
+        if (Mode.equals("Edit")) {
+            num = 6;
+        } else {
+            num = 5;
+        }
+        if (common.authorized(role, common.role_list(num))) {
+            // wait and delete old subject
+            wait_for_loading_element(distributor);
+            subject.sendKeys(Keys.CONTROL + "a", Keys.DELETE);
 
-        // input subject exceed 100 half width characters
-        subject.sendKeys(RandomStringUtils.randomAlphabetic(101));
+            // input subject exceed 100 half width characters
+            subject.sendKeys(RandomStringUtils.randomAlphabetic(101));
 
-        // waiting for loading new message
-        sleep(500);
-        String text = wait.until(ExpectedConditions.visibilityOf(subject_error)).getText();
-        soft.assertEquals(text, "100文字以内で入力してください。", "[Failed][Subject][Exceed 100 half width] Message do not match");
-        soft.assertAll();
+            // waiting for loading new message
+            sleep(500);
+            String text = wait.until(ExpectedConditions.visibilityOf(subject_error)).getText();
+            soft.assertEquals(text, "100文字以内で入力してください。", "[Failed][Subject][Exceed 100 half width] Message do not match");
+            soft.assertAll();
+        }
     }
 
     public void subject_exceed_100_full_width_characters() throws InterruptedException {
-        // wait and delete old subject
-        wait_for_loading_element(distributor);
-        subject.sendKeys(Keys.CONTROL + "a", Keys.DELETE);
+        // Master, Administrator, Responsible person, Leader, Member
+        int num;
+        if (Mode.equals("Edit")) {
+            num = 6;
+        } else {
+            num = 5;
+        }
+        if (common.authorized(role, common.role_list(num))) {
+            // wait and delete old subject
+            wait_for_loading_element(distributor);
+            subject.sendKeys(Keys.CONTROL + "a", Keys.DELETE);
 
-        // input subject exceed 100 full width characters
-        subject.sendKeys(RandomStringUtils.random(101, 0x4e00, 0x4f80, true, false));
+            // input subject exceed 100 full width characters
+            subject.sendKeys(RandomStringUtils.random(101, 0x4e00, 0x4f80, true, false));
 
-        // waiting for loading new message
-        sleep(500);
-        String text = wait.until(ExpectedConditions.visibilityOf(subject_error)).getText();
-        soft.assertEquals(text, "100文字以内で入力してください。", "[Failed][Subject][Exceed 100 full width] Message do not match");
-        soft.assertAll();
+            // waiting for loading new message
+            sleep(500);
+            String text = wait.until(ExpectedConditions.visibilityOf(subject_error)).getText();
+            soft.assertEquals(text, "100文字以内で入力してください。", "[Failed][Subject][Exceed 100 full width] Message do not match");
+            soft.assertAll();
+        }
     }
 
     public void subject_exceed_100_mix_half_and_full_width_characters() throws InterruptedException {
-        // wait and delete old subject
-        wait_for_loading_element(distributor);
-        subject.sendKeys(Keys.CONTROL + "a", Keys.DELETE);
+        // Master, Administrator, Responsible person, Leader, Member
+        int num;
+        if (Mode.equals("Edit")) {
+            num = 6;
+        } else {
+            num = 5;
+        }
+        if (common.authorized(role, common.role_list(num))) {
+            // wait and delete old subject
+            wait_for_loading_element(distributor);
+            subject.sendKeys(Keys.CONTROL + "a", Keys.DELETE);
 
-        // input subject exceed 100 mix half and full width characters
-        int length_of_half_width = RandomUtils.nextInt(100) + 1;
-        String subject_text = RandomStringUtils.randomAlphabetic(length_of_half_width)
-                + RandomStringUtils.random(101 - length_of_half_width, 0x4e00, 0x4f80, true, false);
-        subject.sendKeys(subject_text);
+            // input subject exceed 100 mix half and full width characters
+            int length_of_half_width = RandomUtils.nextInt(100) + 1;
+            String subject_text = RandomStringUtils.randomAlphabetic(length_of_half_width)
+                    + RandomStringUtils.random(101 - length_of_half_width, 0x4e00, 0x4f80, true, false);
+            subject.sendKeys(subject_text);
 
-        // waiting for loading new message
-        sleep(500);
-        String text = wait.until(ExpectedConditions.visibilityOf(subject_error)).getText();
-        soft.assertEquals(text, "100文字以内で入力してください。", "[Failed][Subject][Exceed 100 mix] Message do not match");
-        soft.assertAll();
+            // waiting for loading new message
+            sleep(500);
+            String text = wait.until(ExpectedConditions.visibilityOf(subject_error)).getText();
+            soft.assertEquals(text, "100文字以内で入力してください。", "[Failed][Subject][Exceed 100 mix] Message do not match");
+            soft.assertAll();
+        }
     }
 
     // Insertion
     public void leave_insertion_blank() {
-        // leave insertion blank
-        insertion.sendKeys("text", Keys.CONTROL + "a", Keys.DELETE);
+        // Master, Administrator, Responsible person, Leader, Member
+        int num;
+        if (Mode.equals("Edit")) {
+            num = 6;
+        } else {
+            num = 5;
+        }
+        if (common.authorized(role, common.role_list(num))) {
+            // leave insertion blank
+            insertion.sendKeys("text", Keys.CONTROL + "a", Keys.DELETE);
 
-        // waiting for loading new message
-        String text = wait.until(ExpectedConditions.visibilityOf(insertion_error)).getText();
-        soft.assertEquals(text, "必須項目です。", "[Failed][Insertion][Blank] Message do not match");
-        soft.assertAll();
+            // waiting for loading new message
+            String text = wait.until(ExpectedConditions.visibilityOf(insertion_error)).getText();
+            soft.assertEquals(text, "必須項目です。", "[Failed][Insertion][Blank] Message do not match");
+            soft.assertAll();
+        }
     }
 
     public void insertion_exceed_10000_half_width_characters() throws InterruptedException {
-        // wait and delete old insertion
-        wait_for_loading_element(distributor);
-        insertion.sendKeys(Keys.CONTROL + "a", Keys.DELETE);
+        // Master, Administrator, Responsible person, Leader, Member
+        int num;
+        if (Mode.equals("Edit")) {
+            num = 6;
+        } else {
+            num = 5;
+        }
+        if (common.authorized(role, common.role_list(num))) {
+            // wait and delete old insertion
+            wait_for_loading_element(distributor);
+            insertion.sendKeys(Keys.CONTROL + "a", Keys.DELETE);
 
-        // input insertion exceed 10000 half width characters
-        String insertion_text = RandomStringUtils.randomAlphabetic(5000);
-        insertion.sendKeys(insertion_text);
-        insertion.sendKeys(insertion_text + " ");
+            // input insertion exceed 10000 half width characters
+            String insertion_text = RandomStringUtils.randomAlphabetic(5000);
+            insertion.sendKeys(insertion_text);
+            insertion.sendKeys(insertion_text + " ");
 
-        // Scroll down
-        ((JavascriptExecutor) driver).executeScript("window.scrollTo(0, document.body.scrollHeight)");
+            // Scroll down
+            ((JavascriptExecutor) driver).executeScript("window.scrollTo(0, document.body.scrollHeight)");
 
-        // waiting for loading new message
-        sleep(1000);
-        String text = wait.until(ExpectedConditions.visibilityOf(insertion_error)).getText();
-        soft.assertEquals(text, "全角5000文字または半角10000文字以内で入力してください。", "[Failed][Insertion][Exceed 10000 half width] Message do not match");
-        soft.assertAll();
+            // waiting for loading new message
+            sleep(1000);
+            String text = wait.until(ExpectedConditions.visibilityOf(insertion_error)).getText();
+            soft.assertEquals(text, "全角5000文字または半角10000文字以内で入力してください。", "[Failed][Insertion][Exceed 10000 half width] Message do not match");
+            soft.assertAll();
+        }
     }
 
     public void insertion_exceed_5000_full_width_characters() throws InterruptedException {
-        // minJpnCharCode: 0x4e00
-        // maxJpnCharCode: 0x4f80
-        // wait and delete old insertion
-        wait_for_loading_element(distributor);
-        insertion.sendKeys(Keys.CONTROL + "a", Keys.DELETE);
+        // Master, Administrator, Responsible person, Leader, Member
+        int num;
+        if (Mode.equals("Edit")) {
+            num = 6;
+        } else {
+            num = 5;
+        }
+        if (common.authorized(role, common.role_list(num))) {
+            // minJpnCharCode: 0x4e00
+            // maxJpnCharCode: 0x4f80
+            // wait and delete old insertion
+            wait_for_loading_element(distributor);
+            insertion.sendKeys(Keys.CONTROL + "a", Keys.DELETE);
 
-        // input insertion exceed 5000 full width characters
-        String insert_text = RandomStringUtils.random(2500, 0x4e00, 0x4f80, true, false);
-        insertion.sendKeys(insert_text + insert_text + " ");
+            // input insertion exceed 5000 full width characters
+            String insert_text = RandomStringUtils.random(2500, 0x4e00, 0x4f80, true, false);
+            insertion.sendKeys(insert_text + insert_text + " ");
 
-        // Scroll down
-        ((JavascriptExecutor) driver).executeScript("window.scrollTo(0, document.body.scrollHeight)");
+            // Scroll down
+            ((JavascriptExecutor) driver).executeScript("window.scrollTo(0, document.body.scrollHeight)");
 
-        // waiting for loading new message
-        sleep(500);
-        String text = wait.until(ExpectedConditions.visibilityOf(insertion_error)).getText();
-        soft.assertEquals(text, "全角5000文字または半角10000文字以内で入力してください。", "[Failed][Insertion][Exceed 5000 full width] Message do not match");
-        soft.assertAll();
+            // waiting for loading new message
+            sleep(500);
+            String text = wait.until(ExpectedConditions.visibilityOf(insertion_error)).getText();
+            soft.assertEquals(text, "全角5000文字または半角10000文字以内で入力してください。", "[Failed][Insertion][Exceed 5000 full width] Message do not match");
+            soft.assertAll();
+        }
     }
 
     public void insertion_exceed_5000_mix_half_and_full_width_characters() throws InterruptedException {
-        // wait and delete old insertion
-        wait_for_loading_element(distributor);
-        insertion.sendKeys(Keys.CONTROL + "a", Keys.DELETE);
+        // Master, Administrator, Responsible person, Leader, Member
+        int num;
+        if (Mode.equals("Edit")) {
+            num = 6;
+        } else {
+            num = 5;
+        }
+        if (common.authorized(role, common.role_list(num))) {
+            // wait and delete old insertion
+            wait_for_loading_element(distributor);
+            insertion.sendKeys(Keys.CONTROL + "a", Keys.DELETE);
 
-        // input insertion exceed 5000 characters (mix full and half width)
-        String insertion_half = RandomStringUtils.randomAlphabetic(2500);
-        String insertion_full = RandomStringUtils.random(2501, 0x4e00, 0x4f80, true, false);
+            // input insertion exceed 5000 characters (mix full and half width)
+            String insertion_half = RandomStringUtils.randomAlphabetic(2500);
+            String insertion_full = RandomStringUtils.random(2501, 0x4e00, 0x4f80, true, false);
 
-        // minJpnCharCode: 0x4e00
-        // maxJpnCharCode: 0x4f80
-        insertion.sendKeys(insertion_half + insertion_full);
+            // minJpnCharCode: 0x4e00
+            // maxJpnCharCode: 0x4f80
+            insertion.sendKeys(insertion_half + insertion_full);
 
-        // Scroll down
-        ((JavascriptExecutor) driver).executeScript("window.scrollTo(0, document.body.scrollHeight)");
+            // Scroll down
+            ((JavascriptExecutor) driver).executeScript("window.scrollTo(0, document.body.scrollHeight)");
 
-        // waiting for loading new message
-        sleep(500);
-        String text = wait.until(ExpectedConditions.visibilityOf(insertion_error)).getText();
-        soft.assertEquals(text, "全角5000文字または半角10000文字以内で入力してください。", "[Failed][Insertion][Exceed 5000 mix] Message do not match");
-        soft.assertAll();
+            // waiting for loading new message
+            sleep(500);
+            String text = wait.until(ExpectedConditions.visibilityOf(insertion_error)).getText();
+            soft.assertEquals(text, "全角5000文字または半角10000文字以内で入力してください。", "[Failed][Insertion][Exceed 5000 mix] Message do not match");
+            soft.assertAll();
+        }
     }
 
     public void delete_button_should_be_disable() {
         // Master, Administrator, Responsible person, Leader, Member
         if (common.authorized(role, common.role_list(5))) {
-            soft.assertFalse(driver.findElement(By.cssSelector("button.ant-btn-danger")).isEnabled(), "[Delete] button is not getting disable.");
+            soft.assertFalse(delete_button.isEnabled(), "[Delete] button is not getting disable.");
             soft.assertAll();
         }
     }

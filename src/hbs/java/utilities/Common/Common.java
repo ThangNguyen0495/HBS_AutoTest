@@ -85,6 +85,8 @@ public class Common {
         driver.findElement(By.cssSelector("#password")).sendKeys(password);
         driver.findElement(By.cssSelector("button[type='submit']")).click();
         sleep(1000);
+
+        driver.get(url);
     }
 
     public Boolean authorized(String role, List<String> role_list) {

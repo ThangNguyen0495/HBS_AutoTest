@@ -56,7 +56,7 @@ public class Delivered_Mail_Register {
         attachment = new Step2_Attachment(driver, role, common, domain, capacity, "Register");
 
         // Init Destination selection function
-        destinationSearch = new Step3_Destination_selection(driver, common, role, domain, "Register");
+        destinationSearch = new Step3_Destination_selection(driver, role, common, domain, "Register");
 
         // Init Final confirmation function
         finalConfirmation = new Step4_Final_confirmation(driver, role, common, domain, "Register");
