@@ -12,8 +12,8 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
-import static utilities.Link_and_Path.HBS.*;
 import static java.lang.Thread.sleep;
+import static utilities.Link_and_Path.HBS.*;
 
 
 public class addons extends payment {
@@ -87,35 +87,35 @@ public class addons extends payment {
 
     /**
      * @param addons_id value in range 0-11
-     * <p>DESCRIPTIONS:</p>
-     * <p>0: Recommendation - Acquisition of delivery opening information </p>
-     * <p>1: Recommendation - Maximum number of deliveries </p>
-     * <p>2: Recommendation - Shortening the delivery interval </p>
-     * <p>3: Account management - Number of search condition template registrations </p>
-     * <p>4: Account management - Number of comment template registrations </p>
-     * <p>5: Delivery mail management - Number of search condition template registrations </p>
-     * <p>6: Delivery mail management - Acquisition of delivery opening information </p>
-     * <p>7: Delivery mail management - Extension of acquisition period of delivery opening information </p>
-     * <p>8: Delivery mail management - Delivery attachment capacity </p>
-     * <p>9: Delivery mail management - Advertising display during HTML distribution </p>
-     * <p>10: Delivery mail management - Maximum number of deliveries </p>
-     * <p>11: Delivery mail management - Shortening the delivery interval </p>
-     * <p>Related: {0,6}, {1,10}, {2,11}, {3,5} </p>
-     * <p>Related parent-child: {0,7}, {6,7} </p>
+     *                  <p>DESCRIPTIONS:</p>
+     *                  <p>0: Recommendation - Acquisition of delivery opening information </p>
+     *                  <p>1: Recommendation - Maximum number of deliveries </p>
+     *                  <p>2: Recommendation - Shortening the delivery interval </p>
+     *                  <p>3: Account management - Number of search condition template registrations </p>
+     *                  <p>4: Account management - Number of comment template registrations </p>
+     *                  <p>5: Delivery mail management - Number of search condition template registrations </p>
+     *                  <p>6: Delivery mail management - Acquisition of delivery opening information </p>
+     *                  <p>7: Delivery mail management - Extension of acquisition period of delivery opening information </p>
+     *                  <p>8: Delivery mail management - Delivery attachment capacity </p>
+     *                  <p>9: Delivery mail management - Advertising display during HTML distribution </p>
+     *                  <p>10: Delivery mail management - Maximum number of deliveries </p>
+     *                  <p>11: Delivery mail management - Shortening the delivery interval </p>
+     *                  <p>Related: {0,6}, {1,10}, {2,11}, {3,5} </p>
+     *                  <p>Related parent-child: {0,7}, {6,7} </p>
      *
-     * <p>CHECK AFTER ADD/REMOVE ADDONS:</p>
-     * <p>0: can not verify
-     * <p>1: check maximum number of deliveries(1 check item: destination search)
-     * <p>2: check shortening the delivery interval (1 check item: final confirmation)
-     * <p>3: check maximum number of search templates (4 check items: partner/contact/mail list and destination search)
-     * <p>4: check maximum number of comment templates (2 check items: partner/contact list or register)
-     * <p>5: check maximum number of search templates (4 check items: partner/contact/mail list and destination search)
-     * <p>6: can not verify
-     * <p>7: can not verify
-     * <p>8: check delivery attachment capacity(1 check item: attachment)
-     * <p>9: can not verify
-     * <p>10: check maximum number of deliveries(1 check item: destination search)
-     * <p>11: check shortening the delivery interval (1 check item: final confirmation)
+     *                  <p>CHECK AFTER ADD/REMOVE ADDONS:</p>
+     *                  <p>0: can not verify
+     *                  <p>1: check maximum number of deliveries(1 check item: destination search)
+     *                  <p>2: check shortening the delivery interval (1 check item: final confirmation)
+     *                  <p>3: check maximum number of search templates (4 check items: partner/contact/mail list and destination search)
+     *                  <p>4: check maximum number of comment templates (2 check items: partner/contact list or register)
+     *                  <p>5: check maximum number of search templates (4 check items: partner/contact/mail list and destination search)
+     *                  <p>6: can not verify
+     *                  <p>7: can not verify
+     *                  <p>8: check delivery attachment capacity(1 check item: attachment)
+     *                  <p>9: can not verify
+     *                  <p>10: check maximum number of deliveries(1 check item: destination search)
+     *                  <p>11: check shortening the delivery interval (1 check item: final confirmation)
      **/
     public void Add(int addons_id) throws InterruptedException {
         driver.get(domain + addons_path);
@@ -126,7 +126,6 @@ public class addons extends payment {
         List<Integer> addons_info = get_addons_information(list_addons_information.get(addons_id));
 
         int addons_add_remove_id = get_add_remove_id(addons_id);
-        System.out.println("addons_add_remove_id: " + addons_add_remove_id);
 
         boolean check;
         List<Integer> add_on_info;
@@ -156,7 +155,7 @@ public class addons extends payment {
                 }
 
                 // get company_id
-                System.out.println("Your company id: " + get_company_id());
+                get_company_id();
 
                 // get old receipt id
                 String current_payment_history_receipt_id = get_payment_history_receipt().get(0);
@@ -173,11 +172,8 @@ public class addons extends payment {
 
                 // check related item after addons has been added.
                 switch (addons_id) {
-                    case 0, 6, 7, 9 -> System.out.println("[" + addons_name.get(addons_id) + "]" + "Can not verify related item.");
-                    case 1, 10 -> {
-                        old_maximum_number_of_deliveries = addonsAddRemoveCheck.get_number_of_deliveries_destination_search().get(1);
-                        System.out.println(old_maximum_number_of_deliveries);
-                    }
+                    case 0, 6, 7, 9 -> System.out.println("[" + addons_name.get(addons_id) + "] " + "Can not verify related item.");
+                    case 1, 10 -> old_maximum_number_of_deliveries = addonsAddRemoveCheck.get_number_of_deliveries_destination_search().get(1);
                     case 2, 11 -> old_check_shortening_the_delivery_interval = addonsAddRemoveCheck.check_shortening_the_delivery_interval();
                     case 3, 5 -> {
                         old_maximum_number_of_search_template.add(addonsAddRemoveCheck.get_number_of_search_template_list_page(partner_list_path).get(1));
@@ -199,9 +195,7 @@ public class addons extends payment {
 
                 // get Addons price
                 int price_id = get_price_id(addons_id);
-                System.out.println("price_id: " + price_id);
                 long price = add_tax(get_add_ons_price(list_addons_price.get(price_id)));
-                System.out.println(price);
 
                 // wait and click add button
                 wait.until(ExpectedConditions.visibilityOf(list_add_button.get(addons_add_remove_id)));
@@ -219,6 +213,8 @@ public class addons extends payment {
                 wait.until(ExpectedConditions.invisibilityOf(message));
 
                 // reload page
+                driver.get(domain + addons_path);
+                driver.manage().deleteAllCookies();
                 driver.navigate().refresh();
                 sleep(2000);
 
@@ -227,7 +223,6 @@ public class addons extends payment {
 
                 // [page.Payment history] Get receipt id and price
                 List<String> receipt_history_payment = get_payment_history_receipt();
-                System.out.println(receipt_history_payment);
 
                 // [PAY.JP] Get receipt id and price
                 List<String> receipt_PayJP = get_PayJP_receipt();
@@ -254,10 +249,9 @@ public class addons extends payment {
                 boolean current_check_delivery_attachment_capacity;
                 boolean current_check_shortening_the_delivery_interval;
                 switch (addons_id) {
-                    case 0, 6, 7, 9 -> System.out.println("[" + addons_name.get(addons_id) + "]" + "Can not verify related item.");
+                    case 0, 6, 7, 9 -> System.out.println("[" + addons_name.get(addons_id) + "] " + "Can not verify related item.");
                     case 1, 10 -> {
                         current_maximum_number_of_deliveries = addonsAddRemoveCheck.get_number_of_deliveries_destination_search().get(1);
-                        System.out.println(current_maximum_number_of_deliveries);
                         soft.assertEquals(current_maximum_number_of_deliveries, old_maximum_number_of_deliveries + 1000,
                                 "[" + addons_name.get(addons_id) + "]" + "[Failed] Maximum number of deliveries are incorrectly increased.");
                     }
@@ -296,35 +290,35 @@ public class addons extends payment {
 
     /**
      * @param addons_id value in range 0-11
-     * <p>DESCRIPTIONS:</p>
-     * <p>0: Recommendation - Acquisition of delivery opening information
-     * <p>1: Recommendation - Maximum number of deliveries
-     * <p>2: Recommendation - Shortening the delivery interval
-     * <p>3: Account management - Number of search condition template registrations
-     * <p>4: Account management - Number of comment template registrations
-     * <p>5: Delivery mail management - Number of search condition template registrations
-     * <p>6: Delivery mail management - Acquisition of delivery opening information
-     * <p>7: Delivery mail management - Extension of acquisition period of delivery opening information
-     * <p>8: Delivery mail management - Delivery attachment capacity
-     * <p>9: Delivery mail management - Advertising display during HTML distribution
-     * <p>10: Delivery mail management - Maximum number of deliveries
-     * <p>11: Delivery mail management - Shortening the delivery interval
-     * <p>Related: {0,6}, {1,10}, {2,11}, {3,5}
-     * <p>Related parent-child: {0,7}, {6,7}
+     *                  <p>DESCRIPTIONS:</p>
+     *                  <p>0: Recommendation - Acquisition of delivery opening information
+     *                  <p>1: Recommendation - Maximum number of deliveries
+     *                  <p>2: Recommendation - Shortening the delivery interval
+     *                  <p>3: Account management - Number of search condition template registrations
+     *                  <p>4: Account management - Number of comment template registrations
+     *                  <p>5: Delivery mail management - Number of search condition template registrations
+     *                  <p>6: Delivery mail management - Acquisition of delivery opening information
+     *                  <p>7: Delivery mail management - Extension of acquisition period of delivery opening information
+     *                  <p>8: Delivery mail management - Delivery attachment capacity
+     *                  <p>9: Delivery mail management - Advertising display during HTML distribution
+     *                  <p>10: Delivery mail management - Maximum number of deliveries
+     *                  <p>11: Delivery mail management - Shortening the delivery interval
+     *                  <p>Related: {0,6}, {1,10}, {2,11}, {3,5}
+     *                  <p>Related parent-child: {0,7}, {6,7}
      *
-     * <p>CHECK AFTER ADD/REMOVE ADDONS:</p>
-     * <p>0: can not verify
-     * <p>1: check maximum number of deliveries(1 check item: destination search)
-     * <p>2: check shortening the delivery interval (1 check item: final confirmation)
-     * <p>3: check maximum number of search templates (4 check items: partner/contact/mail list and destination search)
-     * <p>4: check maximum number of comment templates (2 check items: partner/contact list or register)
-     * <p>5: check maximum number of search templates (4 check items: partner/contact/mail list and destination search)
-     * <p>6: can not verify
-     * <p>7: can not verify
-     * <p>8: check delivery attachment capacity(1 check item: attachment)
-     * <p>9: can not verify
-     * <p>10: check maximum number of deliveries(1 check item: destination search)
-     * <p>11: check shortening the delivery interval (1 check item: final confirmation)
+     *                  <p>CHECK AFTER ADD/REMOVE ADDONS:</p>
+     *                  <p>0: can not verify
+     *                  <p>1: check maximum number of deliveries(1 check item: destination search)
+     *                  <p>2: check shortening the delivery interval (1 check item: final confirmation)
+     *                  <p>3: check maximum number of search templates (4 check items: partner/contact/mail list and destination search)
+     *                  <p>4: check maximum number of comment templates (2 check items: partner/contact list or register)
+     *                  <p>5: check maximum number of search templates (4 check items: partner/contact/mail list and destination search)
+     *                  <p>6: can not verify
+     *                  <p>7: can not verify
+     *                  <p>8: check delivery attachment capacity(1 check item: attachment)
+     *                  <p>9: can not verify
+     *                  <p>10: check maximum number of deliveries(1 check item: destination search)
+     *                  <p>11: check shortening the delivery interval (1 check item: final confirmation)
      **/
     public void Remove(int addons_id) throws InterruptedException {
         driver.get(domain + addons_path);
@@ -335,7 +329,6 @@ public class addons extends payment {
         List<Integer> addons_info = get_addons_information(list_addons_information.get(addons_id));
 
         int addons_add_remove_id = get_add_remove_id(addons_id);
-        System.out.println("addons_add_remove_id :" + addons_add_remove_id);
 
         boolean check;
         List<Integer> add_on_info;
@@ -375,11 +368,8 @@ public class addons extends payment {
 
                 // check related item after addons has been added.
                 switch (addons_id) {
-                    case 0, 6, 7, 9 -> System.out.println("[" + addons_name.get(addons_id) + "]" + "Can not verify related item.");
-                    case 1, 10 -> {
-                        old_maximum_number_of_deliveries = addonsAddRemoveCheck.get_number_of_deliveries_destination_search().get(1);
-                        System.out.println(old_maximum_number_of_deliveries);
-                    }
+                    case 0, 6, 7, 9 -> System.out.println("[" + addons_name.get(addons_id) + "] " + "Can not verify related item.");
+                    case 1, 10 -> old_maximum_number_of_deliveries = addonsAddRemoveCheck.get_number_of_deliveries_destination_search().get(1);
                     case 2, 11 -> old_check_shortening_the_delivery_interval = addonsAddRemoveCheck.check_shortening_the_delivery_interval();
                     case 3, 5 -> {
                         old_maximum_number_of_search_template.add(addonsAddRemoveCheck.get_number_of_search_template_list_page(partner_list_path).get(1));
@@ -431,15 +421,19 @@ public class addons extends payment {
                 // get current number of available for purchase
                 int current_number_of_available_for_purchase = get_addons_information(list_addons_information.get(addons_id)).get(0);
 
+                // check number of available for purchase
+                soft.assertEquals(current_number_of_available_for_purchase, addons_info.get(0) + 1,
+                        "[" + addons_name.get(addons_id) + "]" + "[Failed] Current number of available for purchase incorrect.");
+
                 // [page.Payment history] Get receipt id and price
                 String receipt_history_payment = get_payment_history_receipt().get(0);
 
                 // check message
                 soft.assertEquals(text, "アドオンの解約に成功しました", "[" + addons_name.get(addons_id) + "]" + "[Failed] Message do not match.");
 
-                // check number of available for purchase
-                soft.assertEquals(current_number_of_available_for_purchase, addons_info.get(0) + 1,
-                        "[" + addons_name.get(addons_id) + "]" + "[Failed] Current number of available for purchase incorrect.");
+//                // check number of available for purchase
+//                soft.assertEquals(current_number_of_available_for_purchase, addons_info.get(0) + 1,
+//                        "[" + addons_name.get(addons_id) + "]" + "[Failed] Current number of available for purchase incorrect.");
 
                 // [page.Payment history] check receipt id
                 soft.assertEquals(receipt_history_payment, current_payment_history_receipt_id, "[" + addons_name.get(addons_id) + "]" + "[Failed][page.Payment history] New receipt id has been found. Remove Addons is no fee.");
@@ -451,16 +445,14 @@ public class addons extends payment {
                 boolean current_check_delivery_attachment_capacity;
                 boolean current_check_shortening_the_delivery_interval;
                 switch (addons_id) {
-                    case 0, 6, 7, 9 -> System.out.println("[" + addons_name.get(addons_id) + "]" + "Can not verify related item.");
+                    case 0, 6, 7, 9 -> System.out.println("[" + addons_name.get(addons_id) + "] " + "Can not verify related item.");
                     case 1, 10 -> {
                         current_maximum_number_of_deliveries = addonsAddRemoveCheck.get_number_of_deliveries_destination_search().get(1);
-                        System.out.println(current_maximum_number_of_deliveries);
                         soft.assertEquals(current_maximum_number_of_deliveries, old_maximum_number_of_deliveries - 1000,
                                 "[" + addons_name.get(addons_id) + "]" + "[Failed] Maximum number of deliveries are incorrectly decreased.");
                     }
                     case 2, 11 -> {
                         current_check_shortening_the_delivery_interval = addonsAddRemoveCheck.check_shortening_the_delivery_interval();
-                        System.out.println(current_check_shortening_the_delivery_interval);
                         soft.assertNotEquals(current_check_shortening_the_delivery_interval, old_check_shortening_the_delivery_interval,
                                 "[" + addons_name.get(addons_id) + "]" + "[Failed] Deliverable interval is not changed from 10 minutes to 30 minutes.");
                     }
@@ -470,7 +462,6 @@ public class addons extends payment {
                         current_maximum_number_of_search_template.add(addonsAddRemoveCheck.get_number_of_search_template_list_page(contact_list_path).get(1) + 5);
                         current_maximum_number_of_search_template.add(addonsAddRemoveCheck.get_number_of_search_template_list_page(mail_list_path).get(1) + 5);
                         current_maximum_number_of_search_template.add(addonsAddRemoveCheck.get_number_of_search_template_destination_search().get(1) + 5);
-                        System.out.println(current_maximum_number_of_search_template);
                         soft.assertEquals(current_maximum_number_of_search_template, old_maximum_number_of_search_template,
                                 "[" + addons_name.get(addons_id) + "]" + "[Failed] Maximum number of search template are incorrectly decreased.");
                     }
@@ -478,13 +469,11 @@ public class addons extends payment {
                         current_maximum_number_of_comment_template = new ArrayList<>();
                         current_maximum_number_of_comment_template.add(addonsAddRemoveCheck.get_number_of_comment_template(partner_list_path).get(1) + 5);
                         current_maximum_number_of_comment_template.add(addonsAddRemoveCheck.get_number_of_comment_template(contact_list_path).get(1) + 5);
-                        System.out.println(current_maximum_number_of_comment_template);
                         soft.assertEquals(current_maximum_number_of_comment_template, old_maximum_number_of_comment_template,
                                 "[" + addons_name.get(addons_id) + "]" + "[Failed] Maximum number of comment template are incorrectly decreased.");
                     }
                     case 8 -> {
                         current_check_delivery_attachment_capacity = addonsAddRemoveCheck.check_delivery_attachment_capacity();
-                        System.out.println(current_check_delivery_attachment_capacity);
                         soft.assertNotEquals(current_check_delivery_attachment_capacity, old_check_delivery_attachment_capacity,
                                 "[" + addons_name.get(addons_id) + "]" + "[Failed] Maximum delivery attachment capacity is not decreased from 10MB to 2MB.");
                     }

@@ -234,7 +234,6 @@ public class addons_add_remove_check extends payment {
         sleep(2000);
         save_button_enable.click();
         wait.until(ExpectedConditions.visibilityOf(search_template_information));
-        System.out.println(search_template_information.getText());
         int number_of_registered = Integer.parseInt(search_template_information.getText().split("件 ／")[0].replace("現在登録数: ", ""));
         int number_of_search_template = Integer.parseInt(search_template_information.getText().split("件 ／")[1].replace("件 ", ""));
         return List.of(number_of_registered, number_of_search_template);
@@ -287,7 +286,6 @@ public class addons_add_remove_check extends payment {
         // click save button
         destination_search_save_button_enable.click();
         wait.until(ExpectedConditions.visibilityOf(search_template_information));
-        System.out.println(search_template_information.getText());
         int number_of_registered = Integer.parseInt(search_template_information.getText().split("件 ／")[0].replace("現在登録数: ", ""));
         int number_of_search_template = Integer.parseInt(search_template_information.getText().split("件 ／")[1].replace("件 ", ""));
         destination_search_cancel_button.click();
@@ -307,7 +305,6 @@ public class addons_add_remove_check extends payment {
 
         // click save button
         wait.until(ExpectedConditions.visibilityOf(deliveries_information));
-        System.out.println(deliveries_information.getText());
 
         int number_of_used_deliveries = Integer.parseInt(deliveries_information.getText().split("件 ／")[0].replace("配信数: ", ""));
         int number_of_deliveries = Integer.parseInt(deliveries_information.getText().split("件 ／")[1].replace("件 ", "").replace(",", ""));
@@ -327,7 +324,6 @@ public class addons_add_remove_check extends payment {
         sleep(2000);
         comment_template_button.click();
         wait.until(ExpectedConditions.visibilityOf(comment_template_information));
-        System.out.println(comment_template_information.getText());
 
         int number_of_registered = Integer.parseInt(comment_template_information.getText().split("件 ／")[0].replace(" ", ""));
         int number_of_comment_template = Integer.parseInt(comment_template_information.getText().split("件 ／")[1].replace("件", "").replace(" ", ""));
@@ -345,7 +341,7 @@ public class addons_add_remove_check extends payment {
         return upload_descriptions.getText().equals("※1通のメールに添付できる容量の上限はヘッダー情報を含め10MBです。");
     }
 
-    public void delete_mail_after_get_information() {
+    public void delete_mail_after_get_information() throws InterruptedException {
         // scroll to bottom
         ((JavascriptExecutor) driver).executeScript("window.scrollTo(0, document.body.scrollHeight)");
 
@@ -354,6 +350,8 @@ public class addons_add_remove_check extends payment {
 
         // Click OK button
         wait.until(ExpectedConditions.elementToBeClickable(delete_mail_ok_button)).click();
+
+        sleep(2000);
     }
 
     //** Delivery information **//
@@ -366,7 +364,7 @@ public class addons_add_remove_check extends payment {
         //** Delivery information **//
         //** Delivery type **//
         // 0: Deliver the matter, 1: Deliver personnel, 2: Deliver information
-        int delivery_type_id = RandomUtils.nextInt(3);
+        int delivery_type_id = 2;//RandomUtils.nextInt(3);
         key.moveToElement(delivery_type.get(delivery_type_id)).click().build().perform();
 
         // Search destination selection by delivery type
@@ -594,7 +592,6 @@ public class addons_add_remove_check extends payment {
         current_id = date_id();
         sleep(2000);
         calendar.get(current_id).click();
-//        wait.until(ExpectedConditions.elementToBeClickable(calendar.get(current_date_id))).click();
     }
 
     /**

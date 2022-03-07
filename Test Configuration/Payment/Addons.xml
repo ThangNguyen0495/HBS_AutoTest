@@ -1,25 +1,62 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="All Test Suite">
+<suite name="Automation testing using Selenium + Java">
     <test verbose="2"
-          name="Addons">
+          name="[HBS] Addons (Check receipt and related items)">
         <classes>
             <class name="test.Payment.Addons">
                 <methods>
-                    <parameter name="headless" value="true"/>
-<!--                    <parameter name="headless" value="false"/>-->
+                    <!--
+                    TEST CONFIGURATION
+                    1. Headless(headless): It is "test run" mode
+                    Value: true, false
+                    Headless = "true": Run test with non UI mode (Browser should not be opened),
+                    Headless = "false": Run test with UI mode (Browser should be opened).
+                    NOTE: Headless mode only supports Chrome and FireFox.
+
+                    2. Browser name(browser_name): It is your browser name.
+                    value: chrome, firefox, edge, ie, safari
+                    You can run it on multiple browsers like Chrome, Firefox, Edge, IE, and Safari.
+
+                    3. Domain(domain):
+                    It is the domain used to run the automation testing.
+
+                    4. Email(email) and Password(password)
+                    It is the "Master" account used to run the automation testing.
+
+                    5. Username(username_admin_page) and Password(password_admin_page)
+                    It is the account of admin page used to getting company id.
+
+                     WARNING:
+                        - Please read "TEST CONFIGURATION" to sure your input value is exactly. In case your
+                        configuration incorrect, the automation testing should be not worked or work incorrectly.
+                        - You have to buy the Usage Plan before running this test.
+                    -->
+                    <parameter name="headless" value="false"/>
                     <parameter name="browser_name" value="chrome"/>
-                    <parameter name="username_admin_page" value="admin"/>
-                    <parameter name="password_admin_page" value="cenkfzjQ6ujbczQ2"/>
+                    <parameter name="domain" value="https://stg.app.cmrb.jp"/>
                     <parameter name="email" value="eddklgutyiqtzbublzczamvsjpvbbzixkhollgdemweqbkxwsqkarifyqsnquxsjmekabzjhyvrgx@bedul.net"/>
                     <parameter name="password" value="SwZMd9tT0b9UKP6DQgOpH8utukYnm@"/>
-<!--                    <parameter name="email" value="dkvjqpcsqdrlyqcgjxgksvhc@bedul.net"/>-->
-<!--                    <parameter name="password" value="Lr3dP8t5hcqJ3dLXMlasO2kWbp@"/>-->
+                    <parameter name="username_admin_page" value="admin"/>
+                    <parameter name="password_admin_page" value="cenkfzjQ6ujbczQ2"/>
 
-                    <parameter name="role" value="Master"/>
-<!--                    <parameter name="domain" value="https://dev.app.cmrb.jp"/>-->
-                    <parameter name="domain" value="https://stg.app.cmrb.jp"/>
+                    <!--
+                    TESTCASE
+                    TC01-24: Verify that can add/remove Addons and check related items should be added/removed.
+                    What is checked after adding/removing Addons?
+                        - Price (include 10% tax)
+                        - Receipt id
+                        - Success message
+                        - Related items
+                        Ex: After adding search template addons, check a maximum number of search templates at 4 pages: partner list, contact list,
+                         mail list, and destination search.
 
+                     NOTE: Some related items cannot be checked:
+                        - Recommendation - Acquisition of delivery opening information
+                        - Delivery mail management - Acquisition of delivery opening information
+                        - Delivery mail management - Extension of acquisition period of delivery opening information
+                        - Delivery mail management - Advertising display during HTML distribution
+                    -->
                     <include name="TC_01_recommendation_acquisition_of_delivery_opening_information_Add" />
                     <include name="TC_02_recommendation_acquisition_of_delivery_opening_information_Remove" />
                     <include name="TC_03_recommendation_maximum_number_of_deliveries_Add" />

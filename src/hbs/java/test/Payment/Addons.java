@@ -1,16 +1,11 @@
 package test.Payment;
 
-import utilities.Common.Common;
 import org.apache.commons.io.FileUtils;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
+import org.testng.annotations.*;
+import utilities.Common.Common;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.testng.ITestResult;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Parameters;
-import org.testng.annotations.Test;
 import page.Payment.addons;
 import page.Payment.addons_add_remove_check;
 
@@ -20,27 +15,31 @@ import java.io.IOException;
 import static utilities.Link_and_Path.HBS.*;
 
 public class Addons {
-    Common cm;
+    Common common;
     Actions key;
     WebDriver driver;
     addons addOns;
-
     addons_add_remove_check addonsAddRemoveCheck;
+
+    @BeforeClass
+    public void clear_old_test_error() throws IOException {
+        FileUtils.cleanDirectory(new File(System.getProperty("user.dir") + "\\img\\Addons"));
+    }
 
     @BeforeMethod
     @Parameters({"headless", "browser_name", "domain", "email", "password", "username_admin_page", "password_admin_page"})
-    public void init(boolean headless, String browser_name, String domain, String email, String password, String username_admin_page, String password_admin_page) throws InterruptedException {
+    public void setup(boolean headless, String browser_name, String domain, String email, String password, String username_admin_page, String password_admin_page) throws InterruptedException {
         // Init utilities.Common function
-        cm = new Common();
+        common = new Common();
 
         // Config Webdriver
-        driver = cm.setupWebdriver(headless, browser_name);
+        driver = common.setupWebdriver(headless, browser_name);
 
         // Init Actions
         key = new Actions(driver);
 
         //Login
-        cm.login(driver, domain + addons_path, email, password);
+        common.login(driver, domain + addons_path, email, password);
 
         // Init Addons function
         addOns = new addons(driver, domain, username_admin_page, password_admin_page);
@@ -186,13 +185,11 @@ public class Addons {
     }
 
     @AfterMethod
-    public void teardown(ITestResult result) throws IOException {
-        TakesScreenshot screenshot = ((TakesScreenshot) driver);
-        if (result.getStatus() == ITestResult.FAILURE) {
-            File scrShot = screenshot.getScreenshotAs(OutputType.FILE);
-            File dest = new File(System.getProperty("user.dir") + "\\img\\" + result.getName() + ".jpg");
-            FileUtils.copyFile(scrShot, dest);
-        }
-        driver.quit();
+    public void teardown(ITestResult result) throws IOException, InterruptedException {
+        // take screenshot when test failed
+        common.take_screenshot_when_test_fail(driver, result, "Addons");
+
+        // close all browsers
+//        driver.quit();
     }
 }

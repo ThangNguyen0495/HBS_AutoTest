@@ -656,7 +656,7 @@ public class Step3_Destination_selection extends Delivered_Mail_Page {
             // Next to 最終確認_step
             next_step_button.click();
 
-            if (Mode.equals("Register")) {
+            if (Mode.equals("Create")) {
 
                 // wait for message
                 String text = wait.until(ExpectedConditions.visibilityOf(message)).getText();

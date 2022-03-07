@@ -1,13 +1,14 @@
 package test.Mail;
 
 import org.apache.commons.io.FileUtils;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.testng.ITestResult;
 import org.testng.annotations.*;
-import page.Mail.*;
+import page.Mail.Step1_Basic_Information;
+import page.Mail.Step2_Attachment;
+import page.Mail.Step3_Destination_selection;
+import page.Mail.Step4_Final_confirmation;
 import utilities.Common.Common;
 
 import java.io.File;
@@ -15,7 +16,7 @@ import java.io.IOException;
 
 import static utilities.Link_and_Path.HBS.mail_list_path;
 
-public class Delivered_Mail_Edit {
+public class Edit_Delivered_Mail {
     Common common;
     WebDriver driver;
     Actions key;
@@ -26,13 +27,13 @@ public class Delivered_Mail_Edit {
 
     @BeforeClass
     public void clear_old_test_data_and_error() throws IOException {
-        FileUtils.cleanDirectory(new File(System.getProperty("user.dir") + "\\upload_data"));
-        FileUtils.cleanDirectory(new File(System.getProperty("user.dir") + "\\img"));
+        FileUtils.cleanDirectory(new File(System.getProperty("user.dir") + "\\Test_Data"));
+        FileUtils.cleanDirectory(new File(System.getProperty("user.dir") + "\\img\\Edit_Mail"));
     }
 
     @BeforeMethod
     @Parameters({"headless", "browser_name", "email", "password", "domain", "mail_id", "role", "capacity", "mail_status"})
-    public void init(Boolean headless, String browser_name, String email, String password, String domain, String mail_id, String role, int capacity, String mail_status) throws InterruptedException {
+    public void setup(Boolean headless, String browser_name, String email, String password, String domain, String mail_id, String role, int capacity, String mail_status) throws InterruptedException {
         // Init utilities.Common function
         common = new Common();
 
@@ -46,7 +47,7 @@ public class Delivered_Mail_Edit {
         common.login(driver, domain + mail_list_path + "/" + mail_id, email, password);
 
         // Init Basic information function
-        basicInformation = new Step1_Basic_Information(driver, role, common, domain,mail_id, mail_status, "Edit");
+        basicInformation = new Step1_Basic_Information(driver, role, common, domain, mail_id, mail_status, "Edit");
 
         // Init Attachment function
         attachment = new Step2_Attachment(driver, role, common, domain, capacity, mail_id, mail_status, "Edit");
@@ -235,7 +236,7 @@ public class Delivered_Mail_Edit {
     }
 
     @Test
-    public void TC_16_upload_maximum_capacity_multi_file() throws InterruptedException {
+    public void TC_16_upload_maximum_capacity_multi_file() throws InterruptedException, IOException {
         // Select format
         basicInformation.format();
 
@@ -259,7 +260,7 @@ public class Delivered_Mail_Edit {
     }
 
     @Test
-    public void TC_18_upload_exceed_maximum_capacity_multi_file() throws InterruptedException {
+    public void TC_18_upload_exceed_maximum_capacity_multi_file() throws InterruptedException, IOException {
         // Select format
         basicInformation.format();
 
@@ -1201,15 +1202,11 @@ public class Delivered_Mail_Edit {
     }
 
     @AfterMethod
-    public void teardown(ITestResult result) throws IOException {
-        TakesScreenshot screenshot = ((TakesScreenshot) driver);
+    public void teardown(ITestResult result) throws IOException, InterruptedException {
+        // take screenshot when test failed
+        common.take_screenshot_when_test_fail(driver, result, "Edit_Mail");
 
-        if (result.getStatus() == ITestResult.FAILURE) {
-            File scrShot = screenshot.getScreenshotAs(OutputType.FILE);
-            File dest = new File(System.getProperty("user.dir") + "\\img\\" + result.getName() + ".jpg");
-            FileUtils.copyFile(scrShot, dest);
-        }
-
+        // close all browsers
         driver.quit();
     }
 }

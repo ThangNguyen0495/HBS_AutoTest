@@ -45,7 +45,7 @@ public class Delivered_Mail_Page {
     String mail_id;
     List<String> list_mail_status = List.of("During delivery", "Delivered", "Error");
 
-    // Register Mode
+    // Create Mode
     public Delivered_Mail_Page(WebDriver driver, String role, Common common, String domain, String Mode) {
         this.driver = driver;
         this.role = role;
@@ -58,6 +58,7 @@ public class Delivered_Mail_Page {
         PageFactory.initElements(driver, this);
     }
 
+    // Edit Mode
     public Delivered_Mail_Page(WebDriver driver, String role, Common common, String domain, String mail_id, String mail_status, String Mode) {
         this.driver = driver;
         this.role = role;
@@ -210,6 +211,7 @@ public class Delivered_Mail_Page {
             } else {
                 driver.get(domain + mail_list_path + "/" + mail_id);
             }
+
             // wait for distributor list loading
             sleep(3000);
         }
@@ -217,13 +219,12 @@ public class Delivered_Mail_Page {
 
     public void would_you_like_to_change_this_delivery_email_to_Draft_status_OK() {
         if (common.authorized(role, common.role_list(5))) {
-            if ((Mode.equals("Register")) || (!list_mail_status.contains(mail_status) && (Mode.equals("Edit")))) {
+            if ((Mode.equals("Create")) || (!list_mail_status.contains(mail_status) && (Mode.equals("Edit")))) {
                 // scroll to top page
                 ((JavascriptExecutor) driver).executeScript("window.scrollTo(0, 0)");
 
                 // Click save as draft button
                 key.moveToElement(save_as_draft_button).click().build().perform();
-//        save_as_draft_button.click();
 
                 // Click OK button
                 wait.until(ExpectedConditions.elementToBeClickable(ok_button)).click();
@@ -250,14 +251,13 @@ public class Delivered_Mail_Page {
 
     public void would_you_like_to_change_this_delivery_email_to_Draft_status_Cancel() throws InterruptedException {
         if (common.authorized(role, common.role_list(5))) {
-            if ((Mode.equals("Register")) || (!list_mail_status.contains(mail_status) && (Mode.equals("Edit")))) {
+            if ((Mode.equals("Create")) || (!list_mail_status.contains(mail_status) && (Mode.equals("Edit")))) {
                 // scroll to top page
                 ((JavascriptExecutor) driver).executeScript("window.scrollTo(0, 0)");
 
                 sleep(2000);
                 // Click save as draft button
                 key.moveToElement(save_as_draft_button).click().build().perform();
-//        save_as_draft_button.click();
 
                 // Click cancel button
                 wait.until(ExpectedConditions.elementToBeClickable(cancel_button)).click();

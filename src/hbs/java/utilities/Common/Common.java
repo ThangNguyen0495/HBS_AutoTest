@@ -1,7 +1,10 @@
 package utilities.Common;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
+import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.By;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -11,11 +14,18 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.safari.SafariDriver;
+import org.testng.Assert;
+import org.testng.ITestResult;
 
+import java.io.File;
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
 import static java.lang.Thread.sleep;
+import static utilities.Link_and_Path.HBS.addons_path;
 
 
 public class Common {
@@ -28,6 +38,7 @@ public class Common {
                 FirefoxOptions options = new FirefoxOptions();
                 options.setHeadless(headless);
                 options.addArguments("--disable-gpu");
+//                options.addArguments("--incognito");
                 options.addArguments("--no-sandbox");
                 options.addArguments("--window-size=1280,800");
                 options.addArguments("--disable-dev-shm-usage");
@@ -40,6 +51,7 @@ public class Common {
                 WebDriverManager.edgedriver().setup();
                 EdgeOptions options = new EdgeOptions();
                 options.addArguments("--disable-gpu");
+//                options.addArguments("--incognito");
                 options.addArguments("--no-sandbox");
                 options.addArguments("--window-size=1280,800");
                 options.addArguments("--disable-dev-shm-usage");
@@ -66,6 +78,7 @@ public class Common {
                 ChromeOptions options = new ChromeOptions();
                 options.setHeadless(headless);
                 options.addArguments("--disable-gpu");
+//                options.addArguments("--incognito");
                 options.addArguments("--no-sandbox");
                 options.addArguments("--window-size=1280,800");
                 options.addArguments("--disable-dev-shm-usage");
@@ -87,6 +100,7 @@ public class Common {
         sleep(1000);
 
         driver.get(url);
+        driver.manage().deleteAllCookies();
     }
 
     public Boolean authorized(String role, List<String> role_list) {
@@ -109,5 +123,21 @@ public class Common {
             case 6 -> role_list = List.of("Master", "Administrator", "Responsible person", "Leader", "Member", "Guest");
         }
         return role_list;
+    }
+
+    public String generate_date_time() {
+        LocalDateTime dateTime = LocalDateTime.now();
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss");
+        return dateTimeFormatter.format(dateTime);
+    }
+
+    public void take_screenshot_when_test_fail(WebDriver driver, ITestResult result, String test_result_path) throws IOException, InterruptedException {
+        TakesScreenshot screenshot = ((TakesScreenshot) driver);
+
+        if (result.getStatus() == ITestResult.FAILURE) {
+            File scrShot = screenshot.getScreenshotAs(OutputType.FILE);
+            File dest = new File(System.getProperty("user.dir") + "\\img\\" + test_result_path + "\\" + result.getName() + "_" + generate_date_time() + ".jpg");
+            FileUtils.copyFile(scrShot, dest);
+        }
     }
 }

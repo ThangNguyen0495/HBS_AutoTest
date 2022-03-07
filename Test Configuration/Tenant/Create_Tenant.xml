@@ -1,31 +1,69 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="Create tenant (Process + Validation)">
+<suite name="Automation testing using Selenium + Java">
     <test verbose="2"
-          name="C:/Users/Admin/IdeaProjects/HBS_AutoTest/src/test/java/hidenTest.HBS/CreateTenant.java">
+          name="[HBS] Create tenant (Process + Validation)">
         <classes>
             <class name="test.Tenant.CreateTenant">
                 <methods>
-                    <!-- Descriptions: headless
-                    Headless is "test run" mode,
-                    headless = "true": Run test with non UI mode (Browser will not be opened),
-                    headless = "false": Run test with UI mode (Browser will be opened).
+                    <!--
+                    TEST CONFIGURATION
+                    1. Headless(headless): It is "test run" mode
+                    Value: true, false
+                    Headless = "true": Run test with non UI mode (Browser should not be opened),
+                    Headless = "false": Run test with UI mode (Browser should be opened).
+                    NOTE: Headless mode only supports Chrome and FireFox.
+
+                    2. Browser name(browser_name): It is your browser name.
+                    value: chrome, firefox, edge, ie, safari
+                    You can run it on multiple browsers like Chrome, Firefox, Edge, IE, and Safari.
+
+                    3. Domain(domain):
+                    It is the domain used to run the automation testing.
+
+                    4. Register token Company profile information(register_token_cpi):
+                    Get register_token_cpi steps(for the staging domain, same for the other domain):
+                        - Open the website: "https://stg.app.cmrb.jp/tenant"
+                        - Complete Member information(会員情報) step
+                        - Open the email used to create tenant in previous steps
+                        - Click on the "新規テナント登録" link
+                        - In my case, I get URL is
+                        https://stg.app.cmrb.jp/tenant?auth_token=ImM3MThmMzc3LWRhMGEtNGNjNS04NTQwLTY1ZGUwMTA3ZGU1ZSI:1nPgqm:f1pC9FCFLYH4npAAfj7Ki2B5Zao
+                        => My register_token_cpi is "ImM3MThmMzc3LWRhMGEtNGNjNS04NTQwLTY1ZGUwMTA3ZGU1ZSI:1nPgqm:f1pC9FCFLYH4npAAfj7Ki2B5Zao"
+                     NOTE: Do not complete Company profile information.
+
+                   5. Register token Personal profile information(register_token_ppi):
+                   Get register_token_ppi steps(for the staging domain, same for the other domain)::
+                       - Open the website: "https://stg.app.cmrb.jp/tenant"
+                        - Complete Member information(会員情報) step
+                        - Open the email used to create tenant in previous steps
+                        - Click on the "新規テナント登録" link
+                        - In my case, I get URL is
+                        https://stg.app.cmrb.jp/tenant?auth_token=ImUzYjRhYjkzLTc2ODQtNDVhYy1hNWU0LTI5ZjFhMzIwNThkYSI:1nPgu8:ceBUNKfwW43AfuXlc2hegEpR9ZE
+                        => My register_token_ppi is "ImUzYjRhYjkzLTc2ODQtNDVhYy1hNWU0LTI5ZjFhMzIwNThkYSI:1nPgu8:ceBUNKfwW43AfuXlc2hegEpR9ZE"
+                        - Complete Company profile information step
+                     NOTE: Do not complete Personal profile information.
+
+                     WARNING:
+                        - In No.4 and No.5, you have to create two tenants to get register tokens for each step.
+                        - Please read "TEST CONFIGURATION" to sure your input value is exactly. In case your
+                        configuration incorrect, the automation testing should be not worked or work incorrectly.
                     -->
                     <parameter name="headless" value="true"/>
-<!--                    <parameter name="headless" value="false"/>-->
                     <parameter name="browser_name" value="chrome"/>
+                    <parameter name="domain" value="https://stg.app.cmrb.jp"/>
                     <parameter name="register_token_cpi" value="ImM3MThmMzc3LWRhMGEtNGNjNS04NTQwLTY1ZGUwMTA3ZGU1ZSI:1nPgqm:f1pC9FCFLYH4npAAfj7Ki2B5Zao"/>
                     <parameter name="register_token_ppi" value="ImUzYjRhYjkzLTc2ODQtNDVhYy1hNWU0LTI5ZjFhMzIwNThkYSI:1nPgu8:ceBUNKfwW43AfuXlc2hegEpR9ZE"/>
 
-                    <!-- Descriptions: url
-                    Url is your create tenant link.
+                    <!--
+                    TESTCASE
+                    TC01: Verify that can create tenant
+                    TC02-09: Verify validation of Member information step
+                    TC10-20: Verify validation of Company profile information step
+                    TC21-36: Verify validation of Personal profile information step
+                    NOTE: Payment information step does not have validation
                     -->
-                    <parameter name="domain" value="https://stg.app.cmrb.jp"/>
-
-                    <!-- Create tenant process -->
-<!--                    <include name="TC01_process_create_tenant"/>-->
-
-                    <!-- Validation of Member information tab -->
+                    <include name="TC01_process_create_tenant"/>
                     <include name="TC02_leave_all_blank_member_information"/>
                     <include name="TC03_email_password_and_confirm_password_contains_full_width_characters"/>
                     <include name="TC04_email_contains_space_characters"/>
@@ -34,11 +72,6 @@
                     <include name="TC07_password_and_confirm_password_exceed_50_half_width_characters"/>
                     <include name="TC08_password_and_confirm_password_does_not_match"/>
                     <include name="TC09_password_and_confirm_password_does_not_mix_alphanumerical_characters"/>
-
-                    <!-- Validation of Company profile information tab -->
-                    <!-- Descriptions: url_cpi
-                    url_cpi is your company profile information tab link.
-                    -->
                     <include name="TC10_leave_all_blank_company_profile_information"/>
                     <include name="TC11_company_name_exceed_100_half_width_characters"/>
                     <include name="TC12_company_name_exceed_100_full_width_characters"/>
@@ -50,11 +83,6 @@
                     <include name="TC18_url_exceed_50_full_width_characters"/>
                     <include name="TC19_url_exceed_mix_50_half_and_full_width_characters"/>
                     <include name="TC20_capital_exceed_13_half_width_characters"/>
-
-                    <!-- Validation of Personal profile information tab -->
-                    <!-- Descriptions: url_ppi
-                    url_ppi is your personal profile information tab link.
-                    -->
                     <include name="TC21_leave_username_blank_personal_profile_information"/>
                     <include name="TC22_username_exceed_50_half_width_characters"/>
                     <include name="TC23_username_exceed_50_full_width_characters"/>

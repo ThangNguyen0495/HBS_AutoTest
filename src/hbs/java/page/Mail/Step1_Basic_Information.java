@@ -164,7 +164,7 @@ public class Step1_Basic_Information extends Delivered_Mail_Page {
             next_step_button.click();
 
             // check message in case register mail
-            if (Mode.equals("Register")) {
+            if (Mode.equals("Create")) {
                 String text = wait.until(ExpectedConditions.visibilityOf(message)).getText();
                 wait.until(ExpectedConditions.invisibilityOf(message));
                 soft.assertEquals(text, "アイテムが作成されました", "[Failed][Basic Information] Message do not match.");

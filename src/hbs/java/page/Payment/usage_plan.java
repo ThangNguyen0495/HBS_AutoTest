@@ -203,7 +203,7 @@ public class usage_plan extends payment {
         // Get current information (number of users and additional purcharse)
         List<Integer> current_information = get_current_information();
 
-        if (current_information.get(1) != 0) {
+
             // Click add upper limit button
             remove_upper_limit_button.click();
 
@@ -214,6 +214,7 @@ public class usage_plan extends payment {
             String message_text = wait.until(ExpectedConditions.visibilityOf(message)).getText();
             wait.until(ExpectedConditions.invisibilityOf(message));
 
+        if (current_information.get(1) != 0) {
             // Get current information after add upper limit
             List<Integer> new_information = get_current_information();
 
@@ -230,11 +231,9 @@ public class usage_plan extends payment {
             soft.assertEquals(receipt.get(0), current_receipt_id, "[Failed][page.Payment history] New receipt id has been found => Can not remove upper limit.");
         } else {
             // Additional purchase = 0. Can not removed upper limit
-//            soft.assertEquals(message_text, "ユーザー登録上限数の削除に失敗しました。", "[Failed][Additional purchase = 0] Message do not match.");
-            sleep(1000);
-            soft.assertFalse(remove_upper_limit_button_disable.isEnabled(), "[Failed] Remove upper limit button is not getting disable.");
+            soft.assertEquals(message_text, "ユーザー登録上限数の削除に失敗しました。", "[Failed][Additional purchase = 0] Message do not match.");
         }
-        // Show all assert
+        // Show all assert result
         soft.assertAll();
     }
 }

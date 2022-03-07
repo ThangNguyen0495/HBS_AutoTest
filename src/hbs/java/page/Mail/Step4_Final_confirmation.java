@@ -115,7 +115,7 @@ public class Step4_Final_confirmation extends Delivered_Mail_Page {
     public void open_delivery_time_setting_popup() throws InterruptedException {
         // Master, Administrator, Responsible person, Leader, Member
         if (common.authorized(role, common.role_list(5))) {
-            if ((Mode.equals("Register")) || (!list_mail_status.contains(mail_status) && (Mode.equals("Edit")))) {
+            if ((Mode.equals("Create")) || (!list_mail_status.contains(mail_status) && (Mode.equals("Edit")))) {
                 // Click Time selection button
                 sleep(3000);
                 time_selection.click();
@@ -132,7 +132,7 @@ public class Step4_Final_confirmation extends Delivered_Mail_Page {
     public void select_date() {
         // Master, Administrator, Responsible person, Leader, Member
         if (common.authorized(role, common.role_list(5))) {
-            if ((Mode.equals("Register")) || (!list_mail_status.contains(mail_status) && (Mode.equals("Edit")))) {
+            if ((Mode.equals("Create")) || (!list_mail_status.contains(mail_status) && (Mode.equals("Edit")))) {
                 // Date
                 wait.until(ExpectedConditions.visibilityOf(date)).click();
                 current_id = date_id();
@@ -144,7 +144,7 @@ public class Step4_Final_confirmation extends Delivered_Mail_Page {
     public void select_time_and_select_again_when_time_incorrect() throws InterruptedException {
         // Master, Administrator, Responsible person, Leader, Member
         if (common.authorized(role, common.role_list(5))) {
-            if ((Mode.equals("Register")) || (!list_mail_status.contains(mail_status) && (Mode.equals("Edit")))) {
+            if ((Mode.equals("Create")) || (!list_mail_status.contains(mail_status) && (Mode.equals("Edit")))) {
                 // Time
                 ((JavascriptExecutor) driver).executeScript("arguments[0].removeAttribute('readonly',0);", time);
                 int new_min = LocalTime.now().getMinute();

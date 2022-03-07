@@ -19,7 +19,7 @@ import java.io.IOException;
 import static utilities.Link_and_Path.HBS.mail_list_path;
 import static utilities.Link_and_Path.HBS.register_path;
 
-public class Delivered_Mail_Register {
+public class Create_Delivered_Mail {
     Common common;
     WebDriver driver;
     Actions key;
@@ -30,13 +30,13 @@ public class Delivered_Mail_Register {
 
     @BeforeClass
     public void clear_old_test_data_and_error() throws IOException {
-        FileUtils.cleanDirectory(new File(System.getProperty("user.dir") + "\\upload_data"));
-        FileUtils.cleanDirectory(new File(System.getProperty("user.dir") + "\\img"));
+        FileUtils.cleanDirectory(new File(System.getProperty("user.dir") + "\\Test_Data"));
+        FileUtils.cleanDirectory(new File(System.getProperty("user.dir") + "\\img\\Create_Mail"));
     }
 
     @BeforeMethod
     @Parameters({"headless", "browser_name", "email", "password", "domain", "role", "capacity"})
-    public void init(Boolean headless, String browser_name, String email, String password, String domain, String role, int capacity) throws InterruptedException {
+    public void setup(Boolean headless, String browser_name, String email, String password, String domain, String role, int capacity) throws InterruptedException {
         // Init utilities.Common function
         common = new Common();
 
@@ -50,16 +50,16 @@ public class Delivered_Mail_Register {
         common.login(driver, domain + mail_list_path + register_path, email, password);
 
         // Init Basic information function
-        basicInformation = new Step1_Basic_Information(driver, role, common, domain, "Register");
+        basicInformation = new Step1_Basic_Information(driver, role, common, domain, "Create");
 
         // Init Attachment function
-        attachment = new Step2_Attachment(driver, role, common, domain, capacity, "Register");
+        attachment = new Step2_Attachment(driver, role, common, domain, capacity, "Create");
 
         // Init Destination selection function
-        destinationSearch = new Step3_Destination_selection(driver, role, common, domain, "Register");
+        destinationSearch = new Step3_Destination_selection(driver, role, common, domain, "Create");
 
         // Init Final confirmation function
-        finalConfirmation = new Step4_Final_confirmation(driver, role, common, domain, "Register");
+        finalConfirmation = new Step4_Final_confirmation(driver, role, common, domain, "Create");
     }
 
     @Test(priority = 1)
@@ -303,7 +303,7 @@ public class Delivered_Mail_Register {
     }
 
     @Test(priority = 16)
-    public void TC_16_upload_maximum_capacity_multi_file() throws InterruptedException {
+    public void TC_16_upload_maximum_capacity_multi_file() throws InterruptedException, IOException {
         // Format
         basicInformation.format();
 
@@ -339,7 +339,7 @@ public class Delivered_Mail_Register {
     }
 
     @Test(priority = 18)
-    public void TC_18_upload_exceed_maximum_capacity_multi_file() throws InterruptedException {
+    public void TC_18_upload_exceed_maximum_capacity_multi_file() throws InterruptedException, IOException {
         // Format
         basicInformation.format();
 
@@ -1508,15 +1508,11 @@ public class Delivered_Mail_Register {
     }
 
     @AfterMethod
-    public void teardown(ITestResult result) throws IOException {
-        TakesScreenshot screenshot = ((TakesScreenshot) driver);
+    public void teardown(ITestResult result) throws IOException, InterruptedException {
+        // take screenshot when test failed
+        common.take_screenshot_when_test_fail(driver, result, "Create_Mail");
 
-        if (result.getStatus() == ITestResult.FAILURE) {
-            File scrShot = screenshot.getScreenshotAs(OutputType.FILE);
-            File dest = new File(System.getProperty("user.dir") + "\\img\\" + result.getName() + ".jpg");
-            FileUtils.copyFile(scrShot, dest);
-        }
-
+        // close all browsers
         driver.quit();
     }
 }

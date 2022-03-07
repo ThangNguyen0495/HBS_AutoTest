@@ -1,14 +1,17 @@
 package test.Tenant;
 
+import org.apache.commons.io.FileUtils;
+import org.testng.ITestResult;
+import org.testng.annotations.*;
 import utilities.Common.Common;
 import org.openqa.selenium.WebDriver;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Parameters;
-import org.testng.annotations.Test;
 import page.Tenant.Step2_Company_profile_information;
 import page.Tenant.Step1_Member_information;
 import page.Tenant.Step4_Payment_information;
 import page.Tenant.Step3_Personal_profile_information;
+
+import java.io.File;
+import java.io.IOException;
 
 public class CreateTenant {
     Common common;
@@ -18,9 +21,15 @@ public class CreateTenant {
     Step3_Personal_profile_information personalProfileInformation;
     Step4_Payment_information paymentInformation;
 
-    @BeforeMethod()
+    @BeforeClass
+    public void clear_old_test_error() throws IOException {
+        FileUtils.cleanDirectory(new File(System.getProperty("user.dir") + "\\upload_data"));
+        FileUtils.cleanDirectory(new File(System.getProperty("user.dir") + "\\img\\Create_Tenant"));
+    }
+
+    @BeforeMethod
     @Parameters({"headless", "browser_name", "domain", "register_token_cpi", "register_token_ppi"})
-    public void init(Boolean headless, String browser_name, String domain, String register_token_cpi, String register_token_ppi) {
+    public void setup(Boolean headless, String browser_name, String domain, String register_token_cpi, String register_token_ppi) {
         // Init utilities.Common function
         common = new Common();
 
@@ -163,12 +172,9 @@ public class CreateTenant {
 
         // Complete tenant registration
         paymentInformation.complete_tenant_registration();
-
-        // Close browser
-        driver.close();
     }
 
-    @Test(priority = 1)
+    @Test
     public void TC02_leave_all_blank_member_information() throws InterruptedException {
         // Link to Create tenant - Member information tab
         memberInformation.link_to_member_information();
@@ -181,12 +187,9 @@ public class CreateTenant {
 
         // Leave confirm password blank and verify message
         memberInformation.leave_confirm_password_blank();
-
-        // Close browser
-        driver.close();
     }
 
-    @Test(priority = 2)
+    @Test
     public void TC03_email_password_and_confirm_password_contains_full_width_characters() throws InterruptedException {
         // Link to Create tenant - Member information tab
         memberInformation.link_to_member_information();
@@ -199,36 +202,27 @@ public class CreateTenant {
 
         // Input confirm password contains full width characters and verify message
         memberInformation.confirm_password_contains_full_width_characters();
-
-        // Close browser
-        driver.close();
     }
 
-    @Test(priority = 2)
+    @Test
     public void TC04_email_contains_space_characters() throws InterruptedException {
         // Link to Create tenant - Member information tab
         memberInformation.link_to_member_information();
 
         // Input email contains space characters and verify message
         memberInformation.email_contains_space_characters();
-
-        // Close browser
-        driver.close();
     }
 
-    @Test(priority = 4)
+    @Test
     public void TC05_email_exceed_100_half_width_characters() throws InterruptedException {
         // Link to Create tenant - Member information tab
         memberInformation.link_to_member_information();
 
         // Input email exceed 100 half width characters and verify message
         memberInformation.email_exceed_100_half_width_characters();
-
-        // Close browser
-        driver.close();
     }
 
-    @Test(priority = 5)
+    @Test
     public void TC06_password_and_confirm_password_less_than_10_half_width_characters() throws InterruptedException {
         // Link to Create tenant - Member information tab
         memberInformation.link_to_member_information();
@@ -238,12 +232,9 @@ public class CreateTenant {
 
         // Input confirm password less than 8 half width characters and verify message
         memberInformation.confirm_password_less_than_10_half_width_characters();
-
-        // Close browser
-        driver.close();
     }
 
-    @Test(priority = 6)
+    @Test
     public void TC07_password_and_confirm_password_exceed_50_half_width_characters() throws InterruptedException {
         // Link to Create tenant - Member information tab
         memberInformation.link_to_member_information();
@@ -253,37 +244,28 @@ public class CreateTenant {
 
         // Input confirm password exceed 50 half width characters and verify message
         memberInformation.confirm_password_exceed_50_half_width_characters();
-
-        // Close browser
-        driver.close();
     }
 
-    @Test(priority = 7)
+    @Test
     public void TC08_password_and_confirm_password_does_not_match() throws InterruptedException {
         // Link to Create tenant - Member information tab
         memberInformation.link_to_member_information();
 
         // Input password, confirm password does not match and verify message
         memberInformation.password_and_confirm_password_does_not_match();
-
-        // Close browser
-        driver.close();
     }
 
-    @Test(priority = 8)
+    @Test
     public void TC09_password_and_confirm_password_does_not_mix_alphanumerical_characters() throws InterruptedException {
         // Link to Create tenant - Member information tab
         memberInformation.link_to_member_information();
 
         // Input password, confirm password not mix alphanumerical half width characters and verify message
         memberInformation.password_and_confirm_password_does_not_mix_alphanumerical_characters();
-
-        // Close browser
-        driver.close();
     }
 
 
-    @Test(priority = 9)
+    @Test
     public void TC10_leave_all_blank_company_profile_information() throws InterruptedException {
         // Link to Create tenant - Company profile information tab
         companyProfileInformation.link_to_company_profile_information();
@@ -302,321 +284,249 @@ public class CreateTenant {
 
         // Leave capital and verify message
         companyProfileInformation.leave_capital_blank();
-
-        // Close browser
-        driver.close();
     }
 
-    @Test(priority = 10)
+    @Test
     public void TC11_company_name_exceed_100_half_width_characters() throws InterruptedException {
         // Link to Create tenant - Company profile information tab
         companyProfileInformation.link_to_company_profile_information();
 
         // Input company name exceed 100 half width characters and verify message
         companyProfileInformation.company_name_exceed_100_half_width_characters();
-
-        // Close browser
-        driver.close();
     }
 
-    @Test(priority = 11)
+    @Test
     public void TC12_company_name_exceed_100_full_width_characters() throws InterruptedException {
         // Link to Create tenant - Company profile information tab
         companyProfileInformation.link_to_company_profile_information();
 
         // Input company name exceed 100 full width characters and verify message
         companyProfileInformation.company_name_exceed_100_full_width_characters();
-
-        // Close browser
-        driver.close();
     }
 
-    @Test(priority = 12)
+    @Test
     public void TC13_company_name_exceed_mix_100_half_and_full_width_characters() throws InterruptedException {
         // Link to Create tenant - Company profile information tab
         companyProfileInformation.link_to_company_profile_information();
 
         // Input company name exceed mix 100 half, full width characters and verify message
         companyProfileInformation.company_name_exceed_mix_100_half_and_full_width_characters();
-
-        // Close browser
-        driver.close();
     }
 
-    @Test(priority = 13)
+    @Test
     public void TC14_address_exceed_100_half_width_characters() throws InterruptedException {
         // Link to Create tenant - Company profile information tab
         companyProfileInformation.link_to_company_profile_information();
 
         // Input address exceed 100 half width characters and verify message
         companyProfileInformation.address_exceed_100_half_width_characters();
-
-        // Close browser
-        driver.close();
     }
 
-    @Test(priority = 14)
+    @Test
     public void TC15_address_exceed_100_full_width_characters() throws InterruptedException {
         // Link to Create tenant - Company profile information tab
         companyProfileInformation.link_to_company_profile_information();
 
         // Input address exceed 100 full width characters and verify message
         companyProfileInformation.address_exceed_100_full_width_characters();
-
-        // Close browser
-        driver.close();
     }
 
-    @Test(priority = 15)
+    @Test
     public void TC16_address_exceed_mix_100_half_and_and_full_width_characters() throws InterruptedException {
         // Link to Create tenant - Company profile information tab
         companyProfileInformation.link_to_company_profile_information();
 
         // Input address exceed 100 mix half, full width characters and verify message
         companyProfileInformation.address_exceed_mix_100_half_and_and_full_width_characters();
-
-        // Close browser
-        driver.close();
     }
 
-    @Test(priority = 16)
+    @Test
     public void TC17_domain_exceed_50_half_width_characters() throws InterruptedException {
         // Link to Create tenant - Company profile information tab
         companyProfileInformation.link_to_company_profile_information();
 
         // Input domain exceed 50 half width characters and verify message
         companyProfileInformation.url_exceed_50_half_width_characters();
-
-        // Close browser
-        driver.close();
     }
 
-    @Test(priority = 17)
+    @Test
     public void TC18_domain_exceed_50_full_width_characters() throws InterruptedException {
         // Link to Create tenant - Company profile information tab
         companyProfileInformation.link_to_company_profile_information();
 
         // Input domain exceed 50 full width characters and verify message
         companyProfileInformation.url_exceed_50_full_width_characters();
-
-        // Close browser
-        driver.close();
     }
 
-    @Test(priority = 18)
+    @Test
     public void TC19_domain_exceed_mix_50_half_and_full_width_characters() throws InterruptedException {
         // Link to Create tenant - Company profile information tab
         companyProfileInformation.link_to_company_profile_information();
 
         // Input domain exceed mix 50 half, full width characters and verify message
         companyProfileInformation.url_exceed_mix_50_half_and_full_width_characters();
-
-        // Close browser
-        driver.close();
     }
     
-    @Test(priority = 19)
+    @Test
     public void TC20_capital_exceed_13_half_width_characters() throws InterruptedException {
         // Link to Create tenant - Company profile information tab
         companyProfileInformation.link_to_company_profile_information();
 
         // Input company name exceed 100 half width characters and verify message
         companyProfileInformation.capital_exceed_13_half_width_characters();
-
-        // Close browser
-        driver.close();
     }
 
-    @Test(priority = 20)
+    @Test
     public void TC21_leave_username_blank_personal_profile_information() throws InterruptedException {
         // Link to Create tenant - Personal profile information tab
         personalProfileInformation.link_to_personal_profile_information();
 
         // Leave username blank and verify message
         personalProfileInformation.leave_username_blank();
-
-        // Close browser
-        driver.close();
     }
 
-    @Test(priority = 21)
+    @Test
     public void TC22_username_exceed_50_half_width_characters() throws InterruptedException {
         // Link to Create tenant - Personal profile information tab
         personalProfileInformation.link_to_personal_profile_information();
 
         // Input username exceed 50 half width characters and verify message
         personalProfileInformation.username_exceed_50_half_width_characters();
-
-        // Close browser
-        driver.close();
     }
 
-    @Test(priority = 22)
+    @Test
     public void TC23_username_exceed_50_full_width_characters() throws InterruptedException {
         // Link to Create tenant - Personal profile information tab
         personalProfileInformation.link_to_personal_profile_information();
 
         // Input username exceed 50 full width characters and verify message
         personalProfileInformation.username_exceed_50_full_width_characters();
-
-        // Close browser
-        driver.close();
     }
 
-    @Test(priority = 23)
+    @Test
     public void TC24_username_exceed_mix_50_half_and_full_width_characters() throws InterruptedException {
         // Link to Create tenant - Personal profile information tab
         personalProfileInformation.link_to_personal_profile_information();
 
         // Input username exceed mix 50 half and full width characters and verify message
         personalProfileInformation.username_exceed_mix_50_half_and_full_width_characters();
-
-        // Close browser
-        driver.close();
     }
 
-    @Test(priority = 24)
+    @Test
     public void TC25_username_contains_space_characters() throws InterruptedException {
         // Link to Create tenant - Personal profile information tab
         personalProfileInformation.link_to_personal_profile_information();
 
         // Input username contains space half width characters and verify message
         personalProfileInformation.username_contains_space_characters();
-
-        // Close browser
-        driver.close();
     }
 
-    @Test(priority = 25)
+    @Test
     public void TC26_do_not_fill_in_all_tel_fields() throws InterruptedException {
         // Link to Create tenant - Personal profile information tab
         personalProfileInformation.link_to_personal_profile_information();
 
         // Do not fill in all tel fields and verify message
         personalProfileInformation.do_not_fill_in_all_tel_fields();
-
-        // Close browser
-        driver.close();
     }
 
-    @Test(priority = 26)
+    @Test
     public void TC27_tel_exceed_15_half_width_characters() throws InterruptedException {
         // Link to Create tenant - Personal profile information tab
         personalProfileInformation.link_to_personal_profile_information();
 
         // Input TEL exceed 50 half width characters and verify message
         personalProfileInformation.tel_exceed_15_half_width_characters();
-
-        // Close browser
-        driver.close();
     }
 
-    @Test(priority = 27)
+    @Test
     public void TC28_tel_contains_full_width_characters() throws InterruptedException {
         // Link to Create tenant - Personal profile information tab
         personalProfileInformation.link_to_personal_profile_information();
 
         // Input TEL contains full width half width characters and verify message
         personalProfileInformation.tel_contains_full_width_characters();
-
-        // Close browser
-        driver.close();
     }
 
-    @Test(priority = 28)
+    @Test
     public void TC29_tel_contains_letter_characters() throws InterruptedException {
         // Link to Create tenant - Personal profile information tab
         personalProfileInformation.link_to_personal_profile_information();
 
         // Input TEL contains letters half width characters and verify message
         personalProfileInformation.tel_contains_letter_characters();
-
-        // Close browser
-        driver.close();
     }
 
-    @Test(priority = 29)
+    @Test
     public void TC30_password_less_than_10_half_width_characters() throws InterruptedException {
         // Link to Create tenant - Personal profile information tab
         personalProfileInformation.link_to_personal_profile_information();
 
         // Input password less than 10 half width characters and verify message
         personalProfileInformation.password_less_than_10_half_width_characters();
-
-        // Close browser
-        driver.close();
     }
 
-    @Test(priority = 30)
+    @Test
     public void TC31_password_exceed_50_half_width_characters() throws InterruptedException {
         // Link to Create tenant - Personal profile information tab
         personalProfileInformation.link_to_personal_profile_information();
 
         // Input password exceed 50 half width characters and verify message
         personalProfileInformation.password_exceed_50_half_width_characters();
-
-        // Close browser
-        driver.close();
     }
 
-    @Test(priority = 31)
+    @Test
     public void TC32_password_do_not_mix_alphanumerical_characters() throws InterruptedException {
         // Link to Create tenant - Personal profile information tab
         personalProfileInformation.link_to_personal_profile_information();
 
         // Input password not mix alphanumerical half width characters and verify message
         personalProfileInformation.password_do_not_mix_alphanumerical_characters();
-
-        // Close browser
-        driver.close();
     }
 
-    @Test(priority = 32)
+    @Test
     public void TC33_password_contains_full_width_characters() throws InterruptedException {
         // Link to Create tenant - Personal profile information tab
         personalProfileInformation.link_to_personal_profile_information();
 
         // Input password not mix alphanumerical half width characters and verify message
         personalProfileInformation.password_contains_full_width_characters();
-
-        // Close browser
-        driver.close();
     }
 
-    @Test(priority = 33)
+    @Test
     public void TC34_email_signature_exceed_1000_half_width_characters() throws InterruptedException {
         // Link to Create tenant - Personal profile information tab
         personalProfileInformation.link_to_personal_profile_information();
 
         // Input email signature exceed 1000 half width characters and verify message
         personalProfileInformation.email_signature_exceed_1000_half_width_characters();
-
-        // Close browser
-        driver.close();
     }
 
-    @Test(priority = 34)
+    @Test
     public void TC35_email_signature_exceed_1000_full_width_characters() throws InterruptedException {
         // Link to Create tenant - Personal profile information tab
         personalProfileInformation.link_to_personal_profile_information();
 
         // Input email signature exceed 1000 full width characters and verify message
         personalProfileInformation.email_signature_exceed_1000_full_width_characters();
-
-        // Close browser
-        driver.close();
     }
 
 
-    @Test(priority = 35)
+    @Test
     public void TC36_email_signature_exceed_1000_half_width_characters() throws InterruptedException {
         // Link to Create tenant - Personal profile information tab
         personalProfileInformation.link_to_personal_profile_information();
 
         // Input email signature exceed mix 1000 half and full width characters and verify message
         personalProfileInformation.email_signature_exceed_mix_1000_half_and_full_width_characters();
+    }
 
-        // Close browser
-        driver.close();
+    @AfterMethod
+    public void teardown(ITestResult result) throws IOException, InterruptedException {
+        // take screenshot when test failed
+        common.take_screenshot_when_test_fail(driver, result, "Create_Tenant");
+
+        // close all browsers
+        driver.quit();
     }
 }

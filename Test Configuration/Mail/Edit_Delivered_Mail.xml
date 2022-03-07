@@ -1,26 +1,70 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="All Test Suite">
+<suite name="Automation testing using Selenium + Java">
     <test verbose="2"
-          name="Basic Information">
+          name="[HBS] Edit Delivered Mail(Process + Validation)">
         <classes>
-            <class name="test.Mail.Delivered_Mail_Edit">
+            <class name="test.Mail.Edit_Delivered_Mail">
                 <methods>
+                    <!--
+                    TEST CONFIGURATION
+                    1. Headless(headless): It is "test run" mode
+                    Value: true, false
+                    Headless = "true": Run test with non UI mode (Browser should not be opened),
+                    Headless = "false": Run test with UI mode (Browser should be opened).
+                    NOTE: Headless mode only supports Chrome and FireFox.
+
+                    2. Browser name(browser_name): It is your browser name.
+                    Value: chrome, firefox, edge, ie, safari
+                    You can run it on multiple browsers like Chrome, Firefox, Edge, IE, and Safari.
+
+                    3. Domain(domain):
+                    It is the domain used to run the automation testing.
+
+                    4. Email(email), Password(password), Role(role)
+                    Email and Password: the account used to run the automation testing
+                    Role: It is the role of the account
+                    Role's value: Master, Administrator, Responsible person, Leader, Member, Guest
+
+                    5. Mail ID (mail_id) and Mail Status(mail_status)
+                    Get mail_id and mail status(for the staging domain, same for the other domain):
+                        - Open the website: "https://stg.app.cmrb.jp/login"
+                        - Input valid email, password and click on "ログイン" button
+                        - After login, navigate to the URL: "https://stg.app.cmrb.jp/scheduledMails"
+                        - Get mail_status at Delivery status(配信ステータス) column
+                        (mail_status value: Draft, Waiting for delivery, During delivery, Delivered, Error)
+                        - Open your delivery mail
+                        - In my case, I get URL is
+                        https://stg.app.cmrb.jp/scheduledMails/de088e50-a9ed-40af-a752-87435f1373c8
+                        => My mail_id is de088e50-a9ed-40af-a752-87435f1373c8
+                    NOTE: mail_id and mail_status information must be of the same email.
+
+                    6. Capacity(capacity):
+                    It is the maximum size of attachments for delivered emails.
+
+                     WARNING:
+                        - Please read "TEST CONFIGURATION" to sure your input value is exactly. In case your
+                        configuration incorrect, the automation testing should be not worked or work incorrectly.
+                    -->
                     <parameter name="headless" value="true"/>
-<!--                    <parameter name="headless" value="false"/>-->
                     <parameter name="browser_name" value="chrome"/>
-<!--                    <parameter name="email" value="eddklgutyiqtzbublzczamvsjpvbbzixkhollgdemweqbkxwsqkarifyqsnquxsjmekabzjhyvrgx@bedul.net"/>-->
-<!--                    <parameter name="password" value="SwZMd9tT0b9UKP6DQgOpH8utukYnm@"/>-->
+                    <parameter name="domain" value="https://stg.app.cmrb.jp"/>
                     <parameter name="email" value="test1@cmc.vn"/>
                     <parameter name="password" value="TestCMC@123"/>
                     <parameter name="role" value="Member"/>
-                    <parameter name="domain" value="https://stg.app.cmrb.jp"/>
-                    <parameter name="mail_id" value="0ec66c9c-d3eb-4a0a-8512-960836d0781e"/>
-                    <parameter name="mail_status" value="Delivered"/>
+                    <parameter name="mail_id" value="de088e50-a9ed-40af-a752-87435f1373c8"/>
+                    <parameter name="mail_status" value="Draft"/>
                     <parameter name="capacity" value="2"/>
 
+                    <!--
+                    TESTCASE
+                    TC01: Verify that can edit delivery email
+                    TC02-14: Verify validation and other functions (delete, make a copy, save as draft, ...) of Basic information step
+                    TC15-24: Verify validation and other functions (delete, make a copy, save as draft, ...) of Attachment step
+                    TC25-59: Verify validation and other functions (delete, make a copy, save as draft, ...) of Destination search step
+                    TC60-68: Verify validation and other functions (delete, make a copy, save as draft, ...) of Final confirmation step
+                    -->
                     <include name="TC01_process_edit_mail"/>
-
                     <include name="TC_02_leave_all_blank_basic_information"/>
                     <include name="TC_03_subject_exceed_100_half_width_characters"/>
                     <include name="TC_04_subject_exceed_100_full_width_characters"/>
@@ -28,28 +72,22 @@
                     <include name="TC_06_insertion_exceed_10000_half_width_characters"/>
                     <include name="TC_07_insertion_exceed_5000_full_width_characters"/>
                     <include name="TC_08_insertion_exceed_5000_mix_half_and_full_width_characters"/>
-
                     <include name="TC_09_update_delivery_with_valid_data_basic_information"/>
                     <include name="TC_10_make_a_copy_basic_information"/>
                     <include name="TC_11_would_you_like_to_change_this_delivery_email_to_Draft_status_Cancel_basic_information"/>
                     <include name="TC_12_would_you_like_to_change_this_delivery_email_to_Draft_status_OK_basic_information"/>
                     <include name="TC_13_do_you_want_to_delete_this_delivered_email_Cancel_basic_information"/>
                     <include name="TC_14_do_you_want_to_delete_this_delivered_email_OK_basic_information"/>
-
-
                     <include name="TC_15_upload_maximum_capacity_1_file"/>
                     <include name="TC_16_upload_maximum_capacity_multi_file"/>
                     <include name="TC_17_upload_exceed_maximum_capacity_1_file"/>
                     <include name="TC_18_upload_exceed_maximum_capacity_multi_file"/>
-
                     <include name="TC_19_update_delivery_with_valid_data_attachment"/>
-
                     <include name="TC_20_make_a_copy_attachment"/>
                     <include name="TC_21_would_you_like_to_change_this_delivery_email_to_Draft_status_Cancel_attachment"/>
                     <include name="TC_22_would_you_like_to_change_this_delivery_email_to_Draft_status_OK_attachment"/>
                     <include name="TC_23_do_you_want_to_delete_this_delivered_email_Cancel_attachment"/>
                     <include name="TC_24_do_you_want_to_delete_this_delivered_email_OK_attachment"/>
-
                     <include name="TC_25_deliver_the_matter_do_not_select_condition"/>
                     <include name="TC_26_deliver_the_matter_only_select_delivery_occupation_development"/>
                     <include name="TC_27_deliver_the_matter_only_select_delivery_occupation_infrastructure"/>
@@ -64,16 +102,12 @@
                     <include name="TC_36_do_not_select_compatibility"/>
                     <include name="TC_37_do_not_select_tag"/>
                     <include name="TC_38_select_exceeds_5_tags"/>
-
                     <include name="TC_39_update_delivery_with_valid_data_destination_selection"/>
-
                     <include name="TC_40_make_a_copy_destination_selection" />
                     <include name="TC_41_would_you_like_to_change_this_delivery_email_to_Draft_status_Cancel_destination_selection" />
                     <include name="TC_42_would_you_like_to_change_this_delivery_email_to_Draft_status_OK_destination_selection" />
                     <include name="TC_43_do_you_want_to_delete_this_delivered_email_Cancel_destination_selection" />
                     <include name="TC_44_do_you_want_to_delete_this_delivered_email_OK_destination_selection" />
-
-
                     <include name="TC_45_back_to_basic_information_from_destination_selection" />
                     <include name="TC_46_back_to_attachment_from_destination_selection" />
                     <include name="TC_47_leave_search_template_name_blank" />
@@ -89,18 +123,15 @@
                     <include name="TC_57_reset_search_criteria" />
                     <include name="TC_58_link_to_partner_PIC_edit_from_destination_selection" />
                     <include name="TC_59_pagination_destination_selection" />
-
                     <include name="TC_60_update_delivery_with_valid_data_final_confirmation" />
                     <include name="TC_61_make_a_copy_final_confirmation" />
                     <include name="TC_62_would_you_like_to_change_this_delivery_email_to_Draft_status_Cancel_final_confirmation" />
                     <include name="TC_63_would_you_like_to_change_this_delivery_email_to_Draft_status_OK_final_confirmation" />
                     <include name="TC_64_do_you_want_to_delete_this_delivered_email_Cancel_final_confirmation" />
                     <include name="TC_65_do_you_want_to_delete_this_delivered_email_OK_final_confirmation" />
-
                     <include name="TC_66_back_to_destination_selection_from_final_confirmation" />
                     <include name="TC_67_back_to_attachment_from_final_confirmation" />
                     <include name="TC_68_back_to_basic_information_from_final_confirmation" />
-
                 </methods>
             </class>
         </classes>
