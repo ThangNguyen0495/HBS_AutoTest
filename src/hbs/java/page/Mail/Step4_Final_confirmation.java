@@ -124,7 +124,6 @@ public class Step4_Final_confirmation extends Delivered_Mail_Page {
                 sleep(3000);
                 boolean check = time_selection.isEnabled();
                 soft.assertFalse(check, "[Time selection][Failed] Time selection button is not disabled.");
-                System.out.println("IT'S OK");
                 soft.assertAll();
             }
         }
