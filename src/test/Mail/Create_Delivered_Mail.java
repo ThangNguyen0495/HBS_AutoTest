@@ -1,8 +1,6 @@
 package test.Mail;
 
 import org.apache.commons.io.FileUtils;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.testng.ITestResult;
@@ -30,13 +28,17 @@ public class Create_Delivered_Mail {
 
     @BeforeClass
     public void clear_old_test_data_and_error() throws IOException {
-        FileUtils.cleanDirectory(new File(System.getProperty("user.dir") + "\\Test_Data"));
+        try {
+            FileUtils.cleanDirectory(new File(System.getProperty("user.dir") + "\\Test_Data"));
+        } catch (IOException ex) {
+            // nothing
+        }
         FileUtils.cleanDirectory(new File(System.getProperty("user.dir") + "\\img\\Create_Mail"));
     }
 
     @BeforeMethod
     @Parameters({"headless", "browser_name", "email", "password", "domain", "role", "capacity"})
-    public void setup(Boolean headless, String browser_name, String email, String password, String domain, String role, int capacity) throws InterruptedException {
+    public void setup(String headless, String browser_name, String email, String password, String domain, String role, int capacity) throws InterruptedException {
         // Init utilities.Common function
         common = new Common();
 
@@ -95,7 +97,7 @@ public class Create_Delivered_Mail {
         destinationSearch.delivery_information();
 
         // Commitment
-//        destinationSearch.commitment();
+        destinationSearch.commitment();
 
         // Search
         destinationSearch.search_contact_by_condition();
@@ -119,7 +121,7 @@ public class Create_Delivered_Mail {
     }
 
     @Test(priority = 2)
-    public void TC_02_leave_all_blank_basic_information() {
+    public void TC_02_leave_all_blank_basic_information() throws InterruptedException {
         // Leave distributor blank and verify error message
         basicInformation.leave_distributor_blank();
 
@@ -1176,7 +1178,7 @@ public class Create_Delivered_Mail {
         destinationSearch.delivery_information();
 
         // Commitment
-//        destinationSearch.commitment();
+        destinationSearch.commitment();
 
         // Search
         destinationSearch.search_contact_by_condition();
@@ -1206,7 +1208,7 @@ public class Create_Delivered_Mail {
         destinationSearch.delivery_information();
 
         // Commitment
-//        destinationSearch.commitment();
+        destinationSearch.commitment();
 
         // Search
         destinationSearch.search_contact_by_condition();
@@ -1236,7 +1238,7 @@ public class Create_Delivered_Mail {
         destinationSearch.delivery_information();
 
         // Commitment
-//        destinationSearch.commitment();
+        destinationSearch.commitment();
 
         // Search
         destinationSearch.search_contact_by_condition();
@@ -1273,7 +1275,7 @@ public class Create_Delivered_Mail {
         destinationSearch.delivery_information();
 
         // Commitment
-//        destinationSearch.commitment();
+        destinationSearch.commitment();
 
         // Search
         destinationSearch.search_contact_by_condition();
@@ -1310,7 +1312,7 @@ public class Create_Delivered_Mail {
         destinationSearch.delivery_information();
 
         // Commitment
-//        destinationSearch.commitment();
+        destinationSearch.commitment();
 
         // Search
         destinationSearch.search_contact_by_condition();
@@ -1346,7 +1348,7 @@ public class Create_Delivered_Mail {
         destinationSearch.delivery_information();
 
         // Commitment
-//        destinationSearch.commitment();
+        destinationSearch.commitment();
 
         // Search
         destinationSearch.search_contact_by_condition();
@@ -1383,7 +1385,7 @@ public class Create_Delivered_Mail {
         destinationSearch.delivery_information();
 
         // Commitment
-//        destinationSearch.commitment();
+        destinationSearch.commitment();
 
         // Search
         destinationSearch.search_contact_by_condition();
@@ -1420,7 +1422,7 @@ public class Create_Delivered_Mail {
         destinationSearch.delivery_information();
 
         // Commitment
-//        destinationSearch.commitment();
+        destinationSearch.commitment();
 
         // Search
         destinationSearch.search_contact_by_condition();
@@ -1456,7 +1458,7 @@ public class Create_Delivered_Mail {
         destinationSearch.delivery_information();
 
         // Commitment
-//        destinationSearch.commitment();
+        destinationSearch.commitment();
 
         // Search
         destinationSearch.search_contact_by_condition();
@@ -1492,7 +1494,7 @@ public class Create_Delivered_Mail {
         destinationSearch.delivery_information();
 
         // Commitment
-//        destinationSearch.commitment();
+        destinationSearch.commitment();
 
         // Search
         destinationSearch.search_contact_by_condition();
@@ -1508,7 +1510,7 @@ public class Create_Delivered_Mail {
     }
 
     @AfterMethod
-    public void teardown(ITestResult result) throws IOException, InterruptedException {
+    public void teardown(ITestResult result) throws IOException {
         // take screenshot when test failed
         common.take_screenshot_when_test_fail(driver, result, "Create_Mail");
 

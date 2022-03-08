@@ -28,7 +28,7 @@ public class Addons {
 
     @BeforeMethod
     @Parameters({"headless", "browser_name", "domain", "email", "password", "username_admin_page", "password_admin_page"})
-    public void setup(boolean headless, String browser_name, String domain, String email, String password, String username_admin_page, String password_admin_page) throws InterruptedException {
+    public void setup(String headless, String browser_name, String domain, String email, String password, String username_admin_page, String password_admin_page) throws InterruptedException {
         // Init utilities.Common function
         common = new Common();
 
@@ -185,11 +185,11 @@ public class Addons {
     }
 
     @AfterMethod
-    public void teardown(ITestResult result) throws IOException, InterruptedException {
+    public void teardown(ITestResult result) throws IOException {
         // take screenshot when test failed
         common.take_screenshot_when_test_fail(driver, result, "Addons");
 
         // close all browsers
-//        driver.quit();
+        driver.quit();
     }
 }

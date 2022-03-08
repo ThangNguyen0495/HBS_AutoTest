@@ -39,7 +39,7 @@
                     <parameter name="email" value="test1@cmc.vn"/>
                     <parameter name="password" value="TestCMC@123"/>
                     <parameter name="role" value="Member"/>
-                    <parameter name="capacity" value="2"/>
+                    <parameter name="capacity" value="10"/>
 
                     <!--
                     TESTCASE

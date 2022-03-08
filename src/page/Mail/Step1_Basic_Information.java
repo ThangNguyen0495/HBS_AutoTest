@@ -204,7 +204,7 @@ public class Step1_Basic_Information extends Delivered_Mail_Page {
     }
 
     // Subject
-    public void leave_subject_blank() {
+    public void leave_subject_blank() throws InterruptedException {
         // Master, Administrator, Responsible person, Leader, Member
         int num;
         if (Mode.equals("Edit")) {
@@ -213,6 +213,9 @@ public class Step1_Basic_Information extends Delivered_Mail_Page {
             num = 5;
         }
         if (common.authorized(role, common.role_list(num))) {
+            if (role.equals("Member")) {
+                sleep(3000);
+            }
             // leave subject blank
             wait.until(ExpectedConditions.elementToBeClickable(subject)).sendKeys("text", Keys.CONTROL + "a", Keys.DELETE);
 

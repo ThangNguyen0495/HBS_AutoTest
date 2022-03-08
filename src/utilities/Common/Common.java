@@ -30,13 +30,15 @@ import static utilities.Link_and_Path.HBS.addons_path;
 
 public class Common {
 
-    public WebDriver setupWebdriver(Boolean headless, String browser_name) {
+    public WebDriver setupWebdriver(String headless, String browser_name) {
         //Config Webdriver
         switch (browser_name) {
             case "firefox" -> {
                 WebDriverManager.firefoxdriver().setup();
                 FirefoxOptions options = new FirefoxOptions();
-                options.setHeadless(headless);
+                if (headless.equals("true")) {
+                    options.addArguments("--headless");
+                }
                 options.addArguments("--disable-gpu");
 //                options.addArguments("--incognito");
                 options.addArguments("--no-sandbox");
@@ -76,7 +78,9 @@ public class Common {
                 // chrome is setting default
                 WebDriverManager.chromedriver().setup();
                 ChromeOptions options = new ChromeOptions();
-                options.setHeadless(headless);
+                if (headless.equals("true")) {
+                    options.addArguments("--headless");
+                }
                 options.addArguments("--disable-gpu");
 //                options.addArguments("--incognito");
                 options.addArguments("--no-sandbox");
@@ -131,7 +135,7 @@ public class Common {
         return dateTimeFormatter.format(dateTime);
     }
 
-    public void take_screenshot_when_test_fail(WebDriver driver, ITestResult result, String test_result_path) throws IOException, InterruptedException {
+    public void take_screenshot_when_test_fail(WebDriver driver, ITestResult result, String test_result_path) throws IOException {
         TakesScreenshot screenshot = ((TakesScreenshot) driver);
 
         if (result.getStatus() == ITestResult.FAILURE) {

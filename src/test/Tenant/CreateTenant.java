@@ -23,13 +23,12 @@ public class CreateTenant {
 
     @BeforeClass
     public void clear_old_test_error() throws IOException {
-        FileUtils.cleanDirectory(new File(System.getProperty("user.dir") + "\\upload_data"));
         FileUtils.cleanDirectory(new File(System.getProperty("user.dir") + "\\img\\Create_Tenant"));
     }
 
     @BeforeMethod
     @Parameters({"headless", "browser_name", "domain", "register_token_cpi", "register_token_ppi"})
-    public void setup(Boolean headless, String browser_name, String domain, String register_token_cpi, String register_token_ppi) {
+    public void setup(String headless, String browser_name, String domain, String register_token_cpi, String register_token_ppi) {
         // Init utilities.Common function
         common = new Common();
 
@@ -112,14 +111,14 @@ public class CreateTenant {
         // Username
         personalProfileInformation.username();
 
-//        // TEL
+        // TEL
 //        personalProfileInformation.tel();
 //
 //        // Password
 //        personalProfileInformation.password();
-//
-//        // Email signature
-//        personalProfileInformation.email_signature();
+
+        // Email signature
+        personalProfileInformation.email_signature();
 
         // Next to page.Payment information step
         personalProfileInformation.next_to_payment_information();
@@ -341,7 +340,7 @@ public class CreateTenant {
     }
 
     @Test
-    public void TC17_domain_exceed_50_half_width_characters() throws InterruptedException {
+    public void TC17_url_exceed_50_half_width_characters() throws InterruptedException {
         // Link to Create tenant - Company profile information tab
         companyProfileInformation.link_to_company_profile_information();
 
@@ -350,7 +349,7 @@ public class CreateTenant {
     }
 
     @Test
-    public void TC18_domain_exceed_50_full_width_characters() throws InterruptedException {
+    public void TC18_url_exceed_50_full_width_characters() throws InterruptedException {
         // Link to Create tenant - Company profile information tab
         companyProfileInformation.link_to_company_profile_information();
 
@@ -359,14 +358,14 @@ public class CreateTenant {
     }
 
     @Test
-    public void TC19_domain_exceed_mix_50_half_and_full_width_characters() throws InterruptedException {
+    public void TC19_url_exceed_mix_50_half_and_full_width_characters() throws InterruptedException {
         // Link to Create tenant - Company profile information tab
         companyProfileInformation.link_to_company_profile_information();
 
         // Input domain exceed mix 50 half, full width characters and verify message
         companyProfileInformation.url_exceed_mix_50_half_and_full_width_characters();
     }
-    
+
     @Test
     public void TC20_capital_exceed_13_half_width_characters() throws InterruptedException {
         // Link to Create tenant - Company profile information tab
@@ -522,7 +521,7 @@ public class CreateTenant {
     }
 
     @AfterMethod
-    public void teardown(ITestResult result) throws IOException, InterruptedException {
+    public void teardown(ITestResult result) throws IOException {
         // take screenshot when test failed
         common.take_screenshot_when_test_fail(driver, result, "Create_Tenant");
 

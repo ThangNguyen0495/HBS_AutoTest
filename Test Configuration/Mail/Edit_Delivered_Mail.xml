@@ -52,9 +52,9 @@
                     <parameter name="email" value="test1@cmc.vn"/>
                     <parameter name="password" value="TestCMC@123"/>
                     <parameter name="role" value="Member"/>
-                    <parameter name="mail_id" value="de088e50-a9ed-40af-a752-87435f1373c8"/>
+                    <parameter name="capacity" value="10"/>
+                    <parameter name="mail_id" value="1e3a0b03-9f02-4f47-adee-bc686b4c5a86"/>
                     <parameter name="mail_status" value="Draft"/>
-                    <parameter name="capacity" value="2"/>
 
                     <!--
                     TESTCASE

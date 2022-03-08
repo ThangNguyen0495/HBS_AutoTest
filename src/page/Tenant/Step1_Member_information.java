@@ -136,10 +136,7 @@ public class Step1_Member_information extends Tenant_page {
 
     // Email
     public void leave_email_blank() throws InterruptedException {
-        email.sendKeys("leave_blank");
-        for (int i = 0; i < 11; i++) {
-            key.sendKeys(Keys.BACK_SPACE).perform();
-        }
+        email.sendKeys("text", Keys.CONTROL + "a", Keys.DELETE);
         sleep(2000);
         String text = email_error.getText();
         Assert.assertEquals(text, "メールアドレスを入力してください", "[Email] Message do not match");
@@ -168,10 +165,7 @@ public class Step1_Member_information extends Tenant_page {
 
     // Password
     public void leave_password_blank() throws InterruptedException {
-        password.sendKeys("leave_blank");
-        for (int i = 0; i < 11; i++) {
-            key.sendKeys(Keys.BACK_SPACE).perform();
-        }
+        password.sendKeys("text", Keys.CONTROL + "a", Keys.DELETE);
         sleep(2000);
         String text = password_error.getText();
         Assert.assertEquals(text, "パスワードを入力してください", "[Password] Message do not match");
@@ -233,10 +227,7 @@ public class Step1_Member_information extends Tenant_page {
      * Output: show error message "パスワード確認を入力してください"
      **/
     public void leave_confirm_password_blank() throws InterruptedException {
-        confirm_password.sendKeys("leave_blank");
-        for (int i = 0; i < 11; i++) {
-            key.sendKeys(Keys.BACK_SPACE).perform();
-        }
+        confirm_password.sendKeys("text", Keys.CONTROL + "a", Keys.DELETE);
         sleep(2000);
         String text = wait.until(ExpectedConditions.visibilityOf(confirm_password_error)).getText();
         Assert.assertEquals(text, "パスワード確認を入力してください", "[Confirm password] Message do not match");

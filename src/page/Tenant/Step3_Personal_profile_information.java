@@ -113,10 +113,7 @@ public class Step3_Personal_profile_information extends Tenant_page {
 
     // Username
     public void leave_username_blank() throws InterruptedException {
-        user_name_lastname.sendKeys("leave_blank");
-        for (int i = 0; i < 11; i++) {
-            key.sendKeys(Keys.BACK_SPACE).perform();
-        }
+        user_name_lastname.sendKeys("text", Keys.CONTROL + "a", Keys.DELETE);
         sleep(2000);
         String text = username_error.getText();
         Assert.assertEquals(text, "必須項目です", "[Username] Message do not match");

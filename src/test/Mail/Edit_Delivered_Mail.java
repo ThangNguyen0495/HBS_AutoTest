@@ -27,13 +27,17 @@ public class Edit_Delivered_Mail {
 
     @BeforeClass
     public void clear_old_test_data_and_error() throws IOException {
-        FileUtils.cleanDirectory(new File(System.getProperty("user.dir") + "\\Test_Data"));
+        try {
+            FileUtils.cleanDirectory(new File(System.getProperty("user.dir") + "\\Test_Data"));
+        } catch (IOException ex) {
+            // nothing
+        }
         FileUtils.cleanDirectory(new File(System.getProperty("user.dir") + "\\img\\Edit_Mail"));
     }
 
     @BeforeMethod
     @Parameters({"headless", "browser_name", "email", "password", "domain", "mail_id", "role", "capacity", "mail_status"})
-    public void setup(Boolean headless, String browser_name, String email, String password, String domain, String mail_id, String role, int capacity, String mail_status) throws InterruptedException {
+    public void setup(String headless, String browser_name, String email, String password, String domain, String mail_id, String role, int capacity, String mail_status) throws InterruptedException {
         // Init utilities.Common function
         common = new Common();
 
@@ -95,7 +99,7 @@ public class Edit_Delivered_Mail {
         destinationSearch.delivery_information();
 
         // Commitment
-//        destinationSearch.commitment();
+        destinationSearch.commitment();
 
         // Search
         destinationSearch.search_contact_by_condition();
@@ -119,7 +123,7 @@ public class Edit_Delivered_Mail {
     }
 
     @Test
-    public void TC_02_leave_all_blank_basic_information() {
+    public void TC_02_leave_all_blank_basic_information() throws InterruptedException {
         // Leave distributor blank and verify error message
         basicInformation.leave_distributor_blank();
 
@@ -891,7 +895,7 @@ public class Edit_Delivered_Mail {
         destinationSearch.delivery_information();
 
         // Commitment
-//        destinationSearch.commitment();
+        destinationSearch.commitment();
 
         // Search
         destinationSearch.search_contact_by_condition();
@@ -915,7 +919,7 @@ public class Edit_Delivered_Mail {
         destinationSearch.delivery_information();
 
         // Commitment
-//        destinationSearch.commitment();
+        destinationSearch.commitment();
 
         // Search
         destinationSearch.search_contact_by_condition();
@@ -939,7 +943,7 @@ public class Edit_Delivered_Mail {
         destinationSearch.delivery_information();
 
         // Commitment
-//        destinationSearch.commitment();
+        destinationSearch.commitment();
 
         // Search
         destinationSearch.search_contact_by_condition();
@@ -969,7 +973,7 @@ public class Edit_Delivered_Mail {
         destinationSearch.delivery_information();
 
         // Commitment
-//        destinationSearch.commitment();
+        destinationSearch.commitment();
 
         // Search
         destinationSearch.search_contact_by_condition();
@@ -1002,7 +1006,7 @@ public class Edit_Delivered_Mail {
         destinationSearch.delivery_information();
 
         // Commitment
-//        destinationSearch.commitment();
+        destinationSearch.commitment();
 
         // Search
         destinationSearch.search_contact_by_condition();
@@ -1033,7 +1037,7 @@ public class Edit_Delivered_Mail {
         destinationSearch.delivery_information();
 
         // Commitment
-//        destinationSearch.commitment();
+        destinationSearch.commitment();
 
         // Search
         destinationSearch.search_contact_by_condition();
@@ -1064,7 +1068,7 @@ public class Edit_Delivered_Mail {
         destinationSearch.delivery_information();
 
         // Commitment
-//        destinationSearch.commitment();
+        destinationSearch.commitment();
 
         // Search
         destinationSearch.search_contact_by_condition();
@@ -1095,7 +1099,7 @@ public class Edit_Delivered_Mail {
         destinationSearch.delivery_information();
 
         // Commitment
-//        destinationSearch.commitment();
+        destinationSearch.commitment();
 
         // Search
         destinationSearch.search_contact_by_condition();
@@ -1126,7 +1130,7 @@ public class Edit_Delivered_Mail {
         destinationSearch.delivery_information();
 
         // Commitment
-//        destinationSearch.commitment();
+        destinationSearch.commitment();
 
         // Search
         destinationSearch.search_contact_by_condition();
@@ -1156,7 +1160,7 @@ public class Edit_Delivered_Mail {
         destinationSearch.delivery_information();
 
         // Commitment
-//        destinationSearch.commitment();
+        destinationSearch.commitment();
 
         // Search
         destinationSearch.search_contact_by_condition();
@@ -1186,7 +1190,7 @@ public class Edit_Delivered_Mail {
         destinationSearch.delivery_information();
 
         // Commitment
-//        destinationSearch.commitment();
+        destinationSearch.commitment();
 
         // Search
         destinationSearch.search_contact_by_condition();
@@ -1202,7 +1206,7 @@ public class Edit_Delivered_Mail {
     }
 
     @AfterMethod
-    public void teardown(ITestResult result) throws IOException, InterruptedException {
+    public void teardown(ITestResult result) throws IOException {
         // take screenshot when test failed
         common.take_screenshot_when_test_fail(driver, result, "Edit_Mail");
 

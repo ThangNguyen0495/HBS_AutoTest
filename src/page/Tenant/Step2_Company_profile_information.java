@@ -168,7 +168,7 @@ public class Step2_Company_profile_information extends Tenant_page {
     public void worker_dispatch_business() {
         // Worker dispatch business
         // 1: None, 2: Can be
-        int worker_dispatch_business_id = RandomUtils.nextInt(2) + 1;
+        int worker_dispatch_business_id = RandomUtils.nextInt(2);
         worker_dispatch_business.get(worker_dispatch_business_id).click();
     }
 
@@ -184,10 +184,7 @@ public class Step2_Company_profile_information extends Tenant_page {
      *
      */
     public void leave_company_name_blank() throws InterruptedException {
-        company_name.sendKeys("leave_blank");
-        for (int i = 0; i < 11; i++) {
-            key.sendKeys(Keys.BACK_SPACE).perform();
-        }
+        company_name.sendKeys("text", Keys.CONTROL + "a", Keys.DELETE);
         sleep(2000);
         String text = company_name_error.getText();
         Assert.assertEquals(text, "自社名を入力してください", "[Company name] Message do not match");
@@ -228,10 +225,7 @@ public class Step2_Company_profile_information extends Tenant_page {
 
     // Address
     public void leave_address_blank() throws InterruptedException {
-        address.sendKeys("leave_blank");
-        for (int i = 0; i < 11; i++) {
-            key.sendKeys(Keys.BACK_SPACE).perform();
-        }
+        address.sendKeys("text", Keys.CONTROL + "a", Keys.DELETE);
         sleep(2000);
         String text1 = address_error1.getText();
         Assert.assertEquals(text1, "市区町村・町名・番地を入力してください", "[Address] Message do not match");
@@ -279,10 +273,7 @@ public class Step2_Company_profile_information extends Tenant_page {
 
     // URL
     public void leave_url_blank() throws InterruptedException {
-        url.sendKeys("leave_blank");
-        for (int i = 0; i < 11; i++) {
-            key.sendKeys(Keys.BACK_SPACE).perform();
-        }
+        url.sendKeys("text", Keys.CONTROL + "a", Keys.DELETE);
         sleep(2000);
         String text = url_error1.getText();
         Assert.assertEquals(text, "URLを入力してください", "[URL] Message do not match");
@@ -317,8 +308,7 @@ public class Step2_Company_profile_information extends Tenant_page {
 
     // Capital
     public void leave_capital_blank() throws InterruptedException {
-        capital.sendKeys("0");
-        key.sendKeys(Keys.BACK_SPACE).perform();
+        capital.sendKeys("123", Keys.CONTROL + "a", Keys.DELETE);
         sleep(2000);
         String text = capital_error.getText();
         Assert.assertEquals(text, "資本金を入力してください", "[Capital] Message do not match");
