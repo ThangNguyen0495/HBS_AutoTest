@@ -23,4 +23,4 @@ jobs: # Những công việc sẽ được làm
     - name: Build with Maven 		# Tiếp theo là build
       run: mvn package  #Chạy lệnh build
     - name: Test with Maven  # Chạy test 
-      run: mvn test && mvn package
+      run: mvn --file Run_All_Test.xml
