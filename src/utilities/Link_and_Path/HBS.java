@@ -8,7 +8,6 @@ public class HBS {
     public static String company_profile_path = "/myCompany";
     public static String search_company_id_path = "/admin/app_staffing/company/?q=";
     public static String usage_plan_path = "/plan";
-//    public static String user_list_path = "/users";
     public static String addons_path = "/addons";
     public static String partner_list_path = "/organizations";
     public static String create_tenant_path = "/tenant";

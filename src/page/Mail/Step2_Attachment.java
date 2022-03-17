@@ -28,6 +28,10 @@ public class Step2_Attachment extends Delivered_Mail_Page {
     WebElement back_button;
     @FindBy(css = "div:nth-child(1)>div>div.ant-message-custom-content > span:nth-child(2)")
     WebElement message;
+    @FindBy(css = "div.ant-upload-list-item-done")
+    List<WebElement> number_of_file;
+    @FindBy(css = "button[title='Remove file']")
+    List<WebElement> delete_upload_file;
     int capacity;
 
     // Register Mode
@@ -51,8 +55,8 @@ public class Step2_Attachment extends Delivered_Mail_Page {
         // capacity: MB
         current_date_time = common.generate_date_time();
         for (int i = 0; i < number_of_files; i++) {
-            new RandomAccessFile(System.getProperty("user.dir") + "\\Test_Data\\text" + i + "_" +current_date_time + ".txt", "rw")
-                    .setLength((long) capacity * 1024 * 1024);
+            new RandomAccessFile(System.getProperty("user.dir") + "\\Test_Data\\text" + i + "_" + current_date_time + ".txt", "rw")
+                    .setLength(((long) capacity * 1024 * 1024) / number_of_files);
         }
     }
 
@@ -188,17 +192,31 @@ public class Step2_Attachment extends Delivered_Mail_Page {
         }
     }
 
-    public void upload_maximum_capacity_11_files() throws IOException {
+    public void upload_exceed_11_files() throws IOException {
         if (common.authorized(role, common.role_list(5))) {
             if ((Mode.equals("Create")) || (!list_mail_status.contains(mail_status) && (Mode.equals("Edit")))) {
+                // generate test data
                 generate_test_file(capacity, 11);
-                // Waiting for hid previous message
-                for (int i = 0; i < 11; i++) {
-                    upload_file.sendKeys(System.getProperty("user.dir") + "\\Test_Data\\text" + i + current_date_time + ".txt");
+
+                if (Mode.equals("Edit")) {
+                    while (number_of_file.size() != 0) {
+                        key.moveToElement(delete_upload_file.get(0)).click().build().perform();
+                        wait.until(ExpectedConditions.visibilityOf(message));
+                        wait.until(ExpectedConditions.invisibilityOf(message));
+                    }
                 }
-                String text = wait.until(ExpectedConditions.visibilityOf(message)).getText();
-                soft.assertTrue(text.contains("を超えるメールを配信することはできません"), "[Failed] Message do not match."
-                        + "\n Actual message: " + text + "\n Expect message: contains を超えるメールを配信することはできません");
+
+                // Waiting for hid previous message
+                String text = "";
+                for (int i = 0; i < 11; i++) {
+                    upload_file.sendKeys(System.getProperty("user.dir") + "\\Test_Data\\text" + i + "_" +current_date_time + ".txt");
+                    wait.until(ExpectedConditions.visibilityOf(message));
+                    if (i == 10) {
+                        text = message.getText();
+                    }
+                    wait.until(ExpectedConditions.invisibilityOf(message));
+                }
+                soft.assertEquals(text,"添付可能なファイル数は10件以下です。", "[Failed] Message do not match.");
                 soft.assertAll();
             }
         }

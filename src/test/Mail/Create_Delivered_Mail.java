@@ -64,7 +64,7 @@ public class Create_Delivered_Mail {
         finalConfirmation = new Step4_Final_confirmation(driver, role, common, domain, "Create");
     }
 
-    @Test(priority = 1)
+    @Test
     public void TC01_process_create_mail() throws InterruptedException {
         //****** 基本情報 ****** //
         // Basic information
@@ -120,7 +120,7 @@ public class Create_Delivered_Mail {
         finalConfirmation.select_time_and_select_again_when_time_incorrect();
     }
 
-    @Test(priority = 2)
+    @Test
     public void TC_02_leave_all_blank_basic_information() throws InterruptedException {
         // Leave distributor blank and verify error message
         basicInformation.leave_distributor_blank();
@@ -132,51 +132,50 @@ public class Create_Delivered_Mail {
         basicInformation.leave_insertion_blank();
     }
 
-    @Test(priority = 3)
+    @Test
     public void TC_03_subject_exceed_100_half_width_characters() throws InterruptedException {
         // Input subject exceed 100 half width character and verify error message
         basicInformation.subject_exceed_100_half_width_characters();
     }
 
-    @Test(priority = 4)
+    @Test
     public void TC_04_subject_exceed_100_full_width_characters() throws InterruptedException {
         // Input subject exceed 100 full width character and verify error message
         basicInformation.subject_exceed_100_full_width_characters();
     }
 
-    @Test(priority = 5)
+    @Test
     public void TC_05_subject_exceed_100_mix_half_and_full_width_characters() throws InterruptedException {
         // Input subject exceed mix 100 half, full width character and verify error message
         basicInformation.subject_exceed_100_mix_half_and_full_width_characters();
     }
 
 
-    @Test(priority = 6)
+    @Test
     public void TC_06_insertion_exceed_10000_half_width_characters() throws InterruptedException {
         // Input insertion exceed 10000 half width character and verify error message
         basicInformation.insertion_exceed_10000_half_width_characters();
-//        driver.close();
     }
 
-    @Test(priority = 7)
+    @Test
     public void TC_07_insertion_exceed_5000_full_width_characters() throws InterruptedException {
         /* Input insertion exceed 5000 full width character and verify error message */
         basicInformation.insertion_exceed_5000_full_width_characters();
     }
 
-    @Test(priority = 8)
+    @Test
     public void TC_08_insertion_exceed_5000_mix_half_and_full_width_characters() throws InterruptedException {
         // Input insertion exceed mix 5000 half,full width character and verify error message
         basicInformation.insertion_exceed_5000_mix_half_and_full_width_characters();
     }
 
-    @Test(priority = 9)
+    @Test
     public void TC_09_delete_button_should_be_disable() {
         // Verify delete button getting disable
         basicInformation.delete_button_should_be_disable();
     }
 
-    @Test(priority = 10)
+    @Test
     public void TC_10_do_you_want_to_delete_this_delivered_email_OK_basic_information() throws InterruptedException {
         // Format
         basicInformation.format();
@@ -198,7 +197,7 @@ public class Create_Delivered_Mail {
         basicInformation.do_you_want_to_delete_this_delivered_email_OK();
     }
 
-    @Test(priority = 11)
+    @Test
     public void TC_11_do_you_want_to_delete_this_delivered_email_Cancel_basic_information() throws InterruptedException {
         // Format
         basicInformation.format();
@@ -220,7 +219,7 @@ public class Create_Delivered_Mail {
         basicInformation.do_you_want_to_delete_this_delivered_email_Cancel();
     }
 
-    @Test(priority = 12)
+    @Test
     public void TC_12_make_a_copy_basic_information() throws InterruptedException {
         // Format
         basicInformation.format();
@@ -241,7 +240,7 @@ public class Create_Delivered_Mail {
         basicInformation.make_a_copy();
     }
 
-    @Test(priority = 13)
+    @Test
     public void TC_13_would_you_like_to_change_this_delivery_email_to_Draft_status_OK_basic_information() throws InterruptedException {
         // Format
         basicInformation.format();
@@ -263,7 +262,7 @@ public class Create_Delivered_Mail {
         basicInformation.would_you_like_to_change_this_delivery_email_to_Draft_status_OK();
     }
 
-    @Test(priority = 14)
+    @Test
     public void TC_14_would_you_like_to_change_this_delivery_email_to_Draft_status_Cancel_basic_information() throws InterruptedException {
         // Format
         basicInformation.format();
@@ -286,7 +285,7 @@ public class Create_Delivered_Mail {
     }
 
 
-    @Test(priority = 15)
+    @Test
     public void TC_15_upload_maximum_capacity_1_file() throws IOException, InterruptedException {
         // Format
         basicInformation.format();
@@ -304,7 +303,7 @@ public class Create_Delivered_Mail {
         attachment.upload_maximum_capacity_1_file();
     }
 
-    @Test(priority = 16)
+    @Test
     public void TC_16_upload_maximum_capacity_multi_file() throws InterruptedException, IOException {
         // Format
         basicInformation.format();
@@ -322,7 +321,7 @@ public class Create_Delivered_Mail {
         attachment.upload_maximum_capacity_multi_file();
     }
 
-    @Test(priority = 17)
+    @Test
     public void TC_17_upload_exceed_maximum_capacity_1_file() throws IOException, InterruptedException {
         // Format
         basicInformation.format();
@@ -340,7 +339,7 @@ public class Create_Delivered_Mail {
         attachment.upload_exceed_maximum_capacity_1_file();
     }
 
-    @Test(priority = 18)
+    @Test
     public void TC_18_upload_exceed_maximum_capacity_multi_file() throws InterruptedException, IOException {
         // Format
         basicInformation.format();
@@ -358,8 +357,26 @@ public class Create_Delivered_Mail {
         attachment.upload_exceed_maximum_capacity_multi_file();
     }
 
-    @Test(priority = 19)
-    public void TC_19_do_you_want_to_delete_this_delivered_email_OK_attachment() throws InterruptedException {
+    @Test
+    public void TC_19_upload_exceed_10_files() throws InterruptedException, IOException {
+        // Format
+        basicInformation.format();
+
+        // Input valid subject
+        basicInformation.subject();
+
+        // Input valid insertion
+        basicInformation.insertion();
+
+        // Next to attachment step
+        basicInformation.next_to_attachment_step();
+
+        // Upload multi file with exceed maximum capacity and verify message
+        attachment.upload_exceed_11_files();
+    }
+
+    @Test
+    public void TC_20_do_you_want_to_delete_this_delivered_email_OK_attachment() throws InterruptedException {
         // Format
         basicInformation.format();
 
@@ -377,8 +394,8 @@ public class Create_Delivered_Mail {
         attachment.do_you_want_to_delete_this_delivered_email_OK();
     }
 
-    @Test(priority = 20)
-    public void TC_20_do_you_want_to_delete_this_delivered_email_Cancel_attachment() throws InterruptedException {
+    @Test
+    public void TC_21_do_you_want_to_delete_this_delivered_email_Cancel_attachment() throws InterruptedException {
         // Format
         basicInformation.format();
 
@@ -399,8 +416,8 @@ public class Create_Delivered_Mail {
 //        driver.close();
     }
 
-    @Test(priority = 21)
-    public void TC_21_make_a_copy_attachment() throws InterruptedException {
+    @Test
+    public void TC_22_make_a_copy_attachment() throws InterruptedException {
         // Format
         basicInformation.format();
 
@@ -417,8 +434,8 @@ public class Create_Delivered_Mail {
         attachment.make_a_copy();
     }
 
-    @Test(priority = 22)
-    public void TC_22_would_you_like_to_change_this_delivery_email_to_Draft_status_OK_attachment() throws InterruptedException {
+    @Test
+    public void TC_23_would_you_like_to_change_this_delivery_email_to_Draft_status_OK_attachment() throws InterruptedException {
         // Format
         basicInformation.format();
 
@@ -436,8 +453,8 @@ public class Create_Delivered_Mail {
         attachment.would_you_like_to_change_this_delivery_email_to_Draft_status_OK();
     }
 
-    @Test(priority = 23)
-    public void TC_23_would_you_like_to_change_this_delivery_email_to_Draft_status_Cancel_attachment() throws InterruptedException {
+    @Test
+    public void TC_24_would_you_like_to_change_this_delivery_email_to_Draft_status_Cancel_attachment() throws InterruptedException {
         // Format
         basicInformation.format();
 
@@ -455,8 +472,8 @@ public class Create_Delivered_Mail {
         attachment.would_you_like_to_change_this_delivery_email_to_Draft_status_Cancel();
     }
 
-    @Test(priority = 24)
-    public void TC_24_deliver_the_matter_do_not_select_condition() throws InterruptedException {
+    @Test
+    public void TC_25_deliver_the_matter_do_not_select_condition() throws InterruptedException {
         // Format
         basicInformation.format();
 
@@ -477,8 +494,8 @@ public class Create_Delivered_Mail {
         destinationSearch.deliver_the_matter_do_not_select_condition();
     }
 
-    @Test(priority = 25)
-    public void TC_25_deliver_the_matter_only_select_delivery_occupation_development() throws InterruptedException {
+    @Test
+    public void TC_26_deliver_the_matter_only_select_delivery_occupation_development() throws InterruptedException {
         // Format
         basicInformation.format();
 
@@ -500,8 +517,8 @@ public class Create_Delivered_Mail {
         destinationSearch.deliver_the_matter_only_select_delivery_occupation_development();
     }
 
-    @Test(priority = 26)
-    public void TC_26_deliver_the_matter_only_select_delivery_occupation_infrastructure() throws InterruptedException {
+    @Test
+    public void TC_27_deliver_the_matter_only_select_delivery_occupation_infrastructure() throws InterruptedException {
         // Format
         basicInformation.format();
 
@@ -523,8 +540,8 @@ public class Create_Delivered_Mail {
         destinationSearch.deliver_the_matter_only_select_delivery_occupation_infrastructure();
     }
 
-    @Test(priority = 27)
-    public void TC_27_deliver_the_matter_only_select_delivery_occupation_others() throws InterruptedException {
+    @Test
+    public void TC_28_deliver_the_matter_only_select_delivery_occupation_others() throws InterruptedException {
         // Format
         basicInformation.format();
 
@@ -546,8 +563,8 @@ public class Create_Delivered_Mail {
         destinationSearch.deliver_the_matter_only_select_delivery_occupation_others();
     }
 
-    @Test(priority = 28)
-    public void TC_28_deliver_the_personnel_do_not_select_condition() throws InterruptedException {
+    @Test
+    public void TC_29_deliver_the_personnel_do_not_select_condition() throws InterruptedException {
         // Format
         basicInformation.format();
 
@@ -568,8 +585,8 @@ public class Create_Delivered_Mail {
         destinationSearch.deliver_the_personnel_do_not_select_condition();
     }
 
-    @Test(priority = 29)
-    public void TC_29_deliver_the_personnel_only_select_delivery_occupation_development() throws InterruptedException {
+    @Test
+    public void TC_30_deliver_the_personnel_only_select_delivery_occupation_development() throws InterruptedException {
         // Format
         basicInformation.format();
 
@@ -591,8 +608,8 @@ public class Create_Delivered_Mail {
         destinationSearch.deliver_the_personnel_only_select_delivery_occupation_development();
     }
 
-    @Test(priority = 30)
-    public void TC_30_deliver_the_personnel_only_select_delivery_occupation_infrastructure() throws InterruptedException {
+    @Test
+    public void TC_31_deliver_the_personnel_only_select_delivery_occupation_infrastructure() throws InterruptedException {
         // Format
         basicInformation.format();
 
@@ -614,8 +631,8 @@ public class Create_Delivered_Mail {
         destinationSearch.deliver_the_personnel_only_select_delivery_occupation_infrastructure();
     }
 
-    @Test(priority = 31)
-    public void TC_31_deliver_the_personnel_only_select_delivery_occupation_others() throws InterruptedException {
+    @Test
+    public void TC_32_deliver_the_personnel_only_select_delivery_occupation_others() throws InterruptedException {
         // Format
         basicInformation.format();
 
@@ -637,8 +654,8 @@ public class Create_Delivered_Mail {
         destinationSearch.deliver_the_personnel_only_select_delivery_occupation_others();
     }
 
-    @Test(priority = 32)
-    public void TC_32_deliver_the_personnel_select_delivery_occupation_development_infrastructure_and_others() throws InterruptedException {
+    @Test
+    public void TC_33_deliver_the_personnel_select_delivery_occupation_development_infrastructure_and_others() throws InterruptedException {
         // Format
         basicInformation.format();
 
@@ -660,8 +677,8 @@ public class Create_Delivered_Mail {
         destinationSearch.deliver_the_personnel_select_delivery_occupation_development_infrastructure_and_others();
     }
 
-    @Test(priority = 33)
-    public void TC_33_do_not_select_account_status() throws InterruptedException {
+    @Test
+    public void TC_34_do_not_select_account_status() throws InterruptedException {
         // Format
         basicInformation.format();
 
@@ -683,8 +700,8 @@ public class Create_Delivered_Mail {
         destinationSearch.do_not_select_account_status();
     }
 
-    @Test(priority = 34)
-    public void TC_34_do_not_select_in_house_person_in_charge() throws InterruptedException {
+    @Test
+    public void TC_35_do_not_select_in_house_person_in_charge() throws InterruptedException {
         // Format
         basicInformation.format();
 
@@ -706,8 +723,8 @@ public class Create_Delivered_Mail {
         destinationSearch.do_not_select_in_house_person_in_charge();
     }
 
-    @Test(priority = 35)
-    public void TC_35_do_not_select_compatibility() throws InterruptedException {
+    @Test
+    public void TC_36_do_not_select_compatibility() throws InterruptedException {
         // Format
         basicInformation.format();
 
@@ -729,8 +746,8 @@ public class Create_Delivered_Mail {
         destinationSearch.do_not_select_compatibility();
     }
 
-    @Test(priority = 36)
-    public void TC_36_do_not_select_tag() throws InterruptedException {
+    @Test
+    public void TC_37_do_not_select_tag() throws InterruptedException {
         // Format
         basicInformation.format();
 
@@ -752,8 +769,8 @@ public class Create_Delivered_Mail {
         destinationSearch.do_not_select_tag();
     }
 
-    @Test(priority = 37)
-    public void TC_37_select_exceeds_5_tags() throws InterruptedException {
+    @Test
+    public void TC_38_select_exceeds_5_tags() throws InterruptedException {
         // Format
         basicInformation.format();
 
@@ -775,8 +792,8 @@ public class Create_Delivered_Mail {
         destinationSearch.select_exceed_5_tags();
     }
 
-    @Test(priority = 38)
-    public void TC_38_do_you_want_to_delete_this_delivered_email_OK_destination_selection() throws InterruptedException {
+    @Test
+    public void TC_39_do_you_want_to_delete_this_delivered_email_OK_destination_selection() throws InterruptedException {
         // Format
         basicInformation.format();
 
@@ -797,8 +814,8 @@ public class Create_Delivered_Mail {
         destinationSearch.do_you_want_to_delete_this_delivered_email_OK();
     }
 
-    @Test(priority = 39)
-    public void TC_39_do_you_want_to_delete_this_delivered_email_Cancel_destination_selection() throws InterruptedException {
+    @Test
+    public void TC_40_do_you_want_to_delete_this_delivered_email_Cancel_destination_selection() throws InterruptedException {
         // Format
         basicInformation.format();
 
@@ -819,8 +836,8 @@ public class Create_Delivered_Mail {
         destinationSearch.do_you_want_to_delete_this_delivered_email_Cancel();
     }
 
-    @Test(priority = 40)
-    public void TC_40_make_a_copy_destination_selection() throws InterruptedException {
+    @Test
+    public void TC_41_make_a_copy_destination_selection() throws InterruptedException {
         // Format
         basicInformation.format();
 
@@ -840,8 +857,8 @@ public class Create_Delivered_Mail {
         destinationSearch.make_a_copy();
     }
 
-    @Test(priority = 41)
-    public void TC_41_would_you_like_to_change_this_delivery_email_to_Draft_status_OK_destination_selection() throws InterruptedException {
+    @Test
+    public void TC_42_would_you_like_to_change_this_delivery_email_to_Draft_status_OK_destination_selection() throws InterruptedException {
         // Format
         basicInformation.format();
 
@@ -862,8 +879,8 @@ public class Create_Delivered_Mail {
         destinationSearch.would_you_like_to_change_this_delivery_email_to_Draft_status_OK();
     }
 
-    @Test(priority = 42)
-    public void TC_42_would_you_like_to_change_this_delivery_email_to_Draft_status_Cancel_destination_selection() throws InterruptedException {
+    @Test
+    public void TC_43_would_you_like_to_change_this_delivery_email_to_Draft_status_Cancel_destination_selection() throws InterruptedException {
         // Format
         basicInformation.format();
 
@@ -884,8 +901,8 @@ public class Create_Delivered_Mail {
         destinationSearch.would_you_like_to_change_this_delivery_email_to_Draft_status_Cancel();
     }
 
-    @Test(priority = 43)
-    public void TC_43_back_to_basic_information_from_destination_selection() throws InterruptedException {
+    @Test
+    public void TC_44_back_to_basic_information_from_destination_selection() throws InterruptedException {
         // Format
         basicInformation.format();
 
@@ -905,8 +922,8 @@ public class Create_Delivered_Mail {
         destinationSearch.back_to_basic_information_step();
     }
 
-    @Test(priority = 44)
-    public void TC_44_back_to_attachment_from_destination_selection() throws InterruptedException {
+    @Test
+    public void TC_45_back_to_attachment_from_destination_selection() throws InterruptedException {
         // Format
         basicInformation.format();
 
@@ -926,8 +943,8 @@ public class Create_Delivered_Mail {
         destinationSearch.back_to_attachment_step();
     }
 
-    @Test(priority = 45)
-    public void TC_45_leave_search_template_name_blank() throws InterruptedException {
+    @Test
+    public void TC_46_leave_search_template_name_blank() throws InterruptedException {
         // Format
         basicInformation.format();
 
@@ -947,8 +964,8 @@ public class Create_Delivered_Mail {
         destinationSearch.leave_search_template_name_blank();
     }
 
-    @Test(priority = 46)
-    public void TC_46_search_template_name_exceed_50_half_width_characters() throws InterruptedException {
+    @Test
+    public void TC_47_search_template_name_exceed_50_half_width_characters() throws InterruptedException {
         // Format
         basicInformation.format();
 
@@ -968,8 +985,8 @@ public class Create_Delivered_Mail {
         destinationSearch.search_template_name_exceed_50_half_width_characters();
     }
 
-    @Test(priority = 47)
-    public void TC_47_search_template_name_exceed_50_full_width_characters() throws InterruptedException {
+    @Test
+    public void TC_48_search_template_name_exceed_50_full_width_characters() throws InterruptedException {
         // Format
         basicInformation.format();
 
@@ -989,8 +1006,8 @@ public class Create_Delivered_Mail {
         destinationSearch.search_template_name_exceed_50_full_width_characters();
     }
 
-    @Test(priority = 48)
-    public void TC_48_search_template_name_exceed_mix_50_half_and_full_width_characters() throws InterruptedException {
+    @Test
+    public void TC_49_search_template_name_exceed_mix_50_half_and_full_width_characters() throws InterruptedException {
         // Format
         basicInformation.format();
 
@@ -1010,8 +1027,8 @@ public class Create_Delivered_Mail {
         destinationSearch.search_template_name_exceed_mix_50_half_and_full_width_characters();
     }
 
-    @Test(priority = 49)
-    public void TC_49_create_search_template_name_OK() throws InterruptedException {
+    @Test
+    public void TC_50_create_search_template_name_OK() throws InterruptedException {
         // Format
         basicInformation.format();
 
@@ -1031,8 +1048,8 @@ public class Create_Delivered_Mail {
         destinationSearch.create_search_template_name_OK();
     }
 
-    @Test(priority = 50)
-    public void TC_50_create_search_template_name_Cancel() throws InterruptedException {
+    @Test
+    public void TC_51_create_search_template_name_Cancel() throws InterruptedException {
         // Format
         basicInformation.format();
 
@@ -1052,8 +1069,8 @@ public class Create_Delivered_Mail {
         destinationSearch.create_search_template_name_Cancel();
     }
 
-    @Test(priority = 51)
-    public void TC_51_input_available_search_template_name() throws InterruptedException {
+    @Test
+    public void TC_52_input_available_search_template_name() throws InterruptedException {
         // Format
         basicInformation.format();
 
@@ -1073,8 +1090,8 @@ public class Create_Delivered_Mail {
         destinationSearch.input_available_search_template_name();
     }
 
-    @Test(priority = 52)
-    public void TC_52_set_cancel_search_template_as_default() throws InterruptedException {
+    @Test
+    public void TC_53_set_cancel_search_template_as_default() throws InterruptedException {
         // Format
         basicInformation.format();
 
@@ -1094,8 +1111,8 @@ public class Create_Delivered_Mail {
         destinationSearch.set_cancel_search_template_as_default();
     }
 
-    @Test(priority = 53)
-    public void TC_53_delete_search_template_OK() throws InterruptedException {
+    @Test
+    public void TC_54_delete_search_template_OK() throws InterruptedException {
         // Format
         basicInformation.format();
 
@@ -1115,8 +1132,8 @@ public class Create_Delivered_Mail {
         destinationSearch.delete_search_template_OK();
     }
 
-    @Test(priority = 54)
-    public void TC_54_delete_search_template_Cancel() throws InterruptedException {
+    @Test
+    public void TC_55_delete_search_template_Cancel() throws InterruptedException {
         // Format
         basicInformation.format();
 
@@ -1136,8 +1153,8 @@ public class Create_Delivered_Mail {
         destinationSearch.delete_search_template_Cancel();
     }
 
-    @Test(priority = 55)
-    public void TC_55_reset_search_criteria() throws InterruptedException {
+    @Test
+    public void TC_56_reset_search_criteria() throws InterruptedException {
         // Format
         basicInformation.format();
 
@@ -1157,8 +1174,8 @@ public class Create_Delivered_Mail {
         destinationSearch.reset_search_criteria();
     }
 
-    @Test(priority = 56)
-    public void TC_56_link_to_partner_PIC_edit_from_destination_selection() throws InterruptedException {
+    @Test
+    public void TC_57_link_to_partner_PIC_edit_from_destination_selection() throws InterruptedException {
         // Format
         basicInformation.format();
 
@@ -1187,8 +1204,8 @@ public class Create_Delivered_Mail {
         destinationSearch.link_to_partner_PIC_edit_from_destination_selection();
     }
 
-    @Test(priority = 57)
-    public void TC_57_pagination_destination_selection() throws InterruptedException {
+    @Test
+    public void TC_58_pagination_destination_selection() throws InterruptedException {
         // Format
         basicInformation.format();
 
@@ -1217,8 +1234,8 @@ public class Create_Delivered_Mail {
         destinationSearch.pagination_destination_selection();
     }
 
-    @Test(priority = 58)
-    public void TC_58_do_you_want_to_delete_this_delivered_email_OK_final_confirmation() throws InterruptedException {
+    @Test
+    public void TC_59_do_you_want_to_delete_this_delivered_email_OK_final_confirmation() throws InterruptedException {
         // Format
         basicInformation.format();
 
@@ -1254,8 +1271,8 @@ public class Create_Delivered_Mail {
         finalConfirmation.do_you_want_to_delete_this_delivered_email_OK();
     }
 
-    @Test(priority = 59)
-    public void TC_59_do_you_want_to_delete_this_delivered_email_Cancel_final_confirmation() throws InterruptedException {
+    @Test
+    public void TC_60_do_you_want_to_delete_this_delivered_email_Cancel_final_confirmation() throws InterruptedException {
         // Format
         basicInformation.format();
 
@@ -1291,8 +1308,8 @@ public class Create_Delivered_Mail {
         finalConfirmation.do_you_want_to_delete_this_delivered_email_Cancel();
     }
 
-    @Test(priority = 60)
-    public void TC_60_make_a_copy_final_confirmation() throws InterruptedException {
+    @Test
+    public void TC_61_make_a_copy_final_confirmation() throws InterruptedException {
         // Format
         basicInformation.format();
 
@@ -1327,8 +1344,8 @@ public class Create_Delivered_Mail {
         finalConfirmation.make_a_copy();
     }
 
-    @Test(priority = 61)
-    public void TC_61_would_you_like_to_change_this_delivery_email_to_Draft_status_OK_final_confirmation() throws InterruptedException {
+    @Test
+    public void TC_62_would_you_like_to_change_this_delivery_email_to_Draft_status_OK_final_confirmation() throws InterruptedException {
         // Select format
         basicInformation.format();
 
@@ -1364,8 +1381,8 @@ public class Create_Delivered_Mail {
         finalConfirmation.would_you_like_to_change_this_delivery_email_to_Draft_status_OK();
     }
 
-    @Test(priority = 62)
-    public void TC_62_would_you_like_to_change_this_delivery_email_to_Draft_status_Cancel_final_confirmation() throws InterruptedException {
+    @Test
+    public void TC_63_would_you_like_to_change_this_delivery_email_to_Draft_status_Cancel_final_confirmation() throws InterruptedException {
         // Format
         basicInformation.format();
 
@@ -1401,8 +1418,8 @@ public class Create_Delivered_Mail {
         finalConfirmation.would_you_like_to_change_this_delivery_email_to_Draft_status_Cancel();
     }
 
-    @Test(priority = 63)
-    public void TC_63_back_to_destination_selection_from_final_confirmation() throws InterruptedException {
+    @Test
+    public void TC_64_back_to_destination_selection_from_final_confirmation() throws InterruptedException {
         // Format
         basicInformation.format();
 
@@ -1437,8 +1454,8 @@ public class Create_Delivered_Mail {
         finalConfirmation.back_to_destination_selection_step();
     }
 
-    @Test(priority = 64)
-    public void TC_64_back_to_attachment_from_final_confirmation() throws InterruptedException {
+    @Test
+    public void TC_65_back_to_attachment_from_final_confirmation() throws InterruptedException {
         // Format
         basicInformation.format();
 
@@ -1473,8 +1490,8 @@ public class Create_Delivered_Mail {
         finalConfirmation.back_to_attachment_step();
     }
 
-    @Test(priority = 65)
-    public void TC_65_back_to_basic_information_from_final_confirmation() throws InterruptedException {
+    @Test
+    public void TC_66_back_to_basic_information_from_final_confirmation() throws InterruptedException {
         // Format
         basicInformation.format();
 

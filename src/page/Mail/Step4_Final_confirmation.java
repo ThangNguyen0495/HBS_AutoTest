@@ -177,8 +177,7 @@ public class Step4_Final_confirmation extends Delivered_Mail_Page {
                     // Select time
                     time.sendKeys(time_str(new_min, new_hour));
                     // Click 決 定 button
-//                key.sendKeys(Keys.ENTER).perform();
-                    wait.until(ExpectedConditions.elementToBeClickable(decisive_button)).click();
+                    key.sendKeys(Keys.ENTER).perform();
 
                     //** 配信時刻設定 Popup **//
                     // Click OK button

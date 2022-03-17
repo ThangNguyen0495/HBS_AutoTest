@@ -271,13 +271,14 @@ public class Step3_Destination_selection extends Delivered_Mail_Page {
         if (common.authorized(role, common.role_list(num))) {
             // Reset search criteria
             if ((delivery_type.get(0).isSelected()) || (delivery_type.get(1).isSelected()) || (delivery_type.get(2).isSelected())) {
+                ((JavascriptExecutor) driver).executeScript("window.scrollTo(0, 0)");
                 reset_search_criteria_button.click();
             }
 
             //** Delivery information **//
             //** Delivery type **//
             // 0: Deliver the matter, 1: Deliver personnel, 2: Deliver information
-            int delivery_type_id = RandomUtils.nextInt(3);
+            int delivery_type_id = 2;//RandomUtils.nextInt(3);
             key.moveToElement(delivery_type.get(delivery_type_id)).click().build().perform();
 
             // Search destination selection by delivery type
@@ -583,10 +584,12 @@ public class Step3_Destination_selection extends Delivered_Mail_Page {
         }
     }
 
-    public Boolean check_result_is_null() {
+    public Boolean check_result_is_null() throws InterruptedException {
         // check null = "True" => No partner PIC
         boolean check_null = false;
         try {
+            ((JavascriptExecutor) driver).executeScript("window.scrollTo(0, document.body.scrollHeight)");
+            sleep(3000);
             current_page.click();
         } catch (NoSuchElementException ex) {
             check_null = true;
@@ -609,14 +612,14 @@ public class Step3_Destination_selection extends Delivered_Mail_Page {
                 System.out.println("Search condition have been changed and try again, please wait ...");
                 System.out.println("-----------------------------------------------------------------");
                 delivery_information();
-                commitment();
+//                commitment();
                 search_contact_by_condition();
             }
             // Select contact
             // 0: select all contact, 1: select first contact
             int contact = RandomUtils.nextInt(2);
             // Scroll down
-            ((JavascriptExecutor) driver).executeScript("scroll(0, 750);");
+            ((JavascriptExecutor) driver).executeScript("window.scrollTo(0, document.body.scrollHeight)");
             // select all contact
             if (contact == 0) {
                 select_all_contact.click();
