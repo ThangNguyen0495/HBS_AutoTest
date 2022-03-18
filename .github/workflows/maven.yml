@@ -1,26 +1,11 @@
-name: Selenium Java with Maven 1.0
+name: Selenium Java with ubuntu-latest
 on:
   push:
-    branches: [ master ]
+    branches: [ main ]
   pull_request:
-    branches: [ master ]
+    branches: [ main ]
 jobs:
-  get_ip_address:
-    # runs-on: self-hosted
-    runs-on: ubuntu-latest
-    
-    steps:
-    - name: Public IP
-      id: ip
-      uses: haythem/public-ip@v1.2
-
-    - name: Print Public IP
-      run: |
-        echo ${{ steps.ip.outputs.ipv4 }}
-        echo ${{ steps.ip.outputs.ipv6 }}
-
-  build:
-    # runs-on: self-hosted
+  job_build:
     runs-on: ubuntu-latest
     
     steps:
@@ -35,16 +20,18 @@ jobs:
     - name: Run Build
       run: mvn --batch-mode -DskipTests package
 
-  test:
-    # runs-on: self-hosted
+  job_test:
+    needs: job_build
     runs-on: ubuntu-latest
     
     steps:
+    - uses: actions/checkout@v2
+    
     - name: Install Google Chrome # Using shell script to install Google Chrome
       run: |
        chmod +x ./scripts/InstallChrome.sh
-        ./scripts/InstallChrome.sh
-    - uses: actions/checkout@v2
+       ./scripts/InstallChrome.sh
+
     - name: Set up JDK 17
       uses: actions/setup-java@v2
       with:
@@ -53,8 +40,7 @@ jobs:
         cache: maven
 
     - name: Run Tests
-      # run: mvn --batch-mode -Dmaven.test.failure.ignore=true test
-      run: mvn --batch-mode test
+      run: mvn --batch-mode -Dmaven.test.failure.ignore=true test
       
     - name: Publish Test Report
       if: ${{ always() }}
