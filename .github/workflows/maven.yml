@@ -1,9 +1,9 @@
 name: Selenium Java with ubuntu-latest
 on:
   push:
-    branches: [ main ]
+    branches: [ master ]
   pull_request:
-    branches: [ main ]
+    branches: [ master ]
 jobs:
   job_build:
     runs-on: ubuntu-latest
