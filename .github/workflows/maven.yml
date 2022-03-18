@@ -32,7 +32,7 @@ jobs:
 #         uses: ./dist/
 #         with:
 #           chrome-version: 827102  
-      - uses: browser-actions/setup-chromium@lates
+      - uses: browser-actions/setup-chrome@latest
       - name: Run test on Chromium
         run: (Get-Item (Get-Command chrome).Source).VersionInfo.ProductVersion
     
