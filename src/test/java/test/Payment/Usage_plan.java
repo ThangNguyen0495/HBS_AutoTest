@@ -19,7 +19,7 @@ public class Usage_plan {
 
     @BeforeClass
     public void clear_old_test_error() throws IOException {
-        FileUtils.cleanDirectory(new File(System.getProperty("user.dir") + "\\img\\Usage_Plan"));
+        FileUtils.cleanDirectory(new File(System.getProperty("user.dir") + "/img/Usage_Plan"));
     }
 
     @BeforeMethod
