@@ -28,11 +28,11 @@ jobs:
       # Win - Local
     runs-on: self-hosted
     steps:
-#       - name: Install with version '827102'
-#         uses: ./dist/
-#         with:
-#           chrome-version: 827102  
-      - uses: browser-actions/setup-chrome@latest
+      - name: Install with version '827102'
+        uses: ./dist/
+        with:
+          chrome-version: 827102  
+#       - uses: browser-actions/setup-chrome@latest
       - name: Run test on Chromium
         run: (Get-Item (Get-Command chrome).Source).VersionInfo.ProductVersion
     
