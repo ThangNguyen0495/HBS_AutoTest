@@ -6,7 +6,10 @@ on:
     branches: [ master ]
 jobs:
   job_build:
-    runs-on: ubuntu-latest
+  # Win - Local
+    runs-on: self-hosted
+  # Ubuntu
+#     runs-on: ubuntu-latest
     
     steps:
     - uses: actions/checkout@v2
@@ -22,7 +25,10 @@ jobs:
 
   job_test:
     needs: job_build
-    runs-on: ubuntu-latest
+      # Win - Local
+    runs-on: self-hosted
+  # Ubuntu
+#     runs-on: ubuntu-latest
     
     steps:
     - uses: actions/checkout@v2
