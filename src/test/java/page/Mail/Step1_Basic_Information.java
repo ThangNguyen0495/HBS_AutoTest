@@ -169,7 +169,7 @@ public class Step1_Basic_Information extends Delivered_Mail_Page {
                 wait.until(ExpectedConditions.invisibilityOf(message));
                 soft.assertEquals(text, "アイテムが作成されました", "[Failed][Basic Information] Message do not match.");
             } else {
-                sleep(2000);
+                sleep(3000);
             }
 
             // Check current tab

@@ -1,6 +1,5 @@
 package page.Mail;
 
-import org.apache.commons.lang.math.RandomUtils;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -56,29 +55,32 @@ public class Step2_Attachment extends Delivered_Mail_Page {
         current_date_time = common.generate_date_time();
         for (int i = 0; i < number_of_files; i++) {
             new RandomAccessFile(System.getProperty("user.dir") + "\\Test_Data\\text" + i + "_" + current_date_time + ".txt", "rw")
-                    .setLength(((long) capacity * 1024 * 1024) / number_of_files);
+                    .setLength(((long) capacity * 1024 * 1024 - number_of_files) / number_of_files);
         }
     }
 
     public void upload_file() throws IOException {
         // Master, Administrator, Responsible person, Leader, Member
         if (common.authorized(role, common.role_list(5))) {
-            generate_test_file(capacity, 3);
-            // Wait hide message
-            wait.until(ExpectedConditions.invisibilityOf(message));
+            if ((Mode.equals("Create")) || (!list_mail_status.contains(mail_status) && (Mode.equals("Edit")))) {
 
-            // 0: upload 1 file, 1: upload multi file
-            int upload = RandomUtils.nextInt(2);
-            upload_file.sendKeys(System.getProperty("user.dir") + "\\Test_Data\\text0_" + current_date_time + ".txt");
-            if (upload != 0) {
-                upload_file.sendKeys(System.getProperty("user.dir") + "\\Test_Data\\text1_" + current_date_time + ".txt");
-                upload_file.sendKeys(System.getProperty("user.dir") + "\\Test_Data\\text2_" + current_date_time + ".txt");
+                generate_test_file(capacity - 1, 1);
+                // Waiting for hide previous message
+                if (Mode.equals("Edit")) {
+                    while (number_of_file.size() != 0) {
+                        key.moveToElement(delete_upload_file.get(0)).click().build().perform();
+                        wait.until(ExpectedConditions.visibilityOf(message));
+                        wait.until(ExpectedConditions.invisibilityOf(message));
+                    }
+                }
+                upload_file.sendKeys(System.getProperty("user.dir") + "\\Test_Data\\text0_" + current_date_time + ".txt");
+
+                // Wait file have been uploaded
+                wait.until(ExpectedConditions.visibilityOf(message));
+
+                // Wait hide message
+                wait.until(ExpectedConditions.invisibilityOf(message));
             }
-            // Wait file have been uploaded
-            wait.until(ExpectedConditions.visibilityOf(message));
-
-            // Wait hide message
-            wait.until(ExpectedConditions.invisibilityOf(message));
         }
     }
 
@@ -134,7 +136,13 @@ public class Step2_Attachment extends Delivered_Mail_Page {
             if ((Mode.equals("Create")) || (!list_mail_status.contains(mail_status) && (Mode.equals("Edit")))) {
                 generate_test_file(capacity, 1);
                 // Waiting for hide previous message
-                wait.until(ExpectedConditions.invisibilityOf(message));
+                if (Mode.equals("Edit")) {
+                    while (number_of_file.size() != 0) {
+                        key.moveToElement(delete_upload_file.get(0)).click().build().perform();
+                        wait.until(ExpectedConditions.visibilityOf(message));
+                        wait.until(ExpectedConditions.invisibilityOf(message));
+                    }
+                }
                 upload_file.sendKeys(System.getProperty("user.dir") + "\\Test_Data\\text0_" + current_date_time + ".txt");
                 String text = wait.until(ExpectedConditions.visibilityOf(message)).getText();
                 soft.assertTrue(text.contains("ファイルがアップロードされました"), "[Failed] Can not upload file with capacity: "
@@ -149,11 +157,22 @@ public class Step2_Attachment extends Delivered_Mail_Page {
             if ((Mode.equals("Create")) || (!list_mail_status.contains(mail_status) && (Mode.equals("Edit")))) {
                 generate_test_file(capacity, 3);
                 // Waiting for hide previous message
-                wait.until(ExpectedConditions.invisibilityOf(message));
-                upload_file.sendKeys(System.getProperty("user.dir") + "\\Test_Data\\text0_" + current_date_time + ".txt");
-                upload_file.sendKeys(System.getProperty("user.dir") + "\\Test_Data\\text1_" + current_date_time + ".txt");
-                upload_file.sendKeys(System.getProperty("user.dir") + "\\Test_Data\\text2_" + current_date_time + ".txt");
-                String text = wait.until(ExpectedConditions.visibilityOf(message)).getText();
+                if (Mode.equals("Edit")) {
+                    while (number_of_file.size() != 0) {
+                        key.moveToElement(delete_upload_file.get(0)).click().build().perform();
+                        wait.until(ExpectedConditions.visibilityOf(message));
+                        wait.until(ExpectedConditions.invisibilityOf(message));
+                    }
+                }
+                String text = "";
+                for (int i = 0; i < 3; i++) {
+                    upload_file.sendKeys(System.getProperty("user.dir") + "\\Test_Data\\text" + i + "_" + current_date_time + ".txt");
+                    wait.until(ExpectedConditions.visibilityOf(message));
+                    if (i == 2) {
+                        text = message.getText();
+                    }
+                    wait.until(ExpectedConditions.invisibilityOf(message));
+                }
                 soft.assertTrue(text.contains("ファイルがアップロードされました"), "[Failed] Can not upload multi file with capacity = "
                         + capacity + "MB.\n Actual message: " + text + "\n Expect message: contains ファイルがアップロードされました");
                 soft.assertAll();
@@ -165,6 +184,13 @@ public class Step2_Attachment extends Delivered_Mail_Page {
         if (common.authorized(role, common.role_list(5))) {
             if ((Mode.equals("Create")) || (!list_mail_status.contains(mail_status) && (Mode.equals("Edit")))) {
                 generate_test_file(capacity + 1, 1);
+                if (Mode.equals("Edit")) {
+                    while (number_of_file.size() != 0) {
+                        key.moveToElement(delete_upload_file.get(0)).click().build().perform();
+                        wait.until(ExpectedConditions.visibilityOf(message));
+                        wait.until(ExpectedConditions.invisibilityOf(message));
+                    }
+                }
                 // Waiting for hid previous message
                 wait.until(ExpectedConditions.invisibilityOf(message));
                 upload_file.sendKeys(System.getProperty("user.dir") + "\\Test_Data\\text0_" + current_date_time + ".txt");
@@ -180,11 +206,22 @@ public class Step2_Attachment extends Delivered_Mail_Page {
         if (common.authorized(role, common.role_list(5))) {
             if ((Mode.equals("Create")) || (!list_mail_status.contains(mail_status) && (Mode.equals("Edit")))) {
                 generate_test_file(capacity + 1, 3);
-                // Waiting for hid previous message
-                upload_file.sendKeys(System.getProperty("user.dir") + "\\Test_Data\\text0_" + current_date_time + ".txt");
-                upload_file.sendKeys(System.getProperty("user.dir") + "\\Test_Data\\text1_" + current_date_time + ".txt");
-                upload_file.sendKeys(System.getProperty("user.dir") + "\\Test_Data\\text2_" + current_date_time + ".txt");
-                String text = wait.until(ExpectedConditions.visibilityOf(message)).getText();
+                if (Mode.equals("Edit")) {
+                    while (number_of_file.size() != 0) {
+                        key.moveToElement(delete_upload_file.get(0)).click().build().perform();
+                        wait.until(ExpectedConditions.visibilityOf(message));
+                        wait.until(ExpectedConditions.invisibilityOf(message));
+                    }
+                }
+                String text = "";
+                for (int i = 0; i < 3; i++) {
+                    upload_file.sendKeys(System.getProperty("user.dir") + "\\Test_Data\\text" + i + "_" + current_date_time + ".txt");
+                    wait.until(ExpectedConditions.visibilityOf(message));
+                    if (i == 2) {
+                        text = message.getText();
+                    }
+                    wait.until(ExpectedConditions.invisibilityOf(message));
+                }
                 soft.assertTrue(text.contains("を超えるメールを配信することはできません"), "[Failed] Message do not match."
                         + "\n Actual message: " + text + "\n Expect message: contains を超えるメールを配信することはできません");
                 soft.assertAll();
@@ -209,14 +246,14 @@ public class Step2_Attachment extends Delivered_Mail_Page {
                 // Waiting for hid previous message
                 String text = "";
                 for (int i = 0; i < 11; i++) {
-                    upload_file.sendKeys(System.getProperty("user.dir") + "\\Test_Data\\text" + i + "_" +current_date_time + ".txt");
+                    upload_file.sendKeys(System.getProperty("user.dir") + "\\Test_Data\\text" + i + "_" + current_date_time + ".txt");
                     wait.until(ExpectedConditions.visibilityOf(message));
                     if (i == 10) {
                         text = message.getText();
                     }
                     wait.until(ExpectedConditions.invisibilityOf(message));
                 }
-                soft.assertEquals(text,"添付可能なファイル数は10件以下です。", "[Failed] Message do not match.");
+                soft.assertEquals(text, "添付可能なファイル数は10件以下です。", "[Failed] Message do not match.");
                 soft.assertAll();
             }
         }

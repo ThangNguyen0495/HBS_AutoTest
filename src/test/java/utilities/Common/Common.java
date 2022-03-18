@@ -14,7 +14,6 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.safari.SafariDriver;
-import org.testng.Assert;
 import org.testng.ITestResult;
 
 import java.io.File;
@@ -25,7 +24,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static java.lang.Thread.sleep;
-import static utilities.Link_and_Path.HBS.addons_path;
 
 
 public class Common {

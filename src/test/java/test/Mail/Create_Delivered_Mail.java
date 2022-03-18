@@ -15,8 +15,9 @@ import java.io.File;
 import java.io.IOException;
 
 import static utilities.Link_and_Path.HBS.mail_list_path;
+import static utilities.Link_and_Path.HBS.register_path;
 
-public class Edit_Delivered_Mail {
+public class Create_Delivered_Mail {
     Common common;
     WebDriver driver;
     Actions key;
@@ -32,12 +33,12 @@ public class Edit_Delivered_Mail {
         } catch (IOException ex) {
             // nothing
         }
-        FileUtils.cleanDirectory(new File(System.getProperty("user.dir") + "\\img\\Edit_Mail"));
+        FileUtils.cleanDirectory(new File(System.getProperty("user.dir") + "\\img\\Create_Mail"));
     }
 
     @BeforeMethod
-    @Parameters({"headless", "browser_name", "email", "password", "domain", "mail_id", "role", "capacity", "mail_status"})
-    public void setup(String headless, String browser_name, String email, String password, String domain, String mail_id, String role, int capacity, String mail_status) throws InterruptedException {
+    @Parameters({"headless", "browser_name", "email", "password", "domain", "role", "capacity"})
+    public void setup(String headless, String browser_name, String email, String password, String domain, String role, int capacity) throws InterruptedException {
         // Init utilities.Common function
         common = new Common();
 
@@ -48,23 +49,23 @@ public class Edit_Delivered_Mail {
         key = new Actions(driver);
 
         //Login
-        common.login(driver, domain + mail_list_path + "/" + mail_id, email, password);
+        common.login(driver, domain + mail_list_path + register_path, email, password);
 
         // Init Basic information function
-        basicInformation = new Step1_Basic_Information(driver, role, common, domain, mail_id, mail_status, "Edit");
+        basicInformation = new Step1_Basic_Information(driver, role, common, domain, "Create");
 
         // Init Attachment function
-        attachment = new Step2_Attachment(driver, role, common, domain, capacity, mail_id, mail_status, "Edit");
+        attachment = new Step2_Attachment(driver, role, common, domain, capacity, "Create");
 
         // Init Destination selection function
-        destinationSearch = new Step3_Destination_selection(driver, role, common, domain, mail_id, mail_status, "Edit");
+        destinationSearch = new Step3_Destination_selection(driver, role, common, domain, "Create");
 
         // Init Final confirmation function
-        finalConfirmation = new Step4_Final_confirmation(driver, role, common, domain, mail_id, mail_status, "Edit");
+        finalConfirmation = new Step4_Final_confirmation(driver, role, common, domain, "Create");
     }
 
     @Test
-    public void TC01_process_edit_mail() throws InterruptedException {
+    public void TC01_process_create_mail() throws InterruptedException, IOException {
         //****** 基本情報 ****** //
         // Basic information
         // Format
@@ -88,8 +89,7 @@ public class Edit_Delivered_Mail {
 
         //****** 添付ファイル ****** //
         // Attachment
-        // Upload file
-//        attachment.upload_file();
+        attachment.upload_file();
 
         // Next to 宛先選択_Step
         attachment.next_to_destination_selection_step();
@@ -157,12 +157,11 @@ public class Edit_Delivered_Mail {
     public void TC_06_insertion_exceed_10000_half_width_characters() throws InterruptedException {
         // Input insertion exceed 10000 half width character and verify error message
         basicInformation.insertion_exceed_10000_half_width_characters();
-        driver.close();
     }
 
     @Test
     public void TC_07_insertion_exceed_5000_full_width_characters() throws InterruptedException {
-        // Input insertion exceed 5000 full width character and verify error message
+        /* Input insertion exceed 5000 full width character and verify error message */
         basicInformation.insertion_exceed_5000_full_width_characters();
     }
 
@@ -173,54 +172,27 @@ public class Edit_Delivered_Mail {
     }
 
     @Test
-    public void TC_09_update_delivery_with_valid_data_basic_information() throws InterruptedException {
-        // Select format
+    public void TC_09_delete_button_should_be_disable() {
+        // Verify delete button getting disable
+        basicInformation.delete_button_should_be_disable();
+    }
+
+    @Test
+    public void TC_10_do_you_want_to_delete_this_delivered_email_OK_basic_information() throws InterruptedException {
+        // Format
         basicInformation.format();
 
-        // Verify that can update delivered mail with valid data
-        basicInformation.update_delivery_with_valid_data();
-    }
+        // Input valid subject
+        basicInformation.subject();
 
-    @Test
-    public void TC_10_make_a_copy_basic_information() throws InterruptedException {
-        // Click make attachment copy button => create attachment copy mail and link to mail list page
-        basicInformation.make_a_copy();
-    }
+        // Input valid insertion
+        basicInformation.insertion();
 
-    @Test
-    public void TC_11_would_you_like_to_change_this_delivery_email_to_Draft_status_Cancel_basic_information() throws InterruptedException {
-        // Switch to mail id for save as draft testcase
-        basicInformation.switch_url_before_run_test("save as draft");
+        // Next to attachment step
+        basicInformation.next_to_attachment_step();
 
-        // Click save as draft button => show "Would you like to change this delivery email to Draft status" popup
-        // Click cancel button => close popup
-        basicInformation.would_you_like_to_change_this_delivery_email_to_Draft_status_Cancel();
-    }
-
-    @Test
-    public void TC_12_would_you_like_to_change_this_delivery_email_to_Draft_status_OK_basic_information() throws InterruptedException {
-        // Switch to mail id for save as draft testcase
-        basicInformation.switch_url_before_run_test("save as draft");
-
-        // Click save as draft button => show "Would you like to change this delivery email to Draft status" popup
-        // Click OK button => Save delivered as draft status and link to mail list page
-        basicInformation.would_you_like_to_change_this_delivery_email_to_Draft_status_OK();
-    }
-
-    @Test
-    public void TC_13_do_you_want_to_delete_this_delivered_email_Cancel_basic_information() throws InterruptedException {
-        // Switch to mail id for delete testcase
-        basicInformation.switch_url_before_run_test("delete");
-
-        // Click delete button => show "Do you want to delete this delivered mail" popup
-        // Click cancel button => close popup
-        basicInformation.do_you_want_to_delete_this_delivered_email_Cancel();
-    }
-
-    @Test
-    public void TC_14_do_you_want_to_delete_this_delivered_email_OK_basic_information() throws InterruptedException {
-        // Switch to mail id for delete testcase
-        basicInformation.switch_url_before_run_test("delete");
+        // Back to basic information step
+        attachment.back_to_basic_information_step();
 
         // Click delete button => show "Do you want to delete this delivered mail
         // Click OK button => delivered mail should be deleted
@@ -228,9 +200,103 @@ public class Edit_Delivered_Mail {
     }
 
     @Test
-    public void TC_15_upload_maximum_capacity_1_file() throws IOException, InterruptedException {
-        // Select format
+    public void TC_11_do_you_want_to_delete_this_delivered_email_Cancel_basic_information() throws InterruptedException {
+        // Format
         basicInformation.format();
+
+        // Input valid subject
+        basicInformation.subject();
+
+        // Input valid insertion
+        basicInformation.insertion();
+
+        // Next to attachment step
+        basicInformation.next_to_attachment_step();
+
+        // Back to basic information step
+        attachment.back_to_basic_information_step();
+
+        // Click delete button => show "Do you want to delete this delivered mail" popup
+        // Click cancel button => close popup
+        basicInformation.do_you_want_to_delete_this_delivered_email_Cancel();
+    }
+
+    @Test
+    public void TC_12_make_a_copy_basic_information() throws InterruptedException {
+        // Format
+        basicInformation.format();
+
+        // Input valid subject
+        basicInformation.subject();
+
+        // Input valid insertion
+        basicInformation.insertion();
+
+        // Next to attachment step
+        basicInformation.next_to_attachment_step();
+
+        // Back to basic information step
+        attachment.back_to_basic_information_step();
+
+        // Click make attachment copy button => create attachment copy mail and link to mail list page
+        basicInformation.make_a_copy();
+    }
+
+    @Test
+    public void TC_13_would_you_like_to_change_this_delivery_email_to_Draft_status_OK_basic_information() throws InterruptedException {
+        // Format
+        basicInformation.format();
+
+        // Input valid subject
+        basicInformation.subject();
+
+        // Input valid insertion
+        basicInformation.insertion();
+
+        // Next to attachment step
+        basicInformation.next_to_attachment_step();
+
+        // Back to basic information step
+        attachment.back_to_basic_information_step();
+
+        // Click save as draft button => show "Would you like to change this delivery email to Draft status" popup
+        // Click OK button => Save delivered as draft status and link to mail list page
+        basicInformation.would_you_like_to_change_this_delivery_email_to_Draft_status_OK();
+    }
+
+    @Test
+    public void TC_14_would_you_like_to_change_this_delivery_email_to_Draft_status_Cancel_basic_information() throws InterruptedException {
+        // Format
+        basicInformation.format();
+
+        // Input valid subject
+        basicInformation.subject();
+
+        // Input valid insertion
+        basicInformation.insertion();
+
+        // Next to attachment step
+        basicInformation.next_to_attachment_step();
+
+        // Back to basic information step
+        attachment.back_to_basic_information_step();
+
+        // Click save as draft button => show "Would you like to change this delivery email to Draft status" popup
+        // Click cancel button => close popup
+        basicInformation.would_you_like_to_change_this_delivery_email_to_Draft_status_Cancel();
+    }
+
+
+    @Test
+    public void TC_15_upload_maximum_capacity_1_file() throws IOException, InterruptedException {
+        // Format
+        basicInformation.format();
+
+        // Input valid subject
+        basicInformation.subject();
+
+        // Input valid insertion
+        basicInformation.insertion();
 
         // Next to attachment step
         basicInformation.next_to_attachment_step();
@@ -241,8 +307,14 @@ public class Edit_Delivered_Mail {
 
     @Test
     public void TC_16_upload_maximum_capacity_multi_file() throws InterruptedException, IOException {
-        // Select format
+        // Format
         basicInformation.format();
+
+        // Input valid subject
+        basicInformation.subject();
+
+        // Input valid insertion
+        basicInformation.insertion();
 
         // Next to attachment step
         basicInformation.next_to_attachment_step();
@@ -253,8 +325,14 @@ public class Edit_Delivered_Mail {
 
     @Test
     public void TC_17_upload_exceed_maximum_capacity_1_file() throws IOException, InterruptedException {
-        // Select format
+        // Format
         basicInformation.format();
+
+        // Input valid subject
+        basicInformation.subject();
+
+        // Input valid insertion
+        basicInformation.insertion();
 
         // Next to attachment step
         basicInformation.next_to_attachment_step();
@@ -265,8 +343,14 @@ public class Edit_Delivered_Mail {
 
     @Test
     public void TC_18_upload_exceed_maximum_capacity_multi_file() throws InterruptedException, IOException {
-        // Select format
+        // Format
         basicInformation.format();
+
+        // Input valid subject
+        basicInformation.subject();
+
+        // Input valid insertion
+        basicInformation.insertion();
 
         // Next to attachment step
         basicInformation.next_to_attachment_step();
@@ -277,8 +361,14 @@ public class Edit_Delivered_Mail {
 
     @Test
     public void TC_19_upload_exceed_10_files() throws InterruptedException, IOException {
-        // Select format
+        // Format
         basicInformation.format();
+
+        // Input valid subject
+        basicInformation.subject();
+
+        // Input valid insertion
+        basicInformation.insertion();
 
         // Next to attachment step
         basicInformation.next_to_attachment_step();
@@ -288,75 +378,15 @@ public class Edit_Delivered_Mail {
     }
 
     @Test
-    public void TC_20_update_delivery_with_valid_data_attachment() throws InterruptedException {
-        // Select format
+    public void TC_20_do_you_want_to_delete_this_delivered_email_OK_attachment() throws InterruptedException {
+        // Format
         basicInformation.format();
 
-        // Next to attachment step
-        basicInformation.next_to_attachment_step();
+        // Input valid subject
+        basicInformation.subject();
 
-        // Verify that can update delivered mail with valid data
-        attachment.update_delivery_with_valid_data();
-    }
-
-    @Test
-    public void TC_21_make_a_copy_attachment() throws InterruptedException {
-        // Select format
-        basicInformation.format();
-
-        // Next to attachment step
-        basicInformation.next_to_attachment_step();
-
-        // Click make attachment copy button => create attachment copy mail and link to mail list page
-        attachment.make_a_copy();
-    }
-
-    @Test
-    public void TC_22_would_you_like_to_change_this_delivery_email_to_Draft_status_Cancel_attachment() throws InterruptedException {
-        // Switch to mail id for save as draft testcase
-        attachment.switch_url_before_run_test("save as draft");
-
-        // Next to attachment step
-        basicInformation.next_to_attachment_step();
-
-        // Click save as draft button => show "Would you like to change this delivery email to Draft status" popup
-        // Click cancel button => close popup
-        attachment.would_you_like_to_change_this_delivery_email_to_Draft_status_Cancel();
-    }
-
-    @Test
-    public void TC_23_would_you_like_to_change_this_delivery_email_to_Draft_status_OK_attachment() throws InterruptedException {
-        // Switch to mail id for save as draft testcase
-        attachment.switch_url_before_run_test("save as draft");
-
-        // Next to attachment step
-        basicInformation.next_to_attachment_step();
-
-        // Click save as draft button => show "Would you like to change this delivery email to Draft status" popup
-        // Click OK button => Save delivered as draft status and link to mail list page
-        attachment.would_you_like_to_change_this_delivery_email_to_Draft_status_OK();
-    }
-
-    @Test
-    public void TC_24_do_you_want_to_delete_this_delivered_email_Cancel_attachment() throws InterruptedException {
-        // Switch to mail id for delete testcase
-        attachment.switch_url_before_run_test("delete");
-
-        // Next to attachment step
-        basicInformation.next_to_attachment_step();
-
-        // Click delete button => show "Do you want to delete this delivered mail" popup
-        // Click cancel button => close popup
-        attachment.do_you_want_to_delete_this_delivered_email_Cancel();
-
-        //Close browser
-        driver.close();
-    }
-
-    @Test
-    public void TC_25_do_you_want_to_delete_this_delivered_email_OK_attachment() throws InterruptedException {
-        // Switch to mail id for delete testcase
-        attachment.switch_url_before_run_test("delete");
+        // Input valid insertion
+        basicInformation.insertion();
 
         // Next to attachment step
         basicInformation.next_to_attachment_step();
@@ -367,9 +397,93 @@ public class Edit_Delivered_Mail {
     }
 
     @Test
-    public void TC_26_deliver_the_matter_do_not_select_condition() throws InterruptedException {
-        // Select format
+    public void TC_21_do_you_want_to_delete_this_delivered_email_Cancel_attachment() throws InterruptedException {
+        // Format
         basicInformation.format();
+
+        // Input valid subject
+        basicInformation.subject();
+
+        // Input valid insertion
+        basicInformation.insertion();
+
+        // Next to attachment step
+        basicInformation.next_to_attachment_step();
+
+        // Click delete button => show "Do you want to delete this delivered mail" popup
+        // Click cancel button => close popup
+        attachment.do_you_want_to_delete_this_delivered_email_Cancel();
+
+        //Close browser
+//        driver.close();
+    }
+
+    @Test
+    public void TC_22_make_a_copy_attachment() throws InterruptedException {
+        // Format
+        basicInformation.format();
+
+        // Input valid subject
+        basicInformation.subject();
+
+        // Input valid insertion
+        basicInformation.insertion();
+
+        // Next to attachment step
+        basicInformation.next_to_attachment_step();
+
+        // Click make attachment copy button => create attachment copy mail and link to mail list page
+        attachment.make_a_copy();
+    }
+
+    @Test
+    public void TC_23_would_you_like_to_change_this_delivery_email_to_Draft_status_OK_attachment() throws InterruptedException {
+        // Format
+        basicInformation.format();
+
+        // Input valid subject
+        basicInformation.subject();
+
+        // Input valid insertion
+        basicInformation.insertion();
+
+        // Next to attachment step
+        basicInformation.next_to_attachment_step();
+
+        // Click save as draft button => show "Would you like to change this delivery email to Draft status" popup
+        // Click OK button => Save delivered as draft status and link to mail list page
+        attachment.would_you_like_to_change_this_delivery_email_to_Draft_status_OK();
+    }
+
+    @Test
+    public void TC_24_would_you_like_to_change_this_delivery_email_to_Draft_status_Cancel_attachment() throws InterruptedException {
+        // Format
+        basicInformation.format();
+
+        // Input valid subject
+        basicInformation.subject();
+
+        // Input valid insertion
+        basicInformation.insertion();
+
+        // Next to attachment step
+        basicInformation.next_to_attachment_step();
+
+        // Click save as draft button => show "Would you like to change this delivery email to Draft status" popup
+        // Click cancel button => close popup
+        attachment.would_you_like_to_change_this_delivery_email_to_Draft_status_Cancel();
+    }
+
+    @Test
+    public void TC_25_deliver_the_matter_do_not_select_condition() throws InterruptedException {
+        // Format
+        basicInformation.format();
+
+        // Input valid subject
+        basicInformation.subject();
+
+        // Input valid insertion
+        basicInformation.insertion();
 
         // Next to attachment step
         basicInformation.next_to_attachment_step();
@@ -383,9 +497,15 @@ public class Edit_Delivered_Mail {
     }
 
     @Test
-    public void TC_27_deliver_the_matter_only_select_delivery_occupation_development() throws InterruptedException {
-        // Select format
+    public void TC_26_deliver_the_matter_only_select_delivery_occupation_development() throws InterruptedException {
+        // Format
         basicInformation.format();
+
+        // Input valid subject
+        basicInformation.subject();
+
+        // Input valid insertion
+        basicInformation.insertion();
 
         // Next to attachment step
         basicInformation.next_to_attachment_step();
@@ -400,9 +520,15 @@ public class Edit_Delivered_Mail {
     }
 
     @Test
-    public void TC_28_deliver_the_matter_only_select_delivery_occupation_infrastructure() throws InterruptedException {
-        // Select format
+    public void TC_27_deliver_the_matter_only_select_delivery_occupation_infrastructure() throws InterruptedException {
+        // Format
         basicInformation.format();
+
+        // Input valid subject
+        basicInformation.subject();
+
+        // Input valid insertion
+        basicInformation.insertion();
 
         // Next to attachment step
         basicInformation.next_to_attachment_step();
@@ -417,9 +543,15 @@ public class Edit_Delivered_Mail {
     }
 
     @Test
-    public void TC_29_deliver_the_matter_only_select_delivery_occupation_others() throws InterruptedException {
-        // Select format
+    public void TC_28_deliver_the_matter_only_select_delivery_occupation_others() throws InterruptedException {
+        // Format
         basicInformation.format();
+
+        // Input valid subject
+        basicInformation.subject();
+
+        // Input valid insertion
+        basicInformation.insertion();
 
         // Next to attachment step
         basicInformation.next_to_attachment_step();
@@ -434,9 +566,15 @@ public class Edit_Delivered_Mail {
     }
 
     @Test
-    public void TC_30_deliver_the_personnel_do_not_select_condition() throws InterruptedException {
-        // Select format
+    public void TC_29_deliver_the_personnel_do_not_select_condition() throws InterruptedException {
+        // Format
         basicInformation.format();
+
+        // Input valid subject
+        basicInformation.subject();
+
+        // Input valid insertion
+        basicInformation.insertion();
 
         // Next to attachment step
         basicInformation.next_to_attachment_step();
@@ -450,9 +588,15 @@ public class Edit_Delivered_Mail {
     }
 
     @Test
-    public void TC_31_deliver_the_personnel_only_select_delivery_occupation_development() throws InterruptedException {
-        // Select format
+    public void TC_30_deliver_the_personnel_only_select_delivery_occupation_development() throws InterruptedException {
+        // Format
         basicInformation.format();
+
+        // Input valid subject
+        basicInformation.subject();
+
+        // Input valid insertion
+        basicInformation.insertion();
 
         // Next to attachment step
         basicInformation.next_to_attachment_step();
@@ -467,9 +611,15 @@ public class Edit_Delivered_Mail {
     }
 
     @Test
-    public void TC_32_deliver_the_personnel_only_select_delivery_occupation_infrastructure() throws InterruptedException {
-        // Select format
+    public void TC_31_deliver_the_personnel_only_select_delivery_occupation_infrastructure() throws InterruptedException {
+        // Format
         basicInformation.format();
+
+        // Input valid subject
+        basicInformation.subject();
+
+        // Input valid insertion
+        basicInformation.insertion();
 
         // Next to attachment step
         basicInformation.next_to_attachment_step();
@@ -484,9 +634,15 @@ public class Edit_Delivered_Mail {
     }
 
     @Test
-    public void TC_33_deliver_the_personnel_only_select_delivery_occupation_others() throws InterruptedException {
-        // Select format
+    public void TC_32_deliver_the_personnel_only_select_delivery_occupation_others() throws InterruptedException {
+        // Format
         basicInformation.format();
+
+        // Input valid subject
+        basicInformation.subject();
+
+        // Input valid insertion
+        basicInformation.insertion();
 
         // Next to attachment step
         basicInformation.next_to_attachment_step();
@@ -501,9 +657,15 @@ public class Edit_Delivered_Mail {
     }
 
     @Test
-    public void TC_34_deliver_the_personnel_select_delivery_occupation_development_infrastructure_and_others() throws InterruptedException {
-        // Select format
+    public void TC_33_deliver_the_personnel_select_delivery_occupation_development_infrastructure_and_others() throws InterruptedException {
+        // Format
         basicInformation.format();
+
+        // Input valid subject
+        basicInformation.subject();
+
+        // Input valid insertion
+        basicInformation.insertion();
 
         // Next to attachment step
         basicInformation.next_to_attachment_step();
@@ -518,9 +680,15 @@ public class Edit_Delivered_Mail {
     }
 
     @Test
-    public void TC_35_do_not_select_account_status() throws InterruptedException {
-        // Select format
+    public void TC_34_do_not_select_account_status() throws InterruptedException {
+        // Format
         basicInformation.format();
+
+        // Input valid subject
+        basicInformation.subject();
+
+        // Input valid insertion
+        basicInformation.insertion();
 
         // Next to attachment step
         basicInformation.next_to_attachment_step();
@@ -535,9 +703,15 @@ public class Edit_Delivered_Mail {
     }
 
     @Test
-    public void TC_36_do_not_select_in_house_person_in_charge() throws InterruptedException {
-        // Select format
+    public void TC_35_do_not_select_in_house_person_in_charge() throws InterruptedException {
+        // Format
         basicInformation.format();
+
+        // Input valid subject
+        basicInformation.subject();
+
+        // Input valid insertion
+        basicInformation.insertion();
 
         // Next to attachment step
         basicInformation.next_to_attachment_step();
@@ -552,9 +726,15 @@ public class Edit_Delivered_Mail {
     }
 
     @Test
-    public void TC_37_do_not_select_compatibility() throws InterruptedException {
-        // Select format
+    public void TC_36_do_not_select_compatibility() throws InterruptedException {
+        // Format
         basicInformation.format();
+
+        // Input valid subject
+        basicInformation.subject();
+
+        // Input valid insertion
+        basicInformation.insertion();
 
         // Next to attachment step
         basicInformation.next_to_attachment_step();
@@ -569,9 +749,15 @@ public class Edit_Delivered_Mail {
     }
 
     @Test
-    public void TC_38_do_not_select_tag() throws InterruptedException {
-        // Select format
+    public void TC_37_do_not_select_tag() throws InterruptedException {
+        // Format
         basicInformation.format();
+
+        // Input valid subject
+        basicInformation.subject();
+
+        // Input valid insertion
+        basicInformation.insertion();
 
         // Next to attachment step
         basicInformation.next_to_attachment_step();
@@ -586,9 +772,15 @@ public class Edit_Delivered_Mail {
     }
 
     @Test
-    public void TC_39_select_exceeds_5_tags() throws InterruptedException {
-        // Select format
+    public void TC_38_select_exceeds_5_tags() throws InterruptedException {
+        // Format
         basicInformation.format();
+
+        // Input valid subject
+        basicInformation.subject();
+
+        // Input valid insertion
+        basicInformation.insertion();
 
         // Next to attachment step
         basicInformation.next_to_attachment_step();
@@ -603,71 +795,37 @@ public class Edit_Delivered_Mail {
     }
 
     @Test
-    public void TC_40_update_delivery_with_valid_data_destination_selection() throws InterruptedException {
-        // Select format
+    public void TC_39_do_you_want_to_delete_this_delivered_email_OK_destination_selection() throws InterruptedException {
+        // Format
         basicInformation.format();
 
+        // Input valid subject
+        basicInformation.subject();
+
+        // Input valid insertion
+        basicInformation.insertion();
+
         // Next to attachment step
         basicInformation.next_to_attachment_step();
 
         // Next to destination selection step
         attachment.next_to_destination_selection_step();
 
-        // Verify that can update delivered mail with valid data
-        destinationSearch.update_delivery_with_valid_data();
+        // Click delete button => show "Do you want to delete this delivered mail
+        // Click OK button => delivered mail should be deleted
+        destinationSearch.do_you_want_to_delete_this_delivered_email_OK();
     }
 
     @Test
-    public void TC_41_make_a_copy_destination_selection() throws InterruptedException {
-        // Select format
+    public void TC_40_do_you_want_to_delete_this_delivered_email_Cancel_destination_selection() throws InterruptedException {
+        // Format
         basicInformation.format();
 
-        // Next to attachment step
-        basicInformation.next_to_attachment_step();
+        // Input valid subject
+        basicInformation.subject();
 
-        // Next to destination selection step
-        attachment.next_to_destination_selection_step();
-
-        // Click make attachment copy button => create attachment copy mail and link to mail list page
-        destinationSearch.make_a_copy();
-    }
-
-    @Test
-    public void TC_42_would_you_like_to_change_this_delivery_email_to_Draft_status_Cancel_destination_selection() throws InterruptedException {
-        // Switch to mail id for save as draft testcase
-        destinationSearch.switch_url_before_run_test("save as draft");
-
-        // Next to attachment step
-        basicInformation.next_to_attachment_step();
-
-        // Next to destination selection step
-        attachment.next_to_destination_selection_step();
-
-        // Click save as draft button => show "Would you like to change this delivery email to Draft status" popup
-        // Click cancel button => close popup
-        destinationSearch.would_you_like_to_change_this_delivery_email_to_Draft_status_Cancel();
-    }
-
-    @Test
-    public void TC_43_would_you_like_to_change_this_delivery_email_to_Draft_status_OK_destination_selection() throws InterruptedException {
-        // Switch to mail id for save as draft testcase
-        destinationSearch.switch_url_before_run_test("save as draft");
-
-        // Next to attachment step
-        basicInformation.next_to_attachment_step();
-
-        // Next to destination selection step
-        attachment.next_to_destination_selection_step();
-
-        // Click save as draft button => show "Would you like to change this delivery email to Draft status" popup
-        // Click OK button => Save delivered as draft status and link to mail list page
-        destinationSearch.would_you_like_to_change_this_delivery_email_to_Draft_status_OK();
-    }
-
-    @Test
-    public void TC_44_do_you_want_to_delete_this_delivered_email_Cancel_destination_selection() throws InterruptedException {
-        // Switch to mail id for delete testcase
-        destinationSearch.switch_url_before_run_test("delete");
+        // Input valid insertion
+        basicInformation.insertion();
 
         // Next to attachment step
         basicInformation.next_to_attachment_step();
@@ -681,9 +839,15 @@ public class Edit_Delivered_Mail {
     }
 
     @Test
-    public void TC_45_do_you_want_to_delete_this_delivered_email_OK_destination_selection() throws InterruptedException {
-        // Switch to mail id for delete testcase
-        destinationSearch.switch_url_before_run_test("delete");
+    public void TC_41_make_a_copy_destination_selection() throws InterruptedException {
+        // Format
+        basicInformation.format();
+
+        // Input valid subject
+        basicInformation.subject();
+
+        // Input valid insertion
+        basicInformation.insertion();
 
         // Next to attachment step
         basicInformation.next_to_attachment_step();
@@ -691,16 +855,64 @@ public class Edit_Delivered_Mail {
         // Next to destination selection step
         attachment.next_to_destination_selection_step();
 
-        // Click delete button => show "Do you want to delete this delivered mail
-        // Click OK button => delivered mail should be deleted
-        destinationSearch.do_you_want_to_delete_this_delivered_email_OK();
+        // Click make attachment copy button => create attachment copy mail and link to mail list page
+        destinationSearch.make_a_copy();
     }
 
+    @Test
+    public void TC_42_would_you_like_to_change_this_delivery_email_to_Draft_status_OK_destination_selection() throws InterruptedException {
+        // Format
+        basicInformation.format();
+
+        // Input valid subject
+        basicInformation.subject();
+
+        // Input valid insertion
+        basicInformation.insertion();
+
+        // Next to attachment step
+        basicInformation.next_to_attachment_step();
+
+        // Next to destination selection step
+        attachment.next_to_destination_selection_step();
+
+        // Click save as draft button => show "Would you like to change this delivery email to Draft status" popup
+        // Click OK button => Save delivered as draft status and link to mail list page
+        destinationSearch.would_you_like_to_change_this_delivery_email_to_Draft_status_OK();
+    }
 
     @Test
-    public void TC_46_back_to_basic_information_from_destination_selection() throws InterruptedException {
-        // Select format
+    public void TC_43_would_you_like_to_change_this_delivery_email_to_Draft_status_Cancel_destination_selection() throws InterruptedException {
+        // Format
         basicInformation.format();
+
+        // Input valid subject
+        basicInformation.subject();
+
+        // Input valid insertion
+        basicInformation.insertion();
+
+        // Next to attachment step
+        basicInformation.next_to_attachment_step();
+
+        // Next to destination selection step
+        attachment.next_to_destination_selection_step();
+
+        // Click save as draft button => show "Would you like to change this delivery email to Draft status" popup
+        // Click cancel button => close popup
+        destinationSearch.would_you_like_to_change_this_delivery_email_to_Draft_status_Cancel();
+    }
+
+    @Test
+    public void TC_44_back_to_basic_information_from_destination_selection() throws InterruptedException {
+        // Format
+        basicInformation.format();
+
+        // Input valid subject
+        basicInformation.subject();
+
+        // Input valid insertion
+        basicInformation.insertion();
 
         // Next to attachment step
         basicInformation.next_to_attachment_step();
@@ -713,9 +925,15 @@ public class Edit_Delivered_Mail {
     }
 
     @Test
-    public void TC_47_back_to_attachment_from_destination_selection() throws InterruptedException {
-        // Select format
+    public void TC_45_back_to_attachment_from_destination_selection() throws InterruptedException {
+        // Format
         basicInformation.format();
+
+        // Input valid subject
+        basicInformation.subject();
+
+        // Input valid insertion
+        basicInformation.insertion();
 
         // Next to attachment step
         basicInformation.next_to_attachment_step();
@@ -728,9 +946,15 @@ public class Edit_Delivered_Mail {
     }
 
     @Test
-    public void TC_48_leave_search_template_name_blank() throws InterruptedException {
-        // Select format
+    public void TC_46_leave_search_template_name_blank() throws InterruptedException {
+        // Format
         basicInformation.format();
+
+        // Input valid subject
+        basicInformation.subject();
+
+        // Input valid insertion
+        basicInformation.insertion();
 
         // Next to attachment step
         basicInformation.next_to_attachment_step();
@@ -743,9 +967,15 @@ public class Edit_Delivered_Mail {
     }
 
     @Test
-    public void TC_49_search_template_name_exceed_50_half_width_characters() throws InterruptedException {
-        // Select format
+    public void TC_47_search_template_name_exceed_50_half_width_characters() throws InterruptedException {
+        // Format
         basicInformation.format();
+
+        // Input valid subject
+        basicInformation.subject();
+
+        // Input valid insertion
+        basicInformation.insertion();
 
         // Next to attachment step
         basicInformation.next_to_attachment_step();
@@ -758,9 +988,15 @@ public class Edit_Delivered_Mail {
     }
 
     @Test
-    public void TC_50_search_template_name_exceed_50_full_width_characters() throws InterruptedException {
-        // Select format
+    public void TC_48_search_template_name_exceed_50_full_width_characters() throws InterruptedException {
+        // Format
         basicInformation.format();
+
+        // Input valid subject
+        basicInformation.subject();
+
+        // Input valid insertion
+        basicInformation.insertion();
 
         // Next to attachment step
         basicInformation.next_to_attachment_step();
@@ -773,9 +1009,15 @@ public class Edit_Delivered_Mail {
     }
 
     @Test
-    public void TC_51_search_template_name_exceed_mix_50_half_and_full_width_characters() throws InterruptedException {
-        // Select format
+    public void TC_49_search_template_name_exceed_mix_50_half_and_full_width_characters() throws InterruptedException {
+        // Format
         basicInformation.format();
+
+        // Input valid subject
+        basicInformation.subject();
+
+        // Input valid insertion
+        basicInformation.insertion();
 
         // Next to attachment step
         basicInformation.next_to_attachment_step();
@@ -788,9 +1030,15 @@ public class Edit_Delivered_Mail {
     }
 
     @Test
-    public void TC_52_create_search_template_name_OK() throws InterruptedException {
-        // Select format
+    public void TC_50_create_search_template_name_OK() throws InterruptedException {
+        // Format
         basicInformation.format();
+
+        // Input valid subject
+        basicInformation.subject();
+
+        // Input valid insertion
+        basicInformation.insertion();
 
         // Next to attachment step
         basicInformation.next_to_attachment_step();
@@ -803,9 +1051,15 @@ public class Edit_Delivered_Mail {
     }
 
     @Test
-    public void TC_53_create_search_template_name_Cancel() throws InterruptedException {
-        // Select format
+    public void TC_51_create_search_template_name_Cancel() throws InterruptedException {
+        // Format
         basicInformation.format();
+
+        // Input valid subject
+        basicInformation.subject();
+
+        // Input valid insertion
+        basicInformation.insertion();
 
         // Next to attachment step
         basicInformation.next_to_attachment_step();
@@ -818,9 +1072,15 @@ public class Edit_Delivered_Mail {
     }
 
     @Test
-    public void TC_54_input_available_search_template_name() throws InterruptedException {
-        // Select format
+    public void TC_52_input_available_search_template_name() throws InterruptedException {
+        // Format
         basicInformation.format();
+
+        // Input valid subject
+        basicInformation.subject();
+
+        // Input valid insertion
+        basicInformation.insertion();
 
         // Next to attachment step
         basicInformation.next_to_attachment_step();
@@ -833,9 +1093,15 @@ public class Edit_Delivered_Mail {
     }
 
     @Test
-    public void TC_55_set_cancel_search_template_as_default() throws InterruptedException {
-        // Select format
+    public void TC_53_set_cancel_search_template_as_default() throws InterruptedException {
+        // Format
         basicInformation.format();
+
+        // Input valid subject
+        basicInformation.subject();
+
+        // Input valid insertion
+        basicInformation.insertion();
 
         // Next to attachment step
         basicInformation.next_to_attachment_step();
@@ -848,9 +1114,15 @@ public class Edit_Delivered_Mail {
     }
 
     @Test
-    public void TC_56_delete_search_template_OK() throws InterruptedException {
-        // Select format
+    public void TC_54_delete_search_template_OK() throws InterruptedException {
+        // Format
         basicInformation.format();
+
+        // Input valid subject
+        basicInformation.subject();
+
+        // Input valid insertion
+        basicInformation.insertion();
 
         // Next to attachment step
         basicInformation.next_to_attachment_step();
@@ -863,9 +1135,15 @@ public class Edit_Delivered_Mail {
     }
 
     @Test
-    public void TC_57_delete_search_template_Cancel() throws InterruptedException {
-        // Select format
+    public void TC_55_delete_search_template_Cancel() throws InterruptedException {
+        // Format
         basicInformation.format();
+
+        // Input valid subject
+        basicInformation.subject();
+
+        // Input valid insertion
+        basicInformation.insertion();
 
         // Next to attachment step
         basicInformation.next_to_attachment_step();
@@ -878,9 +1156,15 @@ public class Edit_Delivered_Mail {
     }
 
     @Test
-    public void TC_58_reset_search_criteria() throws InterruptedException {
-        // Select format
+    public void TC_56_reset_search_criteria() throws InterruptedException {
+        // Format
         basicInformation.format();
+
+        // Input valid subject
+        basicInformation.subject();
+
+        // Input valid insertion
+        basicInformation.insertion();
 
         // Next to attachment step
         basicInformation.next_to_attachment_step();
@@ -893,9 +1177,15 @@ public class Edit_Delivered_Mail {
     }
 
     @Test
-    public void TC_59_link_to_partner_PIC_edit_from_destination_selection() throws InterruptedException {
-        // Select format
+    public void TC_57_link_to_partner_PIC_edit_from_destination_selection() throws InterruptedException {
+        // Format
         basicInformation.format();
+
+        // Input valid subject
+        basicInformation.subject();
+
+        // Input valid insertion
+        basicInformation.insertion();
 
         // Next to attachment step
         basicInformation.next_to_attachment_step();
@@ -917,9 +1207,15 @@ public class Edit_Delivered_Mail {
     }
 
     @Test
-    public void TC_60_pagination_destination_selection() throws InterruptedException {
-        // Select format
+    public void TC_58_pagination_destination_selection() throws InterruptedException {
+        // Format
         basicInformation.format();
+
+        // Input valid subject
+        basicInformation.subject();
+
+        // Input valid insertion
+        basicInformation.insertion();
 
         // Next to attachment step
         basicInformation.next_to_attachment_step();
@@ -941,165 +1237,15 @@ public class Edit_Delivered_Mail {
     }
 
     @Test
-    public void TC_61_update_delivery_with_valid_data_final_confirmation() throws InterruptedException {
-        // Select format
+    public void TC_59_do_you_want_to_delete_this_delivered_email_OK_final_confirmation() throws InterruptedException {
+        // Format
         basicInformation.format();
 
-        // Next to attachment step
-        basicInformation.next_to_attachment_step();
+        // Input valid subject
+        basicInformation.subject();
 
-        // Next to destination selection step
-        attachment.next_to_destination_selection_step();
-
-        // Delivery information
-        destinationSearch.delivery_information();
-
-        // Commitment
-        destinationSearch.commitment();
-
-        // Search
-        destinationSearch.search_contact_by_condition();
-
-        // Select contact
-        destinationSearch.select_contact();
-
-        // Next to Final confirmation step
-        destinationSearch.next_to_final_confirmation();
-
-        // Verify that can update delivered mail with valid data
-        finalConfirmation.update_delivery_with_valid_data();
-    }
-
-    @Test
-    public void TC_62_make_a_copy_final_confirmation() throws InterruptedException {
-        // Select format
-        basicInformation.format();
-
-        // Next to attachment step
-        basicInformation.next_to_attachment_step();
-
-        // Next to destination selection step
-        attachment.next_to_destination_selection_step();
-
-        // Delivery information
-        destinationSearch.delivery_information();
-
-        // Commitment
-        destinationSearch.commitment();
-
-        // Search
-        destinationSearch.search_contact_by_condition();
-
-        // Select contact
-        destinationSearch.select_contact();
-
-        // Next to Final confirmation step
-        destinationSearch.next_to_final_confirmation();
-
-        // Click make attachment copy button => create attachment copy mail and link to mail list page
-        finalConfirmation.make_a_copy();
-
-        // Close browser
-//        driver.close();
-    }
-
-    @Test
-    public void TC_63_would_you_like_to_change_this_delivery_email_to_Draft_status_Cancel_final_confirmation() throws InterruptedException {
-        // Switch to mail id for save as draft testcase
-        finalConfirmation.switch_url_before_run_test("save as draft");
-
-        // Next to attachment step
-        basicInformation.next_to_attachment_step();
-
-        // Next to destination selection step
-        attachment.next_to_destination_selection_step();
-
-        // Delivery information
-        destinationSearch.delivery_information();
-
-        // Commitment
-        destinationSearch.commitment();
-
-        // Search
-        destinationSearch.search_contact_by_condition();
-
-        // Select contact
-        destinationSearch.select_contact();
-
-        // Next to Final confirmation step
-        destinationSearch.next_to_final_confirmation();
-
-        // Click save as draft button => show "Would you like to change this delivery email to Draft status" popup
-        // Click cancel button => close popup
-        finalConfirmation.would_you_like_to_change_this_delivery_email_to_Draft_status_Cancel();
-    }
-
-    @Test
-    public void TC_64_would_you_like_to_change_this_delivery_email_to_Draft_status_OK_final_confirmation() throws InterruptedException {
-        // Switch to mail id for save as draft testcase
-        finalConfirmation.switch_url_before_run_test("save as draft");
-
-        // Next to attachment step
-        basicInformation.next_to_attachment_step();
-
-        // Next to destination selection step
-        attachment.next_to_destination_selection_step();
-
-        // Delivery information
-        destinationSearch.delivery_information();
-
-        // Commitment
-        destinationSearch.commitment();
-
-        // Search
-        destinationSearch.search_contact_by_condition();
-
-        // Select contact
-        destinationSearch.select_contact();
-
-        // Next to Final confirmation step
-        destinationSearch.next_to_final_confirmation();
-
-        // Click save as draft button => show "Would you like to change this delivery email to Draft status" popup
-        // Click OK button => Save delivered as draft status and link to mail list page
-        finalConfirmation.would_you_like_to_change_this_delivery_email_to_Draft_status_OK();
-    }
-
-    @Test
-    public void TC_65_do_you_want_to_delete_this_delivered_email_Cancel_final_confirmation() throws InterruptedException {
-        // Switch to mail id for delete testcase
-        finalConfirmation.switch_url_before_run_test("delete");
-
-        // Next to attachment step
-        basicInformation.next_to_attachment_step();
-
-        // Next to destination selection step
-        attachment.next_to_destination_selection_step();
-
-        // Delivery information
-        destinationSearch.delivery_information();
-
-        // Commitment
-        destinationSearch.commitment();
-
-        // Search
-        destinationSearch.search_contact_by_condition();
-
-        // Select contact
-        destinationSearch.select_contact();
-
-        // Next to Final confirmation step
-        destinationSearch.next_to_final_confirmation();
-
-        // Click delete button => show "Do you want to delete this delivered mail" popup
-        // Click cancel button => close popup
-        finalConfirmation.do_you_want_to_delete_this_delivered_email_Cancel();
-    }
-
-    @Test
-    public void TC_66_do_you_want_to_delete_this_delivered_email_OK_final_confirmation() throws InterruptedException {
-        // Switch to mail id for delete testcase
-        finalConfirmation.switch_url_before_run_test("delete");
+        // Input valid insertion
+        basicInformation.insertion();
 
         // Next to attachment step
         basicInformation.next_to_attachment_step();
@@ -1128,9 +1274,162 @@ public class Edit_Delivered_Mail {
     }
 
     @Test
-    public void TC_67_back_to_destination_selection_from_final_confirmation() throws InterruptedException {
+    public void TC_60_do_you_want_to_delete_this_delivered_email_Cancel_final_confirmation() throws InterruptedException {
+        // Format
+        basicInformation.format();
+
+        // Input valid subject
+        basicInformation.subject();
+
+        // Input valid insertion
+        basicInformation.insertion();
+
+        // Next to attachment step
+        basicInformation.next_to_attachment_step();
+
+        // Next to destination selection step
+        attachment.next_to_destination_selection_step();
+
+        // Delivery information
+        destinationSearch.delivery_information();
+
+        // Commitment
+        destinationSearch.commitment();
+
+        // Search
+        destinationSearch.search_contact_by_condition();
+
+        // Select contact
+        destinationSearch.select_contact();
+
+        // Next to Final confirmation step
+        destinationSearch.next_to_final_confirmation();
+
+        // Click delete button => show "Do you want to delete this delivered mail" popup
+        // Click cancel button => close popup
+        finalConfirmation.do_you_want_to_delete_this_delivered_email_Cancel();
+    }
+
+    @Test
+    public void TC_61_make_a_copy_final_confirmation() throws InterruptedException {
+        // Format
+        basicInformation.format();
+
+        // Input valid subject
+        basicInformation.subject();
+
+        // Input valid insertion
+        basicInformation.insertion();
+
+        // Next to attachment step
+        basicInformation.next_to_attachment_step();
+
+        // Next to destination selection step
+        attachment.next_to_destination_selection_step();
+
+        // Delivery information
+        destinationSearch.delivery_information();
+
+        // Commitment
+        destinationSearch.commitment();
+
+        // Search
+        destinationSearch.search_contact_by_condition();
+
+        // Select contact
+        destinationSearch.select_contact();
+
+        // Next to Final confirmation step
+        destinationSearch.next_to_final_confirmation();
+
+        // Click make attachment copy button => create attachment copy mail and link to mail list page
+        finalConfirmation.make_a_copy();
+    }
+
+    @Test
+    public void TC_62_would_you_like_to_change_this_delivery_email_to_Draft_status_OK_final_confirmation() throws InterruptedException {
         // Select format
         basicInformation.format();
+
+        // Input valid subject
+        basicInformation.subject();
+
+        // Input valid insertion
+        basicInformation.insertion();
+
+        // Next to attachment step
+        basicInformation.next_to_attachment_step();
+
+        // Next to destination selection step
+        attachment.next_to_destination_selection_step();
+
+        // Delivery information
+        destinationSearch.delivery_information();
+
+        // Commitment
+        destinationSearch.commitment();
+
+        // Search
+        destinationSearch.search_contact_by_condition();
+
+        // Select contact
+        destinationSearch.select_contact();
+
+        // Next to Final confirmation step
+        destinationSearch.next_to_final_confirmation();
+
+        // Click save as draft button => show "Would you like to change this delivery email to Draft status" popup
+        // Click OK button => Save delivered as draft status and link to mail list page
+        finalConfirmation.would_you_like_to_change_this_delivery_email_to_Draft_status_OK();
+    }
+
+    @Test
+    public void TC_63_would_you_like_to_change_this_delivery_email_to_Draft_status_Cancel_final_confirmation() throws InterruptedException {
+        // Format
+        basicInformation.format();
+
+        // Input valid subject
+        basicInformation.subject();
+
+        // Input valid insertion
+        basicInformation.insertion();
+
+        // Next to attachment step
+        basicInformation.next_to_attachment_step();
+
+        // Next to destination selection step
+        attachment.next_to_destination_selection_step();
+
+        // Delivery information
+        destinationSearch.delivery_information();
+
+        // Commitment
+        destinationSearch.commitment();
+
+        // Search
+        destinationSearch.search_contact_by_condition();
+
+        // Select contact
+        destinationSearch.select_contact();
+
+        // Next to Final confirmation step
+        destinationSearch.next_to_final_confirmation();
+
+        // Click save as draft button => show "Would you like to change this delivery email to Draft status" popup
+        // Click cancel button => close popup
+        finalConfirmation.would_you_like_to_change_this_delivery_email_to_Draft_status_Cancel();
+    }
+
+    @Test
+    public void TC_64_back_to_destination_selection_from_final_confirmation() throws InterruptedException {
+        // Format
+        basicInformation.format();
+
+        // Input valid subject
+        basicInformation.subject();
+
+        // Input valid insertion
+        basicInformation.insertion();
 
         // Next to attachment step
         basicInformation.next_to_attachment_step();
@@ -1158,9 +1457,15 @@ public class Edit_Delivered_Mail {
     }
 
     @Test
-    public void TC_68_back_to_attachment_from_final_confirmation() throws InterruptedException {
-        // Select format
+    public void TC_65_back_to_attachment_from_final_confirmation() throws InterruptedException {
+        // Format
         basicInformation.format();
+
+        // Input valid subject
+        basicInformation.subject();
+
+        // Input valid insertion
+        basicInformation.insertion();
 
         // Next to attachment step
         basicInformation.next_to_attachment_step();
@@ -1188,9 +1493,15 @@ public class Edit_Delivered_Mail {
     }
 
     @Test
-    public void TC_69_back_to_basic_information_from_final_confirmation() throws InterruptedException {
-        // Select format
+    public void TC_66_back_to_basic_information_from_final_confirmation() throws InterruptedException {
+        // Format
         basicInformation.format();
+
+        // Input valid subject
+        basicInformation.subject();
+
+        // Input valid insertion
+        basicInformation.insertion();
 
         // Next to attachment step
         basicInformation.next_to_attachment_step();
@@ -1220,7 +1531,7 @@ public class Edit_Delivered_Mail {
     @AfterMethod
     public void teardown(ITestResult result) throws IOException {
         // take screenshot when test failed
-        common.take_screenshot_when_test_fail(driver, result, "Edit_Mail");
+        common.take_screenshot_when_test_fail(driver, result, "Create_Mail");
 
         // close all browsers
         driver.quit();
