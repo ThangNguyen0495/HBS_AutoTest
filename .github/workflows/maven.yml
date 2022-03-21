@@ -6,7 +6,10 @@ on:
     branches: [ master ]
 jobs:
   job_build:
-    runs-on: ubuntu-latest
+  # Win - Local
+    runs-on: self-hosted
+  # Ubuntu
+#     runs-on: ubuntu-latest
     
     steps:
     - uses: actions/checkout@v2
@@ -19,18 +22,34 @@ jobs:
 
     - name: Run Build
       run: mvn --batch-mode -DskipTests package
-
+      
+#   job_setup:
+#     needs: job_build
+#       # Win - Local
+#     runs-on: self-hosted
+#     steps:
+#       - name: Install with version '827102'
+#         uses: ./dist/
+#         with:
+#           chrome-version: 827102  
+# #       - uses: browser-actions/setup-chrome@latest
+#       - name: Run test on Chromium
+#         run: (Get-Item (Get-Command chrome).Source).VersionInfo.ProductVersion
+    
   job_test:
     needs: job_build
-    runs-on: ubuntu-latest
+      # Win - Local
+    runs-on: self-hosted
+  # Ubuntu
+#     runs-on: ubuntu-latest
     
     steps:
     - uses: actions/checkout@v2
     
-    - name: Install Google Chrome # Using shell script to install Google Chrome
-      run: |
-       chmod +x ./scripts/InstallChrome.sh
-       ./scripts/InstallChrome.sh
+#     - name: Install Google Chrome # Using shell script to install Google Chrome
+#       run: |
+#        chmod +x ./scripts/InstallChrome.sh
+#        ./scripts/InstallChrome.sh
 
     - name: Set up JDK 17
       uses: actions/setup-java@v2
@@ -40,11 +59,19 @@ jobs:
         cache: maven
 
     - name: Run Tests
-      run: mvn --batch-mode -Dmaven.test.failure.ignore=true test
+      run: mvn --batch-mode test
+      #-Dmaven.test.failure.ignore=true
       
-    - name: Publish Test Report
-      if: ${{ always() }}
-      uses: ScaCap/action-surefire-report@v1.0.5
+#     - name: Publish Test Report
+#       if: ${{ always() }}
+#       uses: ScaCap/action-surefire-report@v1.0.5
+#       with:
+#         report_paths: '**/surefire-reports/TEST-*.xml'
+#         github_token: ${{ secrets.GITHUB_TOKEN }}
+    - uses: dorny/test-reporter@v1
       with:
-        report_paths: '**/surefire-reports/TEST-*.xml'
+        artifact: test-results            # artifact name
+        name: JEST Tests                  # Name of the check run which will be created
+        path: '*.xml'                     # Path to test results (inside artifact .zip)
+        reporter: jest-junit
         github_token: ${{ secrets.GITHUB_TOKEN }}
