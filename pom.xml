@@ -78,7 +78,10 @@
                 <version>3.0.0-M1</version>
                 <configuration>
                     <suiteXmlFiles>
-                        <suiteXmlFile>Run_All_Test.xml</suiteXmlFile>
+<!--                        <suiteXmlFile>Run_All_Test.xml</suiteXmlFile>-->
+<!--                        <suiteXmlFile>Test Configuration/Mail/Create_Delivered_Mail.xml</suiteXmlFile>-->
+                        <suiteXmlFile>Test Configuration/Payment/Usage_Plan.xml</suiteXmlFile>
+                        <suiteXmlFile>Test Configuration/Tenant/Create_Tenant.xml</suiteXmlFile>
                     </suiteXmlFiles>
                 </configuration>
             </plugin>
