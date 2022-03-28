@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Automation testing using Selenium + Java">
+    <test verbose="2"
+          name="[HBS] Create Delivered Mail(Process + Validation)">
+        <classes>
+            <class name="test.Login.Login">
+                <methods>
+                    <!--
+                    TEST CONFIGURATION
+                    1. Headless(headless): It is "test run" mode
+                    Value: true, false
+                    Headless = "true": Run test with non UI mode (Browser should not be opened),
+                    Headless = "false": Run test with UI mode (Browser should be opened).
+                    NOTE: Headless mode only supports Chrome and FireFox.
+
+                    2. Browser name(browser_name): It is your browser name.
+                    Value: chrome, firefox, edge, ie, safari
+                    You can run it on multiple browsers like Chrome, Firefox, Edge, IE, and Safari.
+
+                    3. Domain(domain):
+                    It is the domain used to run the automation testing.
+
+                    -->
+                    <parameter name="headless" value="true"/>
+                    <parameter name="browser_name" value="chrome"/>
+                    <parameter name="domain" value="https://stg.app.cmrb.jp"/>
+
+                    <!--
+                    TESTCASE
+                    TC01: Verify that captcha should be displayed after login fail 3 times
+                    -->
+                    <include name="TC01_verify_captcha_display_after_login_fail_3_times"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+</suite>

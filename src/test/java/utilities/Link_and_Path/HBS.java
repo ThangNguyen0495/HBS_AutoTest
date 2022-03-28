@@ -12,4 +12,5 @@ public class HBS {
     public static String partner_list_path = "/organizations";
     public static String create_tenant_path = "/tenant";
     public static String auth_token_path = "?auth_token=";
+    public static String login_path = "/login/";
 }

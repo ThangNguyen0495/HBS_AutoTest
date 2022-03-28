@@ -46,14 +46,14 @@
                         - Please read "TEST CONFIGURATION" to sure your input value is exactly. In case your
                         configuration incorrect, the automation testing should be not worked or work incorrectly.
                     -->
-                    <parameter name="headless" value="false"/>
+                    <parameter name="headless" value="true"/>
                     <parameter name="browser_name" value="chrome"/>
                     <parameter name="domain" value="https://stg.app.cmrb.jp"/>
-                    <parameter name="email" value="test1@cmc.vn"/>
-                    <parameter name="password" value="TestCMC@123"/>
-                    <parameter name="role" value="Member"/>
-                    <parameter name="capacity" value="10"/>
-                    <parameter name="mail_id" value="1e3a0b03-9f02-4f47-adee-bc686b4c5a86"/>
+                    <parameter name="email" value="testhbs@qa.team"/>
+                    <parameter name="password" value="12345678aQ@"/>
+                    <parameter name="role" value="Master"/>
+                    <parameter name="capacity" value="2"/>
+                    <parameter name="mail_id" value="230e3408-51a2-4c8e-b114-918c0997bf48"/>
                     <parameter name="mail_status" value="Draft"/>
 
                     <!--

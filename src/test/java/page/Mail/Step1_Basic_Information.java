@@ -331,14 +331,22 @@ public class Step1_Basic_Information extends Delivered_Mail_Page {
         }
         if (common.authorized(role, common.role_list(num))) {
             // wait and delete old insertion
-            wait_for_loading_element(distributor);
+            sleep(3000);
             insertion.sendKeys(Keys.CONTROL + "a", Keys.DELETE);
 
             // input insertion exceed 10000 half width characters
-            String insertion_text = RandomStringUtils.randomAlphabetic(5000);
-            insertion.sendKeys(insertion_text);
-            insertion.sendKeys(insertion_text + " ");
-
+            String insertion_text = RandomStringUtils.random(2000, true, false);
+            insertion.sendKeys(insertion_text); //2000
+            sleep(500);
+            insertion.sendKeys(insertion_text); //4000
+            sleep(500);
+            insertion.sendKeys(insertion_text); //6000
+            sleep(500);
+            insertion.sendKeys(insertion_text); //8000
+            sleep(500);
+            insertion.sendKeys(insertion_text); //10000
+            sleep(3000);
+            insertion.sendKeys("@");
             // Scroll down
             ((JavascriptExecutor) driver).executeScript("window.scrollTo(0, document.body.scrollHeight)");
 
@@ -367,7 +375,7 @@ public class Step1_Basic_Information extends Delivered_Mail_Page {
 
             // input insertion exceed 5000 full width characters
             String insert_text = RandomStringUtils.random(2500, 0x4e00, 0x4f80, true, false);
-            insertion.sendKeys(insert_text + insert_text + " ");
+            insertion.sendKeys(insert_text + insert_text + "@");
 
             // Scroll down
             ((JavascriptExecutor) driver).executeScript("window.scrollTo(0, document.body.scrollHeight)");

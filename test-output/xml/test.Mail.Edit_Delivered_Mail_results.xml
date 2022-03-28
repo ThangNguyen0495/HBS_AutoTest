@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="[HBS] Edit Delivered Mail(Process + Validation)"
+           tests="1"
+           failures="0"
+           errors="0"
+           skipped="0"
+           time="196.979">
+    <properties></properties>
+
+
+
+            <testcase
+                name="TC_06_insertion_exceed_10000_half_width_characters"
+                time="196.979"
+                classname="test.Mail.Edit_Delivered_Mail">
+            </testcase>
+</testsuite>
