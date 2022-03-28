@@ -2,6 +2,7 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
 <suite name="All suite"  >
     <suite-files>
+        <suite-file path="Test Configuration/Login/Login.xml" />
         <suite-file path="Test Configuration/Tenant/Create_Tenant.xml" />
         <suite-file path="Test Configuration/Mail/Create_Delivered_Mail.xml" />
         <suite-file path="Test Configuration/Mail/Edit_Delivered_Mail.xml" />

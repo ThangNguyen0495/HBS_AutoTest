@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="[HBS] Usage Plan (Buy plan + Add/Remove upper limit)"
+           tests="3"
+           failures="0"
+           errors="0"
+           skipped="0"
+           time="30.758">
+    <properties></properties>
+
+
+
+            <testcase
+                name="TC_03_remove_upper_limit"
+                time="8.458"
+                classname="test.Payment.Usage_plan">
+            </testcase>
+            <testcase
+                name="TC_01_buy_usage_plan"
+                time="1.742"
+                classname="test.Payment.Usage_plan">
+            </testcase>
+            <testcase
+                name="TC_02_add_upper_limit"
+                time="20.558"
+                classname="test.Payment.Usage_plan">
+            </testcase>
+</testsuite>

@@ -134,7 +134,7 @@ public class Step3_Destination_selection extends Delivered_Mail_Page {
     @FindBy(css = "form > div:nth-child(6) > div:nth-child(2) > div > div.ant-form-item-explain > div > div")
     WebElement account_status_error;
 
-    @FindBy(css = "div:nth-child(3) > div > div > div > div > div > div > button")
+    @FindBy(css = "div:nth-child(5) > div > div > div > div > div > div > button")
     WebElement in_house_person_in_charge;
 
     @FindBy(css = "#contact__staff")
@@ -143,7 +143,7 @@ public class Step3_Destination_selection extends Delivered_Mail_Page {
     @FindBy(css = "form > div:nth-child(6) > div:nth-child(3) > div > div.ant-form-item-explain > div > div")
     WebElement in_house_person_in_charge_error;
 
-    @FindBy(css = "div:nth-child(4) > div > div > div > div > div > button")
+    @FindBy(css = "form > div:nth-child(6) > div:nth-child(6) > div > div > div > div > div > button")
     WebElement compatibility;
 
     @FindBy(css = "#contact__category")
@@ -155,7 +155,7 @@ public class Step3_Destination_selection extends Delivered_Mail_Page {
     @FindBy(css = "form > div:nth-child(6) > div:nth-child(4) > div > div.ant-form-item-explain > div > div")
     WebElement compatibility_error;
 
-    @FindBy(css = "div:nth-child(5) > div > div > div > div > div > div > button")
+    @FindBy(css = "form > div:nth-child(6) > div:nth-child(7) > div > div > div > div > div > div > button")
     WebElement tag;
 
     @FindBy(css = "div.ant-col.ant-col-12 > div > div > div > div > div")
@@ -244,6 +244,18 @@ public class Step3_Destination_selection extends Delivered_Mail_Page {
 
     @FindBy(css = "div.rc-virtual-list-holder-inner>div")
     List<WebElement> tags_list;
+
+    @FindBy(css = "[id ^= 'contact__organization__organization_country']")
+    List<WebElement> country_list;
+
+    @FindBy(css = "form > div:nth-child(6) > div:nth-child(3) > div> div > div > div > div > button")
+    WebElement country_of_citizenship;
+
+    @FindBy(css = "#contact__organization__contract > div > div > div > div > div > div > div > label > span > input")
+    List<WebElement> contract_list;
+
+    @FindBy(css = "#contact__organization__contract > div > button")
+    WebElement contract;
 
     // Register Mode
     public Step3_Destination_selection(WebDriver driver, String role, Common common, String domain, String Mode) {
@@ -464,6 +476,49 @@ public class Step3_Destination_selection extends Delivered_Mail_Page {
         }
     }
 
+    // Country of Citizenship
+    public void country_of_citizenship() {
+        int num;
+        if (Mode.equals("Edit")) {
+            num = 6;
+        } else {
+            num = 5;
+        }
+        if (common.authorized(role, common.role_list(num))) {
+            int search_by_country_of_citizenship = RandomUtils.nextInt(2);
+            if (search_by_country_of_citizenship == 1) {
+                // add Country of Citizenship conditions
+                country_of_citizenship.click();
+                // 1: Prospect, 2:Approached, 3:Information exchanged, 4:Contract record available
+                int country_of_citizenship_condition = RandomUtils.nextInt(4);
+                // select Country of Citizenship conditions
+                for (int i = 0; i <= country_of_citizenship_condition; i++) {
+                    country_list.get(i).click();
+                }
+            }
+        }
+    }
+
+    // Contract
+    public void contract() {
+        int num;
+        if (Mode.equals("Edit")) {
+            num = 6;
+        } else {
+            num = 5;
+        }
+        if (common.authorized(role, common.role_list(num))) {
+            int search_by_contract = RandomUtils.nextInt(2);
+            if (search_by_contract == 1) {
+                // add Contract conditions
+                contract.click();
+                // select Contract conditions
+                int contract_id = RandomUtils.nextInt(2);
+                contract_list.get(contract_id).click();
+            }
+        }
+    }
+
     public void in_house_person_in_charge() throws InterruptedException {
         int num;
         if (Mode.equals("Edit")) {
@@ -612,19 +667,19 @@ public class Step3_Destination_selection extends Delivered_Mail_Page {
                 System.out.println("Search condition have been changed and try again, please wait ...");
                 System.out.println("-----------------------------------------------------------------");
                 delivery_information();
-//                commitment();
+                commitment();
                 search_contact_by_condition();
             }
-            // Select contact
-            // 0: select all contact, 1: select first contact
+            // Select contract
+            // 0: select all contract, 1: select first contract
             int contact = RandomUtils.nextInt(2);
             // Scroll down
             ((JavascriptExecutor) driver).executeScript("window.scrollTo(0, document.body.scrollHeight)");
-            // select all contact
+            // select all contract
             if (contact == 0) {
                 select_all_contact.click();
             }
-            // select first contact
+            // select first contract
             else {
                 select_first_contact.click();
             }
@@ -641,6 +696,8 @@ public class Step3_Destination_selection extends Delivered_Mail_Page {
         }
         if (common.authorized(role, common.role_list(num))) {
             account_status();
+            country_of_citizenship();
+            contract();
             in_house_person_in_charge();
             compatibility();
             tag();
