@@ -4,14 +4,14 @@
            failures="0"
            errors="0"
            skipped="0"
-           time="196.979">
+           time="61.607">
     <properties></properties>
 
 
 
             <testcase
-                name="TC_06_insertion_exceed_10000_half_width_characters"
-                time="196.979"
+                name="TC01_process_edit_mail"
+                time="61.607"
                 classname="test.Mail.Edit_Delivered_Mail">
             </testcase>
 </testsuite>
