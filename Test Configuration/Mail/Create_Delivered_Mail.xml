@@ -64,10 +64,10 @@
 <!--                    <include name="TC_13_would_you_like_to_change_this_delivery_email_to_Draft_status_OK_basic_information"/>-->
 <!--                    <include name="TC_14_would_you_like_to_change_this_delivery_email_to_Draft_status_Cancel_basic_information"/>-->
                     <include name="TC_15_upload_maximum_capacity_1_file"/>
-                    <include name="TC_16_upload_maximum_capacity_multi_file"/>
-                    <include name="TC_17_upload_exceed_maximum_capacity_1_file"/>
-                    <include name="TC_18_upload_exceed_maximum_capacity_multi_file"/>
-                    <include name="TC_19_upload_exceed_10_files"/>
+<!--                    <include name="TC_16_upload_maximum_capacity_multi_file"/>-->
+<!--                    <include name="TC_17_upload_exceed_maximum_capacity_1_file"/>-->
+<!--                    <include name="TC_18_upload_exceed_maximum_capacity_multi_file"/>-->
+<!--                    <include name="TC_19_upload_exceed_10_files"/>-->
 <!--                    <include name="TC_20_do_you_want_to_delete_this_delivered_email_OK_attachment"/>-->
 <!--                    <include name="TC_21_do_you_want_to_delete_this_delivered_email_Cancel_attachment"/>-->
 <!--                    <include name="TC_22_make_a_copy_attachment"/>-->
