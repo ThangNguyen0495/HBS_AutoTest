@@ -1,5 +1,6 @@
 package page.Mail;
 
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -17,7 +18,7 @@ import static java.lang.Thread.sleep;
 
 public class Step2_Attachment extends Delivered_Mail_Page {
     public static String current_date_time;
-    @FindBy(css = "span.ant-upload.ant-upload-btn>input")
+    @FindBy(css = "span > input[type='file']")
     WebElement upload_file;
     @FindBy(css = "div:nth-child(4)>div>button")
     WebElement next_step_button;
@@ -54,7 +55,7 @@ public class Step2_Attachment extends Delivered_Mail_Page {
         // capacity: MB
         current_date_time = common.generate_date_time();
         for (int i = 0; i < number_of_files; i++) {
-            new RandomAccessFile(System.getProperty("user.dir") + "/Test_Data/text" + i + "_" + current_date_time + ".txt", "rw")
+            new RandomAccessFile(System.getProperty("user.dir") + "\\Test_Data\\text" + i + "_" + current_date_time + ".txt", "rw")
                     .setLength(((long) capacity * 1024 * 1024 - number_of_files) / number_of_files);
         }
     }
@@ -74,9 +75,9 @@ public class Step2_Attachment extends Delivered_Mail_Page {
                     }
                 }
                 if (capacity <= 2) {
-                    upload_file.sendKeys(System.getProperty("user.dir") + "/Test_Data/2MB_upload_process.txt");
+                    upload_file.sendKeys(System.getProperty("user.dir") + "\\Test_Data\\2MB_upload_process.txt");
                 } else {
-                    upload_file.sendKeys(System.getProperty("user.dir") + "/Test_Data/10MB_upload_process.txt");
+                    upload_file.sendKeys(System.getProperty("user.dir") + "\\Test_Data\\10MB_upload_process.txt");
                 }
 
                 // Wait file have been uploaded
@@ -148,9 +149,10 @@ public class Step2_Attachment extends Delivered_Mail_Page {
                     }
                 }
                 if (capacity <= 2) {
-                    upload_file.sendKeys(System.getProperty("user.dir") + "/Test_Data/2MB_upload_maximum_1_file.txt");
+                    ((JavascriptExecutor) driver).executeScript("arguments[0].style.display='block';", upload_file);
+                    upload_file.sendKeys(System.getProperty("user.dir") + "\\Test_Data\\2MB_upload_maximum_1_file.txt");
                 } else {
-                    upload_file.sendKeys(System.getProperty("user.dir") + "/Test_Data/10MB_upload_maximum_1_file.txt");
+                    upload_file.sendKeys(System.getProperty("user.dir") + "\\Test_Data\\10MB_upload_maximum_1_file.txt");
                 }
                 String text = wait.until(ExpectedConditions.visibilityOf(message)).getText();
                 soft.assertTrue(text.contains("ファイルがアップロードされました"), "[Failed] Can not upload file with capacity: "
@@ -175,9 +177,9 @@ public class Step2_Attachment extends Delivered_Mail_Page {
                 String text = "";
                 for (int i = 1; i <= 3; i++) {
                     if (capacity <= 2) {
-                        upload_file.sendKeys(System.getProperty("user.dir") + "/Test_Data/2MB_upload_maximum_multi_file_0" + i + ".txt");
+                        upload_file.sendKeys(System.getProperty("user.dir") + "\\Test_Data\\2MB_upload_maximum_multi_file_0" + i + ".txt");
                     } else {
-                        upload_file.sendKeys(System.getProperty("user.dir") + "/Test_Data/10MB_upload_maximum_multi_file_0" + i + ".txt");
+                        upload_file.sendKeys(System.getProperty("user.dir") + "\\Test_Data\\10MB_upload_maximum_multi_file_0" + i + ".txt");
                     }
                     wait.until(ExpectedConditions.visibilityOf(message));
                     if (i == 2) {
@@ -206,9 +208,9 @@ public class Step2_Attachment extends Delivered_Mail_Page {
                 // Waiting for hid previous message
                 wait.until(ExpectedConditions.invisibilityOf(message));
                 if (capacity <= 2) {
-                    upload_file.sendKeys(System.getProperty("user.dir") + "/Test_Data/2MB_upload_exceed_maximum_1_file.txt");
+                    upload_file.sendKeys(System.getProperty("user.dir") + "\\Test_Data\\2MB_upload_exceed_maximum_1_file.txt");
                 } else {
-                    upload_file.sendKeys(System.getProperty("user.dir") + "/Test_Data/10MB_upload_exceed_maximum_1_file.txt");
+                    upload_file.sendKeys(System.getProperty("user.dir") + "\\Test_Data\\10MB_upload_exceed_maximum_1_file.txt");
                 }
                 String text = wait.until(ExpectedConditions.visibilityOf(message)).getText();
                 soft.assertTrue(text.contains("を超えるメールを配信することはできません"), "[Failed] Message do not match."
@@ -232,9 +234,9 @@ public class Step2_Attachment extends Delivered_Mail_Page {
                 String text = "";
                 for (int i = 1; i <= 3; i++) {
                     if (capacity <= 2) {
-                        upload_file.sendKeys(System.getProperty("user.dir") + "/Test_Data/2MB_upload_exceed_maximum_multi_file_0" + i + ".txt");
+                        upload_file.sendKeys(System.getProperty("user.dir") + "\\Test_Data\\2MB_upload_exceed_maximum_multi_file_0" + i + ".txt");
                     } else {
-                        upload_file.sendKeys(System.getProperty("user.dir") + "/Test_Data/10MB_upload_exceed_maximum_multi_file_0" + i + ".txt");
+                        upload_file.sendKeys(System.getProperty("user.dir") + "\\Test_Data\\10MB_upload_exceed_maximum_multi_file_0" + i + ".txt");
                     }
                     wait.until(ExpectedConditions.visibilityOf(message));
                     if (i == 2) {
@@ -267,9 +269,9 @@ public class Step2_Attachment extends Delivered_Mail_Page {
                 String text = "";
                 for (int i = 1; i <= 11; i++) {
                     if (capacity <= 2) {
-                        upload_file.sendKeys(System.getProperty("user.dir") + "/Test_Data/2MB_upload_11_file_0" + i + ".txt");
+                        upload_file.sendKeys(System.getProperty("user.dir") + "\\Test_Data\\2MB_upload_11_file_0" + i + ".txt");
                     } else {
-                        upload_file.sendKeys(System.getProperty("user.dir") + "/Test_Data/10MB_upload_11_file_0" + i + ".txt");
+                        upload_file.sendKeys(System.getProperty("user.dir") + "\\Test_Data\\10MB_upload_11_file_0" + i + ".txt");
                     }
                     wait.until(ExpectedConditions.visibilityOf(message));
                     if (i == 11) {
