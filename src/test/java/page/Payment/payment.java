@@ -78,7 +78,7 @@ public class payment {
         // get price in history payment
         String price;
         if (receipt_id.equals("nothing")) {
-            price = "nothing";
+            price = "0";
         } else {
             price = newest_price.getText().replace(",", "").replace(" 円", "");
         }
@@ -132,7 +132,7 @@ public class payment {
         if (!receipt_id.equals("nothing")) {
             price = PayJP_price.getText().replace("¥", "").replace(",", "");
         } else {
-            price = "nothing";
+            price = "0";
         }
         return List.of(receipt_id, price);
     }
