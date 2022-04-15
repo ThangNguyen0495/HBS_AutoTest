@@ -423,7 +423,7 @@ public class Step1_Basic_Information extends Delivered_Mail_Page {
     public void delete_button_should_be_disable() {
         // Master, Administrator, Responsible person, Leader, Member
         if (common.authorized(role, common.role_list(5))) {
-            soft.assertFalse(delete_button.isEnabled(), "[Delete] button is not getting disable.");
+            soft.assertTrue(delete_button.isEnabled(), "[Delete] button is getting disable.");
             soft.assertAll();
         }
     }

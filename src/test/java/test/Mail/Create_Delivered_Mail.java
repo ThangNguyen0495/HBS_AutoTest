@@ -28,11 +28,11 @@ public class Create_Delivered_Mail {
 
     @BeforeClass
     public void clear_old_test_data_and_error() throws IOException {
-        try {
-            FileUtils.cleanDirectory(new File(System.getProperty("user.dir") + "\\Test_Data"));
-        } catch (IOException ex) {
-            // nothing
-        }
+//        try {
+//            FileUtils.cleanDirectory(new File(System.getProperty("user.dir") + "\\Test_Data"));
+//        } catch (IOException ex) {
+//            // nothing
+//        }
         FileUtils.cleanDirectory(new File(System.getProperty("user.dir") + "\\img\\Create_Mail"));
     }
 
@@ -89,7 +89,7 @@ public class Create_Delivered_Mail {
 
         //****** 添付ファイル ****** //
         // Attachment
-//        attachment.upload_file();
+        attachment.upload_file();
 
         // Next to 宛先選択_Step
         attachment.next_to_destination_selection_step();

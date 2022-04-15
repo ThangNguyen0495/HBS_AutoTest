@@ -64,7 +64,7 @@ public class Step2_Attachment extends Delivered_Mail_Page {
         if (common.authorized(role, common.role_list(5))) {
             if ((Mode.equals("Create")) || (!list_mail_status.contains(mail_status) && (Mode.equals("Edit")))) {
 
-                generate_test_file(capacity - 1, 1);
+//                generate_test_file(capacity - 1, 1);
                 // Waiting for hide previous message
                 if (Mode.equals("Edit")) {
                     while (number_of_file.size() != 0) {
@@ -73,7 +73,11 @@ public class Step2_Attachment extends Delivered_Mail_Page {
                         wait.until(ExpectedConditions.invisibilityOf(message));
                     }
                 }
-                upload_file.sendKeys(System.getProperty("user.dir") + "\\Test_Data\\text0_" + current_date_time + ".txt");
+                if (capacity <= 2) {
+                    upload_file.sendKeys(System.getProperty("user.dir") + "\\Test_Data\\2MB_upload_process.txt");
+                } else {
+                    upload_file.sendKeys(System.getProperty("user.dir") + "\\Test_Data\\10MB_upload_process.txt");
+                }
 
                 // Wait file have been uploaded
                 wait.until(ExpectedConditions.visibilityOf(message));
@@ -134,7 +138,7 @@ public class Step2_Attachment extends Delivered_Mail_Page {
     public void upload_maximum_capacity_1_file() throws IOException {
         if (common.authorized(role, common.role_list(5))) {
             if ((Mode.equals("Create")) || (!list_mail_status.contains(mail_status) && (Mode.equals("Edit")))) {
-                generate_test_file(capacity, 1);
+//                generate_test_file(capacity, 1);
                 // Waiting for hide previous message
                 if (Mode.equals("Edit")) {
                     while (number_of_file.size() != 0) {
@@ -143,7 +147,11 @@ public class Step2_Attachment extends Delivered_Mail_Page {
                         wait.until(ExpectedConditions.invisibilityOf(message));
                     }
                 }
-                upload_file.sendKeys(System.getProperty("user.dir") + "\\Test_Data\\text0_" + current_date_time + ".txt");
+                if (capacity <= 2) {
+                    upload_file.sendKeys(System.getProperty("user.dir") + "\\Test_Data\\2MB_upload_maximum_1_file.txt");
+                } else {
+                    upload_file.sendKeys(System.getProperty("user.dir") + "\\Test_Data\\10MB_upload_maximum_1_file.txt");
+                }
                 String text = wait.until(ExpectedConditions.visibilityOf(message)).getText();
                 soft.assertTrue(text.contains("ファイルがアップロードされました"), "[Failed] Can not upload file with capacity: "
                         + capacity + "MB.\n Actual message: " + text + "\n Expect message: contains ファイルがアップロードされました");
@@ -155,7 +163,7 @@ public class Step2_Attachment extends Delivered_Mail_Page {
     public void upload_maximum_capacity_multi_file() throws IOException {
         if (common.authorized(role, common.role_list(5))) {
             if ((Mode.equals("Create")) || (!list_mail_status.contains(mail_status) && (Mode.equals("Edit")))) {
-                generate_test_file(capacity, 3);
+//                generate_test_file(capacity, 3);
                 // Waiting for hide previous message
                 if (Mode.equals("Edit")) {
                     while (number_of_file.size() != 0) {
@@ -165,8 +173,12 @@ public class Step2_Attachment extends Delivered_Mail_Page {
                     }
                 }
                 String text = "";
-                for (int i = 0; i < 3; i++) {
-                    upload_file.sendKeys(System.getProperty("user.dir") + "\\Test_Data\\text" + i + "_" + current_date_time + ".txt");
+                for (int i = 1; i <= 3; i++) {
+                    if (capacity <= 2) {
+                        upload_file.sendKeys(System.getProperty("user.dir") + "\\Test_Data\\2MB_upload_maximum_multi_file_0" + i + ".txt");
+                    } else {
+                        upload_file.sendKeys(System.getProperty("user.dir") + "\\Test_Data\\10MB_upload_maximum_multi_file_0" + i + ".txt");
+                    }
                     wait.until(ExpectedConditions.visibilityOf(message));
                     if (i == 2) {
                         text = message.getText();
@@ -183,7 +195,7 @@ public class Step2_Attachment extends Delivered_Mail_Page {
     public void upload_exceed_maximum_capacity_1_file() throws IOException {
         if (common.authorized(role, common.role_list(5))) {
             if ((Mode.equals("Create")) || (!list_mail_status.contains(mail_status) && (Mode.equals("Edit")))) {
-                generate_test_file(capacity + 1, 1);
+//                generate_test_file(capacity + 1, 1);
                 if (Mode.equals("Edit")) {
                     while (number_of_file.size() != 0) {
                         key.moveToElement(delete_upload_file.get(0)).click().build().perform();
@@ -193,7 +205,11 @@ public class Step2_Attachment extends Delivered_Mail_Page {
                 }
                 // Waiting for hid previous message
                 wait.until(ExpectedConditions.invisibilityOf(message));
-                upload_file.sendKeys(System.getProperty("user.dir") + "\\Test_Data\\text0_" + current_date_time + ".txt");
+                if (capacity <= 2) {
+                    upload_file.sendKeys(System.getProperty("user.dir") + "\\Test_Data\\2MB_upload_exceed_maximum_1_file.txt");
+                } else {
+                    upload_file.sendKeys(System.getProperty("user.dir") + "\\Test_Data\\10MB_upload_exceed_maximum_1_file.txt");
+                }
                 String text = wait.until(ExpectedConditions.visibilityOf(message)).getText();
                 soft.assertTrue(text.contains("を超えるメールを配信することはできません"), "[Failed] Message do not match."
                         + "\n Actual message: " + text + "\n Expect message: contains を超えるメールを配信することはできません");
@@ -205,7 +221,7 @@ public class Step2_Attachment extends Delivered_Mail_Page {
     public void upload_exceed_maximum_capacity_multi_file() throws IOException {
         if (common.authorized(role, common.role_list(5))) {
             if ((Mode.equals("Create")) || (!list_mail_status.contains(mail_status) && (Mode.equals("Edit")))) {
-                generate_test_file(capacity + 1, 3);
+//                generate_test_file(capacity + 1, 3);
                 if (Mode.equals("Edit")) {
                     while (number_of_file.size() != 0) {
                         key.moveToElement(delete_upload_file.get(0)).click().build().perform();
@@ -214,8 +230,12 @@ public class Step2_Attachment extends Delivered_Mail_Page {
                     }
                 }
                 String text = "";
-                for (int i = 0; i < 3; i++) {
-                    upload_file.sendKeys(System.getProperty("user.dir") + "\\Test_Data\\text" + i + "_" + current_date_time + ".txt");
+                for (int i = 1; i <= 3; i++) {
+                    if (capacity <= 2) {
+                        upload_file.sendKeys(System.getProperty("user.dir") + "\\Test_Data\\2MB_upload_exceed_maximum_multi_file_0" + i + ".txt");
+                    } else {
+                        upload_file.sendKeys(System.getProperty("user.dir") + "\\Test_Data\\10MB_upload_exceed_maximum_multi_file_0" + i + ".txt");
+                    }
                     wait.until(ExpectedConditions.visibilityOf(message));
                     if (i == 2) {
                         text = message.getText();
@@ -233,7 +253,7 @@ public class Step2_Attachment extends Delivered_Mail_Page {
         if (common.authorized(role, common.role_list(5))) {
             if ((Mode.equals("Create")) || (!list_mail_status.contains(mail_status) && (Mode.equals("Edit")))) {
                 // generate test data
-                generate_test_file(capacity, 11);
+//                generate_test_file(capacity, 11);
 
                 if (Mode.equals("Edit")) {
                     while (number_of_file.size() != 0) {
@@ -245,10 +265,14 @@ public class Step2_Attachment extends Delivered_Mail_Page {
 
                 // Waiting for hid previous message
                 String text = "";
-                for (int i = 0; i < 11; i++) {
-                    upload_file.sendKeys(System.getProperty("user.dir") + "\\Test_Data\\text" + i + "_" + current_date_time + ".txt");
+                for (int i = 1; i <= 11; i++) {
+                    if (capacity <= 2) {
+                        upload_file.sendKeys(System.getProperty("user.dir") + "\\Test_Data\\2MB_upload_11_file_0" + i + ".txt");
+                    } else {
+                        upload_file.sendKeys(System.getProperty("user.dir") + "\\Test_Data\\10MB_upload_11_file_0" + i + ".txt");
+                    }
                     wait.until(ExpectedConditions.visibilityOf(message));
-                    if (i == 10) {
+                    if (i == 11) {
                         text = message.getText();
                     }
                     wait.until(ExpectedConditions.invisibilityOf(message));

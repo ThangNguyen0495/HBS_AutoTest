@@ -1,27 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuite name="[HBS] Edit Delivered Mail(Process + Validation)"
-           tests="3"
+           tests="1"
            failures="0"
            errors="0"
            skipped="0"
-           time="27.929">
+           time="76.028">
     <properties></properties>
 
 
 
             <testcase
-                name="TC_36_do_not_select_in_house_person_in_charge"
-                time="9.161"
-                classname="test.Mail.Edit_Delivered_Mail">
-            </testcase>
-            <testcase
-                name="TC_37_do_not_select_compatibility"
-                time="9.122"
-                classname="test.Mail.Edit_Delivered_Mail">
-            </testcase>
-            <testcase
-                name="TC_38_do_not_select_tag"
-                time="9.646"
+                name="TC_19_upload_exceed_10_files"
+                time="76.028"
                 classname="test.Mail.Edit_Delivered_Mail">
             </testcase>
 </testsuite>
