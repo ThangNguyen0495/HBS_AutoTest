@@ -52,8 +52,8 @@
                     <parameter name="headless" value="true"/>
                     <parameter name="browser_name" value="chrome"/>
                     <parameter name="domain" value="https://stg.app.cmrb.jp"/>
-                    <parameter name="register_token_cpi" value="IjQyOGI3NjJiLTFkODEtNDhlZi04ZjJjLWMzMGY4OGM1ODRjZCI:1nRQyj:gstr1z27Dv6cJhQj5bpH7R6Olc8"/>
-                    <parameter name="register_token_ppi" value="ImVhMmJmZjFmLTYxZTUtNDFlYS1iM2QwLTMxOGM1NGFmNWY4YyI:1nRRIl:ThugTGV6xfe4-fycq8TddTzjgxA"/>
+                    <parameter name="register_token_cpi" value="IjEzZGZmY2QxLWZjNTQtNGEwYi1iZTRmLWM4YzIzMjUyMGE3NSI:1nfCQg:38sp0nIIfVvHWZRFZXuamL93A_s"/>
+                    <parameter name="register_token_ppi" value="ImE0OGU2NDgyLTE5MjQtNDVhYS04YzJhLTY3Zjc2NmUyZjYwZiI:1nfCSg:2WDRSI8rRgZHdqLHUaYdw-8rMec"/>
 
                     <!--
                     TESTCASE
