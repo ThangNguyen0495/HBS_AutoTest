@@ -89,7 +89,7 @@ public class Edit_Delivered_Mail {
         //****** 添付ファイル ****** //
         // Attachment
         // Upload file
-        attachment.upload_file();
+//        attachment.upload_file();
 
         // Next to 宛先選択_Step
         attachment.next_to_destination_selection_step();

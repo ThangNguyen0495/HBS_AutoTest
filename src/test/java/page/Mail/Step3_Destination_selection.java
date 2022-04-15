@@ -140,7 +140,7 @@ public class Step3_Destination_selection extends Delivered_Mail_Page {
     @FindBy(css = "#contact__staff")
     WebElement in_house_person_in_charge_dropdown;
 
-    @FindBy(css = "form > div:nth-child(6) > div:nth-child(3) > div > div.ant-form-item-explain > div > div")
+    @FindBy(css = "form > div:nth-child(6) > div:nth-child(5) > div > div.ant-form-item-explain > div > div")
     WebElement in_house_person_in_charge_error;
 
     @FindBy(css = "form > div:nth-child(6) > div:nth-child(6) > div > div > div > div > div > button")
@@ -152,7 +152,7 @@ public class Step3_Destination_selection extends Delivered_Mail_Page {
     @FindBy(css = "div:nth-child(2) > div > span.ant-select-selection-item")
     WebElement compatibility_dropdown_2;
 
-    @FindBy(css = "form > div:nth-child(6) > div:nth-child(4) > div > div.ant-form-item-explain > div > div")
+    @FindBy(css = "form > div:nth-child(6) > div:nth-child(6) > div > div.ant-form-item-explain > div > div")
     WebElement compatibility_error;
 
     @FindBy(css = "form > div:nth-child(6) > div:nth-child(7) > div > div > div > div > div > div > button")
@@ -164,7 +164,7 @@ public class Step3_Destination_selection extends Delivered_Mail_Page {
     @FindBy(css = "div.ant-col.ant-col-2 > div > div > span.ant-select-selection-item")
     WebElement tag_dropdown_2;
 
-    @FindBy(css = "form > div:nth-child(6) > div:nth-child(5) > div > div.ant-form-item-explain > div > div")
+    @FindBy(css = "form > div:nth-child(6) > div:nth-child(7) > div > div.ant-form-item-explain > div > div")
     WebElement tag_error_1;
 
     @FindBy(css = "form > div:nth-child(6) > div.ant-form-item-has-error > div > div.ant-form-item-explain > div")
