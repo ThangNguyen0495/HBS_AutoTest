@@ -5,6 +5,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.LocalFileDetector;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.remote.RemoteWebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -180,7 +181,7 @@ public class Step2_Attachment extends Delivered_Mail_Page {
                 String text = "";
                 for (int i = 1; i <= 3; i++) {
                     if (capacity <= 2) {
-                        ((RemoteWebDriver) driver).setFileDetector(new LocalFileDetector());
+                        ((RemoteWebElement) upload_file).setFileDetector(new LocalFileDetector());
                         upload_file.sendKeys(System.getProperty("user.dir") + "\\Test_Data\\2MB_upload_maximum_multi_file_0" + i + ".txt");
                     } else {
                         upload_file.sendKeys(System.getProperty("user.dir") + "\\Test_Data\\10MB_upload_maximum_multi_file_0" + i + ".txt");
