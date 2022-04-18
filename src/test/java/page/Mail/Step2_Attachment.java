@@ -14,7 +14,6 @@ import utilities.Common.Common;
 
 import java.io.IOException;
 import java.io.RandomAccessFile;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.List;
@@ -154,7 +153,8 @@ public class Step2_Attachment extends Delivered_Mail_Page {
                     }
                 }
                 if (capacity <= 2) {
-                    upload_file.sendKeys(System.getProperty("user.dir") + "/Test_Data/2MB_upload_maximum_1_file.txt");
+                    String path = Paths.get(System.getProperty("user.dir") + "/Test_Data/2MB_upload_maximum_1_file.txt").toString();
+                    upload_file.sendKeys(path);
                 } else {
                     upload_file.sendKeys(System.getProperty("user.dir") + "/Test_Data/10MB_upload_maximum_1_file.txt");
                 }
