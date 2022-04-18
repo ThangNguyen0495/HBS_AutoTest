@@ -1,7 +1,12 @@
 package test.Mail;
 
+import io.github.bonigarcia.wdm.WebDriverManager;
 import org.apache.commons.io.FileUtils;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.interactions.Actions;
 import org.testng.ITestResult;
 import org.testng.annotations.*;
@@ -1526,6 +1531,18 @@ public class Create_Delivered_Mail {
 
         // Back to basic information step
         finalConfirmation.back_to_basic_information_step();
+    }
+
+    @Test
+    public void test_upload_file() {
+//        WebDriverManager.chromedriver().setup();
+//        ChromeOptions options = new ChromeOptions();
+//        //options.addArguments("--headless");
+//        driver = new ChromeDriver(options);
+        driver.get("https://demo.guru99.com/test/upload/");
+        WebElement upload_btn = driver.findElement(By.cssSelector("#uploadfile_0"));
+        String path = System.getProperty("user.dir") + "\\Test_Data\\2MB_upload_maximum_1_file.txt";
+        upload_btn.sendKeys(path);
     }
 
     @AfterMethod
