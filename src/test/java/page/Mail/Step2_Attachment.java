@@ -151,10 +151,7 @@ public class Step2_Attachment extends Delivered_Mail_Page {
                     }
                 }
                 if (capacity <= 2) {
-//                    ((JavascriptExecutor) driver).executeScript("arguments[0].style.display='block';", upload_file);
-//                    upload_file.sendKeys(System.getProperty("user.dir") + "\\Test_Data\\2MB_upload_maximum_1_file.txt");
-                    Path path = Paths.get(System.getProperty("user.dir") + "\\Test_Data\\2MB_upload_maximum_1_file.txt");
-                    upload_file.sendKeys((CharSequence) path);
+                    upload_file.sendKeys(System.getProperty("user.dir") + "\\Test_Data\\2MB_upload_maximum_1_file.txt");
                 } else {
                     upload_file.sendKeys(System.getProperty("user.dir") + "\\Test_Data\\10MB_upload_maximum_1_file.txt");
                 }

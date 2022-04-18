@@ -115,7 +115,6 @@
 <!--                    <include name="TC_64_back_to_destination_selection_from_final_confirmation" />-->
 <!--                    <include name="TC_65_back_to_attachment_from_final_confirmation" />-->
 <!--                    <include name="TC_66_back_to_basic_information_from_final_confirmation" />-->
-                    <include name="test_upload_file" />
                 </methods>
             </class>
         </classes>

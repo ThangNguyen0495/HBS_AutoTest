@@ -1533,18 +1533,6 @@ public class Create_Delivered_Mail {
         finalConfirmation.back_to_basic_information_step();
     }
 
-    @Test
-    public void test_upload_file() {
-//        WebDriverManager.chromedriver().setup();
-//        ChromeOptions options = new ChromeOptions();
-//        //options.addArguments("--headless");
-//        driver = new ChromeDriver(options);
-        driver.get("https://demo.guru99.com/test/upload/");
-        WebElement upload_btn = driver.findElement(By.cssSelector("#uploadfile_0"));
-        String path = System.getProperty("user.dir") + "\\Test_Data\\2MB_upload_maximum_1_file.txt";
-        upload_btn.sendKeys(path);
-    }
-
     @AfterMethod
     public void teardown(ITestResult result) throws IOException {
         // take screenshot when test failed
