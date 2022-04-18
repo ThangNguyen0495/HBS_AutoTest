@@ -17,7 +17,7 @@ public class Login {
 
     @BeforeClass
     public void clear_old_test_data_and_error() throws IOException {
-        FileUtils.cleanDirectory(new File(System.getProperty("user.dir") + "\\img\\Login"));
+        FileUtils.cleanDirectory(new File(System.getProperty("user.dir") + "/img/Login"));
     }
 
     @BeforeMethod

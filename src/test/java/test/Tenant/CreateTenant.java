@@ -23,7 +23,7 @@ public class CreateTenant {
 
     @BeforeClass
     public void clear_old_test_error() throws IOException {
-        FileUtils.cleanDirectory(new File(System.getProperty("user.dir") + "\\img\\Create_Tenant"));
+        FileUtils.cleanDirectory(new File(System.getProperty("user.dir") + "/img/Create_Tenant"));
     }
 
     @BeforeMethod

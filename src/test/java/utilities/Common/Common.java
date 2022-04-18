@@ -138,7 +138,7 @@ public class Common {
 
         if (result.getStatus() == ITestResult.FAILURE) {
             File scrShot = screenshot.getScreenshotAs(OutputType.FILE);
-            File dest = new File(System.getProperty("user.dir") + "\\img\\" + test_result_path + "\\" + result.getName() + "_" + generate_date_time() + ".jpg");
+            File dest = new File(System.getProperty("user.dir") + "/img/" + test_result_path + "/" + result.getName() + "_" + generate_date_time() + ".jpg");
             FileUtils.copyFile(scrShot, dest);
         }
     }
