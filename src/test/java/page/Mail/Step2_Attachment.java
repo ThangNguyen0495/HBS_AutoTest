@@ -154,6 +154,7 @@ public class Step2_Attachment extends Delivered_Mail_Page {
                 }
                 if (capacity <= 2) {
                     String path = Paths.get(System.getProperty("user.dir") + "/Test_Data/2MB_upload_maximum_1_file.txt").toString();
+                    System.out.println(path);
                     upload_file.sendKeys(path);
                 } else {
                     upload_file.sendKeys(System.getProperty("user.dir") + "/Test_Data/10MB_upload_maximum_1_file.txt");
