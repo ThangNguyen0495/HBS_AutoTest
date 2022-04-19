@@ -43,6 +43,7 @@ public class Common {
                 options.addArguments("--window-size=1280,800");
                 options.addArguments("--disable-dev-shm-usage");
                 options.addArguments("--allow-insecure-localhost");
+                options.addArguments("--remote-debugging-port=1557");
                 WebDriver driver = new FirefoxDriver(options);
                 driver.manage().window().maximize();
                 return driver;
@@ -56,6 +57,7 @@ public class Common {
                 options.addArguments("--window-size=1280,800");
                 options.addArguments("--disable-dev-shm-usage");
                 options.addArguments("--allow-insecure-localhost");
+                options.addArguments("--remote-debugging-port=1557");
                 WebDriver driver = new EdgeDriver(options);
                 driver.manage().window().maximize();
                 return driver;
@@ -85,6 +87,7 @@ public class Common {
                 options.addArguments("--window-size=1280,800");
                 options.addArguments("--disable-dev-shm-usage");
                 options.addArguments("--allow-insecure-localhost");
+                options.addArguments("--remote-debugging-port=1557");
                 WebDriver driver = new ChromeDriver(options);
                 driver.manage().window().maximize();
                 return driver;
