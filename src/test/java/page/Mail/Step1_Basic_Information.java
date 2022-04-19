@@ -48,9 +48,6 @@ public class Step1_Basic_Information extends Delivered_Mail_Page {
     @FindBy(css = "form > div:nth-child(4) > div > div.ant-form-item-explain > div")
     WebElement insertion_error;
 
-    @FindBy(css = "div.ant-message-custom-content>span:nth-child(2)")
-    WebElement message;
-
     // Register Mode
     public Step1_Basic_Information(WebDriver driver, String role, Common common, String domain, String Mode) {
         super(driver, role, common, domain, Mode);
@@ -181,11 +178,11 @@ public class Step1_Basic_Information extends Delivered_Mail_Page {
     */
 
     // Distributor
-    public void leave_distributor_blank() {
+    public void leave_distributor_blank() throws InterruptedException {
         // Master, Administrator, Responsible person, Leader, Member
         if (common.authorized(role, common.role_list(4))) {
             // waiting for loading distributor list
-            wait_for_loading_element(distributor);
+            sleep(3000);
 
             // click "x" button to clear current distributor
             clear_distributor.click();
@@ -230,7 +227,7 @@ public class Step1_Basic_Information extends Delivered_Mail_Page {
         }
         if (common.authorized(role, common.role_list(num))) {
             // wait and delete old subject
-            wait_for_loading_element(distributor);
+            sleep(3000);
             subject.sendKeys(Keys.CONTROL + "a", Keys.DELETE);
 
             // input subject exceed 100 half width characters
@@ -254,7 +251,7 @@ public class Step1_Basic_Information extends Delivered_Mail_Page {
         }
         if (common.authorized(role, common.role_list(num))) {
             // wait and delete old subject
-            wait_for_loading_element(distributor);
+            sleep(3000);
             subject.sendKeys(Keys.CONTROL + "a", Keys.DELETE);
 
             // input subject exceed 100 full width characters
@@ -278,7 +275,7 @@ public class Step1_Basic_Information extends Delivered_Mail_Page {
         }
         if (common.authorized(role, common.role_list(num))) {
             // wait and delete old subject
-            wait_for_loading_element(distributor);
+            sleep(3000);
             subject.sendKeys(Keys.CONTROL + "a", Keys.DELETE);
 
             // input subject exceed 100 mix half and full width characters

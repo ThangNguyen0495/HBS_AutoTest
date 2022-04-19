@@ -209,7 +209,7 @@ public class Step2_Attachment extends Delivered_Mail_Page {
                 }
                 // Waiting for hid previous message
                 wait.until(ExpectedConditions.invisibilityOf(message));
-                String expected_message = "";
+                String expected_message;
                 if (capacity <= 2) {
                     path = Paths.get(System.getProperty("user.dir") + "/Test_Data/2MB_upload_exceed_maximum_1_file.txt").toString();
                     expected_message = "2MBを超えるメールを配信することはできません。";
