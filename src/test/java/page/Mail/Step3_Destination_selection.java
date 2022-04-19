@@ -290,7 +290,7 @@ public class Step3_Destination_selection extends Delivered_Mail_Page {
             //** Delivery information **//
             //** Delivery type **//
             // 0: Deliver the matter, 1: Deliver personnel, 2: Deliver information
-            int delivery_type_id = 2;//RandomUtils.nextInt(3);
+            int delivery_type_id = RandomUtils.nextInt(3);
             key.moveToElement(delivery_type.get(delivery_type_id)).click().build().perform();
 
             // Search destination selection by delivery type
@@ -695,12 +695,12 @@ public class Step3_Destination_selection extends Delivered_Mail_Page {
             num = 5;
         }
         if (common.authorized(role, common.role_list(num))) {
-//            account_status();
-//            country_of_citizenship();
-//            contract();
-//            in_house_person_in_charge();
-//            compatibility();
-//            tag();
+            account_status();
+            country_of_citizenship();
+            contract();
+            in_house_person_in_charge();
+            compatibility();
+            tag();
         }
     }
 
