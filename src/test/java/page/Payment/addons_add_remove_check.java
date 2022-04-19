@@ -284,6 +284,7 @@ public class addons_add_remove_check extends payment {
         }
 
         // click save button
+        sleep(3000);
         destination_search_save_button_enable.click();
         wait.until(ExpectedConditions.visibilityOf(search_template_information));
         int number_of_registered = Integer.parseInt(search_template_information.getText().split("件 ／")[0].replace("現在登録数: ", ""));
@@ -343,6 +344,7 @@ public class addons_add_remove_check extends payment {
 
     public void delete_mail_after_get_information() throws InterruptedException {
         // scroll to bottom
+        sleep(3000);
         ((JavascriptExecutor) driver).executeScript("window.scrollTo(0, document.body.scrollHeight)");
 
         // Click delete button

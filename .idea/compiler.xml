@@ -8,6 +8,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="HBS" />
         <module name="HBS_Automation_Testing" />
+        <module name="HBS_AutoTest" />
       </profile>
     </annotationProcessing>
   </component>

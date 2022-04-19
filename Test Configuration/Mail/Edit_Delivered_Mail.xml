@@ -49,11 +49,11 @@
                     <parameter name="headless" value="true"/>
                     <parameter name="browser_name" value="chrome"/>
                     <parameter name="domain" value="https://stg.app.cmrb.jp"/>
-                    <parameter name="email" value="testhbs@qa.team"/>
+                    <parameter name="email" value="testh1bs@qa.team"/>
                     <parameter name="password" value="12345678aQ@"/>
                     <parameter name="role" value="Master"/>
                     <parameter name="capacity" value="2"/>
-                    <parameter name="mail_id" value="de832918-e0f7-4a93-9d1e-5a162ea9cce1"/>
+                    <parameter name="mail_id" value="a1c9060b-7de8-406c-8a34-8f3e4522697b"/>
                     <parameter name="mail_status" value="Draft"/>
 
                     <!--

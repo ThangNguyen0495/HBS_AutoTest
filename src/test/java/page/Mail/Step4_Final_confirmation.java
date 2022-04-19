@@ -148,7 +148,7 @@ public class Step4_Final_confirmation extends Delivered_Mail_Page {
                 // Time
                 ((JavascriptExecutor) driver).executeScript("arguments[0].removeAttribute('readonly',0);", time);
                 int new_min = LocalTime.now().getMinute();
-                int new_hour = LocalTime.now().getHour();
+                int new_hour = LocalTime.now().getHour() + 2;
 
                 // If time incorrect, add 10 minutes and select again
                 while (!check_time()) {

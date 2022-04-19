@@ -1605,7 +1605,7 @@ public class Step3_Destination_selection extends Delivered_Mail_Page {
             wait.until(ExpectedConditions.elementToBeClickable(set_template_default)).click();
 
             // waiting for set as default
-            sleep(1000);
+            sleep(3000);
             String title1 = template_dropdown.getAttribute("title");
             soft.assertTrue(title1.contains("☆ :"), "[Failed] Can not set search template as default.");
 
@@ -1613,7 +1613,7 @@ public class Step3_Destination_selection extends Delivered_Mail_Page {
             wait.until(ExpectedConditions.elementToBeClickable(set_template_default)).click();
 
             // waiting for cancel set default
-            sleep(1000);
+            sleep(3000);
             String title2 = template_dropdown.getAttribute("title");
             soft.assertFalse(title2.contains("☆ :"), "[Failed] Can not cancel search template as default.");
 

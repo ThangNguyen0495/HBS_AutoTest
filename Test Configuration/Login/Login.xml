@@ -2,7 +2,7 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="Automation testing using Selenium + Java">
     <test verbose="2"
-          name="[HBS] Create Delivered Mail(Process + Validation)">
+          name="[HBS] Login (Check captcha after login failed 3 times)">
         <classes>
             <class name="test.Login.Login">
                 <methods>

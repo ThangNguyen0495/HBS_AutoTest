@@ -108,7 +108,7 @@ public class Step2_Attachment extends Delivered_Mail_Page {
             soft.assertAll();
 
             // Waiting for destination selection tab loading
-            sleep(2000);
+            sleep(5000);
         }
     }
 
