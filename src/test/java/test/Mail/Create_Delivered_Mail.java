@@ -1,12 +1,7 @@
 package test.Mail;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
 import org.apache.commons.io.FileUtils;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.interactions.Actions;
 import org.testng.ITestResult;
 import org.testng.annotations.*;
@@ -33,11 +28,6 @@ public class Create_Delivered_Mail {
 
     @BeforeClass
     public void clear_old_test_data_and_error() throws IOException {
-//        try {
-//            FileUtils.cleanDirectory(new File(System.getProperty("user.dir") + "/Test_Data"));
-//        } catch (IOException ex) {
-//            // nothing
-//        }
         FileUtils.cleanDirectory(new File(System.getProperty("user.dir") + "/img/Create_Mail"));
     }
 
@@ -70,7 +60,7 @@ public class Create_Delivered_Mail {
     }
 
     @Test
-    public void TC01_process_create_mail() throws InterruptedException, IOException {
+    public void TC01_process_create_mail() throws InterruptedException {
         //****** 基本情報 ****** //
         // Basic information
         // Format
@@ -177,9 +167,9 @@ public class Create_Delivered_Mail {
     }
 
     @Test
-    public void TC_09_delete_button_should_be_disable() {
+    public void TC_09_delete_button_should_be_enable() {
         // Verify delete button getting disable
-        basicInformation.delete_button_should_be_disable();
+        basicInformation.delete_button_should_be_enable();
     }
 
     @Test
@@ -293,7 +283,7 @@ public class Create_Delivered_Mail {
 
 
     @Test
-    public void TC_15_upload_maximum_capacity_1_file() throws IOException, InterruptedException {
+    public void TC_15_upload_maximum_capacity_1_file() throws InterruptedException {
         // Format
         basicInformation.format();
 
@@ -311,7 +301,7 @@ public class Create_Delivered_Mail {
     }
 
     @Test
-    public void TC_16_upload_maximum_capacity_multi_file() throws InterruptedException, IOException {
+    public void TC_16_upload_maximum_capacity_multi_file() throws InterruptedException {
         // Format
         basicInformation.format();
 
@@ -329,7 +319,7 @@ public class Create_Delivered_Mail {
     }
 
     @Test
-    public void TC_17_upload_exceed_maximum_capacity_1_file() throws IOException, InterruptedException {
+    public void TC_17_upload_exceed_maximum_capacity_1_file() throws InterruptedException {
         // Format
         basicInformation.format();
 
@@ -347,7 +337,7 @@ public class Create_Delivered_Mail {
     }
 
     @Test
-    public void TC_18_upload_exceed_maximum_capacity_multi_file() throws InterruptedException, IOException {
+    public void TC_18_upload_exceed_maximum_capacity_multi_file() throws InterruptedException {
         // Format
         basicInformation.format();
 
@@ -365,7 +355,7 @@ public class Create_Delivered_Mail {
     }
 
     @Test
-    public void TC_19_upload_exceed_10_files() throws InterruptedException, IOException {
+    public void TC_19_upload_exceed_10_files() throws InterruptedException {
         // Format
         basicInformation.format();
 

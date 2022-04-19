@@ -27,11 +27,6 @@ public class Edit_Delivered_Mail {
 
     @BeforeClass
     public void clear_old_test_data_and_error() throws IOException {
-//        try {
-//            FileUtils.cleanDirectory(new File(System.getProperty("user.dir") + "/Test_Data"));
-//        } catch (IOException ex) {
-//            // nothing
-//        }
         FileUtils.cleanDirectory(new File(System.getProperty("user.dir") + "/img/Edit_Mail"));
     }
 
@@ -64,7 +59,7 @@ public class Edit_Delivered_Mail {
     }
 
     @Test
-    public void TC01_process_edit_mail() throws InterruptedException, IOException {
+    public void TC01_process_edit_mail() throws InterruptedException {
         //****** 基本情報 ****** //
         // Basic information
         // Format
@@ -228,7 +223,7 @@ public class Edit_Delivered_Mail {
     }
 
     @Test
-    public void TC_15_upload_maximum_capacity_1_file() throws IOException, InterruptedException {
+    public void TC_15_upload_maximum_capacity_1_file() throws InterruptedException {
         // Select format
         basicInformation.format();
 
@@ -240,7 +235,7 @@ public class Edit_Delivered_Mail {
     }
 
     @Test
-    public void TC_16_upload_maximum_capacity_multi_file() throws InterruptedException, IOException {
+    public void TC_16_upload_maximum_capacity_multi_file() throws InterruptedException {
         // Select format
         basicInformation.format();
 
@@ -252,7 +247,7 @@ public class Edit_Delivered_Mail {
     }
 
     @Test
-    public void TC_17_upload_exceed_maximum_capacity_1_file() throws IOException, InterruptedException {
+    public void TC_17_upload_exceed_maximum_capacity_1_file() throws InterruptedException {
         // Select format
         basicInformation.format();
 
@@ -264,7 +259,7 @@ public class Edit_Delivered_Mail {
     }
 
     @Test
-    public void TC_18_upload_exceed_maximum_capacity_multi_file() throws InterruptedException, IOException {
+    public void TC_18_upload_exceed_maximum_capacity_multi_file() throws InterruptedException {
         // Select format
         basicInformation.format();
 
@@ -276,7 +271,7 @@ public class Edit_Delivered_Mail {
     }
 
     @Test
-    public void TC_19_upload_exceed_10_files() throws InterruptedException, IOException {
+    public void TC_19_upload_exceed_10_files() throws InterruptedException {
         // Select format
         basicInformation.format();
 

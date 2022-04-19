@@ -1,19 +1,13 @@
 package page.Mail;
 
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.remote.LocalFileDetector;
-import org.openqa.selenium.remote.RemoteWebDriver;
-import org.openqa.selenium.remote.RemoteWebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import utilities.Common.Common;
 
-import java.io.IOException;
-import java.io.RandomAccessFile;
 import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.List;
@@ -21,7 +15,6 @@ import java.util.List;
 import static java.lang.Thread.sleep;
 
 public class Step2_Attachment extends Delivered_Mail_Page {
-    public static String current_date_time;
     @FindBy(css = "span > input[type='file']")
     WebElement upload_file;
     @FindBy(css = "div:nth-child(4)>div>button")
@@ -36,7 +29,9 @@ public class Step2_Attachment extends Delivered_Mail_Page {
     List<WebElement> number_of_file;
     @FindBy(css = "button[title='Remove file']")
     List<WebElement> delete_upload_file;
+
     int capacity;
+    String path;
 
     // Register Mode
     public Step2_Attachment(WebDriver driver, String role, Common common, String domain, int capacity, String Mode) {
@@ -54,17 +49,17 @@ public class Step2_Attachment extends Delivered_Mail_Page {
         PageFactory.initElements(driver, this);
     }
 
-    public void generate_test_file(int capacity, int number_of_files) throws IOException {
-        // Generate test file
-        // capacity: MB
-        current_date_time = common.generate_date_time();
-        for (int i = 0; i < number_of_files; i++) {
-            new RandomAccessFile(System.getProperty("user.dir") + "/Test_Data/text" + i + "_" + current_date_time + ".txt", "rw")
-                    .setLength(((long) capacity * 1024 * 1024 - number_of_files) / number_of_files);
-        }
-    }
+//    public void generate_test_file(int capacity, int number_of_files) throws IOException {
+//        // Generate test file
+//        // capacity: MB
+//        current_date_time = common.generate_date_time();
+//        for (int i = 0; i < number_of_files; i++) {
+//            new RandomAccessFile(System.getProperty("user.dir") + "/Test_Data/text" + i + "_" + current_date_time + ".txt", "rw")
+//                    .setLength(((long) capacity * 1024 * 1024 - number_of_files) / number_of_files);
+//        }
+//    }
 
-    public void upload_file() throws IOException {
+    public void upload_file() {
         // Master, Administrator, Responsible person, Leader, Member
         if (common.authorized(role, common.role_list(5))) {
             if ((Mode.equals("Create")) || (!list_mail_status.contains(mail_status) && (Mode.equals("Edit")))) {
@@ -79,10 +74,11 @@ public class Step2_Attachment extends Delivered_Mail_Page {
                     }
                 }
                 if (capacity <= 2) {
-                    upload_file.sendKeys(System.getProperty("user.dir") + "/Test_Data/2MB_upload_process.txt");
+                    path = Paths.get(System.getProperty("user.dir") + "/Test_Data/2MB_upload_process.txt").toString();
                 } else {
-                    upload_file.sendKeys(System.getProperty("user.dir") + "/Test_Data/10MB_upload_process.txt");
+                    path = Paths.get(System.getProperty("user.dir") + "/Test_Data/10MB_upload_process.txt").toString();
                 }
+                upload_file.sendKeys(path);
 
                 // Wait file have been uploaded
                 wait.until(ExpectedConditions.visibilityOf(message));
@@ -140,7 +136,7 @@ public class Step2_Attachment extends Delivered_Mail_Page {
         }
     }
 
-    public void upload_maximum_capacity_1_file() throws IOException {
+    public void upload_maximum_capacity_1_file() {
         if (common.authorized(role, common.role_list(5))) {
             if ((Mode.equals("Create")) || (!list_mail_status.contains(mail_status) && (Mode.equals("Edit")))) {
 //                generate_test_file(capacity, 1);
@@ -153,12 +149,12 @@ public class Step2_Attachment extends Delivered_Mail_Page {
                     }
                 }
                 if (capacity <= 2) {
-                    String path = Paths.get(System.getProperty("user.dir") + "/Test_Data/2MB_upload_maximum_1_file.txt").toString();
-                    System.out.println(path);
-                    upload_file.sendKeys(path);
+                    path = Paths.get(System.getProperty("user.dir") + "/Test_Data/2MB_upload_maximum_1_file.txt").toString();
                 } else {
-                    upload_file.sendKeys(System.getProperty("user.dir") + "/Test_Data/10MB_upload_maximum_1_file.txt");
+                    path = Paths.get(System.getProperty("user.dir") + "/Test_Data/10MB_upload_maximum_1_file.txt").toString();
                 }
+                upload_file.sendKeys(path);
+
                 String text = wait.until(ExpectedConditions.visibilityOf(message)).getText();
                 soft.assertTrue(text.contains("ファイルがアップロードされました"), "[Failed] Can not upload file with capacity: "
                         + capacity + "MB.\n Actual message: " + text + "\n Expect message: contains ファイルがアップロードされました");
@@ -182,13 +178,13 @@ public class Step2_Attachment extends Delivered_Mail_Page {
                 String text = "";
                 for (int i = 1; i <= 3; i++) {
                     if (capacity <= 2) {
-                        ((RemoteWebElement) upload_file).setFileDetector(new LocalFileDetector());
-                        upload_file.sendKeys(System.getProperty("user.dir") + "/Test_Data/2MB_upload_maximum_multi_file_0" + i + ".txt");
+                        path = Paths.get(System.getProperty("user.dir") + "/Test_Data/2MB_upload_maximum_multi_file_0" + i + ".txt").toString();
                     } else {
-                        upload_file.sendKeys(System.getProperty("user.dir") + "/Test_Data/10MB_upload_maximum_multi_file_0" + i + ".txt");
+                        path = Paths.get(System.getProperty("user.dir") + "/Test_Data/10MB_upload_maximum_multi_file_0" + i + ".txt").toString();
                     }
+                    upload_file.sendKeys(path);
                     wait.until(ExpectedConditions.visibilityOf(message));
-                    if (i == 2) {
+                    if (i == 3) {
                         text = message.getText();
                     }
                     wait.until(ExpectedConditions.invisibilityOf(message));
@@ -200,7 +196,7 @@ public class Step2_Attachment extends Delivered_Mail_Page {
         }
     }
 
-    public void upload_exceed_maximum_capacity_1_file() throws IOException {
+    public void upload_exceed_maximum_capacity_1_file() {
         if (common.authorized(role, common.role_list(5))) {
             if ((Mode.equals("Create")) || (!list_mail_status.contains(mail_status) && (Mode.equals("Edit")))) {
 //                generate_test_file(capacity + 1, 1);
@@ -213,20 +209,23 @@ public class Step2_Attachment extends Delivered_Mail_Page {
                 }
                 // Waiting for hid previous message
                 wait.until(ExpectedConditions.invisibilityOf(message));
+                String expected_message = "";
                 if (capacity <= 2) {
-                    upload_file.sendKeys(System.getProperty("user.dir") + "/Test_Data/2MB_upload_exceed_maximum_1_file.txt");
+                    path = Paths.get(System.getProperty("user.dir") + "/Test_Data/2MB_upload_exceed_maximum_1_file.txt").toString();
+                    expected_message = "2MBを超えるメールを配信することはできません。";
                 } else {
-                    upload_file.sendKeys(System.getProperty("user.dir") + "/Test_Data/10MB_upload_exceed_maximum_1_file.txt");
+                    path = Paths.get(System.getProperty("user.dir") + "/Test_Data/10MB_upload_exceed_maximum_1_file.txt").toString();
+                    expected_message = "10MBを超えるメールを配信することはできません。";
                 }
+                upload_file.sendKeys(path);
                 String text = wait.until(ExpectedConditions.visibilityOf(message)).getText();
-                soft.assertTrue(text.contains("を超えるメールを配信することはできません"), "[Failed] Message do not match."
-                        + "\n Actual message: " + text + "\n Expect message: contains を超えるメールを配信することはできません");
+                soft.assertEquals(text, expected_message, "[Failed] Message do not match.");
                 soft.assertAll();
             }
         }
     }
 
-    public void upload_exceed_maximum_capacity_multi_file() throws IOException {
+    public void upload_exceed_maximum_capacity_multi_file() {
         if (common.authorized(role, common.role_list(5))) {
             if ((Mode.equals("Create")) || (!list_mail_status.contains(mail_status) && (Mode.equals("Edit")))) {
 //                generate_test_file(capacity + 1, 3);
@@ -238,26 +237,29 @@ public class Step2_Attachment extends Delivered_Mail_Page {
                     }
                 }
                 String text = "";
+                String expected_message = "";
                 for (int i = 1; i <= 3; i++) {
                     if (capacity <= 2) {
-                        upload_file.sendKeys(System.getProperty("user.dir") + "/Test_Data/2MB_upload_exceed_maximum_multi_file_0" + i + ".txt");
+                        path = Paths.get(System.getProperty("user.dir") + "/Test_Data/2MB_upload_exceed_maximum_multi_file_0" + i + ".txt").toString();
+                        expected_message = "2MBを超えるメールを配信することはできません。";
                     } else {
-                        upload_file.sendKeys(System.getProperty("user.dir") + "/Test_Data/10MB_upload_exceed_maximum_multi_file_0" + i + ".txt");
+                        path = Paths.get(System.getProperty("user.dir") + "/Test_Data/10MB_upload_exceed_maximum_multi_file_0" + i + ".txt").toString();
+                        expected_message = "10MBを超えるメールを配信することはできません。";
                     }
+                    upload_file.sendKeys(path);
                     wait.until(ExpectedConditions.visibilityOf(message));
-                    if (i == 2) {
+                    if (i == 3) {
                         text = message.getText();
                     }
                     wait.until(ExpectedConditions.invisibilityOf(message));
                 }
-                soft.assertTrue(text.contains("を超えるメールを配信することはできません"), "[Failed] Message do not match."
-                        + "\n Actual message: " + text + "\n Expect message: contains を超えるメールを配信することはできません");
+                soft.assertEquals(text,expected_message, "[Failed] Message do not match.");
                 soft.assertAll();
             }
         }
     }
 
-    public void upload_exceed_11_files() throws IOException {
+    public void upload_exceed_11_files() {
         if (common.authorized(role, common.role_list(5))) {
             if ((Mode.equals("Create")) || (!list_mail_status.contains(mail_status) && (Mode.equals("Edit")))) {
                 // generate test data
@@ -275,10 +277,11 @@ public class Step2_Attachment extends Delivered_Mail_Page {
                 String text = "";
                 for (int i = 1; i <= 11; i++) {
                     if (capacity <= 2) {
-                        upload_file.sendKeys(System.getProperty("user.dir") + "/Test_Data/2MB_upload_11_file_0" + i + ".txt");
+                        path = Paths.get(System.getProperty("user.dir") + "/Test_Data/2MB_upload_11_file_0" + i + ".txt").toString();
                     } else {
-                        upload_file.sendKeys(System.getProperty("user.dir") + "/Test_Data/10MB_upload_11_file_0" + i + ".txt");
+                        path = Paths.get(System.getProperty("user.dir") + "/Test_Data/10MB_upload_11_file_0" + i + ".txt").toString();
                     }
+                    upload_file.sendKeys(path);
                     wait.until(ExpectedConditions.visibilityOf(message));
                     if (i == 11) {
                         text = message.getText();

@@ -164,13 +164,7 @@ public class Step1_Basic_Information extends Delivered_Mail_Page {
             next_step_button.click();
 
             // check message in case register mail
-            if (Mode.equals("Create")) {
-                String text = wait.until(ExpectedConditions.visibilityOf(message)).getText();
-                wait.until(ExpectedConditions.invisibilityOf(message));
-                soft.assertEquals(text, "アイテムが作成されました", "[Failed][Basic Information] Message do not match.");
-            } else {
-                sleep(3000);
-            }
+            sleep(5000);
 
             // Check current tab
             // 0: Basic information, 1: Attachment, 2: Destination selection, 3: Final confirmation
@@ -370,12 +364,15 @@ public class Step1_Basic_Information extends Delivered_Mail_Page {
             // minJpnCharCode: 0x4e00
             // maxJpnCharCode: 0x4f80
             // wait and delete old insertion
-            wait_for_loading_element(distributor);
+            sleep(3000);
             insertion.sendKeys(Keys.CONTROL + "a", Keys.DELETE);
 
             // input insertion exceed 5000 full width characters
             String insert_text = RandomStringUtils.random(2500, 0x4e00, 0x4f80, true, false);
-            insertion.sendKeys(insert_text + insert_text + "@");
+            insertion.sendKeys(insert_text);
+            insertion.sendKeys(insert_text);
+            sleep(3000);
+            insertion.sendKeys("@");
 
             // Scroll down
             ((JavascriptExecutor) driver).executeScript("window.scrollTo(0, document.body.scrollHeight)");
@@ -398,16 +395,19 @@ public class Step1_Basic_Information extends Delivered_Mail_Page {
         }
         if (common.authorized(role, common.role_list(num))) {
             // wait and delete old insertion
-            wait_for_loading_element(distributor);
+            sleep(3000);
             insertion.sendKeys(Keys.CONTROL + "a", Keys.DELETE);
 
             // input insertion exceed 5000 characters (mix full and half width)
             String insertion_half = RandomStringUtils.randomAlphabetic(2500);
-            String insertion_full = RandomStringUtils.random(2501, 0x4e00, 0x4f80, true, false);
+            String insertion_full = RandomStringUtils.random(2500, 0x4e00, 0x4f80, true, false);
 
             // minJpnCharCode: 0x4e00
             // maxJpnCharCode: 0x4f80
-            insertion.sendKeys(insertion_half + insertion_full);
+            insertion.sendKeys(insertion_half);
+            insertion.sendKeys(insertion_full);
+            sleep(3000);
+            insertion.sendKeys("@");
 
             // Scroll down
             ((JavascriptExecutor) driver).executeScript("window.scrollTo(0, document.body.scrollHeight)");
@@ -420,7 +420,7 @@ public class Step1_Basic_Information extends Delivered_Mail_Page {
         }
     }
 
-    public void delete_button_should_be_disable() {
+    public void delete_button_should_be_enable() {
         // Master, Administrator, Responsible person, Leader, Member
         if (common.authorized(role, common.role_list(5))) {
             soft.assertTrue(delete_button.isEnabled(), "[Delete] button is getting disable.");

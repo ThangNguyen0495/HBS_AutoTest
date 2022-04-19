@@ -33,13 +33,13 @@
                         - Please read "TEST CONFIGURATION" to sure your input value is exactly. In case your
                         configuration incorrect, the automation testing should be not worked or work incorrectly.
                     -->
-                    <parameter name="headless" value="true"/>
+                    <parameter name="headless" value="false"/>
                     <parameter name="browser_name" value="chrome"/>
                     <parameter name="domain" value="https://stg.app.cmrb.jp"/>
                     <parameter name="email" value="test@qa.team"/>
                     <parameter name="password" value="12345678aQ@"/>
                     <parameter name="role" value="Master"/>
-                    <parameter name="capacity" value="2"/>
+                    <parameter name="capacity" value="10"/>
 
                     <!--
                     TESTCASE
@@ -57,17 +57,17 @@
 <!--                    <include name="TC_06_insertion_exceed_10000_half_width_characters"/>-->
 <!--                    <include name="TC_07_insertion_exceed_5000_full_width_characters"/>-->
 <!--                    <include name="TC_08_insertion_exceed_5000_mix_half_and_full_width_characters"/>-->
-<!--                    <include name="TC_09_delete_button_should_be_disable"/>-->
+<!--                    <include name="TC_09_delete_button_should_be_enable"/>-->
 <!--                    <include name="TC_10_do_you_want_to_delete_this_delivered_email_OK_basic_information"/>-->
 <!--                    <include name="TC_11_do_you_want_to_delete_this_delivered_email_Cancel_basic_information"/>-->
 <!--                    <include name="TC_12_make_a_copy_basic_information"/>-->
 <!--                    <include name="TC_13_would_you_like_to_change_this_delivery_email_to_Draft_status_OK_basic_information"/>-->
 <!--                    <include name="TC_14_would_you_like_to_change_this_delivery_email_to_Draft_status_Cancel_basic_information"/>-->
                     <include name="TC_15_upload_maximum_capacity_1_file"/>
-<!--                    <include name="TC_16_upload_maximum_capacity_multi_file"/>-->
-<!--                    <include name="TC_17_upload_exceed_maximum_capacity_1_file"/>-->
-<!--                    <include name="TC_18_upload_exceed_maximum_capacity_multi_file"/>-->
-<!--                    <include name="TC_19_upload_exceed_10_files"/>-->
+                    <include name="TC_16_upload_maximum_capacity_multi_file"/>
+                    <include name="TC_17_upload_exceed_maximum_capacity_1_file"/>
+                    <include name="TC_18_upload_exceed_maximum_capacity_multi_file"/>
+                    <include name="TC_19_upload_exceed_10_files"/>
 <!--                    <include name="TC_20_do_you_want_to_delete_this_delivered_email_OK_attachment"/>-->
 <!--                    <include name="TC_21_do_you_want_to_delete_this_delivered_email_Cancel_attachment"/>-->
 <!--                    <include name="TC_22_make_a_copy_attachment"/>-->
