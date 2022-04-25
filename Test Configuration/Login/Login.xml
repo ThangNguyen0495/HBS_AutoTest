@@ -4,7 +4,7 @@
     <test verbose="2"
           name="[HBS] Login (Check captcha after login failed 3 times)">
         <classes>
-            <class name="test.Login.Login">
+            <class name="test.login.Login">
                 <methods>
                     <!--
                     TEST CONFIGURATION
@@ -30,7 +30,7 @@
                     TESTCASE
                     TC01: Verify that captcha should be displayed after login fail 3 times
                     -->
-                    <include name="TC01_verify_captcha_display_after_login_fail_3_times"/>
+                    <include name="TC01_verifyThatAfterLoginFail3TimesCaptchaShouldBeDisplayed"/>
                 </methods>
             </class>
         </classes>

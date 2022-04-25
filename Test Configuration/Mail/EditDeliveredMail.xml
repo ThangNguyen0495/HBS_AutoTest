@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Automation testing using Selenium + Java">
+    <test verbose="2"
+          name="[HBS] Edit Delivered Mail(Process + Validation)">
+        <classes>
+            <class name="test.mail.EditDeliveredEmail">
+                <methods>
+                    <!--
+                    TEST CONFIGURATION
+                    1. Headless(headless): It is "test run" mode
+                    Value: true, false
+                    Headless = "true": Run test with non UI mode (Browser should not be opened),
+                    Headless = "false": Run test with UI mode (Browser should be opened).
+                    NOTE: Headless mode only supports Chrome and FireFox.
+
+                    2. Browser name(browser_name): It is your browser name.
+                    Value: chrome, firefox, edge, ie, safari
+                    You can run it on multiple browsers like Chrome, Firefox, Edge, IE, and Safari.
+
+                    3. Domain(domain):
+                    It is the domain used to run the automation testing.
+
+                    4. Email(email), Password(password), Role(role)
+                    Email and Password: the account used to run the automation testing
+                    Role: It is the role of the account
+                    Role's value: Master, Administrator, Responsible person, Leader, Member, Guest
+
+                    5. Mail ID (mail_id) and Mail Status(mail_status)
+                    Get mail_id and mail status(for the staging domain, same for the other domain):
+                        - Open the website: "https://stg.app.cmrb.jp/login"
+                        - Input valid email, password and click on "ログイン" button
+                        - After login, navigate to the URL: "https://stg.app.cmrb.jp/scheduledMails"
+                        - Get mail_status at Delivery status(配信ステータス) column
+                        (mail_status value: Draft, Waiting for delivery, During delivery, Delivered, Error)
+                        - Open your delivery mail
+                        - In my case, I get URL is
+                        https://stg.app.cmrb.jp/scheduledMails/de088e50-a9ed-40af-a752-87435f1373c8
+                        => My mail_id is de088e50-a9ed-40af-a752-87435f1373c8
+                    NOTE: mail_id and mail_status information must be of the same email.
+
+                    6. Capacity(capacity):
+                    It is the maximum size of attachmentSteps for delivered emails.
+
+                     WARNING:
+                        - Please read "TEST CONFIGURATION" to sure your input value is exactly. In case your
+                        configuration incorrect, the automation testing should be not worked or work incorrectly.
+                    -->
+                    <parameter name="headless" value="true"/>
+                    <parameter name="browser_name" value="chrome"/>
+                    <parameter name="domain" value="https://stg.app.cmrb.jp"/>
+                    <parameter name="email" value="testh1bs@qa.team"/>
+                    <parameter name="password" value="12345678aQ@"/>
+                    <parameter name="role" value="Master"/>
+                    <parameter name="capacity" value="2"/>
+                    <parameter name="mail_id" value="3d2db11b-2fcf-4274-9c94-340fe13ecaae"/>
+                    <parameter name="mail_status" value="Draft"/>
+
+                    <!--
+                    TESTCASE
+                    TC01: Verify that can edit delivery email
+                    TC02-14: Verify validation and other functions (delete, make a copy, save as draft, ...) of Basic information step
+                    TC15-24: Verify validation and other functions (delete, make a copy, save as draft, ...) of attachmentStep step
+                    TC25-59: Verify validation and other functions (delete, make a copy, save as draft, ...) of Destination search step
+                    TC60-68: Verify validation and other functions (delete, make a copy, save as draft, ...) of Final confirmation step
+                    -->
+                    <include name="TC01_verifyFullEditDeliveredEmailProcess"/>
+                    <include name="TC02_atBasicInformationStepGiveAllInformationBlankAndVerifyErrorMessage"/>
+                    <include name="TC03_atBasicInformationStepGiveSubjectExceed100HalfWidthCharactersAndVerifyErrorMessage"/>
+                    <include name="TC04_atBasicInformationStepGiveSubjectExceed100FullWidthCharactersAndVerifyErrorMessage"/>
+                    <include name="TC05_atBasicInformationStepGiveSubjectExceed100CharactersMixHalfFullWidthAndVerifyErrorMessage"/>
+                    <include name="TC06_atBasicInformationStepGiveInsertionExceed10000HalfWidthCharactersAndVerifyErrorMessage"/>
+                    <include name="TC07_atBasicInformationStepGiveInsertionExceed5000FullWidthCharactersAndVerifyErrorMessage"/>
+                    <include name="TC08_atBasicInformationStepGiveInsertionExceed5000CharactersMixHalfFullWidthAndVerifyErrorMessage"/>
+                    <include name="TC09_atBasicInformationStepVerifyThatCanUpdateDeliveredEmailWithValidData"/>
+                    <include name="TC10_atBasicInformationStepVerifyThatCanMakeDeliveredEmailCopy"/>
+                    <include name="TC11_atBasicInformationStepVerifyThatChangeDeliveredEmailStatusPopupShouldBeClosedAfterClickingCancelButton"/>
+                    <include name="TC12_atBasicInformationStepVerifyThatCanChangeDeliveredEmailStatusToDraft"/>
+                    <include name="TC13_atBasicInformationStepVerifyThatDeliveredEmailPopupShouldBeClosedAfterClickCancelButton"/>
+                    <include name="TC14_atBasicInformationStepVerifyThatDeliveredEmailShouldBeDeletedAfterClickingOKButton"/>
+                    <include name="TC15_atAttachmentStepVerifyThatCanUploadOneFileWithMaximumCapacity"/>
+                    <include name="TC16_atAttachmentStepVerifyThatCanUploadMultipleFileWithMaximumCapacity"/>
+                    <include name="TC17_atAttachmentStepVerifyErrorMessageWhenUploadOneFileWithTotalCapacityExceedAllowedCapacity"/>
+                    <include name="TC18_atAttachmentStepVerifyErrorMessageWhenUploadMultipleFileWithTotalCapacityExceedAllowedCapacity"/>
+                    <include name="TC19_atAttachmentStepVerifyErrorMessageWhenTotalFileHaveBeenUploadedExceed10Files"/>
+                    <include name="TC20_atAttachmentStepVerifyThatCanUpdateDeliveredEmailWithValidData"/>
+                    <include name="TC21_atAttachmentStepVerifyThatCanMakeDeliveredEmailCopy"/>
+                    <include name="TC22_atAttachmentStepVerifyThatChangeDeliveredEmailStatusPopupShouldBeClosedAfterClickingCancelButton"/>
+                    <include name="TC23_atAttachmentStepVerifyThatCanChangeDeliveredEmailStatusToDraft"/>
+                    <include name="TC24_atAttachmentStepVerifyThatDeleteThisDeliveredEmailPopupShouldBeClosedAfterClickCancelButton"/>
+                    <include name="TC25_atAttachmentStepVerifyThatDeliveredEmailShouldBeDeletedAfterClickingOKButton"/>
+                    <include name="TC26_atDestinationSearchStepVerifyErrorMessageWhenOnlySelectDeliverTheMatter"/>
+                    <include name="TC27_atDestinationSearchStepVerifyErrorMessageWhenOnlySelectDeliverTheMatterAndDevelopment"/>
+                    <include name="TC28_atDestinationSearchStepVerifyErrorMessageWhenOnlySelectDeliverTheMatterAndInfrastructure"/>
+                    <include name="TC29_atDestinationSearchStepVerifyErrorMessageWhenOnlySelectDeliverTheMatterAndOthers"/>
+                    <include name="TC30_atDestinationSearchStepVerifyErrorMessageWhenOnlySelectDeliverThePersonnel"/>
+                    <include name="TC31_atDestinationSearchStepVerifyErrorMessageWhenOnlySelectDeliverThePersonnelAndDevelopment"/>
+                    <include name="TC32_atDestinationSearchStepVerifyErrorMessageWhenOnlySelectDeliverThePersonnelAndInfrastructure"/>
+                    <include name="TC33_atDestinationSearchStepVerifyErrorMessageWhenOnlySelectDeliverThePersonnelAndOthers"/>
+                    <include name="TC34_atDestinationSearchStepVerifyErrorMessageWhenOnlySelectDeliverThePersonnelAndDevelopmentAndInfrastructureAndOthers"/>
+                    <include name="TC35_atDestinationSearchStepVerifyErrorMessageWhenDoNotSelectAccountStatus"/>
+                    <include name="TC36_atDestinationSearchStepVerifyErrorMessageWhenDoNotSelectInHousePersonInCharge"/>
+                    <include name="TC37_atDestinationSearchStepVerifyErrorMessageWhenDoNotSelectCompatibility"/>
+                    <include name="TC38_atDestinationSearchStepVerifyErrorMessageWhenDoNotSelectTag"/>
+                    <include name="TC39_atDestinationSearchStepVerifyErrorMessageWhenSelectExceed5Tags"/>
+                    <include name="TC40_atDestinationSearchStepVerifyThatCanUpdateDeliveredEmailWithValidData"/>
+                    <include name="TC41_atDestinationSearchStepVerifyThatCanMakeDeliveredEmailCopy" />
+                    <include name="TC42_atDestinationSearchStepVerifyThatChangeDeliveredEmailStatusPopupShouldBeClosedAfterClickingCancelButton" />
+                    <include name="TC43_atDestinationSearchStepVerifyThatCanChangeDeliveredEmailStatusToDraft" />
+                    <include name="TC44_atDestinationSearchStepVerifyThatDeleteThisDeliveredEmailPopupShouldBeClosedAfterClickCancelButton" />
+                    <include name="TC45_atDestinationSearchStepVerifyThatDeliveredEmailShouldBeDeletedAfterClickingOKButton" />
+                    <include name="TC46_atDestinationSearchStepVerifyThatCanBackToBasicInformationStepFromDestinationSearchStep" />
+                    <include name="TC47_atDestinationSearchStepVerifyThatCanBackToAttachmentStepFromDestinationSearchStep" />
+                    <include name="TC48_atDestinationSearchStepVerifyErrorMessageWhenLeaveSearchTemplateNameBlank" />
+                    <include name="TC49_atDestinationSearchStepVerifyErrorMessageWhenSearchConditionsTemplateNameExceed50HalfWidthCharacters" />
+                    <include name="TC50_atDestinationSearchStepVerifyErrorMessageWhenSearchConditionsTemplateNameExceed50FullWidthCharacters" />
+                    <include name="TC51_atDestinationSearchStepVerifyErrorMessageSearchConditionsTemplateNameExceed50CharactersMixHalfAndFullWidth" />
+                    <include name="TC52_atDestinationSearchStepVerifyThatCanCreateSearchConditionsTemplateNameWithValidTemplateName" />
+                    <include name="TC53_atDestinationSearchStepVerifyThatCreateSearchConditionsTemplatePopupShouldBeCloseAfterClickingOnCancelButton" />
+                    <include name="TC54_atDestinationSearchStepVerifyErrorMessageWhenInputAvailableSearchConditionsTemplateName" />
+                    <include name="TC55_atDestinationSearchStepVerifyCanSetAndCancelSearchConditionsTemplateAsDefault" />
+                    <include name="TC56_atDestinationSearchStepVerifyThatCanDeleteSearchConditionsTemplate" />
+                    <include name="TC57_atDestinationSearchStepVerifyThatDeleteSearchConditionsTemplateShouldBeClosedAfterClickingOnCancelButton" />
+                    <include name="TC58_atDestinationSearchStepVerifyThatCanResetSearchConditions" />
+                    <include name="TC59_atDestinationSearchStepVerifyThatCanNextToDestinationSelectionStepFromAttachmentStep" />
+                    <include name="TC60_atDestinationSearchStepVerifyThatPaginationIsWorkingNormally" />
+                    <include name="TC61_atFinalConfirmationStepVerifyThatCanUpdateDeliveredEmailWithValidData" />
+                    <include name="TC62_atFinalConfirmationStepVerifyThatCanMakeDeliveredEmailCopy" />
+                    <include name="TC63_atFinalConfirmationStepVerifyThatChangeDeliveredEmailStatusPopupShouldBeClosedAfterClickingCancelButton" />
+                    <include name="TC64_atFinalConfirmationStepVerifyThatCanChangeDeliveredEmailStatusToDraft" />
+                    <include name="TC65_atFinalConfirmationStepVerifyThatDeleteThisDeliveredEmailPopupShouldBeClosedAfterClickCancelButton" />
+                    <include name="TC66_atFinalConfirmationStepVerifyThatDeliveredEmailShouldBeDeletedAfterClickingOKButton" />
+                    <include name="TC67_atFinalConfirmationStepVerifyThatCanBackToDestinationSelectionStepFromFinalConfirmationStep" />
+                    <include name="TC68_atFinalConfirmationStepVerifyThatCanBackToAttachmentStepFromFinalConfirmationStep" />
+                    <include name="TC69_atFinalConfirmationStepVerifyThatCanBackToBasicInformationStepFromFinalConfirmationStep" />
+                </methods>
+            </class>
+        </classes>
+    </test>
+</suite>
