@@ -49,16 +49,6 @@ public class Step2Attachment extends DeliveredMailPage {
         PageFactory.initElements(driver, this);
     }
 
-//    public void generate_test_file(int capacity, int number_of_files) throws IOException {
-//        // Generate test file
-//        // capacity: MB
-//        current_date_time = common.generateDateTimeForCaptureScreenShoot();
-//        for (int i = 0; i < number_of_files; i++) {
-//            new RandomAccessFile(System.getProperty("user.dir") + "/Test_Data/text" + i + "_" + current_date_time + ".txt", "rw")
-//                    .setLength(((long) capacity * 1024 * 1024 - number_of_files) / number_of_files);
-//        }
-//    }
-
     public void verifyThatCanUploadFileWithValidCapacity() {
         // Master, Administrator, Responsible person, Leader, Member
         if (common.authorized(role, common.roleList(5))) {

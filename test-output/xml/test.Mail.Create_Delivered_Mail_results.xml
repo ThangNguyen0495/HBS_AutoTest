@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="[HBS] Create Delivered Mail(Process + Validation)"
+           tests="1"
+           failures="0"
+           errors="0"
+           skipped="0"
+           time="27.537">
+    <properties></properties>
+
+
+
+            <testcase
+                name="TC_53_set_cancel_search_template_as_default"
+                time="27.537"
+                classname="test.mail.CreateDeliveredEmail">
+            </testcase>
+</testsuite>

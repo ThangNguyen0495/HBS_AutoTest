@@ -30,8 +30,6 @@ public class Step4FinalConfirmation extends DeliveredMailPage {
     WebElement time_selection;
     @FindBy(css = "div:nth-child(1) > div > div > div:nth-child(2) > div > div > input")
     WebElement time;
-    @FindBy(css = "li.ant-picker-ok>button")
-    WebElement decisive_button;
     @FindBy(css = "div.ant-modal-footer>button")
     WebElement ok_button_delivery_time_setting;
     @FindBy(css = "div.ant-modal-confirm-btns>button:nth-child(2)")

@@ -3,10 +3,7 @@ package utilities.common;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.math.RandomUtils;
-import org.openqa.selenium.By;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
-import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeDriver;
@@ -19,6 +16,7 @@ import org.testng.ITestResult;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -84,29 +82,61 @@ public class Common {
                     options.addArguments("--headless");
                 }
                 options.addArguments("--disable-gpu");
-//                options.addArguments("--incognito");
                 options.addArguments("--no-sandbox");
                 options.addArguments("--window-size=1280,800");
                 options.addArguments("--disable-dev-shm-usage");
                 options.addArguments("--allow-insecure-localhost");
                 options.addArguments("--remote-debugging-port=" + port);
-                WebDriver driver = new ChromeDriver(options);
+                WebDriver driver = null;
+                boolean checkBrowserStart = true;
+                try {
+                    driver = new ChromeDriver(options);
+                } catch (SessionNotCreatedException exception) {
+                    System.out.println("Could not start a new session.");
+                    checkBrowserStart = false;
+                }
+                while (!checkBrowserStart) {
+                    try {
+                        port = 1000 + RandomUtils.nextInt(9000);
+                        options.addArguments("--remote-debugging-port=" + port);
+                        checkBrowserStart = true;
+                        driver = new ChromeDriver(options);
+                    } catch (SessionNotCreatedException exception) {
+                        System.out.println("Could not start a new session.");
+                        checkBrowserStart = false;
+                    }
+                }
                 driver.manage().window().maximize();
                 return driver;
             }
         }
     }
-
     public void login(WebDriver driver, String url, String mail, String password) throws InterruptedException {
+      // wait for webdriver is generated
         driver.get(url);
+        boolean checkLoginPage = true;
         sleep(1000);
-        driver.findElement(By.cssSelector("#username")).sendKeys(mail);
-        sleep(1000);
+        try {
+            driver.findElement(By.cssSelector("#username")).sendKeys(mail);
+        } catch (NoSuchElementException exception) {
+            System.out. println("Login page has not been opened. It should be reopen again.");
+            checkLoginPage = false;
+        }
+
+        while (!checkLoginPage) {
+            driver.get(url);
+            checkLoginPage = true;
+            sleep(1000);
+            try {
+                driver.findElement(By.cssSelector("#username")).sendKeys(mail);
+            } catch (NoSuchElementException exception) {
+                System.out. println("Login page has not been opened. It should be reopen again.");
+                checkLoginPage = false;
+            }
+        }
         driver.findElement(By.cssSelector("#password")).sendKeys(password);
         driver.findElement(By.cssSelector("button[type='submit']")).click();
-        sleep(1000);
-
-        driver.get(url);
+        sleep(2000);
         driver.manage().deleteAllCookies();
     }
 
@@ -116,7 +146,6 @@ public class Common {
 
     /**
      * @param number_of_role: 1: Master, 2: Administrator, 3: Responsible person, 4: Leader, 5: Member, 6: Guest
-     * @return: list role by number
      **/
     public List<String> roleList(int number_of_role) {
 

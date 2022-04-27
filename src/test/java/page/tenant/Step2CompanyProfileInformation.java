@@ -184,6 +184,7 @@ public class Step2CompanyProfileInformation extends TenantPage {
      *
      */
     public void verifyErrorMessageWhenLeaveCompanyNameBlank() throws InterruptedException {
+        sleep(1000);
         company_name.sendKeys("text", Keys.CONTROL + "a", Keys.DELETE);
         sleep(2000);
         String text = company_name_error.getText();
@@ -205,9 +206,8 @@ public class Step2CompanyProfileInformation extends TenantPage {
     }
 
     public void verifyErrorMessageWhenInputCompanyNameExceed100CharactersMixHalfAndFullWidthCharacters() throws InterruptedException {
-        int length_of_half_width = RandomUtils.nextInt(100) + 1;
-        String company_name_str = RandomStringUtils.randomAlphabetic(length_of_half_width)
-                + RandomStringUtils.random(101 - length_of_half_width, 0x4e00, 0x4f80, true, false);
+        String company_name_str = RandomStringUtils.randomAlphabetic(50)
+                + RandomStringUtils.random(51, 0x4e00, 0x4f80, true, false);
         company_name.sendKeys(company_name_str);
         sleep(2000);
         String text = company_name_error.getText();
@@ -232,24 +232,18 @@ public class Step2CompanyProfileInformation extends TenantPage {
     }
 
     public void verifyErrorMessageWhenInputAddressExceed100HalfWidthCharacters() throws InterruptedException {
-        // total length of inputValidAddress and building in range 2-101
-        int length_of_address = RandomUtils.nextInt(100) + 1;
-        int length_of_building = 101 - length_of_address;
         // Address
-        address.sendKeys(RandomStringUtils.randomAlphanumeric(length_of_address));
-        building.sendKeys(RandomStringUtils.randomAlphanumeric(length_of_building));
+        address.sendKeys(RandomStringUtils.randomAlphanumeric(50));
+        building.sendKeys(RandomStringUtils.randomAlphanumeric(51));
         sleep(2000);
         String text = address_error2.getText();
         Assert.assertEquals(text, "建物名を合わせて100文字以内で入力してください。", "[Address] Message do not match");
     }
 
     public void verifyErrorMessageWhenInputAddressExceed100FullWidthCharacters() throws InterruptedException {
-        // total length of inputValidAddress and building in range 2-101
-        int length_of_address = RandomUtils.nextInt(100) + 1;
-        int length_of_building = 101 - length_of_address;
         // Address
-        address.sendKeys(RandomStringUtils.random(length_of_address, 0x4e00, 0x4f80, true, false));
-        building.sendKeys(RandomStringUtils.random(length_of_building, 0x4e00, 0x4f80, true, false));
+        address.sendKeys(RandomStringUtils.random(50, 0x4e00, 0x4f80, true, false));
+        building.sendKeys(RandomStringUtils.random(51, 0x4e00, 0x4f80, true, false));
         sleep(2000);
         String text = address_error2.getText();
         Assert.assertEquals(text, "建物名を合わせて100文字以内で入力してください。", "[Address] Message do not match");
@@ -257,12 +251,8 @@ public class Step2CompanyProfileInformation extends TenantPage {
 
     public void verifyErrorMessageWhenInputAddressExceed100CharactersMixHalfAndFullWidth() throws InterruptedException {
         // total length of inputValidAddress and building in range 2-101
-        int length_of_address_half = RandomUtils.nextInt(98) + 1;
-        int length_of_address_full = RandomUtils.nextInt(99 - length_of_address_half) + 1;
-        int length_of_building_half = RandomUtils.nextInt(100 - length_of_address_half - length_of_address_full) + 1;
-        int length_of_building_full = 101 - length_of_building_half - length_of_address_half - length_of_address_full;
-        String address_str = RandomStringUtils.randomAlphabetic(length_of_address_half) + RandomStringUtils.random(length_of_address_full, 0x4e00, 0x4f80, true, false);
-        String building_str = RandomStringUtils.randomAlphabetic(length_of_address_half) + RandomStringUtils.random(length_of_building_full, 0x4e00, 0x4f80, true, false);
+        String address_str = RandomStringUtils.randomAlphabetic(25) + RandomStringUtils.random(25, 0x4e00, 0x4f80, true, false);
+        String building_str = RandomStringUtils.randomAlphabetic(25) + RandomStringUtils.random(26, 0x4e00, 0x4f80, true, false);
         // Address
         address.sendKeys(address_str);
         building.sendKeys(building_str);
@@ -296,8 +286,7 @@ public class Step2CompanyProfileInformation extends TenantPage {
     }
 
     public void verifyErrorMessageWhenInputUrlExceed50CharactersMixHalfAndFullWidth() throws InterruptedException {
-        int length_of_half = RandomUtils.nextInt(50) + 1;
-        String url_str = RandomStringUtils.randomAlphabetic(length_of_half) + RandomStringUtils.random(51 - length_of_half, 0x4e00, 0x4f80, true, false);
+        String url_str = RandomStringUtils.randomAlphabetic(25) + RandomStringUtils.random(26, 0x4e00, 0x4f80, true, false);
         url.sendKeys(url_str);
         sleep(2000);
         String text1 = url_error2.getText();

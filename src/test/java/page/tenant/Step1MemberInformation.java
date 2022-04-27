@@ -2,6 +2,7 @@ package page.tenant;
 
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.math.RandomUtils;
+import org.openqa.selenium.ElementNotInteractableException;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -9,6 +10,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
+import org.testng.SkipException;
 
 import static java.lang.Thread.sleep;
 import static utilities.links.HBS.CREATE_TENANT_PATH;
@@ -74,7 +76,7 @@ public class Step1MemberInformation extends TenantPage {
         email_address = RandomStringUtils.randomAlphabetic(length_of_email_address).toLowerCase();
         // Email inputValidAddress
         email.sendKeys(email_address + "@bedul.net");
-        System.out.println("Your mail: " + email_address + "@bedul.net");
+//        System.out.println("Your mail: " + email_address + "@bedul.net");
     }
 
     public void inputValidPasswordAndConfirmPassword() throws InterruptedException {
@@ -89,7 +91,7 @@ public class Step1MemberInformation extends TenantPage {
         confirm_password.sendKeys(password_str + "@");
         // Wait captcha
         sleep(2000);
-        System.out.println("Your password: " + password_str + "@");
+//        System.out.println("Your password: " + password_str + "@");
     }
 
     public void handleRecaptchaCheckbox() throws InterruptedException {
@@ -104,7 +106,12 @@ public class Step1MemberInformation extends TenantPage {
 
     public void agreeTermOfUse() {
         // Agree term of use
-        term_of_use.click();
+        try {
+            term_of_use.click();
+        } catch (ElementNotInteractableException ex) {
+            System.out.println("Can not complete Captcha step.");
+            throw new SkipException("Test ignored.");
+        }
     }
 
     public void clickRegisterMemberInformationButton() throws InterruptedException {

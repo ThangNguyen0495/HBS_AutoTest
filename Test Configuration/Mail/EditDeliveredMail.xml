@@ -53,7 +53,7 @@
                     <parameter name="password" value="12345678aQ@"/>
                     <parameter name="role" value="Master"/>
                     <parameter name="capacity" value="2"/>
-                    <parameter name="mail_id" value="3d2db11b-2fcf-4274-9c94-340fe13ecaae"/>
+                    <parameter name="mail_id" value="7b56dc30-b988-46c2-8b83-6c19685caa34"/>
                     <parameter name="mail_status" value="Draft"/>
 
                     <!--

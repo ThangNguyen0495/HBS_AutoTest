@@ -7,9 +7,6 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="HBS" />
-        <module name="HBS_Automation_Testing" />
-        <module name="HBS_AutoTest" />
-        <module name="HBS_Refactor" />
       </profile>
     </annotationProcessing>
   </component>

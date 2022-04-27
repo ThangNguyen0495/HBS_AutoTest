@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="[HBS] Login (Check captcha after login failed 3 times)"
+           tests="1"
+           failures="0"
+           errors="0"
+           skipped="0"
+           time="23.120">
+    <properties></properties>
+
+
+
+            <testcase
+                name="TC01_verifyThatAfterLoginFail3TimesCaptchaShouldBeDisplayed"
+                time="23.120"
+                classname="test.login.Login">
+            </testcase>
+</testsuite>

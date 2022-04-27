@@ -2,11 +2,11 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
 <suite name="All suite"  >
     <suite-files>
-<!--        <suite-file path="Test Configuration/Login/Login.xml" />-->
-<!--        <suite-file path="Test Configuration/Payment/UsagePlan.xml" />-->
-<!--        <suite-file path="Test Configuration/Payment/Addons.xml"/>-->
+        <suite-file path="Test Configuration/Login/Login.xml" />
+        <suite-file path="Test Configuration/Tenant/CreateTenant.xml" />
+        <suite-file path="Test Configuration/Payment/UsagePlan.xml" />
+        <suite-file path="Test Configuration/Payment/Addons.xml"/>
         <suite-file path="Test Configuration/Mail/CreateDeliveredMail.xml" />
-<!--        <suite-file path="Test Configuration/Mail/EditDeliveredMail.xml" />-->
-<!--        <suite-file path="Test Configuration/Tenant/CreateTenant.xml" />-->
+        <suite-file path="Test Configuration/Mail/EditDeliveredMail.xml" />
     </suite-files>
 </suite>
