@@ -46,10 +46,10 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     
-    - name: Install Google Chrome # Using shell script to install Google Chrome
-      run: |
-        chmod +x ./scripts/InstallChrome.sh
-        ./scripts/InstallChrome.sh
+#     - name: Install Google Chrome # Using shell script to install Google Chrome
+#       run: |
+#         chmod +x ./scripts/InstallChrome.sh
+#         ./scripts/InstallChrome.sh
 
     - name: Set up JDK 17
       uses: actions/setup-java@v2
