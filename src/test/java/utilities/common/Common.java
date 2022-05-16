@@ -83,7 +83,7 @@ public class Common {
                 options.addArguments("--window-size=1280,800");
                 options.addArguments("--disable-dev-shm-usage");
                 options.addArguments("--allow-insecure-localhost");
-                driver = new ChromeDriver(options);
+                WebDriver driver = new ChromeDriver(options);
                 return driver;
             }
         }
