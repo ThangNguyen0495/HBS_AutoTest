@@ -29,7 +29,6 @@ public class Common {
 
     public WebDriver setupWebdriver(String headless, String browser_name) {
         //Config Webdriver
-        int port = 1000 + RandomUtils.nextInt(9000);
         switch (browser_name) {
             case "firefox" -> {
                 WebDriverManager.firefoxdriver().setup();
@@ -43,7 +42,6 @@ public class Common {
                 options.addArguments("--window-size=1280,800");
                 options.addArguments("--disable-dev-shm-usage");
                 options.addArguments("--allow-insecure-localhost");
-                options.addArguments("--remote-debugging-port=" + port);
                 WebDriver driver = new FirefoxDriver(options);
                 driver.manage().window().maximize();
                 return driver;
@@ -57,7 +55,6 @@ public class Common {
                 options.addArguments("--window-size=1280,800");
                 options.addArguments("--disable-dev-shm-usage");
                 options.addArguments("--allow-insecure-localhost");
-                options.addArguments("--remote-debugging-port=" + port);
                 WebDriver driver = new EdgeDriver(options);
                 driver.manage().window().maximize();
                 return driver;
@@ -86,27 +83,7 @@ public class Common {
                 options.addArguments("--window-size=1280,800");
                 options.addArguments("--disable-dev-shm-usage");
                 options.addArguments("--allow-insecure-localhost");
-                options.addArguments("--remote-debugging-port=" + port);
-                WebDriver driver = null;
-                boolean checkBrowserStart = true;
-                try {
-                    driver = new ChromeDriver(options);
-                } catch (SessionNotCreatedException exception) {
-                    System.out.println("Could not start a new session.");
-                    checkBrowserStart = false;
-                }
-                while (!checkBrowserStart) {
-                    try {
-                        port = 1000 + RandomUtils.nextInt(9000);
-                        options.addArguments("--remote-debugging-port=" + port);
-                        checkBrowserStart = true;
-                        driver = new ChromeDriver(options);
-                    } catch (SessionNotCreatedException exception) {
-                        System.out.println("Could not start a new session.");
-                        checkBrowserStart = false;
-                    }
-                }
-                driver.manage().window().maximize();
+                driver = new ChromeDriver(options);
                 return driver;
             }
         }
@@ -114,26 +91,8 @@ public class Common {
     public void login(WebDriver driver, String url, String mail, String password) throws InterruptedException {
       // wait for webdriver is generated
         driver.get(url);
-        boolean checkLoginPage = true;
-        sleep(1000);
-        try {
-            driver.findElement(By.cssSelector("#username")).sendKeys(mail);
-        } catch (NoSuchElementException exception) {
-            System.out. println("Login page has not been opened. It should be reopen again.");
-            checkLoginPage = false;
-        }
-
-        while (!checkLoginPage) {
-            driver.get(url);
-            checkLoginPage = true;
-            sleep(1000);
-            try {
-                driver.findElement(By.cssSelector("#username")).sendKeys(mail);
-            } catch (NoSuchElementException exception) {
-                System.out. println("Login page has not been opened. It should be reopen again.");
-                checkLoginPage = false;
-            }
-        }
+        sleep(3000);
+        driver.findElement(By.cssSelector("#username")).sendKeys(mail);
         driver.findElement(By.cssSelector("#password")).sendKeys(password);
         driver.findElement(By.cssSelector("button[type='submit']")).click();
         sleep(2000);
